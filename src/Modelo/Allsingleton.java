@@ -20,6 +20,15 @@ public class Allsingleton implements java.io.Serializable{
     private static Fichas f;
     private static ArrayList<DetFichas> df;
     private static String serie;
+    private static DetFichas dff;
+
+    public static DetFichas getDff() {
+        return dff;
+    }
+
+    public static void setDff(DetFichas dff) {
+        Allsingleton.dff = dff;
+    }
 
     public static Usuarios getUsuario() {
         return usuario;
@@ -65,6 +74,26 @@ public class Allsingleton implements java.io.Serializable{
     public boolean vericacaracter(String cad){
         boolean resp = false;
         String patt = "[a-zA-Z0-9]+";
+        Pattern pat = Pattern.compile(patt);
+        Matcher match = pat.matcher(cad);
+        if (match.matches()) {
+            resp = true;
+        }
+        return resp;
+    }
+        public static boolean vericanumero(String cad){
+        boolean resp = false;
+        String patt = "[0-9]+";
+        Pattern pat = Pattern.compile(patt);
+        Matcher match = pat.matcher(cad);
+        if (match.matches()) {
+            resp = true;
+        }
+        return resp;
+    }
+        public static boolean vericaflotante(String cad){
+        boolean resp = false;
+        String patt = "[0-9]+.[0-9]+";
         Pattern pat = Pattern.compile(patt);
         Matcher match = pat.matcher(cad);
         if (match.matches()) {

@@ -1,0 +1,251 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Persistencia;
+
+import Modelo.Ciudades;
+import Modelo.Embarques;
+import Modelo.Estados;
+import Modelo.Formadepago;
+import Modelo.Paises;
+import Modelo.Tipoclientes;
+import Modelo.Zonas;
+import Modelo.metodopago;
+import Modelo.usocfdi;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author GATEWAY1-Michel araujo
+ */
+public class sqlcatcfdi {
+
+    public ArrayList<Formadepago> getFormadepago(Connection con) {//sqllite
+        ArrayList<Formadepago> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from formadepago");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Formadepago f = new Formadepago();
+                f.setFormapago(rs.getString("forma"));
+                f.setConcepto(rs.getString("concepto"));
+                f.setDescripcion(rs.getString("descripcion"));
+                arr.add(f);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<metodopago> getmetodopago(Connection con) {//sqllite
+        ArrayList<metodopago> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from metodopago");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                metodopago m = new metodopago();
+                m.setMetodopago(rs.getString("metodopago"));
+                m.setDescripcion(rs.getString("descripcion"));
+                arr.add(m);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<usocfdi> getusocfdi(Connection con) {//sqllite
+        ArrayList<usocfdi> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from usocfdi");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                usocfdi u= new usocfdi();
+                u.setusocfdi(rs.getString("usocfdi"));
+                u.setDescripcion(rs.getString("descripcion"));
+                arr.add(u);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+//-------------------------------------- fin sqlite
+
+    public ArrayList<Paises> getPaises(Connection con) {//sqlserver
+        ArrayList<Paises> arr = new ArrayList<>();
+        ArrayList<Estados> arre;
+        ArrayList<Ciudades> arrc;
+        try {
+            PreparedStatement st, st1, st2;
+            ResultSet rs, rs1, rs2;
+            st = con.prepareStatement("select * from Paises\n"
+                    + "order by descripcion");
+            rs = st.executeQuery();
+            while (rs.next()) {// Paises
+                Paises p = new Paises();
+                p.setId_pais(rs.getInt("cvepais"));
+                p.setDescripcion(rs.getString("descripcion"));
+                p.setDescorta(rs.getString("descorta"));
+                //estados
+                st1 = con.prepareStatement("select * from Estados where cvepais=" + p.getId_pais() + " \n"
+                        + "order by descripcion");
+                rs1 = st1.executeQuery();
+                arre = new ArrayList<>();
+                while (rs1.next()) {// Estados
+                    Estados e = new Estados();
+                    e.setId_estado(rs1.getInt("cveEstado"));
+                    e.setDescripcion(rs1.getString("descripcion"));
+                    e.setId_pais(rs1.getInt("cvepais"));
+                    // ciudades
+                    st2 = con.prepareStatement("select * from Ciudades where cveestado=" + e.getId_estado() + " \n"
+                            + "order by descripcion");
+                    rs2 = st2.executeQuery();
+                    arrc = new ArrayList<>();
+                    while (rs2.next()) {// Ciudades
+                        Ciudades ci = new Ciudades();
+                        ci.setId_ciudad(rs2.getInt("cveciudad"));
+                        ci.setDescripcion(rs2.getString("descripcion"));
+                        ci.setId_estado(rs2.getInt("cveestado"));
+                        arrc.add(ci);
+                    }
+                    e.setArrciudades(arrc);
+                    arre.add(e);
+                }
+                p.setArrestados(arre);
+                arr.add(p);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<Zonas> getZonas(Connection con) {//zonas
+        ArrayList<Zonas> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from zonas order by CveZona");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Zonas z = new Zonas();
+                z.setZona(rs.getInt("cvezona"));
+                z.setDescripcion(rs.getString("descripcion"));
+                z.setDescorta(rs.getString("descorta"));
+                arr.add(z);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<Embarques> getEmbarques(Connection con) {//zonas
+        ArrayList<Embarques> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from embarque order by Cveembarque");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Embarques e = new Embarques();
+                e.setIdzona(rs.getInt("cveEmbarque"));
+                e.setDescripcion(rs.getString("Descripcion"));
+                e.setDescorta(rs.getString("DesCorta"));
+                arr.add(e);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<Tipoclientes> getTipoclientes(Connection con) {//zonas
+        ArrayList<Tipoclientes> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from tipocliente order by CveTipoCliente");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Tipoclientes t = new Tipoclientes();
+                t.setIdtipocliente(rs.getInt("cvetipocliente"));
+                t.setDescripcion(rs.getString("descripcion"));
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<Tipoclientes> getAgentes(Connection con) {//zonas
+        ArrayList<Tipoclientes> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from tipocliente order by CveTipoCliente");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Tipoclientes t = new Tipoclientes();
+                t.setIdtipocliente(rs.getInt("cvetipocliente"));
+                t.setDescripcion(rs.getString("descripcion"));
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<Tipoclientes> getMarcas(Connection con) {//zonas
+        ArrayList<Tipoclientes> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from tipocliente order by CveTipoCliente");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Tipoclientes t = new Tipoclientes();
+                t.setIdtipocliente(rs.getInt("cvetipocliente"));
+                t.setDescripcion(rs.getString("descripcion"));
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+}

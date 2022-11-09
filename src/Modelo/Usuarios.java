@@ -19,6 +19,7 @@ public class Usuarios implements java.io.Serializable{
     }
 
     public void setId_tipo(int id_tipo) {
+        
         this.id_tipo = id_tipo;
     }
 

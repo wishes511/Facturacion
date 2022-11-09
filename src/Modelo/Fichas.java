@@ -5,6 +5,8 @@
  */
 package Modelo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author GATEWAY1-
@@ -13,8 +15,92 @@ public class Fichas implements java.io.Serializable{
 
     private String Estilo, code, nombre, nombre1, tipo_calzado, reviso_bobo, imagen1,
             imagen2, imagen3, construccion, observaciones, estatus_ok, estatus, fecharea,
-            fecharev, fechaaprobado, descorrida, descusuario, desclinea, deschorma;
-    private int Ficha, id_corrida, id_usuario, id_linea, id_horma;
+            fecharev, fechaaprobado, descorrida, descusuario, desclinea, deschorma,
+            nombreimagen1,nombreimagen2,nombreimagen3,desccolor,url1,url2,url3;
+
+    public String getUrl1() {
+        return url1;
+    }
+
+    public void setUrl1(String url1) {
+        this.url1 = url1;
+    }
+
+    public String getUrl2() {
+        return url2;
+    }
+
+    public void setUrl2(String url2) {
+        this.url2 = url2;
+    }
+
+    public String getUrl3() {
+        return url3;
+    }
+
+    public void setUrl3(String url3) {
+        this.url3 = url3;
+    }
+    private ArrayList<DetFichas> arr;
+
+    public ArrayList<DetFichas> getArr() {
+        return arr;
+    }
+
+    public void setArr(ArrayList<DetFichas> arr) {
+        this.arr = arr;
+    }
+    
+    public String getNombreimagen1() {
+        return nombreimagen1;
+    }
+
+    public void setNombreimagen1(String nombreimagen1) {
+        if(nombreimagen1!=null){
+        this.nombreimagen1 = nombreimagen1;
+        }else
+            this.nombreimagen1="";
+        
+    }
+
+    public String getNombreimagen2() {
+        return nombreimagen2;
+    }
+
+    public void setNombreimagen2(String nombreimagen2) {
+        if(nombreimagen2!=null){
+        this.nombreimagen2 = nombreimagen2;
+        }else
+            this.nombreimagen2="";
+    }
+
+    public String getNombreimagen3() {
+        return nombreimagen3;
+    }
+
+    public void setNombreimagen3(String nombreimagen3) {
+        if(nombreimagen3!=null){
+        this.nombreimagen3 = nombreimagen3;
+        }else
+            this.nombreimagen3="";
+    }
+    private int Ficha, id_corrida, id_usuario, id_linea, id_horma, id_color;
+
+    public String getDesccolor() {
+        return desccolor;
+    }
+
+    public void setDesccolor(String desccolor) {
+        this.desccolor = desccolor;
+    }
+
+    public int getId_color() {
+        return id_color;
+    }
+
+    public void setId_color(int id_color) {
+        this.id_color = id_color;
+    }
 
     public String getEstilo() {
         return Estilo;

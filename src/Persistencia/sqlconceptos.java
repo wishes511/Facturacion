@@ -1,0 +1,46 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Persistencia;
+
+
+import Modelo.ConceptosES;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ *
+ * @author GATEWAY1-Michel araujo
+ */
+public class sqlconceptos {
+
+    public ArrayList<ConceptosES> getConceptosES(Connection con) {//cobranza
+        ArrayList<ConceptosES> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select cuenta,subcuenta,descripcion from ConceptosES order by cuenta");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                ConceptosES c = new ConceptosES();
+                c.setCuenta(rs.getString("cuenta"));
+                c.setSubcuenta(rs.getString("subcuenta"));
+                c.setNombre(rs.getString("descripcion"));
+                arr.add(c);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+}

@@ -18,11 +18,13 @@ import java.util.logging.Logger;
  */
 public class daoserver implements Server{
     Connection c=null;
+    Serverprod s;
+    
     @Override
     public Connection Getconexion() {
         try {
-            Serverprod s= new Serverprod();
-            s.getconexionS();
+           s = new Serverprod();
+            c=s.getconexionS();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(daoserver.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -36,7 +38,7 @@ public class daoserver implements Server{
     @Override
     public void cerrarConexion() {
         try {
-            c.close();
+           s.cerrar();
         } catch (SQLException ex) {
             Logger.getLogger(daoserver.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -23,6 +23,7 @@ public class Log extends javax.swing.JFrame {
      */
     public Log() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -39,14 +40,21 @@ public class Log extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Inicio de sesion");
 
+        JtUsuario.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         JtUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JtUsuarioActionPerformed(evt);
             }
         });
 
-        JtContraseña.setText("jPasswordField1");
+        JtContraseña.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        JtContraseña.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtContraseñaActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Entrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -63,13 +71,13 @@ public class Log extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(122, 122, 122)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(JtContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                            .addComponent(JtUsuario)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(144, 144, 144)
                         .addComponent(jButton1)))
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -87,33 +95,51 @@ public class Log extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void JtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtUsuarioActionPerformed
-            
+        JtContraseña.requestFocus();
     }//GEN-LAST:event_JtUsuarioActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       Allsingleton singleton=  new Allsingleton();
-       String usuario=JtUsuario.getText().toUpperCase();
-       String pass=JtContraseña.getText();
-       daoserver server= new daoserver();
-       Connection con=server.Getconexion();
-       if(singleton.vericacaracter(usuario)&&singleton.vericacaracter(pass)){
-           Usuarios u= new Usuarios();
-           daoPrincipal dp= new daoPrincipal();
-           u=dp.getUsers(con, usuario, pass);
-           if(!u.getUsuario().equals("")||!u.getUsuario().equals("NULL")){
-               Allsingleton.setUsuario(u);
-               Allsingleton.setSerie("A");
-               Allsingleton.setC(con);
-           }else{
-               JOptionPane.showMessageDialog(null, "Usuario inexistente", "Athletic", JOptionPane.ERROR);
-               JtUsuario.setText("");
-               JtContraseña.setText("");
-               JtUsuario.requestFocus();
-           }
-       }else{
-           JOptionPane.showMessageDialog(null, "No se pueden colocar caracteres de ningun tipo", "Athletic", JOptionPane.ERROR);
-       }
+        entrar();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void entrar() {
+        Allsingleton singleton = new Allsingleton();
+        String usuario = JtUsuario.getText().toUpperCase();
+        String pass = JtContraseña.getText();
+        daoserver server = new daoserver();
+        Connection con = server.Getconexion();
+        //usar metodo de verificar caracter en el singleton
+        if (singleton.vericacaracter(usuario) && singleton.vericacaracter(pass)) {
+            Usuarios u = new Usuarios();
+            daoPrincipal dp = new daoPrincipal();
+            u = dp.getUsers(con, usuario, pass);//verificar si existe el usuario y contraseña
+            if (!u.getUsuario().equals("NO")) {//verificar si existe o no
+                //se establecen datos clave en el singleton, como el usuario, conexion a la bd y la serie inicial
+                Allsingleton.setUsuario(u);
+                Allsingleton.setSerie("A");
+                Allsingleton.setC(con);
+                Principal p = new Principal();
+                this.setVisible(false);
+                p.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "Usuario inexistente");
+                JtUsuario.setText("");
+                JtContraseña.setText("");
+                JtUsuario.requestFocus();
+                server.cerrarConexion();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pueden colocar caracteres de ningun tipo");
+            JtUsuario.setText("");
+            JtContraseña.setText("");
+            JtUsuario.requestFocus();
+            server.cerrarConexion();
+        }
+    }
+
+    private void JtContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtContraseñaActionPerformed
+        entrar();
+    }//GEN-LAST:event_JtContraseñaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,7 +152,7 @@ public class Log extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
