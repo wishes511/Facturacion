@@ -15,6 +15,7 @@ import Modelo.Paises;
 import Modelo.Tipoclientes;
 import Modelo.Zonas;
 import Modelo.metodopago;
+import Modelo.relacion;
 import Modelo.usocfdi;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public interface Catcfdi {
     public ArrayList<Marcas> getMarcas(Connection c);
     public ArrayList<metodopago> getMetodopago(Connection c);
     public ArrayList<usocfdi> getusocfdi(Connection c);
+    public ArrayList<relacion> getrelacion(Connection c);
     
     
 }

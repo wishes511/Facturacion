@@ -81,7 +81,7 @@ public class testcfdi {
             BigDecimal d= new BigDecimal("0.160000");//tomando en cuenta los 6 decimales
             x.setTasaCuota(d);
             generarXML40 xml = new generarXML40();
-            xml.crearComprobante(x, arr);
+//            xml.crearComprobante(x, arr);
         } catch (Exception ex) {
             Logger.getLogger(testcfdi.class.getName()).log(Level.SEVERE, null, ex);
         }

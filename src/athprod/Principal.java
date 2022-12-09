@@ -5,9 +5,11 @@
  */
 package athprod;
 
-import Modelo.Allsingleton;
+import Modelo.Conexiones;
 import Modelo.Procserie;
+import Paneles.pago1;
 import Server.ServerProccpt;
+import Server.Serverprod;
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -41,8 +43,13 @@ public class Principal extends javax.swing.JFrame {
     MenuItem mi = new MenuItem();
     MenuItem mi2 = new MenuItem();
     MenuItem mi3 = new MenuItem();
+    Connection cpt, rcpt, ACobranza;
+    Connection concpt, conupcpt, conrcpt, conrcptup, concob, concobup;
+    Conexiones conexion = new Conexiones();
+    String empresa;
     int cont = 0;
     String admin = "0";
+    String prod = "0";
 
     public Principal() {
         initComponents();
@@ -59,8 +66,12 @@ public class Principal extends javax.swing.JFrame {
         PopMenu.add(JmRespaldos);
         PopMenu.add(JmVentas);
         popup();
-        JmRespaldos.setVisible(false);
-        JmCES.setVisible(false);
+        setinicio();
+        JrEmpresa.setSelected(true);
+        grupo.add(JrEmpresa);
+        grupo.add(JrEmpresa1);
+        setconexionesglobal();// Cuidado!!! Bases de datos de produccion
+        setconexionprueba();
         //setconexiones();
     }
 
@@ -77,11 +88,14 @@ public class Principal extends javax.swing.JFrame {
         JmCatalogoprod = new javax.swing.JMenuItem();
         JmFicha = new javax.swing.JMenuItem();
         JmCES = new javax.swing.JMenuItem();
-        JmRespaldos = new javax.swing.JMenuItem();
         PopMenu = new javax.swing.JPopupMenu();
         JmCobranza = new javax.swing.JMenu();
         JmClientes = new javax.swing.JMenuItem();
+        JmNotascr = new javax.swing.JMenuItem();
+        JmPagos = new javax.swing.JMenuItem();
         JmConf = new javax.swing.JMenu();
+        JmRespaldos = new javax.swing.JMenuItem();
+        JmEmpresas = new javax.swing.JMenuItem();
         JmVentas = new javax.swing.JMenu();
         JmVerfacts = new javax.swing.JMenuItem();
         JmModcaja = new javax.swing.JMenuItem();
@@ -90,9 +104,13 @@ public class Principal extends javax.swing.JFrame {
         JmCerrar = new javax.swing.JMenuItem();
         Jmabrir = new javax.swing.JMenuItem();
         JpClose = new java.awt.PopupMenu();
+        grupo = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         Jlnombre = new javax.swing.JLabel();
         JlSerie = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        JrEmpresa = new javax.swing.JRadioButton();
+        JrEmpresa1 = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         JdPanel = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
@@ -127,15 +145,6 @@ public class Principal extends javax.swing.JFrame {
         });
         JmProd.add(JmCES);
 
-        JmRespaldos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Data_settings_theapplication_3364.png"))); // NOI18N
-        JmRespaldos.setText("Respaldos BD");
-        JmRespaldos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JmRespaldosActionPerformed(evt);
-            }
-        });
-        JmProd.add(JmRespaldos);
-
         JmCobranza.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/exchange-dollar_icon-icons.com_53141.png"))); // NOI18N
         JmCobranza.setText("Cobranza");
 
@@ -148,8 +157,44 @@ public class Principal extends javax.swing.JFrame {
         });
         JmCobranza.add(JmClientes);
 
+        JmNotascr.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495.png"))); // NOI18N
+        JmNotascr.setText("Notas de credito");
+        JmNotascr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmNotascrActionPerformed(evt);
+            }
+        });
+        JmCobranza.add(JmNotascr);
+
+        JmPagos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_table_order_report_history_2332.png"))); // NOI18N
+        JmPagos.setText("Pagos");
+        JmPagos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmPagosActionPerformed(evt);
+            }
+        });
+        JmCobranza.add(JmPagos);
+
         JmConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564402-settings_81520.png"))); // NOI18N
         JmConf.setText("Configuraciones");
+
+        JmRespaldos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Data_settings_theapplication_3364.png"))); // NOI18N
+        JmRespaldos.setText("Respaldos BD");
+        JmRespaldos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmRespaldosActionPerformed(evt);
+            }
+        });
+        JmConf.add(JmRespaldos);
+
+        JmEmpresas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1492616984-13-setting-configure-repair-support-optimization-google_83419.png"))); // NOI18N
+        JmEmpresas.setText("Empresas");
+        JmEmpresas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmEmpresasActionPerformed(evt);
+            }
+        });
+        JmConf.add(JmEmpresas);
 
         JmVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Ordering_25406.png"))); // NOI18N
         JmVentas.setText("Ventas");
@@ -222,15 +267,58 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        JrEmpresa.setBackground(new java.awt.Color(255, 255, 255));
+        JrEmpresa.setText("Athletic");
+        JrEmpresa.setToolTipText("Emisor a facturar");
+        JrEmpresa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        JrEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JrEmpresaActionPerformed(evt);
+            }
+        });
+
+        JrEmpresa1.setBackground(new java.awt.Color(255, 255, 255));
+        JrEmpresa1.setText("Uptown");
+        JrEmpresa1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        JrEmpresa1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JrEmpresa1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(JrEmpresa)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(JrEmpresa1))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(JrEmpresa)
+                .addComponent(JrEmpresa1))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(Jlnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(JlSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(Jlnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(JlSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,7 +326,9 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JlSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Jlnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 29, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jPanel2.setBackground(new java.awt.Color(153, 204, 255));
@@ -295,9 +385,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -306,9 +394,14 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void JlSerieMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlSerieMousePressed
-        Allsingleton.setSerie((Allsingleton.getSerie().equals("A") ? "B" : "A"));
-        JlSerie.setText(Allsingleton.getSerie());
+        cerrartodo();
     }//GEN-LAST:event_JlSerieMousePressed
+
+    private void setinicio() {
+        JmRespaldos.setVisible(false);
+        JmCES.setVisible(false);
+        JmEmpresas.setVisible(false);
+    }
 
     private void iniciartray() {
         if (SystemTray.isSupported()) {
@@ -343,8 +436,7 @@ public class Principal extends javax.swing.JFrame {
         mi2.addActionListener(new ActionListener() {//Cerrar 
             @Override
             public void actionPerformed(ActionEvent e) {
-                cerrarconexiones();
-                System.exit(0);
+                cerrartodo();
             }
         });
         mi3.addActionListener(new ActionListener() {//Activar administracion 
@@ -356,6 +448,8 @@ public class Principal extends javax.swing.JFrame {
                     setconexiones();
                     JmRespaldos.setVisible(true);
                     JmCES.setVisible(true);
+                    JmEmpresas.setVisible(true);
+                    JmConf.setVisible(true);
                 } else {
 
                 }
@@ -490,19 +584,142 @@ public class Principal extends javax.swing.JFrame {
 
     private void JmFacturacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFacturacionActionPerformed
         try {
-            Facturacion c = new Facturacion();
+            Facturacion c = new Facturacion(conexion);
             this.JdPanel.add(c);
-            c.JtBuscar.requestFocus();
+//            c.JtBuscar.requestFocus();
             c.setMaximum(true);
             c.show();
         } catch (PropertyVetoException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_JmFacturacionActionPerformed
+
+    private void JmEmpresasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEmpresasActionPerformed
+        try {//Abrir app de respaldos
+            Empresarfc f = new Empresarfc();
+            this.JdPanel.add(f);
+//            f.setMaximum(true);
+            f.show();
+        } catch (Exception ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmEmpresasActionPerformed
+
+    private void JmNotascrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmNotascrActionPerformed
+        try {
+            Notascr c = new Notascr(conexion);
+            this.JdPanel.add(c);
+//            c.JtBuscar.requestFocus();
+            c.setMaximum(true);
+            c.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmNotascrActionPerformed
+
+    private void JmPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagosActionPerformed
+        try {
+            Pagos c = new Pagos(conexion);
+            this.JdPanel.add(c);
+//            c.JtBuscar.requestFocus();
+            c.setMaximum(true);
+            c.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmPagosActionPerformed
+
+    private void JrEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JrEmpresaActionPerformed
+        actualizaempresa();
+    }//GEN-LAST:event_JrEmpresaActionPerformed
+
+    private void JrEmpresa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JrEmpresa1ActionPerformed
+        actualizaempresa();
+    }//GEN-LAST:event_JrEmpresa1ActionPerformed
+
+    private void actualizaempresa() {
+        if (JrEmpresa.isSelected()) {
+            conexion.setCpt(concpt);
+            conexion.setRcpt(conrcpt);
+            conexion.setCobranza(concob);
+            conexion.setEmpresa("CPT");
+            conexion.setEmpresacob("ACobranza");
+            conexion.setEmpresarcpt("RCPT");
+        } else {
+            conexion.setCpt(conupcpt);
+            conexion.setRcpt(conrcptup);
+            conexion.setCobranza(concobup);
+            conexion.setEmpresa("UptownCPT");
+            conexion.setEmpresacob("ACobranzauptown");
+            conexion.setEmpresarcpt("UptownRCPT");
+        }
+        System.out.println(conexion.getEmpresa());
+        //conexiones de prueba
+//        setconexiones("FATIMACPT","FATIMARCPT","ACobranzaFH");
+    }
+
+    private void setconexionesglobal() {
+        if (prod.equals("1")) {
+            Serverprod s = new Serverprod();
+            try {//    Connection concpt, conupcpt, conrcpt, conrcptup, concob, concobup;
+//            Asignar a una variable cada conexion
+                concpt = s.getconexionserver8("CPT");
+                conrcpt = s.getconexionserver8("RCPT");
+                concob = s.getconexionserver8("ACobranza");
+                conupcpt = s.getconexionserver8("UptownCPT");
+                conrcptup = s.getconexionserver8("UptownRCPT");
+                concobup = s.getconexionserver8("ACobranzaUptown");
+            } catch (ClassNotFoundException | IOException | SQLException ex) {
+                Logger.getLogger(pago1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
+    private void setconexionprueba() {
+        if (prod.equals("0")) {
+            Serverprod s = new Serverprod();
+            try {//    Connection concpt, conupcpt, conrcpt, conrcptup, concob, concobup;
+//            Asignar a una variable cada conexion
+                conexion.setCpt(s.getconexionpruebacpt());
+                conexion.setRcpt(s.getconexionpruebarcpt());
+                conexion.setCobranza(s.getconexionpruebacob());
+                conexion.setEmpresa("FATIMACPT");
+                conexion.setEmpresacob("ACobranzaFH");
+                conexion.setEmpresarcpt("FATIMARCPT");
+            } catch (ClassNotFoundException | IOException | SQLException ex) {
+                Logger.getLogger(pago1.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
+
+    private void cerrartodo() {
+        if (admin.equals("1")) {
+            cerrarconexiones();
+        }
+        cerrarbd();
+        System.exit(0);
+    }
+
     public void cerrarbd() {
         try {
-            Allsingleton.getC().close();
+//            Allsingleton.getC().close();
             //JOptionPane.showMessageDialog(null, Allsingleton.getC());
+            if (prod.equals("1")) {
+                concpt.close();
+                conrcpt.close();
+                concob.close();
+                conupcpt.close();
+                conrcptup.close();
+                concobup.close();
+            } else {
+                conexion.getCpt().close();
+                conexion.getCobranza().close();
+                conexion.getRcpt().close();
+            }
+
+            System.out.println("cerrar paneles");
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -553,9 +770,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmClientes;
     private javax.swing.JMenu JmCobranza;
     private javax.swing.JMenu JmConf;
+    private javax.swing.JMenuItem JmEmpresas;
     private javax.swing.JMenuItem JmFacturacion;
     private javax.swing.JMenuItem JmFicha;
     private javax.swing.JMenuItem JmModcaja;
+    private javax.swing.JMenuItem JmNotascr;
+    private javax.swing.JMenuItem JmPagos;
     private javax.swing.JMenu JmProd;
     private javax.swing.JMenuItem JmRespaldos;
     private javax.swing.JMenuItem JmSalidas;
@@ -563,9 +783,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmVerfacts;
     private javax.swing.JMenuItem Jmabrir;
     private java.awt.PopupMenu JpClose;
+    private javax.swing.JRadioButton JrEmpresa;
+    private javax.swing.JRadioButton JrEmpresa1;
     private javax.swing.JPopupMenu PopMenu;
+    private javax.swing.ButtonGroup grupo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

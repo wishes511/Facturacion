@@ -17,6 +17,15 @@ public class Kardexrcpt implements java.io.Serializable{
     String fecha, docref, cuenta,subcuenta,stock,status,obs,statusimpresion,pedido,ocompra,factura,serie,usuario,registro, marca;
     ArrayList<Producto> arr= new ArrayList<>();
     Cliente cli;
+    Producto p;
+
+    public Producto getP() {
+        return p;
+    }
+
+    public void setP(Producto p) {
+        this.p = p;
+    }
 
     public Cliente getCli() {
         return cli;

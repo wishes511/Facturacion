@@ -10,8 +10,48 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Cliente implements java.io.Serializable{
-    int cvecliente;
-    String nombre,rfc,cp,calle,numext, numint, colonia,municipio,estado, pais;
+    int cvecliente, agente, plazo;
+    String nombre,rfc,cp,calle,numext, numint, colonia,municipio,estado, pais,regimen,ciudad, marca;
+
+    public int getAgente() {
+        return agente;
+    }
+
+    public void setAgente(int agente) {
+        this.agente = agente;
+    }
+
+    public int getPlazo() {
+        return plazo;
+    }
+
+    public void setPlazo(int plazo) {
+        this.plazo = plazo;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getRegimen() {
+        return regimen;
+    }
+
+    public void setRegimen(String regimen) {
+        this.regimen = regimen;
+    }
 
     public String getCalle() {
         return calle;

@@ -5,14 +5,40 @@
  */
 package Modelo;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author GATEWAY1-
  */
 public class Dfactura implements java.io.Serializable{
-    int id, idoc, producto,talla,cantidad;
-    String descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor;
+    int id, idoc, producto,talla,cantidad,renglon;
+    String descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor,uuid;
     float precio, base,  importa, descuento;
+    ArrayList<String> arruuid = new ArrayList<>();
+
+    public ArrayList<String> getArruuid() {
+        return arruuid;
+    }
+
+    public void setArruuid(ArrayList<String> arruuid) {
+        this.arruuid = arruuid;
+    }
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public int getRenglon() {
+        return renglon;
+    }
+
+    public void setRenglon(int renglon) {
+        this.renglon = renglon;
+    }
 
     public int getId() {
         return id;

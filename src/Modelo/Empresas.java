@@ -10,7 +10,55 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Empresas implements java.io.Serializable{
-    private String nombre, rfc, rsocial, ip, dirimag, dirvideo;
+    private String nombre, rfc, rsocial, ip, dirimag, dirvideo, regimen, cp, certificado, key, pass, xml;
+
+    public String getXml() {
+        return xml;
+    }
+
+    public void setXml(String xml) {
+        this.xml = xml;
+    }
+
+    public String getRegimen() {
+        return regimen;
+    }
+
+    public void setRegimen(String regimen) {
+        this.regimen = regimen;
+    }
+
+    public String getCp() {
+        return cp;
+    }
+
+    public void setCp(String cp) {
+        this.cp = cp;
+    }
+
+    public String getCertificado() {
+        return certificado;
+    }
+
+    public void setCertificado(String certificado) {
+        this.certificado = certificado;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
 
     public String getNombre() {
         return nombre;

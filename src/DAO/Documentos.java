@@ -6,6 +6,7 @@
 package DAO;
 
 import Modelo.Documentoscpt;
+import Modelo.factura;
 import java.sql.Connection;
 import java.util.ArrayList;
 

@@ -19,5 +19,6 @@ public interface kardexrcpt {
     public ArrayList<Kardexrcpt> getkardex(Connection c, Kardexrcpt k);
     public int maxkardex(Connection c);
     public int maxpedido(Connection c);
-    public ArrayList<Kardexrcpt> getkardexfac(Connection c ,String r);
+    public ArrayList<Kardexrcpt> getkardexfac(Connection c ,String r, String cob);
+    public ArrayList<Kardexrcpt> getkardexfacsimple(Connection c ,String r, String cob);
 }

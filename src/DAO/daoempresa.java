@@ -8,6 +8,7 @@ package DAO;
 import Modelo.Empresas;
 import Persistencia.sqlempresa;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 /**
  *
@@ -27,6 +28,26 @@ public class daoempresa implements Empresa {
         Empresas e = new Empresas();
         e = em.getEmpresa(c);
         return e;
+    }
+
+    @Override
+    public Empresas getempresarfc(Connection c, String n) {
+        sqlempresa em = new sqlempresa();
+        Empresas e = new Empresas();
+        e = em.getEmpresarfc(c, n);
+        return e;
+    }
+
+    @Override
+    public ArrayList<Empresas> getallempresa(Connection c) {
+        sqlempresa em= new sqlempresa();
+        return em.getallempresas(c);
+    }
+
+    @Override
+    public boolean actualizadir(Connection c, String col, String dato, int id) {
+        sqlempresa em = new sqlempresa();
+        return em.actualizaempresas(c, col, dato, id);
     }
 
 }

@@ -7,6 +7,7 @@ package DAO;
 
 import Modelo.Empresas;
 import java.sql.Connection;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,4 +16,7 @@ import java.sql.Connection;
 public interface Empresa {
     public Empresas getempresa(Connection c);
     public String getdirimag(Connection c);
+    public Empresas getempresarfc(Connection c, String n);
+    public ArrayList<Empresas> getallempresa(Connection c);
+    public boolean actualizadir(Connection c, String col, String dato, int id);
 }

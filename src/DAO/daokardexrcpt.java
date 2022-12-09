@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author GATEWAY1-
  */
-public class daokardexrcpt implements kardexrcpt{
+public class daokardexrcpt implements kardexrcpt {
 
     @Override
     public boolean nuevokardex(Connection c, Kardexrcpt k) {
@@ -45,11 +45,15 @@ public class daokardexrcpt implements kardexrcpt{
     }
 
     @Override
-    public ArrayList<Kardexrcpt> getkardexfac(Connection c, String r) {
+    public ArrayList<Kardexrcpt> getkardexfac(Connection c, String r, String cob) {
         sqlkardex s = new sqlkardex();
-        return s.getkardexfac(c, r);
+        return s.getkardexfac(c, r, cob);
     }
 
+    @Override
+    public ArrayList<Kardexrcpt> getkardexfacsimple(Connection c, String r, String cob) {
+        sqlkardex s = new sqlkardex();
+        return s.getkardexfacsimple(c, r, cob);
+    }
 
-    
 }

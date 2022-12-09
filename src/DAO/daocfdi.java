@@ -15,6 +15,7 @@ import Modelo.Paises;
 import Modelo.Tipoclientes;
 import Modelo.Zonas;
 import Modelo.metodopago;
+import Modelo.relacion;
 import Modelo.usocfdi;
 import Persistencia.sqlcatcfdi;
 import java.sql.Connection;
@@ -24,18 +25,19 @@ import java.util.ArrayList;
  *
  * @author GATEWAY1-
  */
-public class daocfdi implements Catcfdi{
+public class daocfdi implements Catcfdi {
 
 //    @Override
     public ArrayList<Formadepago> getFormadepago(Connection c) {
         sqlcatcfdi s = new sqlcatcfdi();
-        ArrayList<Formadepago> arr =s.getFormadepago(c);
+        ArrayList<Formadepago> arr = s.getFormadepago(c);
         return arr;
     }
+
     @Override
     public ArrayList<Paises> getPaises(Connection c) {
         sqlcatcfdi s = new sqlcatcfdi();
-        ArrayList<Paises> arr =s.getPaises(c);
+        ArrayList<Paises> arr = s.getPaises(c);
         return arr;
     }
 
@@ -70,15 +72,21 @@ public class daocfdi implements Catcfdi{
     @Override
     public ArrayList<metodopago> getMetodopago(Connection c) {
         sqlcatcfdi s = new sqlcatcfdi();
-        ArrayList<metodopago> arr =s.getmetodopago(c);
+        ArrayList<metodopago> arr = s.getmetodopago(c);
         return arr;
     }
 
     @Override
     public ArrayList<usocfdi> getusocfdi(Connection c) {
         sqlcatcfdi s = new sqlcatcfdi();
-        ArrayList<usocfdi> arr =s.getusocfdi(c);
+        ArrayList<usocfdi> arr = s.getusocfdi(c);
         return arr;
     }
-    
+
+    @Override
+    public ArrayList<relacion> getrelacion(Connection c) {
+        sqlcatcfdi s = new sqlcatcfdi();
+        return s.getrelacion(c);
+    }
+
 }

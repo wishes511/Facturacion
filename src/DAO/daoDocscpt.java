@@ -7,6 +7,7 @@ package DAO;
 
 import Modelo.Documentoscpt;
 import Persistencia.sqldoccpt;
+import Persistencia.sqlfactura;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -41,6 +42,8 @@ public class daoDocscpt implements Documentos{
         sqldoccpt s = new sqldoccpt();
         return s.getDocimporte(c, var);
     }
+
+
 
     
 

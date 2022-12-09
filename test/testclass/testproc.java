@@ -7,6 +7,7 @@ package testclass;
 
 import DAO.daocfdi;
 import Modelo.Procserie;
+import Persistencia.sqlfactura;
 import Persistencia.sqlkardex;
 import Server.Serverprod;
 import Server.Serverylite;
@@ -31,8 +32,10 @@ public class testproc {
 
         Connection c;
         Serverylite s = new Serverylite();
-        kardex();
-
+//        kardex();
+        sqlfactura f = new sqlfactura();
+        String fechan=f.formateafecha("2022-11-22 13:29:56.0");
+        System.out.println(fechan);
     }
 
     private static void kardex() {

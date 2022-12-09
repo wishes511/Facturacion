@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class factura implements java.io.Serializable{
     int id, folio, naprobacion, estatus, retenciones, idcliente, totalcajas, cantidadxcaja
-            , addenda,enviado, cvecliente, cveagente, parcialidad, parcialidad2;
+            , addenda,enviado, cvecliente, cveagente, parcialidad, parcialidad2,foliokardex,agente,plazo;
     String nombrecliente, ncliente, nombreagente, claveusuario, serie, fecha, fechacancel
             , motivodex, pedido, fechasolicitado, condicion, fechaentrega, nombre, rfc
             , calle, nexterior, ninterior,colonia, localidad, referencia, municipio, estado
@@ -21,10 +21,185 @@ public class factura implements java.io.Serializable{
             , Dreferencia, Dmunicipio, Destado, Dpais, Dcp, Observaciones, cadenaorig, sello
             , Tiposerie, Moneda, Fechaenvio, Formapago, Metodopago, Lugarexpedicion,Numctapago
             , foliofiscalorig, seriefoliofiscalorig, fechafoliofiscalorig, regimen, foliofiscal
-            , nodeseriecert, fechacert, sellosat, sellocfdi, usocfdi, tiporelacion, descmetodop;
-    float Descuento, iva, is, subtotal, impuestos, montoiva, montoisr, total, tipocambio, montofoliofiscalorig, baseimpuesto;
-
+            , nodeseriecert, fechacert, sellosat, sellocfdi, usocfdi, tiporelacion, descmetodop, empresa, certificado,marca,
+            cuentaabono,subabono, desccuenta,refncredito,rfcctaemisora,ctaemisora,rfcctareceptor,
+            ctareceptora,bancoemisor,bancoreceptor,ordenpago;
+    float Descuento, iva, is, subtotal, impuestos, montoiva, montoisr, total, tipocambio, montofoliofiscalorig,
+            baseimpuesto,monto;
+    Cliente c;
     ArrayList<Dfactura> arr = new ArrayList<>();
+    ArrayList<String> arruuid = new ArrayList<>();
+    ArrayList<cargo> arrcargo = new ArrayList<>();
+    ArrayList<Detpagos> arrpagos = new ArrayList<>();
+
+    public String getRfcctaemisora() {
+        return rfcctaemisora;
+    }
+
+    public void setRfcctaemisora(String rfcctaemisora) {
+        this.rfcctaemisora = rfcctaemisora;
+    }
+
+    public String getCtaemisora() {
+        return ctaemisora;
+    }
+
+    public void setCtaemisora(String ctaemisora) {
+        this.ctaemisora = ctaemisora;
+    }
+
+    public String getRfcctareceptor() {
+        return rfcctareceptor;
+    }
+
+    public void setRfcctareceptor(String rfcctareceptor) {
+        this.rfcctareceptor = rfcctareceptor;
+    }
+
+    public String getCtareceptora() {
+        return ctareceptora;
+    }
+
+    public void setCtareceptora(String ctareceptora) {
+        this.ctareceptora = ctareceptora;
+    }
+
+    public String getBancoemisor() {
+        return bancoemisor;
+    }
+
+    public void setBancoemisor(String bancoemisor) {
+        this.bancoemisor = bancoemisor;
+    }
+
+    public String getBancoreceptor() {
+        return bancoreceptor;
+    }
+
+    public void setBancoreceptor(String bancoreceptor) {
+        this.bancoreceptor = bancoreceptor;
+    }
+
+    public String getOrdenpago() {
+        return ordenpago;
+    }
+
+    public void setOrdenpago(String ordenpago) {
+        this.ordenpago = ordenpago;
+    }
+
+    public float getMonto() {
+        return monto;
+    }
+
+    public void setMonto(float monto) {
+        this.monto = monto;
+    }
+
+    public String getRefncredito() {
+        return refncredito;
+    }
+
+    public void setRefncredito(String refncredito) {
+        this.refncredito = refncredito;
+    }
+
+    public String getDesccuenta() {
+        return desccuenta;
+    }
+
+    public void setDesccuenta(String desccuenta) {
+        this.desccuenta = desccuenta;
+    }
+
+    public String getCuentaabono() {
+        return cuentaabono;
+    }
+
+    public void setCuentaabono(String cuentaabono) {
+        this.cuentaabono = cuentaabono;
+    }
+
+    public String getSubabono() {
+        return subabono;
+    }
+
+    public void setSubabono(String subabono) {
+        this.subabono = subabono;
+    }
+
+    public ArrayList<cargo> getArrcargo() {
+        return arrcargo;
+    }
+
+    public void setArrcargo(ArrayList<cargo> arrcargo) {
+        this.arrcargo = arrcargo;
+    }
+    
+
+    public ArrayList<String> getArruuid() {
+        return arruuid;
+    }
+
+    public void setArruuid(ArrayList<String> arruuid) {
+        this.arruuid = arruuid;
+    }
+
+    public int getAgente() {
+        return agente;
+    }
+
+    public void setAgente(int agente) {
+        this.agente = agente;
+    }
+
+    public int getPlazo() {
+        return plazo;
+    }
+
+    public void setPlazo(int plazo) {
+        this.plazo = plazo;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public String getCertificado() {
+        return certificado;
+    }
+
+    public void setCertificado(String certificado) {
+        this.certificado = certificado;
+    }
+
+    public String getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
+    }
+
+    public int getFoliokardex() {
+        return foliokardex;
+    }
+
+    public void setFoliokardex(int foliokardex) {
+        this.foliokardex = foliokardex;
+    }
+
+    public Cliente getC() {
+        return c;
+    }
+
+    public void setC(Cliente c) {
+        this.c = c;
+    }
 
     public float getBaseimpuesto() {
         return baseimpuesto;

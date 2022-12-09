@@ -1,6 +1,8 @@
 package mx.sat.cfd40;
 
+import Modelo.cargo;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 public class xmlDAO {
 
@@ -51,6 +53,42 @@ public class xmlDAO {
     private String noIdenf;
     private String unidad;
     private String razonSocial;
+    private String relacion;
+    private int iddocumentos;
+    private ArrayList<String> arruuid = new ArrayList<>();
+    private ArrayList<cargo> arrcargo = new ArrayList<>();
+
+    public ArrayList<cargo> getArrcargo() {
+        return arrcargo;
+    }
+
+    public void setArrcargo(ArrayList<cargo> arrcargo) {
+        this.arrcargo = arrcargo;
+    }
+
+    public ArrayList<String> getArruuid() {
+        return arruuid;
+    }
+
+    public void setArruuid(ArrayList<String> arruuid) {
+        this.arruuid = arruuid;
+    }
+    
+    public String getRelacion() {
+        return relacion;
+    }
+
+    public void setRelacion(String relacion) {
+        this.relacion = relacion;
+    }
+
+    public int getIddocumentos() {
+        return iddocumentos;
+    }
+
+    public void setIddocumentos(int iddocumentos) {
+        this.iddocumentos = iddocumentos;
+    }
 
     public xmlDAO() {
     }

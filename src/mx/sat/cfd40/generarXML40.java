@@ -1,5 +1,10 @@
 package mx.sat.cfd40;
 
+import DAO.daoempresa;
+import DAO.daofactura;
+import Modelo.Empresas;
+import Modelo.factura;
+import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,6 +29,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,23 +51,29 @@ import org.apache.xerces.impl.dv.util.Base64;
 
 public class generarXML40 {
 
-
     //String urlCER = mConfig.getCer();
     //String urlKEY = mConfig.getKey();
-    String password = "AFO901221IC2";
-   
+    String password = "";
+
     //String RFC = mConfig.getRFC();
     //String RZ = mConfig.getRZ();
     String RZ = "ATHLETIC FOOTWEAR";
     String RFC = "AFO901221IC2";
     String RF = "601";
-    String lugar="36400";
+    String lugar = "36400";
+    String cert = "";
+    String keyt = "";
+    String salidaxml = "";
+    String urlCER = "";
+    String urlKEY = "";
+    String rela = "";
     //String RF = mConfig.getRF();
 
-    public void crearComprobante(xmlDAO encabezado, ArrayList<xmlDAO> data) throws Exception {
+    public void crearComprobante(xmlDAO encabezado, ArrayList<xmlDAO> data, Connection con, Connection empresa) throws Exception {
+        // Obtener y asignar datos dee la empresa ej, rfc y nombre etc...
+        getempresa(empresa, encabezado.getEmpresa());
+        rela = encabezado.getRelacion();
 
-        String urlCER = "C:\\ESD\\00001000000505860961.cer";
-        String urlKEY = "C:\\ESD\\CSD_PMA_AFO901221IC2_20201130_141544.key";
         XMLGregorianCalendar fecha = null;
         java.util.Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -84,7 +96,6 @@ public class generarXML40 {
         xml.setFormaPago(encabezado.getFormaP());
         xml.setCondicionesDePago(encabezado.getDescripcionP());
         xml.setDescuento(encabezado.getDescuentoG());
-        
 
         //Totales, tipo comprobante
         xml.setSubTotal(encabezado.getSubT().setScale(2, RoundingMode.HALF_UP));
@@ -92,7 +103,14 @@ public class generarXML40 {
         xml.setMoneda(CMoneda.MXN);
         // xml.setTipoCambio(objDAO.getTipoC());
         xml.setTotal(encabezado.getTotal().setScale(2, RoundingMode.HALF_UP));
-        xml.setTipoDeComprobante(CTipoDeComprobante.I);
+        //Identificar y asignar si es un egreso o ingreso
+        if (encabezado.getSerie().equals("FAC")) {
+            xml.setTipoDeComprobante(CTipoDeComprobante.I);
+        } else if (encabezado.getSerie().equals("NCR")) {
+            xml.setTipoDeComprobante(CTipoDeComprobante.E);
+        } else {
+            xml.setTipoDeComprobante(CTipoDeComprobante.P);
+        }
 
         switch (encabezado.getMetodoPago()) {
             case "PUE":
@@ -112,7 +130,7 @@ public class generarXML40 {
         xml.setEmisor(createEmisor(of));
 
         //Datos del receptor
-        xml.setReceptor(createReceptor(of,encabezado));
+        xml.setReceptor(createReceptor(of, encabezado));
 
         //Conceptos
         xml.setConceptos(createConceptos(of, data));
@@ -123,6 +141,14 @@ public class generarXML40 {
         //Extraer archivos .cer  .key
         File cer = new File(urlCER);
         File key = new File(urlKEY);
+        //relacionados se agrega solo si 
+        if (!encabezado.getRelacion().equals("")) {
+            xml.cfdiRelacionados = createrelacionados(of, encabezado.getArruuid(), encabezado.getRelacion());
+        }
+        if (encabezado.getSerie().equals("NCR")) {
+            xml.setTipoDeComprobante(CTipoDeComprobante.P);
+            xml.setComplemento(createcomplemento(of, data, fecha));
+        }
 
         //Agregar certificado y no. de certificado al comprobante por medio del archivo .cer del contribuyente
         X509Certificate x509Cer = getX509Certificate(cer);// Metodo de sellado
@@ -153,20 +179,45 @@ public class generarXML40 {
         //Agregar el sello digital al xml
         xml.setSello(selloDigital);
 
-        String COMPROBANTE_XML = "C:\\af\\filesfac\\" + encabezado.getSerie() + "-" + encabezado.getFolio() + ".xml";
+        String COMPROBANTE_XML = salidaxml + "\\" + encabezado.getSerie() + "-" + encabezado.getFolio() + ".xml";
+
+//Actualizar datos en la Base de datos para despliegue de factura
+        daofactura df = new daofactura();
+        factura f = new factura();
+        f.setCertificado(noCertificado);
+        f.setSello(selloDigital);
+        f.setCadenaorig(cadenaOriginal);
+        f.setId(encabezado.getIddocumentos());
+        df.actualizacadena(con, f);
+//Fin actualizacion de datos        
 
         JAXBContext context = JAXBContext.newInstance(Comprobante.class);
         Marshaller m = context.createMarshaller();
 
         m.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-        m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new DeafultNamespacePrefixMapper());
+//        m.setProperty("com.sun.xml.bind.namespacePrefixMapper", new DeafultNamespacePrefixMapper());
+        NamespacePrefixMapper prefixMapper = new DeafultNamespacePrefixMapper();
+        m.setProperty("com.sun.xml.bind.namespacePrefixMapper", prefixMapper);
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd");
+        m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd");
 
         //Compilar
         m.marshal(xml, new File(COMPROBANTE_XML));
 
+    }
+
+    private void getempresa(Connection c, String n) {
+        daoempresa d = new daoempresa();
+        Empresas e = d.getempresarfc(c, n);
+        password = e.getPass();
+        RZ = e.getNombre();
+        RFC = e.getRfc();
+        RF = e.getRegimen();
+        lugar = e.getCp();
+        urlCER = e.getCertificado();
+        urlKEY = e.getKey();
+        salidaxml = e.getXml();
     }
 
     //Metodos
@@ -175,35 +226,163 @@ public class generarXML40 {
         emisor.setRegimenFiscal(RF);
         emisor.setNombre(RZ);
         emisor.setRfc(RFC);
-        
         return emisor;
+    }
+//Falta Setear correctamente el prefijo antes de cada tag
+// Nodos implementados manualmente a la clase COmprobante
+
+    private Comprobante.Complemento createcomplemento(ObjectFactory of, ArrayList<xmlDAO> des, XMLGregorianCalendar fecha) {//Complemento
+        Comprobante.Complemento comp = of.createComprobanteComplemento();// Complemento Base
+        Comprobante.Complemento.Pagos p = of.createComprobanteComplementoPago();
+        Comprobante.Complemento.Pagos.Totales totales = of.createComprobanteComplementoPagosTotales();
+        Comprobante.Complemento.Pagos.Pago pago = of.createComprobanteComplementoPagosPago();
+        //Totales
+        totales.setMontoTotalPagos(BigDecimal.ONE);
+        totales.setTotalTrasladosImpuestoIVA16(BigDecimal.ONE);
+        totales.setTotalTrasladosBaseIVA16(BigDecimal.ONE);
+        //pago
+        // usar por si no funciona la funcion de la linea 273 pago.getDoctoRelacionado().add(doc);
+//        List<Comprobante.Complemento.Pagos.Pago> arr = p.getPago();
+        pago.setFechaPago(fecha);
+        pago.setFormaDePagoP("99");
+        pago.setMonedaP(CMoneda.MXN);
+        pago.setMonto(BigDecimal.ONE);
+        pago.setTipoCambioP(BigDecimal.valueOf(1));
+//        List<Comprobante.Complemento.Pagos.Pago.DoctoRelacionado> arrrel = pago.getDoctoRelacionado();
+//  Lista de documentos relacionados Arraylist de documentos
+//        for (int i = 0; i < des.size(); i++) {
+        for (int i = 0; i < 1; i++) {// prueba con 1 elemento random
+            Comprobante.Complemento.Pagos.Pago.DoctoRelacionado doc = of.createComprobanteComplementoPagosPagoDocs();
+            doc.setFolio("1025");
+            doc.setIdDocumento("65654-45645654654-5466-56854");
+            doc.setMonedaDR(CMoneda.MXN);
+            doc.setImpSaldoInsoluto(BigDecimal.ONE);
+            doc.setImpSaldoAnt(BigDecimal.ONE);
+            doc.setImpPagado(BigDecimal.ONE);
+            doc.setEquivalenciaDR(BigDecimal.ONE);
+            //Impuestos por documento
+            //Crear ImpuestosDR, TrasladosDR y TrasladoDR
+            Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR impdr = of.createComprobanteComplementoPagosPagoDocsImpuestoDR();
+            Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR trasladosdr = of.createComprobanteComplementoPagosPagoDocsImpuestoDRTrasladosDR();
+            Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR.TrasladoDR tr = of.createComprobanteComplementoPagosPagoDocsImpuestoDRTrasladosDRTrasladoDR();
+            tr.setTipoFactorDR(CTipoFactor.TASA);
+            tr.setTasaOCuotaDR(BigDecimal.ONE);
+            tr.setImpuestoDR("002");
+            tr.setImporteDR(BigDecimal.ONE);
+            tr.setBaseDR(BigDecimal.ONE);
+            trasladosdr.getTrasladoDR().add(tr);
+            impdr.setTrasladosDR(trasladosdr);//traslado
+            doc.setImpuestosDR(impdr);//Nodo con valor de ImpuestoDR
+            pago.getDoctoRelacionado().add(doc);//agregar objeto al pago
+        }
+        //Fin de documentos relacionados e impuestos DR
+        //Final del documento impuestoP
+        //Crear ImpuestosP, TrasladosP y Traslado
+        Comprobante.Complemento.Pagos.Pago.ImpuestosP impuestos = of.createComprobanteComplementoPagosPagoImpuestoP();
+        Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP trasladosp = of.createComprobanteComplementoPagosPagoImpuestoPTrasladosP();
+        Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP.TrasladoP trasladop = of.createComprobanteComplementoPagosPagoImpuestoPTrasladosPTrasladoP();
+        trasladop.setTipoFactorP(CTipoFactor.TASA);
+        trasladop.setTasaOCuotaP(BigDecimal.ONE);
+        trasladop.setImpuestoP("002");
+        trasladop.setImporteP(BigDecimal.ONE);
+        trasladop.setBaseP(BigDecimal.ONE);
+        trasladosp.getTrasladoP().add(trasladop);
+        impuestos.setTrasladosP(trasladosp);
+        //Termino de impuestosP
+        //setear impuestos a pago
+        pago.setImpuestosP(impuestos);
+        p.setVersion("2.0");
+        p.setTotales(totales);// seteo de totales
+        p.getPago().add(pago);
+        comp.setPagos(p);
+
+        //Cosas de prueba :v
+//        mx.sat.pagos.ObjectFactory of2 = new mx.sat.pagos.ObjectFactory();
+//        mx.sat.pagos.Pagos pagos = of2.createPagos();
+//        pagos.setVersion("2.0");
+//        mx.sat.pagos.Pagos.Pago pago = of2.createPagosPago();
+//        
+////        
+//        mx.sat.pagos.Pagos.Pago.DoctoRelacionado rel = of2.createPagosPagoDoctoRelacionado();
+//        rel.setSerie("PAG");
+//        rel.setFolio("4654654-5464-1315-6548987");
+//        rel.setNumParcialidad(BigInteger.valueOf(1));
+//        rel.setImpSaldoAnt(BigDecimal.valueOf(1205));
+//        rel.setImpPagado(BigDecimal.valueOf(1205));
+//        rel.setImpSaldoInsoluto(BigDecimal.valueOf(0));
+//        rel.setMonedaDR(mx.sat.pagos.CMoneda.MXN);
+//        rel.setIdDocumento("4654654-5464-1315-6548987");
+//        pago.getDoctoRelacionado().add(rel);
+//        
+//        mx.sat.pagos.Pagos.Totales t = of2.createPagosTotales();
+//        t.setMontoTotalPagos(BigDecimal.ONE);
+//        mx.sat.pagos.Pagos.Pago.ImpuestosP imp = of2.createPagosPagoImpuestosP();
+//        mx.sat.pagos.Pagos.Pago.ImpuestosP.TrasladosP traslados = of2.createPagosPagoImpuestosPTrasladosP();
+//        mx.sat.pagos.Pagos.Pago.ImpuestosP.TrasladosP.TrasladoP traslado = of2.createPagosPagoImpuestosPTrasladosPTrasladoP();
+//        traslado.setBaseP(BigDecimal.ONE);
+//        traslado.setImporteP(BigDecimal.ONE);
+//        traslado.setImpuestoP(urlCER);
+//        traslado.setTasaOCuotaP(BigDecimal.ONE);
+//        traslado.setTipoFactorP(mx.sat.pagos.CTipoFactor.TASA);
+//        traslados.getTrasladoP().add(traslado);
+//        imp.setTrasladosP(traslados);
+//        pago.setImpuestosP(imp);
+//
+////        
+////        rel= of2.createPagosPagoDoctoRelacionado();
+////        rel.setFolio("4654654-5464-1315-6548987");
+////        rel.setNumParcialidad(BigInteger.valueOf(1));
+////        rel.setImpSaldoAnt(BigDecimal.valueOf(1205));
+////        rel.setImpPagado(BigDecimal.valueOf(1205));
+////        rel.setImpSaldoInsoluto(BigDecimal.valueOf(0));
+////        pago.getDoctoRelacionado().add(rel);
+//
+//        comp.setPagos(pagos);
+////        
+        return comp;
+    }
+
+    //Relaciones
+    private List<Comprobante.CfdiRelacionados> createrelacionados(ObjectFactory of, ArrayList<String> data, String relacion) {
+        List<Comprobante.CfdiRelacionados> arr = new ArrayList<Comprobante.CfdiRelacionados>();
+        Comprobante.CfdiRelacionados rel = of.createComprobanteCfdiRelacionados();
+        //relacion uuid
+        List<Comprobante.CfdiRelacionados.CfdiRelacionado> r = rel.getCfdiRelacionado();
+        for (int i = 0; i < data.size(); i++) {
+            Comprobante.CfdiRelacionados.CfdiRelacionado a = of.createComprobanteCfdiRelacionadosCfdiRelacionado();
+            a.setUUID(data.get(i));//obtener uuid de las facturas
+            r.add(a);
+        }
+        rel.setTipoRelacion(relacion);
+        arr.add(rel);
+        return arr;
     }
 
     private Comprobante.Receptor createReceptor(ObjectFactory of, xmlDAO obj) {//Receptor
         Comprobante.Receptor receptor = of.createComprobanteReceptor();
         receptor.setNombre(obj.getReceptor());
         receptor.setRfc(obj.getRfcR());
-        
-        switch(obj.getUsoCfdi()){
+
+        switch (obj.getUsoCfdi()) {
             case "G01":
-                     receptor.setUsoCFDI(CUsoCFDI.G_01);
-            break;
+                receptor.setUsoCFDI(CUsoCFDI.G_01);
+                break;
             case "G03":
-                     receptor.setUsoCFDI(CUsoCFDI.G_03);
-            break;
+                receptor.setUsoCFDI(CUsoCFDI.G_03);
+                break;
             case "P01":
-                     receptor.setUsoCFDI(CUsoCFDI.P_01);
-            break;
+                receptor.setUsoCFDI(CUsoCFDI.P_01);
+                break;
             case "G02":
-                     receptor.setUsoCFDI(CUsoCFDI.G_02);
-            break;
+                receptor.setUsoCFDI(CUsoCFDI.G_02);
+                break;
             case "D01":
-                     receptor.setUsoCFDI(CUsoCFDI.D_01);
-            break;
+                receptor.setUsoCFDI(CUsoCFDI.D_01);
+                break;
             case "S01":
-                     receptor.setUsoCFDI(CUsoCFDI.S_01);
-            break;
-            
+                receptor.setUsoCFDI(CUsoCFDI.S_01);
+                break;
+
         }
         receptor.setRegimenFiscalReceptor(obj.getRegimenFR());
         receptor.setDomicilioFiscalReceptor(obj.getDomicilioReceptor());
@@ -216,6 +395,9 @@ public class generarXML40 {
 
         for (int i = 0; i < data.size(); i++) {
             Comprobante.Conceptos.Concepto c = of.createComprobanteConceptosConcepto();
+            if (rela.equals("")) {
+                c.setUnidad(data.get(i).getUnidad());
+            }
             c.setObjetoImp("02");
             c.setImporte(data.get(i).getImporte().setScale(2, RoundingMode.HALF_UP));
 //            c.setDescuento(data.get(i).getDescuento().setScale(2, RoundingMode.HALF_UP));
@@ -223,9 +405,9 @@ public class generarXML40 {
             c.setDescripcion(data.get(i).getDescripcion());
             c.setClaveUnidad(data.get(i).getClaveUn());
             c.setCantidad(data.get(i).getCantidad());
-            c.setNoIdentificacion(data.get(i).getNoIdenf());
+            c.setNoIdentificacion(data.get(i).getClaveProdServ());
             c.setClaveProdServ(data.get(i).getClaveProdServ());
-            c.setUnidad(data.get(i).getUnidad());
+
             c.setImpuestos(createImpuestosConcepto(of, data.get(i).getImporteImpuesto(),
                     data.get(i).getBase(), "002", data.get(i).getTasaCuota()));
             list.add(c);
@@ -247,7 +429,6 @@ public class generarXML40 {
         t1.setImpuesto(imp);
         t1.setTipoFactor(CTipoFactor.TASA);
         t1.setTasaOCuota(TasaC);
-        
 
         list.add(t1);
 
@@ -318,6 +499,7 @@ public class generarXML40 {
             xmlString = sw.toString();
 
         } catch (JAXBException ex) {
+            ex.printStackTrace();
             System.out.println(ex.getMessage());
         }
         return xmlString;

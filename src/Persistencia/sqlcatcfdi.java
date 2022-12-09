@@ -13,6 +13,7 @@ import Modelo.Paises;
 import Modelo.Tipoclientes;
 import Modelo.Zonas;
 import Modelo.metodopago;
+import Modelo.relacion;
 import Modelo.usocfdi;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -79,10 +80,31 @@ public class sqlcatcfdi {
             st = con.prepareStatement("select * from usocfdi");
             rs = st.executeQuery();
             while (rs.next()) {
-                usocfdi u= new usocfdi();
+                usocfdi u = new usocfdi();
                 u.setusocfdi(rs.getString("usocfdi"));
                 u.setDescripcion(rs.getString("descripcion"));
                 arr.add(u);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<relacion> getrelacion(Connection con) {//sqllite
+        ArrayList<relacion> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from Relacioncfdi order by tiporelacion");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                relacion r = new relacion();
+                r.setRelacion(rs.getString("tiporelacion"));
+                r.setConcepto(rs.getString("concepto"));
+                arr.add(r);
             }
             rs.close();
             st.close();

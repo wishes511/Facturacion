@@ -231,22 +231,95 @@ public class sqlkardex {
         return resp;
     }
 
-    public ArrayList<Kardexrcpt> getkardexfac(Connection con, String p) {//obtener datos para factura
+    public ArrayList<Kardexrcpt> getkardexfac(Connection con, String p, String cob) {//obtener datos para factura
         ArrayList<Kardexrcpt> kardex = new ArrayList<>();
+//        String cob = "ACobranzaFH";//base de datos de cobranza
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select top(10) folio,c.Nombre,c.rfc from kardex k\n"
-                    + "join ACobranza.dbo.Clientes c on k.Cl_Prv=c.NumCliente\n"
-                    + "where (folio like '" + p + "' or c.Nombre like '%" + p + "%') and (cuenta>49 and cuenta<100)\n"
+            String sql = "select folio,k.Cl_Prv,c.Nombre40,c.RFC,c.CP,c.fax,c.calle,c.colonia,ci.Descripcion as ciudad,\n"
+                    + "e.descripcion as estado,p.Descripcion as pais,npedido,serie,totalpares,pventa,renglon,\n"
+                    + "prod.producto,estilo,prod.codigo,comb.Combinacion, m.Descripcion as material,\n"
+                    + " col.Descripcion as color,cor.Descripcion as corrida, agente1, plazo,l.Marca as marca\n"
+                    + "from kardex k \n"
+                    + "join " + cob + ".dbo.Clientes c on k.Cl_Prv=c.NumCliente\n"
+                    + "join " + cob + ".dbo.Ciudades ci on c.CveCiudad=ci.CveCiudad\n"
+                    + "join " + cob + ".dbo.Estados e on ci.CveEstado=e.CveEstado \n"
+                    + "join " + cob + ".dbo.Paises p on e.CvePais=p.CvePais\n"
+                    + "join Productos prod on k.Producto=prod.Producto\n"
+                    + "join combinaciones comb on prod.Combinacion=comb.Combinacion\n"
+                    + "join Materiales m on comb.Material1=m.material\n"
+                    + "join colores col on comb.Color1=col.Color\n"
+                    + "join corridas cor on prod.Corrida=cor.Corrida\n"
+                    + "join lineas l on prod.Linea=l.Linea\n"
+                    + "where (folio ='" + p + "' and statusimpresion='N')\n"
+                    + "order by renglon";
+            st = con.prepareStatement(sql);
+            System.out.println(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Kardexrcpt k = new Kardexrcpt();//objeto kardex
+                Cliente c = new Cliente();      //onjeto cliente
+                Producto prod = new Producto();
+                k.setFolio(rs.getInt("folio"));
+                //Cliente
+                c.setCvecliente(rs.getInt("cl_prv"));
+                c.setNombre(rs.getString("nombre40"));
+                c.setRfc(rs.getString("rfc"));
+                c.setCp(rs.getString("cp"));
+                c.setRegimen(rs.getString("fax"));
+                c.setCalle(rs.getString("calle"));
+                c.setColonia(rs.getString("colonia"));
+                c.setCiudad(rs.getString("ciudad"));
+                c.setEstado(rs.getString("estado"));
+                c.setPais(rs.getString("pais"));
+                c.setAgente(rs.getInt("agente1"));
+                c.setPlazo(rs.getInt("plazo"));
+                c.setMarca(rs.getString("marca"));
+                //Fin cliente
+                k.setPedido(rs.getString("npedido"));
+                k.setSerie(rs.getString("serie"));
+                k.setVenta(rs.getFloat("pventa"));
+                k.setRenglon(rs.getInt("renglon"));
+                k.setTotalpares(rs.getInt("totalpares"));
+                k.setVenta(rs.getFloat("pventa"));
+                prod.setProducto(rs.getInt("Producto"));
+                prod.setEstilo(rs.getInt("estilo"));
+                prod.setCodigosat(rs.getString("codigo"));
+                prod.setCombinacion(rs.getInt("combinacion"));
+                prod.setDesccombinacion(rs.getString("material") + " " + rs.getString("color"));
+                prod.setCordesc(rs.getString("corrida"));
+                //Asignar objetos al kardex y arraylist
+                k.setCli(c);
+                k.setP(prod);
+                kardex.add(k);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return kardex;
+    }
+
+    public ArrayList<Kardexrcpt> getkardexfacsimple(Connection con, String p, String cob) {//obtener datos para factura solo para la busqueda
+        ArrayList<Kardexrcpt> kardex = new ArrayList<>();
+//        String cob = "ACobranzaFH";//base de datos de cobranza
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select top(16) folio,k.Cl_Prv,c.Nombre40,c.RFC,c.CP \n"
+                    + "from kardex k\n"
+                    + "join " + cob + ".dbo.Clientes c on k.Cl_Prv=c.NumCliente\n"
+                    + "where (folio like '" + p + "' or c.Nombre40 like '%" + p + "%') and (cuenta>49 and cuenta<100) and statusimpresion='N' \n"
                     + "order by folio desc");
             rs = st.executeQuery();
             while (rs.next()) {
                 Kardexrcpt k = new Kardexrcpt();//objeto kardex
                 Cliente c = new Cliente();      //onjeto cliente
-                c.setNombre(rs.getString("nombre"));
-                c.setRfc(rs.getString("rfc"));
                 k.setFolio(rs.getInt("folio"));
+                c.setCvecliente(rs.getInt("cl_prv"));
+                c.setNombre(rs.getString("nombre40"));
                 k.setCli(c);
                 kardex.add(k);
             }
