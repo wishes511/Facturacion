@@ -11,6 +11,7 @@ import DAO.daofactura;
 import Modelo.Cliente;
 import Modelo.Conexiones;
 import Modelo.Formadepago;
+import Modelo.Usuarios;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
@@ -46,13 +47,17 @@ public class Facturacion extends javax.swing.JInternalFrame {
     ArrayList<Formadepago> arrforma = new ArrayList<>();
     ArrayList<metodopago> arrmetodo = new ArrayList<>();
     public Conexiones conexion;
+    public Usuarios u;
 
     /**
      * Creates new form Clientes
      *
      * @param cn
+     * Lista de conexiones
+     * @param usu
+     * datos de usuario
      */
-    public Facturacion(Conexiones cn) {
+    public Facturacion(Conexiones cn, Usuarios usu) {
         initComponents();
         cpt = cn.getCpt();
         rcpt = cn.getRcpt();
@@ -60,6 +65,7 @@ public class Facturacion extends javax.swing.JInternalFrame {
         empresa=cn.getEmpresa();
         empresarcpt=cn.getEmpresarcpt();
         empresacob=cn.getEmpresacob();
+        u=usu;
         generaciontab();//Tabs de facturacion
         conexiones();
         setarraylist();
@@ -96,6 +102,20 @@ public class Facturacion extends javax.swing.JInternalFrame {
         c2.empresa=empresa;
         c2.empresarcpt=empresarcpt;
         c2.empresacob=empresacob;
+        c2.u=u;// datos del usuario
+        
+        c1.cpt=cpt;
+        c1.ACobranza=cobranza;
+        c1.empresa=empresa;
+        c1.empresacob=empresacob;
+        c1.arrfpago = arrforma;
+        c1.arrmetodo = arrmetodo;
+        c1.arruso = arruso;
+        c1.sqlcfdi=litecfdi;
+        c1.sqlempresa=liteempresa;
+        c1.rcpt=rcpt;
+        c1.u=u;
+        c1.JtCliente.requestFocus();
     }
 
     /**
@@ -156,88 +176,88 @@ public class Facturacion extends javax.swing.JInternalFrame {
 
     }
 
-    private void generarfac() {// solo genera xml
-        try {
-            daoClientes dc = new daoClientes();
-            daofactura df = new daofactura();
-            factura f = df.getfac(rcpt, "47140");
-            xmlDAO x = new xmlDAO();
-            ArrayList<xmlDAO> arr = new ArrayList<>();
-            Cliente c = dc.getCliente(cobranza, f.getIdcliente());// Busca
-            String descmetodo = "";
-            if (f.getDescuento() != 0) {                                    //setear descuento si es distinto de 0
-                x.setDescuento(BigDecimal.valueOf(f.getDescuento()));
-            }
-
-            for (int i = 0; i < arrmetodo.size(); i++) {//asignar descripcion del metodo de pago
-                if (f.getMetodopago().equals(arrmetodo.get(i).getMetodopago())) {
-                    descmetodo = arrmetodo.get(i).getDescripcion();
-                    break;
-                }
-            }
-            x.setFolio(f.getFolio() + "");                              // Folio
-            x.setSerie(f.getSerie());                                   // Serie
-            x.setFormaP(f.getFormapago());                              // forma de pago
-            x.setDescripcionP(descmetodo);      // metodo descripcion
-//            x.setDescuento(BigDecimal.valueOf(0));
-            x.setSubT(BigDecimal.valueOf(f.getSubtotal()));             // Subtotal
-            x.setMoneda(f.getMoneda());                                 // Moneda
-            x.setTotal(BigDecimal.valueOf(f.getTotal()));               // Total
-            x.setMetodoPago(f.getMetodopago());                         // MEtodo pago
-//            x.setLugarExpedidcion("36400");                             // CP emisor
-//Cliente
-            x.setReceptor(c.getNombre());                               // Razon social re
-//            x.setReceptor("COPPEL");
-            x.setRfcR(c.getRfc());                                      // RFC re
-            x.setUsoCfdi(f.getUsocfdi());                               // Uso cfdi re
-            x.setRegimenFR("612");                                      // regimen re
-            x.setDomicilioReceptor(c.getCp());                          // cp re
-//Fin Cliente            
-// # de Concepto
-            for (int i = 0; i < f.getArr().size(); i++) {                       //      numero de renglones
-                xmlDAO y = new xmlDAO();
-                //Obtener datos de arreglo
-                float importe = f.getArr().get(i).getImporta();
-                float base = f.getArr().get(i).getBase();
-                float unitario = f.getArr().get(i).getPrecio();
-                int cantidad = f.getArr().get(i).getCantidad();
-                float descuento = f.getArr().get(i).getDescuento();
-                String desc = f.getArr().get(i).getDescripcion();
-                String clvprov = f.getArr().get(i).getCodigo();
-                String unidad = f.getArr().get(i).getUmedida();
-                int id = f.getId();
-                //
-                if (descuento != 0) {// si el descuento es distinto de cero
-                    y.setDescuento(BigDecimal.valueOf(descuento));              //Descuento c
-                }
-                y.setImporte(BigDecimal.valueOf(base));                         //importe c
-                y.setValorUnitario(BigDecimal.valueOf(unitario));               //unitario c
-                y.setCantidad(BigDecimal.valueOf(cantidad));                    // cantidad c
-                y.setDescripcion(desc);                                         // desc prod
-                y.setClaveProdServ(clvprov);                                    // clv sat
-                y.setClaveUn(unidad);                                           // unidad
-                y.setUnidad("PARES");
-                y.setBase(BigDecimal.valueOf(base));                            // importe c
-                y.setImporteImpuesto(BigDecimal.valueOf(importe));              // iva
-                BigDecimal d = new BigDecimal("0.160000");//tomando en cuenta los 6 decimales
-                y.setTasaCuota(d);
-                y.setNoIdenf(id + "");
-                arr.add(y);
-            }
-// - Fin numero ded concepto
-
-            x.setTotalImpuesto(BigDecimal.valueOf(f.getImpuestos()));           //IMPUESTO TRASLADADO
-            x.setBaseImpuesto(BigDecimal.valueOf(f.getSubtotal()));             //BASE TRASLADO
-            x.setImpuesto("002");
-            BigDecimal d = new BigDecimal("0.160000");//tomando en cuenta los 6 decimales
-            x.setTasaCuota(d);
-            generarXML40 xml = new generarXML40();
-            xml.crearComprobante(x, arr, cpt, liteempresa);
-        } catch (Exception ex) {
-            Logger.getLogger(Facturacion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
+//    private void generarfac() {// solo genera xml
+//        try {
+//            daoClientes dc = new daoClientes();
+//            daofactura df = new daofactura();
+//            factura f = df.getfac(rcpt, "47140");
+//            xmlDAO x = new xmlDAO();
+//            ArrayList<xmlDAO> arr = new ArrayList<>();
+//            Cliente c = dc.getCliente(cobranza, f.getIdcliente());// Busca
+//            String descmetodo = "";
+//            if (f.getDescuento() != 0) {                                    //setear descuento si es distinto de 0
+//                x.setDescuento(BigDecimal.valueOf(f.getDescuento()));
+//            }
+//
+//            for (int i = 0; i < arrmetodo.size(); i++) {//asignar descripcion del metodo de pago
+//                if (f.getMetodopago().equals(arrmetodo.get(i).getMetodopago())) {
+//                    descmetodo = arrmetodo.get(i).getDescripcion();
+//                    break;
+//                }
+//            }
+//            x.setFolio(f.getFolio() + "");                              // Folio
+//            x.setSerie(f.getSerie());                                   // Serie
+//            x.setFormaP(f.getFormapago());                              // forma de pago
+//            x.setDescripcionP(descmetodo);      // metodo descripcion
+////            x.setDescuento(BigDecimal.valueOf(0));
+//            x.setSubT(BigDecimal.valueOf(f.getSubtotal()));             // Subtotal
+//            x.setMoneda(f.getMoneda());                                 // Moneda
+//            x.setTotal(BigDecimal.valueOf(f.getTotal()));               // Total
+//            x.setMetodoPago(f.getMetodopago());                         // MEtodo pago
+////            x.setLugarExpedidcion("36400");                             // CP emisor
+////Cliente
+//            x.setReceptor(c.getNombre());                               // Razon social re
+////            x.setReceptor("COPPEL");
+//            x.setRfcR(c.getRfc());                                      // RFC re
+//            x.setUsoCfdi(f.getUsocfdi());                               // Uso cfdi re
+//            x.setRegimenFR("612");                                      // regimen re
+//            x.setDomicilioReceptor(c.getCp());                          // cp re
+////Fin Cliente            
+//// # de Concepto
+//            for (int i = 0; i < f.getArr().size(); i++) {                       //      numero de renglones
+//                xmlDAO y = new xmlDAO();
+//                //Obtener datos de arreglo
+//                float importe = f.getArr().get(i).getImporta();
+//                float base = f.getArr().get(i).getBase();
+//                float unitario = f.getArr().get(i).getPrecio();
+//                int cantidad = f.getArr().get(i).getCantidad();
+//                float descuento = f.getArr().get(i).getDescuento();
+//                String desc = f.getArr().get(i).getDescripcion();
+//                String clvprov = f.getArr().get(i).getCodigo();
+//                String unidad = f.getArr().get(i).getUmedida();
+//                int id = f.getId();
+//                //
+//                if (descuento != 0) {// si el descuento es distinto de cero
+//                    y.setDescuento(BigDecimal.valueOf(descuento));              //Descuento c
+//                }
+//                y.setImporte(BigDecimal.valueOf(base));                         //importe c
+//                y.setValorUnitario(BigDecimal.valueOf(unitario));               //unitario c
+//                y.setCantidad(BigDecimal.valueOf(cantidad));                    // cantidad c
+//                y.setDescripcion(desc);                                         // desc prod
+//                y.setClaveProdServ(clvprov);                                    // clv sat
+//                y.setClaveUn(unidad);                                           // unidad
+//                y.setUnidad("PARES");
+//                y.setBase(BigDecimal.valueOf(base));                            // importe c
+//                y.setImporteImpuesto(BigDecimal.valueOf(importe));              // iva
+//                BigDecimal d = new BigDecimal("0.160000");//tomando en cuenta los 6 decimales
+//                y.setTasaCuota(d);
+//                y.setNoIdenf(id + "");
+//                arr.add(y);
+//            }
+//// - Fin numero ded concepto
+//
+//            x.setTotalImpuesto(BigDecimal.valueOf(f.getImpuestos()));           //IMPUESTO TRASLADADO
+//            x.setBaseImpuesto(BigDecimal.valueOf(f.getSubtotal()));             //BASE TRASLADO
+//            x.setImpuesto("002");
+//            BigDecimal d = new BigDecimal("0.160000");//tomando en cuenta los 6 decimales
+//            x.setTasaCuota(d);
+//            generarXML40 xml = new generarXML40();
+//            xml.crearComprobante(x, arr, cpt, liteempresa);
+//        } catch (Exception ex) {
+//            Logger.getLogger(Facturacion.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTabbedPane Tabbed;

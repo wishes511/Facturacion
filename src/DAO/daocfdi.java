@@ -13,6 +13,7 @@ import Modelo.Formadepago;
 import Modelo.Marcas;
 import Modelo.Paises;
 import Modelo.Tipoclientes;
+import Modelo.Unidades;
 import Modelo.Zonas;
 import Modelo.metodopago;
 import Modelo.relacion;
@@ -88,5 +89,63 @@ public class daocfdi implements Catcfdi {
         sqlcatcfdi s = new sqlcatcfdi();
         return s.getrelacion(c);
     }
+
+    /**
+     * 
+     * @param c
+     * sql cfdi lite
+     * @param clave
+     * clave proveedor
+     * @return 
+     */
+    @Override
+    public boolean getclave(Connection c, String clave) {
+        sqlcatcfdi s = new sqlcatcfdi();
+        return s.getClaves(c, clave);
+    }
+
+    /**
+     * 
+     * @param c
+     * sql cfdi lite
+     * @param clave
+     * unidad
+     * @return 
+     */
+    @Override
+    public boolean getunidad(Connection c, String clave) {
+        sqlcatcfdi s = new sqlcatcfdi();
+        return s.getunidades(c, clave);
+    }
+
+    /**
+     * 
+     * @param c
+     * @param clave
+     * @return 
+     */
+    @Override
+    public String getdescunidad(Connection c, String clave) {
+        sqlcatcfdi s = new sqlcatcfdi();
+        return s.getDescunidad(c, clave);
+    }
+
+    /**
+     * 
+     * @param c
+     * @param regimen
+     * @param uso
+     * @return 
+     */
+    @Override
+    public String getRegimenxuso(Connection c, String regimen, String uso) {
+        sqlcatcfdi s = new sqlcatcfdi();
+        return s.getregimenxuso(c, regimen, uso);
+    }
+
+
+
+
+
 
 }

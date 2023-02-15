@@ -21,26 +21,32 @@ import java.util.logging.Logger;
 public class daoPrincipal implements principal {
 
     @Override
-    public Usuarios getUsers(Connection c, String u, String pass) {
+    public Usuarios getUsers(Connection c, String u, String pass, String columna) {
         Usuarios us = new Usuarios();
-        us.setUsuario("NO");
         try {
             PreparedStatement st;
             ResultSet rs;
-            String query = "select id_usuario,nombre,usuario,tu.descripcion as tipo,grado,d.descripcion as depa\n"
-                    + " from usuarios u \n"
-                    + "join Tipo_usuario tu on u.id_tipo=tu.id_tipo\n"
-                    + "join Departamento d on u.id_departamento=d.id_departamento\n"
-                    + "where usuario='"+u+"' and contraseña='"+pass+"' and u.estatus='1'";
-            //System.out.println(query);
+            u = "";
+            String grado = "";
+            String query = "select *  from usuarios  where  contrase" + columna + "a='" + pass + "' and permiso!=0";
+            System.out.println(query);
             st = c.prepareStatement(query);
             rs = st.executeQuery();
+            us.setGrado(grado);
+            us.setUsuario("");
             while (rs.next()) {
-                us.setUsuario(rs.getString("usuario"));
-                us.setNombre(rs.getString("nombre"));
-                us.setId_usuario(rs.getInt("id_usuario"));
-                us.setTipo_usuario(rs.getString("tipo"));
-                us.setGrado(rs.getString("grado"));
+                u = rs.getString("usuario");
+                us.setUsuario(u);
+                us.setContraseña(pass);
+                if (columna.equals("ñ")) {
+                    us.setFacturacion(rs.getInt("facturacion"));
+                    grado = rs.getString("admin");
+                    us.setGrado(grado);
+                } else {
+                    us.setFacturacion(1);
+                    grado = "1";
+                    us.setGrado(grado);
+                }
             }
             rs.close();
             st.close();

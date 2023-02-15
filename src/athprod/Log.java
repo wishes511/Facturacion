@@ -112,7 +112,7 @@ public class Log extends javax.swing.JFrame {
         if (singleton.vericacaracter(usuario) && singleton.vericacaracter(pass)) {
             Usuarios u = new Usuarios();
             daoPrincipal dp = new daoPrincipal();
-            u = dp.getUsers(con, usuario, pass);//verificar si existe el usuario y contraseña
+            u = dp.getUsers(con, usuario, pass,"ñ");//verificar si existe el usuario y contraseña
             if (!u.getUsuario().equals("NO")) {//verificar si existe o no
                 //se establecen datos clave en el singleton, como el usuario, conexion a la bd y la serie inicial
                 Allsingleton.setUsuario(u);

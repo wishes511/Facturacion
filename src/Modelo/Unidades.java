@@ -10,8 +10,16 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Unidades implements java.io.Serializable {
-    private String descripcion;
+    private String descripcion, clave;
     private int id_unidad;
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
 
     public String getDescripcion() {
         return descripcion;

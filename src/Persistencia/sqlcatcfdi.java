@@ -270,4 +270,115 @@ public class sqlcatcfdi {
         return arr;
     }
 
+    /**
+     *
+     * @param con Conexion sqlite de cfdi
+     * @param clave Clave de clave de producto del sat
+     * @return
+     */
+    public boolean getClaves(Connection con, String clave) {//sqllite
+        boolean resp = false;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select * from Claveprods where clave='" + clave + "'";
+//            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+//                System.out.println(rs.getString("descripcion"));
+                resp = true;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            resp = false;
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
+    /**
+     *
+     * @param con Conexion sqlite de cfdi
+     * @param clave Clave de unidad del sat
+     * @return
+     */
+    public boolean getunidades(Connection con, String clave) {//sqllite
+        boolean resp = false;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select * from Unidad where claveunidad='" + clave + "'";
+//            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+//                System.out.println(rs.getString("unidad"));
+                resp = true;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            resp = false;
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
+    /**
+     *
+     * @param con sqlite conexion
+     * @param clave Unidad a buscar
+     * @return Descripcion de la unidad
+     */
+    public String getDescunidad(Connection con, String clave) {//sqllite
+        String resp = "";
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select * from Unidad where claveunidad='" + clave + "'";
+//            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+//                System.out.println(rs.getString("unidad"));
+                resp = rs.getString("unidad");
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
+    /**
+     * 
+     * @param con
+     * @param regimen
+     * @param uso
+     * @return 
+     */
+    public String getregimenxuso(Connection con, String regimen, String uso) {//sqllite
+        String resp = "";
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select usocfdi from regimenxuso\n"
+                    + "where usocfdi='" + uso + "' and regimen like '%" + regimen + "%'";
+//            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                resp = rs.getString("usocfdi");
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
 }

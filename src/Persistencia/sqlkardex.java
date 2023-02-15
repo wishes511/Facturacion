@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -240,12 +241,16 @@ public class sqlkardex {
             String sql = "select folio,k.Cl_Prv,c.Nombre40,c.RFC,c.CP,c.fax,c.calle,c.colonia,ci.Descripcion as ciudad,\n"
                     + "e.descripcion as estado,p.Descripcion as pais,npedido,serie,totalpares,pventa,renglon,\n"
                     + "prod.producto,estilo,prod.codigo,comb.Combinacion, m.Descripcion as material,\n"
-                    + " col.Descripcion as color,cor.Descripcion as corrida, agente1, plazo,l.Marca as marca\n"
+                    + "  col.Descripcion as color,cor.Descripcion as corrida, agente1, plazo,l.Marca as marca,\n"
+                    + " prod.linea, k.almacen, k.stockpedidos, prod.corrida as cor,\n"
+                    + " cantidad1,cantidad2,cantidad3,cantidad4,cantidad5,cantidad6,cantidad7,cantidad8,cantidad9,\n"
+                    + " cantidad10,cantidad11,cantidad12,cantidad13,cantidad14,ISNULL(c.CveMetodoPago,'') as mpago,ISNULL(paginaweb,'') as uso ,ag.CveCanal\n"
                     + "from kardex k \n"
                     + "join " + cob + ".dbo.Clientes c on k.Cl_Prv=c.NumCliente\n"
                     + "join " + cob + ".dbo.Ciudades ci on c.CveCiudad=ci.CveCiudad\n"
                     + "join " + cob + ".dbo.Estados e on ci.CveEstado=e.CveEstado \n"
                     + "join " + cob + ".dbo.Paises p on e.CvePais=p.CvePais\n"
+                    + "join " + cob + ".dbo.agentes ag on c.Agente1=ag.CveAgente\n"
                     + "join Productos prod on k.Producto=prod.Producto\n"
                     + "join combinaciones comb on prod.Combinacion=comb.Combinacion\n"
                     + "join Materiales m on comb.Material1=m.material\n"
@@ -276,19 +281,43 @@ public class sqlkardex {
                 c.setAgente(rs.getInt("agente1"));
                 c.setPlazo(rs.getInt("plazo"));
                 c.setMarca(rs.getString("marca"));
+                c.setClave(rs.getString("CveCanal"));
                 //Fin cliente
-                k.setPedido(rs.getString("npedido"));
-                k.setSerie(rs.getString("serie"));
-                k.setVenta(rs.getFloat("pventa"));
-                k.setRenglon(rs.getInt("renglon"));
-                k.setTotalpares(rs.getInt("totalpares"));
-                k.setVenta(rs.getFloat("pventa"));
                 prod.setProducto(rs.getInt("Producto"));
                 prod.setEstilo(rs.getInt("estilo"));
                 prod.setCodigosat(rs.getString("codigo"));
                 prod.setCombinacion(rs.getInt("combinacion"));
                 prod.setDesccombinacion(rs.getString("material") + " " + rs.getString("color"));
                 prod.setCordesc(rs.getString("corrida"));
+                prod.setLinea(rs.getInt("linea"));
+                prod.setCorrida(rs.getInt("cor"));
+                //Kardex
+                k.setPedido(rs.getString("npedido"));
+                k.setSerie(rs.getString("serie"));
+                k.setVenta(rs.getFloat("pventa"));
+                k.setRenglon(rs.getInt("renglon"));
+                k.setTotalpares(rs.getInt("totalpares"));
+                k.setVenta(rs.getFloat("pventa"));
+                k.setStock(rs.getString("stockpedidos"));
+                k.setAlmacen(rs.getInt("almacen"));
+                k.setC1(rs.getInt("Cantidad1"));
+                k.setC2(rs.getInt("Cantidad2"));
+                k.setC3(rs.getInt("Cantidad3"));
+                k.setC4(rs.getInt("Cantidad4"));
+                k.setC5(rs.getInt("Cantidad5"));
+                k.setC6(rs.getInt("Cantidad6"));
+                k.setC7(rs.getInt("Cantidad7"));
+                k.setC8(rs.getInt("Cantidad8"));
+                k.setC9(rs.getInt("Cantidad9"));
+                k.setC10(rs.getInt("Cantidad10"));
+                k.setC11(rs.getInt("Cantidad11"));
+                k.setC12(rs.getInt("Cantidad12"));
+                k.setC13(rs.getInt("Cantidad13"));
+                k.setC14(rs.getInt("Cantidad14"));
+                k.setUso(rs.getString("uso"));
+                k.setFp(rs.getString("mpago"));
+                
+
                 //Asignar objetos al kardex y arraylist
                 k.setCli(c);
                 k.setP(prod);
@@ -308,11 +337,14 @@ public class sqlkardex {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select top(16) folio,k.Cl_Prv,c.Nombre40,c.RFC,c.CP \n"
+            int nrows = (p.equals("289"))?45:16;
+            String sql="select distinct top("+nrows+") folio,k.Cl_Prv,c.Nombre40,c.RFC,c.CP \n"
                     + "from kardex k\n"
                     + "join " + cob + ".dbo.Clientes c on k.Cl_Prv=c.NumCliente\n"
-                    + "where (folio like '" + p + "' or c.Nombre40 like '%" + p + "%') and (cuenta>49 and cuenta<100) and statusimpresion='N' \n"
-                    + "order by folio desc");
+                    + "where (k.Cl_Prv like '%" + p + "%' or c.Nombre40 like '%" + p + "%' or c.Numcliente like '%" + p + "%') and (cuenta>49 and cuenta<100) and statusimpresion='N' \n"
+                    + "order by folio desc";
+            System.out.println(sql);
+            st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Kardexrcpt k = new Kardexrcpt();//objeto kardex
@@ -327,6 +359,7 @@ public class sqlkardex {
             st.close();
         } catch (SQLException ex) {
             Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: "+ex);
         }
         return kardex;
     }

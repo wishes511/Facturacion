@@ -13,6 +13,7 @@ import Modelo.Formadepago;
 import Modelo.Marcas;
 import Modelo.Paises;
 import Modelo.Tipoclientes;
+import Modelo.Unidades;
 import Modelo.Zonas;
 import Modelo.metodopago;
 import Modelo.relacion;
@@ -25,16 +26,33 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public interface Catcfdi {
+
     public ArrayList<Formadepago> getFormadepago(Connection c);
+
     public ArrayList<Paises> getPaises(Connection c);
+
     public ArrayList<Zonas> getZonas(Connection c);
+
     public ArrayList<Embarques> getEmbarques(Connection c);
+
     public ArrayList<Tipoclientes> gettclientes(Connection c);
+
     public ArrayList<Agentes> getAgentes(Connection c);
+
     public ArrayList<Marcas> getMarcas(Connection c);
+
     public ArrayList<metodopago> getMetodopago(Connection c);
+
     public ArrayList<usocfdi> getusocfdi(Connection c);
+
     public ArrayList<relacion> getrelacion(Connection c);
-    
-    
+
+    public boolean getclave(Connection c, String clave);
+
+    public boolean getunidad(Connection c, String clave);
+
+    public String getdescunidad(Connection c, String clave);
+
+    public String getRegimenxuso(Connection c, String regimen, String uso);
+
 }

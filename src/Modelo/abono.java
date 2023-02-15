@@ -11,8 +11,33 @@ package Modelo;
  */
 public class abono {
     String ref, referencia,ordenpago, nombre, folio;
-    int cliente, cuenta, subcuenta;
-    float totalpago, pago, saldo, anterior;
+    int cliente, cuenta, subcuenta, parcialidad;
+    double total,totalpago, pago, saldo, anterior;
+    Cliente c;
+
+    public int getParcialidad() {
+        return parcialidad;
+    }
+
+    public void setParcialidad(int parcialidad) {
+        this.parcialidad = parcialidad;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public Cliente getC() {
+        return c;
+    }
+
+    public void setC(Cliente c) {
+        this.c = c;
+    }
 
     public int getCuenta() {
         return cuenta;
@@ -30,27 +55,27 @@ public class abono {
         this.subcuenta = subcuenta;
     }
 
-    public float getPago() {
+    public double getPago() {
         return pago;
     }
 
-    public void setPago(float pago) {
+    public void setPago(double pago) {
         this.pago = pago;
     }
 
-    public float getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(float saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 
-    public float getAnterior() {
+    public double getAnterior() {
         return anterior;
     }
 
-    public void setAnterior(float anterior) {
+    public void setAnterior(double anterior) {
         this.anterior = anterior;
     }
 
@@ -102,11 +127,11 @@ public class abono {
         this.cliente = cliente;
     }
 
-    public float getTotalpago() {
+    public double getTotalpago() {
         return totalpago;
     }
 
-    public void setTotalpago(float totalpago) {
+    public void setTotalpago(double totalpago) {
         this.totalpago = totalpago;
     }
 }

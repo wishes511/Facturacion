@@ -101,7 +101,7 @@ public class cargo {
     public void setCp(String cp) {
         this.cp = cp;
     }
-    float importe, saldo, sim, descuento;
+    double importe, saldo, sim, descuento;
 
     public String getRef() {
         return ref;
@@ -135,11 +135,11 @@ public class cargo {
         this.cantidad = cantidad;
     }
 
-    public float getDescuento() {
+    public double getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(float descuento) {
+    public void setDescuento(double descuento) {
         this.descuento = descuento;
     }
 
@@ -207,27 +207,27 @@ public class cargo {
         this.fechav = fechav;
     }
 
-    public float getImporte() {
+    public double getImporte() {
         return importe;
     }
 
-    public void setImporte(float importe) {
+    public void setImporte(double importe) {
         this.importe = importe;
     }
 
-    public float getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(float saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 
-    public float getSim() {
+    public double getSim() {
         return sim;
     }
 
-    public void setSim(float sim) {
+    public void setSim(double sim) {
         this.sim = sim;
     }
 }

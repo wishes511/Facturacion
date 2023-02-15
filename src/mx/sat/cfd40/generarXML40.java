@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -67,11 +68,21 @@ public class generarXML40 {
     String urlCER = "";
     String urlKEY = "";
     String rela = "";
+    BigDecimal desc = BigDecimal.ZERO;
     //String RF = mConfig.getRF();
 
+    /**
+     *
+     * @param encabezado
+     * @param data
+     * @param con
+     * @param empresa
+     * @throws Exception
+     */
     public void crearComprobante(xmlDAO encabezado, ArrayList<xmlDAO> data, Connection con, Connection empresa) throws Exception {
         // Obtener y asignar datos dee la empresa ej, rfc y nombre etc...
         getempresa(empresa, encabezado.getEmpresa());
+//        getempresa(empresa, "2");
         rela = encabezado.getRelacion();
 
         XMLGregorianCalendar fecha = null;
@@ -95,14 +106,24 @@ public class generarXML40 {
         xml.setFecha(fecha);
         xml.setFormaPago(encabezado.getFormaP());
         xml.setCondicionesDePago(encabezado.getDescripcionP());
-        xml.setDescuento(encabezado.getDescuentoG());
-
+        if (encabezado.getDescuento() != BigDecimal.ZERO) {
+            xml.setDescuento(encabezado.getDescuento().setScale(2));
+            desc = encabezado.getDescuento();
+        }
         //Totales, tipo comprobante
-        xml.setSubTotal(encabezado.getSubT().setScale(2, RoundingMode.HALF_UP));
-        //xml.setDescuento(encabezado.getDescuento().setScale(2, RoundingMode.HALF_UP));
-        xml.setMoneda(CMoneda.MXN);
-        // xml.setTipoCambio(objDAO.getTipoC());
-        xml.setTotal(encabezado.getTotal().setScale(2, RoundingMode.HALF_UP));
+        xml.setSubTotal(encabezado.getSubT().setScale(2));
+
+        //Tipo de moneda y Tipo de cambio
+        switch (encabezado.getMoneda()) {
+            case "MXN":
+                xml.setMoneda(CMoneda.MXN);
+                break;
+            case "USD":
+                xml.setMoneda(CMoneda.USD);
+                xml.setTipoCambio(encabezado.getTipoC().setScale(2, RoundingMode.HALF_UP));
+                break;
+        }
+        xml.setTotal(encabezado.getTotal().setScale(2));
         //Identificar y asignar si es un egreso o ingreso
         if (encabezado.getSerie().equals("FAC")) {
             xml.setTipoDeComprobante(CTipoDeComprobante.I);
@@ -111,7 +132,10 @@ public class generarXML40 {
         } else {
             xml.setTipoDeComprobante(CTipoDeComprobante.P);
         }
-
+        if (encabezado.getSerie().equals("FAC") && !encabezado.getRelacion().equals("")) {
+            xml.setTipoDeComprobante(CTipoDeComprobante.I);
+        }
+//      Fin asignar tipo de comprobante
         switch (encabezado.getMetodoPago()) {
             case "PUE":
                 xml.setMetodoPago(CMetodoPago.PUE);
@@ -141,13 +165,13 @@ public class generarXML40 {
         //Extraer archivos .cer  .key
         File cer = new File(urlCER);
         File key = new File(urlKEY);
-        //relacionados se agrega solo si 
+        //relacionados se agrega solo si es requerido
         if (!encabezado.getRelacion().equals("")) {
             xml.cfdiRelacionados = createrelacionados(of, encabezado.getArruuid(), encabezado.getRelacion());
         }
-        if (encabezado.getSerie().equals("NCR")) {
-            xml.setTipoDeComprobante(CTipoDeComprobante.P);
-            xml.setComplemento(createcomplemento(of, data, fecha));
+        if (encabezado.getSerie().equals("PAG")) {
+//            xml.setTipoDeComprobante(CTipoDeComprobante.P);
+//            xml.setComplemento(createcomplemento(of, data, fecha));
         }
 
         //Agregar certificado y no. de certificado al comprobante por medio del archivo .cer del contribuyente
@@ -167,6 +191,7 @@ public class generarXML40 {
         try {
             cadenaOriginal = generarCadenaOriginal(cadenaXML);
         } catch (TransformerException ex) {
+            JOptionPane.showMessageDialog(null, "generarxml -" + ex);
             Logger.getLogger(generarXML40.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -179,7 +204,7 @@ public class generarXML40 {
         //Agregar el sello digital al xml
         xml.setSello(selloDigital);
 
-        String COMPROBANTE_XML = salidaxml + "\\" + encabezado.getSerie() + "-" + encabezado.getFolio() + ".xml";
+        String COMPROBANTE_XML = salidaxml + "\\" + encabezado.getSerie() + "_" + encabezado.getFolio() + ".xml";
 
 //Actualizar datos en la Base de datos para despliegue de factura
         daofactura df = new daofactura();
@@ -200,7 +225,7 @@ public class generarXML40 {
         m.setProperty("com.sun.xml.bind.namespacePrefixMapper", prefixMapper);
         m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         m.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
-        m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd");
+        m.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd");
 
         //Compilar
         m.marshal(xml, new File(COMPROBANTE_XML));
@@ -209,6 +234,7 @@ public class generarXML40 {
 
     private void getempresa(Connection c, String n) {
         daoempresa d = new daoempresa();
+        System.out.println(c.toString() + " " + n);
         Empresas e = d.getempresarfc(c, n);
         password = e.getPass();
         RZ = e.getNombre();
@@ -228,8 +254,18 @@ public class generarXML40 {
         emisor.setRfc(RFC);
         return emisor;
     }
+//informacion gloobal
+
+    private Comprobante.InformacionGlobal createInfoglobal(ObjectFactory of) {//Emisor
+        Comprobante.InformacionGlobal al = of.createComprobanteInformacionGlobal();
+        al.setMeses("asd");
+        al.setAño(Short.valueOf("2022"));
+        al.setPeriodicidad("mensual");
+
+        return al;
+    }
 //Falta Setear correctamente el prefijo antes de cada tag
-// Nodos implementados manualmente a la clase COmprobante
+// Nodos implementados manualmente a la clase COmprobante falta por implementar
 
     private Comprobante.Complemento createcomplemento(ObjectFactory of, ArrayList<xmlDAO> des, XMLGregorianCalendar fecha) {//Complemento
         Comprobante.Complemento comp = of.createComprobanteComplemento();// Complemento Base
@@ -342,7 +378,7 @@ public class generarXML40 {
         return comp;
     }
 
-    //Relaciones
+    //Relaciones NCR Y FACTURAS :D
     private List<Comprobante.CfdiRelacionados> createrelacionados(ObjectFactory of, ArrayList<String> data, String relacion) {
         List<Comprobante.CfdiRelacionados> arr = new ArrayList<Comprobante.CfdiRelacionados>();
         Comprobante.CfdiRelacionados rel = of.createComprobanteCfdiRelacionados();
@@ -382,7 +418,18 @@ public class generarXML40 {
             case "S01":
                 receptor.setUsoCFDI(CUsoCFDI.S_01);
                 break;
-
+            case "CP01":
+                receptor.setUsoCFDI(CUsoCFDI.CP_01);
+                break;
+            case "I08":
+                receptor.setUsoCFDI(CUsoCFDI.I_08);
+                break;
+            case "I04":
+                receptor.setUsoCFDI(CUsoCFDI.I_04);
+                break;
+            case "D04":
+                receptor.setUsoCFDI(CUsoCFDI.D_04);
+                break;
         }
         receptor.setRegimenFiscalReceptor(obj.getRegimenFR());
         receptor.setDomicilioFiscalReceptor(obj.getDomicilioReceptor());
@@ -398,18 +445,21 @@ public class generarXML40 {
             if (rela.equals("")) {
                 c.setUnidad(data.get(i).getUnidad());
             }
+            if (desc != BigDecimal.valueOf(0)) {
+                c.setDescuento(data.get(i).getDescuento().setScale(2, RoundingMode.HALF_UP));
+            }
             c.setObjetoImp("02");
             c.setImporte(data.get(i).getImporte().setScale(2, RoundingMode.HALF_UP));
-//            c.setDescuento(data.get(i).getDescuento().setScale(2, RoundingMode.HALF_UP));
             c.setValorUnitario(data.get(i).getValorUnitario());
             c.setDescripcion(data.get(i).getDescripcion());
             c.setClaveUnidad(data.get(i).getClaveUn());
             c.setCantidad(data.get(i).getCantidad());
-            c.setNoIdentificacion(data.get(i).getClaveProdServ());
+            c.setNoIdentificacion(i + "");
             c.setClaveProdServ(data.get(i).getClaveProdServ());
-
+//            c.setImpuestos(createImpuestosConcepto(of, data.get(i).getImporteImpuesto(),
+//                    data.get(i).getBase(), "002", data.get(i).getTasaCuota()));
             c.setImpuestos(createImpuestosConcepto(of, data.get(i).getImporteImpuesto(),
-                    data.get(i).getBase(), "002", data.get(i).getTasaCuota()));
+                    data.get(i).getBaseImpuesto(), "002", data.get(i).getTasaCuota()));
             list.add(c);
         }
 
@@ -419,7 +469,6 @@ public class generarXML40 {
     private Comprobante.Conceptos.Concepto.Impuestos createImpuestosConcepto(ObjectFactory of, BigDecimal importe, BigDecimal base, String imp, BigDecimal TasaC) {
 
         Comprobante.Conceptos.Concepto.Impuestos imps = of.createComprobanteConceptosConceptoImpuestos();
-
         //Bloque para impuestos trasladados
         Comprobante.Conceptos.Concepto.Impuestos.Traslados trs = of.createComprobanteConceptosConceptoImpuestosTraslados();
         List<Comprobante.Conceptos.Concepto.Impuestos.Traslados.Traslado> list = trs.getTraslado();
@@ -431,7 +480,6 @@ public class generarXML40 {
         t1.setTasaOCuota(TasaC);
 
         list.add(t1);
-
         imps.setTraslados(trs);
 
         return imps;
@@ -440,13 +488,14 @@ public class generarXML40 {
     private Comprobante.Impuestos createImpuestos(ObjectFactory of, xmlDAO obj) {// impuestos trasladados
         Comprobante.Impuestos impus = of.createComprobanteImpuestos();
         impus.setTotalImpuestosTrasladados(obj.getTotalImpuesto());
-
+        //subtotal-descuento
+        BigDecimal b = obj.getSubT().subtract(obj.getDescuento());
         //Bloque para los impuestos trasladados
         Comprobante.Impuestos.Traslados tras = of.createComprobanteImpuestosTraslados();
         List<Comprobante.Impuestos.Traslados.Traslado> list = tras.getTraslado();
         Comprobante.Impuestos.Traslados.Traslado t1 = of.createComprobanteImpuestosTrasladosTraslado();
-        t1.setImporte(obj.getTotalImpuesto().setScale(2, RoundingMode.HALF_UP));
-        t1.setBase(obj.getBaseImpuesto().setScale(2, RoundingMode.HALF_UP));
+        t1.setImporte(obj.getTotalImpuesto().setScale(2));
+        t1.setBase(b.setScale(2));
         t1.setTasaOCuota(obj.getTasaCuota());
         t1.setTipoFactor(CTipoFactor.TASA);
         t1.setImpuesto(obj.getImpuesto());

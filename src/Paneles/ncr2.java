@@ -6,17 +6,23 @@
 package Paneles;
 
 import DAO.daocfdi;
+import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daokardexrcpt;
 import DAO.daoxml;
 import Modelo.Ciudades;
 import Modelo.ConceptosES;
 import Modelo.Dfactura;
+import Modelo.Empresas;
 import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.Kardexrcpt;
+import Modelo.Nocolisionncr;
 import Modelo.Paises;
+import Modelo.Sellofiscal;
+import Modelo.Usuarios;
 import Modelo.cargo;
+import Modelo.convertnum;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.relacion;
@@ -30,6 +36,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -39,7 +47,18 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import mx.sat.cfd40.timbrarXML;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -61,10 +80,11 @@ public class ncr2 extends javax.swing.JPanel {
     ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
     daocfdi dcfdi = new daocfdi();
     DefaultTableModel model = new DefaultTableModel();
-    float descuentos;
-    float impuestos;
-    float subtotal;
-    float total;
+    double descuentos;
+    double impuestos;
+    double subtotal;
+    double total;
+    public Usuarios u;
 
     //kardex para fac
     ArrayList<Kardexrcpt> k = new ArrayList<>();
@@ -76,6 +96,8 @@ public class ncr2 extends javax.swing.JPanel {
     public ncr2() {
         initComponents();
         cargatabla();
+        JlTcambio.setVisible(false);
+        JtTCambio.setVisible(false);
 //        iniciarconexiones();  Solo si se usa solo la clase si no se pasan directamente desde facturacion
 // carga en combos los catalogos del sat
 
@@ -130,6 +152,11 @@ public class ncr2 extends javax.swing.JPanel {
         JlNombre = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        JcUsd = new javax.swing.JCheckBox();
+        JtTCambio = new javax.swing.JTextField();
+        JlTcambio = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
 
         pop.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -167,6 +194,8 @@ public class ncr2 extends javax.swing.JPanel {
 
         jSeparator2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel15.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel15.setText("Metodo de Pago");
 
@@ -196,6 +225,8 @@ public class ncr2 extends javax.swing.JPanel {
                 JcUsoActionPerformed(evt);
             }
         });
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
         JtRelacion.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
         JtRelacion.addActionListener(new java.awt.event.ActionListener() {
@@ -240,9 +271,7 @@ public class ncr2 extends javax.swing.JPanel {
                     .addComponent(jLabel20))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addGap(5, 5, 5))
+                    .addComponent(jLabel19)
                     .addComponent(JtRelacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -282,7 +311,7 @@ public class ncr2 extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17)
                     .addComponent(JcUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -438,6 +467,61 @@ public class ncr2 extends javax.swing.JPanel {
             }
         });
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        JcUsd.setText("USD - Dolares");
+        JcUsd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JcUsdActionPerformed(evt);
+            }
+        });
+
+        JtTCambio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtTCambioActionPerformed(evt);
+            }
+        });
+
+        JlTcambio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        JlTcambio.setText("Tipo de cambio");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(JcUsd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JtTCambio)
+                    .addComponent(JlTcambio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JcUsd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(JlTcambio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(JtTCambio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 9, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 110, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -450,9 +534,8 @@ public class ncr2 extends javax.swing.JPanel {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 751, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel12))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -465,7 +548,11 @@ public class ncr2 extends javax.swing.JPanel {
                                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(45, 45, 45)
                                         .addComponent(jLabel4))
                                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18))
@@ -486,46 +573,50 @@ public class ncr2 extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(79, 79, 79)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(JtCliente)
-                                    .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(JtCliente)
+                                            .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(13, 13, 13)
                         .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                        .addGap(187, 187, 187))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel21)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3)
+                                .addGap(18, 18, 18))
+                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel4)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jScrollPane3)
-                                .addGap(36, 36, 36)))))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(57, 57, 57)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(45, 45, 45))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -570,10 +661,11 @@ public class ncr2 extends javax.swing.JPanel {
     }
 
     private void JtClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtClienteMousePressed
-        // TODO add your handling code here:
+        JtCliente.setText("");
     }//GEN-LAST:event_JtClienteMousePressed
 
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
+
         String r = JtCliente.getText();
         daofactura df = new daofactura();
         arrcargo = df.getfactstoncr(ACobranza, r, empresa);// cpt a usar
@@ -584,7 +676,7 @@ public class ncr2 extends javax.swing.JPanel {
         } else {
             JlNombre.setText(arrcargo.get(0).getNombre());
             cargacombos();
-            cargacargos();
+//            cargacargos();
         }
 
     }//GEN-LAST:event_JtClienteActionPerformed
@@ -598,7 +690,9 @@ public class ncr2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JcFormaActionPerformed
 
     private void JcUsoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsoActionPerformed
-        // TODO add your handling code here:
+        String regimen = arrcargo.get(0).getRegimen();
+        String uso = arruso.get(JcUso.getSelectedIndex()).getusocfdi();
+        verificaregimen(sqlcfdi, regimen, uso);
     }//GEN-LAST:event_JcUsoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
@@ -622,6 +716,17 @@ public class ncr2 extends javax.swing.JPanel {
             cargacargos();
         }
     }//GEN-LAST:event_jLabel4MousePressed
+
+    private boolean verificaregimen(Connection cfdi, String regimen, String uso) {
+        daocfdi df = new daocfdi();
+        boolean a = true;
+        String resp = df.getRegimenxuso(cfdi, regimen, uso);
+        if (resp.equals("")) {
+            JOptionPane.showMessageDialog(null, "Error, El regimen del cliente no se puede usar con este uso cfdi");
+            a = false;
+        }
+        return a;
+    }
 
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
         String rel = arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion();
@@ -657,6 +762,28 @@ public class ncr2 extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel3MouseReleased
 
+    private void JcUsdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsdActionPerformed
+        setdolar();
+    }//GEN-LAST:event_JcUsdActionPerformed
+
+    private void JtTCambioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtTCambioActionPerformed
+        if (!verificafloat(JtTCambio.getText().toUpperCase())) {
+            JOptionPane.showMessageDialog(null, "Error, Introduce un valor valido en el tipo de cambio");
+            JtTCambio.requestFocus();
+        }
+    }//GEN-LAST:event_JtTCambioActionPerformed
+
+    private void setdolar() {
+        if (JcUsd.isSelected()) {
+            JlTcambio.setVisible(true);
+            JtTCambio.setVisible(true);
+            JtTCambio.requestFocus();
+        } else {
+            JlTcambio.setVisible(false);
+            JtTCambio.setVisible(false);
+        }
+    }
+
     private void relaciones() {
         String se = arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion();
         if (se.equals("03")) {
@@ -683,6 +810,7 @@ public class ncr2 extends javax.swing.JPanel {
         if (!arrcargo.isEmpty()) {
             Cargosncr p = new Cargosncr(null, true);
 //        p.setAlwaysOnTop(true);
+            p.relacion=arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion();
             p.arrcargo = arrcargo;
             p.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             p.setVisible(true);
@@ -700,8 +828,9 @@ public class ncr2 extends javax.swing.JPanel {
 
     private void llenalistafac() {
         DefaultListModel<String> model = new DefaultListModel<>();
+        DecimalFormat formateador = new DecimalFormat("####.##");
         for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-            model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
+            model.addElement(arrcargoseleccion1.getReferencia() + " - " + formateador.format(arrcargoseleccion1.getDescuento()));
         }
         Jlcargofac.setModel(model);
     }
@@ -711,7 +840,7 @@ public class ncr2 extends javax.swing.JPanel {
         if (arrcargoseleccion.isEmpty()) {
             JtCliente.requestFocus();
         } else {
-            float totalrev = 0;
+            double totalrev = 0;
             //Se obtiene el total de las facturas que anter se capturaron
             for (int i = 0; i < arrcargoseleccion.size(); i++) {
                 totalrev += arrcargoseleccion.get(i).getDescuento();
@@ -730,21 +859,38 @@ public class ncr2 extends javax.swing.JPanel {
                 ArrayList<Dfactura> arrf = new ArrayList<>();
                 DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
 
+//                Nocolisionncr n = new Nocolisionncr();
+                f.setFolio(dfac.getmaxfolio(cpt, "NCR"));//Obtiene y setea el foliomaximo de *documentos
+//                n.setConnecxiones(rcpt, f.getFolio());
+//                n.start();
+////                JOptionPane.showMessageDialog(null, "Espera al msj de Aceptacion de folio "+n.isAlive());
+//                do {//ciclo hasta que termine la busqueda y asignacion, no es lo ideal pero es temporal y reduce colisiones
+//
+//                } while (n.isAlive());
+//                System.out.println(n.getfolio());
+//                f.setFolio(n.getfolio());
+                if (JcUsd.isSelected()) {
+                    f.setMoneda("USD");
+                    f.setTipocambio(Float.parseFloat(JtTCambio.getText()));
+                } else {
+                    f.setMoneda("MXN");
+                    f.setTipocambio(1);
+                }
                 // fin setear impuestos
-                f.setImpuestos(Float.parseFloat(formateador.format(impuestos)));
+                f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
                 f.setTiporelacion(arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion());
                 f.setIva(16);
-                condicion = "Contado";
-//                f.setEmpresa((empresa.equals("CPT")) ? "1" : "2");
-                f.setEmpresa("1");
-                f.setClaveusuario("prueba");
+//                condicion = "Contado";
+                f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
+//                f.setEmpresa("1");
+                f.setClaveusuario(u.getUsuario());
                 f.setSerie("NCR");
-                f.setFolio(dfac.getmaxncr(cpt));//Obtiene y setea el foliomaximo NCR de *documentos
+//                f.setFolio(dfac.getmaxfolio(rcpt,"NCR"));//Obtiene y setea el foliomaximo NCR de *documentos
                 f.setFecha(sdf.format(date));
                 f.setDescuento(0);
-                f.setPedido("''");
+                f.setPedido("");
                 f.setFechasolicitado(sdf.format(date));
-                f.setCondicion(condicion);
+//                f.setCondicion(condicion);
                 f.setFechaentrega(sdf.format(date));
                 f.setSubtotal(subtotal);
                 f.setTotal(total);
@@ -763,12 +909,12 @@ public class ncr2 extends javax.swing.JPanel {
                 f.setTotalcajas(0);
                 f.setCantidadxcaja(0);
                 f.setTiposerie("NOTA DE CREDITO");
-                f.setMoneda("MXN");
-                f.setTipocambio(1);
                 f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
                 f.setMetodopago(arrmetodo.get(JcMetodo.getSelectedIndex()).getMetodopago());
                 f.setDescmetodop(arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
+                condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
+                f.setCondicion(condicion);
                 f.setAgente(arrcargoseleccion.get(0).getAgente());
                 f.setPlazo(arrcargoseleccion.get(0).getPlazo());
                 f.setMarca(arrcargoseleccion.get(0).getRef());
@@ -796,40 +942,40 @@ public class ncr2 extends javax.swing.JPanel {
                 int tamaño = (!rel.equals("03")) ? 1 : model.getRowCount();// Numero de conceptos de acuerdo a la relacion
                 ArrayList<String> arruuid = new ArrayList<>();
                 ArrayList<cargo> arrayc = new ArrayList<>();
-                float sumatotal = 0;
+                double sumatotal = 0;
                 //control interno de las lineas de seleccion
                 int x = 0;
                 //Tamaño define el numero de renglones que el ciclo tomara
-                float extra = 0;
+                double extra = 0;
                 for (int i = 0; i < tamaño; i++) {
                     Dfactura df = new Dfactura();
-                    float precio;
-                    float preciointerno;
+                    double precio;
+                    double preciointerno;
                     int pares;
                     String descripcion;
                     String codigosat;
                     String umedida;
-                    float impuesto;
-                    float pre = 0;
-                    float precioantes = 0;
+                    double impuesto;
+                    double pre = 0;
+                    double precioantes = 0;
 
                     if (rel.equals("03")) {//numero de renglones tambien para detalle docs
                         cargo car = new cargo();
                         //Asignar en variables los campos
                         //Precio se usara para el despliqgue de la NCR y desglose de iva
-                        pre = Float.parseFloat(JtDetalle.getValueAt(i, 2).toString());
-                        precioantes = Float.parseFloat(formateador.format((pre)));
+                        pre = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
+                        precioantes = Double.parseDouble(formateador.format((pre)));
                         pares = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
 
-                        precio = Float.parseFloat(formateador.format((pre) * pares));
+                        precio = Double.parseDouble(formateador.format((pre) * pares));
 
                         //Precio interno para valores enteros y sin desglose de iva
-                        preciointerno = Float.parseFloat(JtDetalle.getValueAt(i, 2).toString()) * pares;
+                        preciointerno = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()) * pares;
                         descripcion = JtDetalle.getValueAt(i, 0).toString();
                         codigosat = JtDetalle.getValueAt(i, 1).toString();
                         umedida = "PR";
-                        float dato = Float.parseFloat(formateador.format(sumatotal + preciointerno + (precio * 0.16)));
-                        float desc = arrcargoseleccion.get(x).getDescuento();
+                        double dato = Double.parseDouble(formateador.format(sumatotal + preciointerno + (precio * 0.16)));
+                        double desc = arrcargoseleccion.get(x).getDescuento();
                         System.out.println("precio " + preciointerno + ", desc" + desc + ", " + dato + ", sumatotal " + sumatotal);
                         //Hacer operaciones con los importes y resetear si aplica la suma total
                         if (dato >= desc) {
@@ -850,7 +996,7 @@ public class ncr2 extends javax.swing.JPanel {
                                 sumatotal = 0;
                                 x++;
                             } else {
-                                float flotanteaux = desc - sumatotal;
+                                double flotanteaux = desc - sumatotal;
 
                                 // importe inferior menos sumatotal Ej(500-400) considerando 500 como lo introducido y 400 como la suma
                                 if (flotanteaux < 0) {
@@ -869,7 +1015,6 @@ public class ncr2 extends javax.swing.JPanel {
                                 sumatotal -= desc;
                                 x++;
                             }
-
                             arrayc.add(car);
                         } else {
                             //Asignar directo ya que no interfiere con el total de una factura seleccionada
@@ -892,7 +1037,8 @@ public class ncr2 extends javax.swing.JPanel {
                         }
                     } else {
                         //Detalle solo para 1 renglon que es la relacion 01 y 07
-                        precio = Float.parseFloat(formateador.format(arrcargoseleccion.get(i).getDescuento() / 1.16));
+//                        precio = Float.parseFloat(formateador.format(arrcargoseleccion.get(i).getDescuento() / 1.16));
+                        precio = Double.parseDouble(formateador.format(total / 1.16));
                         pares = 1;
                         descripcion = JtObs.getText().toUpperCase() + " " + facturas;
                         codigosat = "84111506";
@@ -916,10 +1062,10 @@ public class ncr2 extends javax.swing.JPanel {
                     if (rel.equals("03")) {
                         df.setPrecio(precioantes);
                     } else {
-                        df.setPrecio(Float.parseFloat(formateador.format(precio)));
+                        df.setPrecio(Double.parseDouble(formateador.format(precio)));
                     }
-                    impuesto = (float) (precio * 0.16);
-                    System.out.println((float) precio * pares);
+                    impuesto = (precio * 0.16);
+//                    System.out.println((float) precio * pares);
                     df.setRenglon(i + 1);
                     df.setProducto(0);
                     df.setCantidad(pares);
@@ -927,10 +1073,10 @@ public class ncr2 extends javax.swing.JPanel {
                     df.setCodigo(codigosat);
                     df.setUmedida(umedida);
 
-                    df.setBase(Float.parseFloat(formateador.format(precio)));
+                    df.setBase(Double.parseDouble(formateador.format(precio)));
                     df.setImpuesto("002");
                     df.setTipofactor("Tasa");
-                    df.setImporta((Float.parseFloat(formateador.format(impuesto))));
+                    df.setImporta((Double.parseDouble(formateador.format(impuesto))));
                     df.setDescuento(0);
                     df.setTasaocuota("0.16");
                     arrf.add(df);
@@ -939,16 +1085,93 @@ public class ncr2 extends javax.swing.JPanel {
                 f.setArr(arrf);
                 f.setArruuid(arruuid);
                 //id del documento recien añadido
-                int id = dfac.nuevancr(cpt, f, ACobranza);
-                if (id != 0) {
-                    System.out.println("Exito");
-                    daoxml dx = new daoxml();
-                    f.setId(id);
-                    dx.generarfac(f, cpt, sqlempresa);
+//                int verifica=dfac.getbuscafolio(cpt, "NCR");
+                int verifica = dfac.getbuscafolioncr(cpt, f.getFolio() + "");
+                if (verifica != 0) {
+                    JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
+                } else {
+                    int id = dfac.nuevancr(cpt, f, ACobranza, rcpt);
+                    if (id != 0) {
+                        System.out.println("Exito");
+                        daoxml dx = new daoxml();
+                        f.setId(id);
+                        dx.generarfac(f, cpt, sqlempresa);
+                        timbrarXML tim = new timbrarXML();
+                        Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
+                        dfac.Updatesellofiscal(cpt, s, id);
+                        setreport(f.getFolio(), f.getRegimen());
+                        JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
+                        vaciarcampos();
+                        JtCliente.requestFocus();
+                    }
                 }
+//                Tiene 3 procesos de commit, 1. la fatura. 2. los sellos y cadena original, 3. sellos fiscales
+
             }
 
         }
+    }
+
+    /**
+     *
+     * @param folio Folio de la factura
+     * @param arrmetodo Array que contiene el metodo de pago
+     * @param arruso Array que contiene el uso de cfdi
+     * @see Despliegue y creacion del archivo pdf con los datos previamente
+     * creados El reporte fue previamente creado en un modulo anterior que solo
+     * creaba el pdf el proyecto se llama "Facturas"
+     *
+     */
+    private void setreport(int folio, String regimen) {
+        try {
+            daoempresa d = new daoempresa();
+//            Identificar si es de ath o uptown
+            String n = (empresa.equals("UptownCPT")) ? "2" : "1";
+            String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
+            Empresas e = d.getempresarfc(sqlempresa, n);
+//             fin identificar empresa
+            Map parametros = new HashMap();
+//            Clase que contiene el numero convertido a caracter
+            convertnum conv = new convertnum();
+//            Agregar parametros al reporte
+            parametros.put("folio", folio);
+            parametros.put("totalletra", conv.controlconversion(total).toUpperCase());
+            parametros.put("nombre", e.getNombre());
+            parametros.put("rfc", e.getRfc());
+            parametros.put("regimen", e.getRegimen());
+            parametros.put("lugar", e.getCp());
+            parametros.put("comprobante", e.getNumcertificado());
+            parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
+            parametros.put("metodo", arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
+            parametros.put("uso", arruso.get(JcUso.getSelectedIndex()).getDescripcion());
+            parametros.put("serie", "NCR");
+            parametros.put("regimencliente", regimen);
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/indexncr.jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
+            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
+            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            ver.setTitle("NCR " + folio);
+            ver.setVisible(true);
+//            Exportacion al archivo pdf
+            JRExporter exporter = new JRPdfExporter();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\NCR_" + folio + ".pdf"));
+            exporter.exportReport();
+        } catch (JRException ex) {
+            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void vaciarcampos() {
+        arrcargoseleccion.clear();
+        JtTCambio.setText("");
+        arrcargo.clear();
+        JtCliente.setText("");
+        JlNombre.setText("");
+        JtObs.setText(nombre);
+        llenalistafac();
+        actualizaimportes();
+        cargacombos();
     }
 
     private void actualizaimportes() {
@@ -969,10 +1192,10 @@ public class ncr2 extends javax.swing.JPanel {
 
                     if (verificafloat(JtDetalle.getValueAt(i, 2).toString()) || verificaint(JtDetalle.getValueAt(i, 2).toString())
                             || verificaflotante(JtDetalle.getValueAt(i, 2).toString())) {
-                        float precio = Float.parseFloat(JtDetalle.getValueAt(i, 2).toString());
+                        double precio = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         int can = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
-                        subtotal += Float.parseFloat(formateador.format((precio) * can));
-                        impuestos += Float.parseFloat(formateador.format(((precio) * can) * 0.16));
+                        subtotal += Double.parseDouble(formateador.format((precio) * can));
+                        impuestos += Double.parseDouble(formateador.format(((precio) * can) * 0.16));
                     } else {
                         JOptionPane.showMessageDialog(null, "Introduce solo numeros e intentalo de nuevo");
                         break;
@@ -993,10 +1216,10 @@ public class ncr2 extends javax.swing.JPanel {
             DecimalFormat formateador = new DecimalFormat("####.##");
             if (!arrcargoseleccion.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
                 for (int i = 0; i < arrcargoseleccion.size(); i++) {
-                    float precio = arrcargoseleccion.get(i).getDescuento();
+                    double precio = arrcargoseleccion.get(i).getDescuento();
                     //suma de totales
-                    subtotal += Float.parseFloat(formateador.format(precio / 1.16));
-                    impuestos += Float.parseFloat(formateador.format((precio / 1.16) * 0.16));
+                    subtotal += Double.parseDouble(formateador.format(precio / 1.16));
+                    impuestos += Double.parseDouble(formateador.format((precio / 1.16) * 0.16));
                 }
                 if (resp) {// Si, y solo si es un entero o decimal
                     //Variables para manejo de totales
@@ -1012,7 +1235,9 @@ public class ncr2 extends javax.swing.JPanel {
                 }
             }
         }
-
+        String regimen = arrcargo.get(0).getRegimen();
+        String uso = arruso.get(JcUso.getSelectedIndex()).getusocfdi();
+        verificaregimen(sqlcfdi, regimen, uso);
     }
 
     private boolean verificaint(String cad) {
@@ -1074,10 +1299,12 @@ public class ncr2 extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> JcCuenta;
     private javax.swing.JComboBox<String> JcForma;
     private javax.swing.JComboBox<String> JcMetodo;
+    private javax.swing.JCheckBox JcUsd;
     private javax.swing.JComboBox<String> JcUso;
     private javax.swing.JLabel JlDesc;
     private javax.swing.JLabel JlIva;
     private javax.swing.JLabel JlNombre;
+    private javax.swing.JLabel JlTcambio;
     private javax.swing.JLabel JlTotal;
     private javax.swing.JList<String> Jlcargofac;
     private javax.swing.JLabel Jlsub;
@@ -1085,6 +1312,7 @@ public class ncr2 extends javax.swing.JPanel {
     private javax.swing.JTable JtDetalle;
     private javax.swing.JTextArea JtObs;
     private javax.swing.JComboBox<String> JtRelacion;
+    private javax.swing.JTextField JtTCambio;
     private javax.swing.ButtonGroup grupo;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -1104,8 +1332,10 @@ public class ncr2 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

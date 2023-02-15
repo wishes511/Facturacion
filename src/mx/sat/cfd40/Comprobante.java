@@ -1500,8 +1500,8 @@ public class Comprobante {
         /**
          *
          */
-        @XmlElement(name = "Pagos", required = true)
-//        @XmlElement(name = "Pagos", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
+//        @XmlElement(name = "Pagos", required = true)
+        @XmlElement(name = "Pagos", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
         protected Comprobante.Complemento.Pagos pagos;
 
         /**
@@ -1545,9 +1545,9 @@ public class Comprobante {
         })
         public static class Pagos {
 
-            @XmlElement(name = "Totales", required = true)
+            @XmlElement(name = "Totales", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
             protected Comprobante.Complemento.Pagos.Totales totales;
-            @XmlElement(name = "Pago", required = true)
+            @XmlElement(name = "Pago", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
             protected List<Comprobante.Complemento.Pagos.Pago> pago;
             @XmlAttribute(name = "Version", required = true)
             protected String version;
@@ -1709,9 +1709,9 @@ public class Comprobante {
             })
             public static class Pago {
 
-                @XmlElement(name = "DoctoRelacionado", required = true)
+                @XmlElement(name = "DoctoRelacionado", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
                 protected List<Comprobante.Complemento.Pagos.Pago.DoctoRelacionado> doctoRelacionado;
-                @XmlElement(name = "ImpuestosP")
+                @XmlElement(name = "ImpuestosP", namespace= "http://www.sat.gob.mx/Pagos20")
                 protected Comprobante.Complemento.Pagos.Pago.ImpuestosP impuestosP;
                 @XmlAttribute(name = "FechaPago", required = true)
                 protected XMLGregorianCalendar fechaPago;
@@ -1888,7 +1888,7 @@ public class Comprobante {
                 })
                 public static class DoctoRelacionado {
 
-                    @XmlElement(name = "ImpuestosDR")
+                    @XmlElement(name = "ImpuestosDR", namespace= "http://www.sat.gob.mx/Pagos20")
                     protected Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR impuestosDR;
                     @XmlAttribute(name = "IdDocumento", required = true)
                     protected String idDocumento;
@@ -2009,9 +2009,9 @@ public class Comprobante {
                     })
                     public static class ImpuestosDR {
 
-                        @XmlElement(name = "RetencionesDR")
+                        @XmlElement(name = "RetencionesDR", namespace= "http://www.sat.gob.mx/Pagos20")
                         protected Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.RetencionesDR retencionesDR;
-                        @XmlElement(name = "TrasladosDR")
+                        @XmlElement(name = "TrasladosDR", namespace= "http://www.sat.gob.mx/Pagos20")
                         protected Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR trasladosDR;
 
                         public Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.RetencionesDR getRetencionesDR() {
@@ -2039,7 +2039,7 @@ public class Comprobante {
                         })
                         public static class RetencionesDR {
 
-                            @XmlElement(name = "RetencionDR", required = true)
+                            @XmlElement(name = "RetencionDR", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
                             protected List<Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.RetencionesDR.RetencionDR> retencionDR;
 
                             public List<Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.RetencionesDR.RetencionDR> getRetencionDR() {
@@ -2118,7 +2118,7 @@ public class Comprobante {
                         })
                         public static class TrasladosDR {
 
-                            @XmlElement(name = "TrasladoDR", required = true)
+                            @XmlElement(name = "TrasladoDR", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
                             protected List<Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR.TrasladoDR> trasladoDR;
 
                             public List<Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR.TrasladoDR> getTrasladoDR() {
@@ -2200,9 +2200,9 @@ public class Comprobante {
                 })
                 public static class ImpuestosP {
 
-                    @XmlElement(name = "RetencionesP")
+                    @XmlElement(name = "RetencionesP", namespace= "http://www.sat.gob.mx/Pagos20")
                     protected Comprobante.Complemento.Pagos.Pago.ImpuestosP.RetencionesP retencionesP;
-                    @XmlElement(name = "TrasladosP")
+                    @XmlElement(name = "TrasladosP", namespace= "http://www.sat.gob.mx/Pagos20")
                     protected Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP trasladosP;
 
                     public Comprobante.Complemento.Pagos.Pago.ImpuestosP.RetencionesP getRetencionesP() {
@@ -2230,7 +2230,7 @@ public class Comprobante {
                     })
                     public static class RetencionesP {
 
-                        @XmlElement(name = "RetencionP", required = true)
+                        @XmlElement(name = "RetencionP", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
                         protected List<Comprobante.Complemento.Pagos.Pago.ImpuestosP.RetencionesP.RetencionP> retencionP;
 
                         public List<Comprobante.Complemento.Pagos.Pago.ImpuestosP.RetencionesP.RetencionP> getRetencionP() {
@@ -2247,9 +2247,9 @@ public class Comprobante {
                         @XmlType(name = "")
                         public static class RetencionP {
 
-                            @XmlAttribute(name = "ImpuestoP", required = true)
+                            @XmlAttribute(name = "ImpuestoP", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
                             protected String impuestoP;
-                            @XmlAttribute(name = "ImporteP", required = true)
+                            @XmlAttribute(name = "ImporteP", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
                             protected BigDecimal importeP;
 
                             public String getImpuestoP() {
@@ -2279,7 +2279,7 @@ public class Comprobante {
                     })
                     public static class TrasladosP {
 
-                        @XmlElement(name = "TrasladoP", required = true)
+                        @XmlElement(name = "TrasladoP", required = true, namespace= "http://www.sat.gob.mx/Pagos20")
                         protected List<Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP.TrasladoP> trasladoP;
 
                         public List<Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP.TrasladoP> getTrasladoP() {

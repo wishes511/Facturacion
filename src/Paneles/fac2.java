@@ -6,35 +6,61 @@
 package Paneles;
 
 import DAO.daocfdi;
+import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daokardexrcpt;
 import DAO.daoxml;
 import Modelo.Ciudades;
 import Modelo.Dfactura;
+import Modelo.Empresas;
 import Modelo.Estados;
 import Modelo.Formadepago;
+import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
+import Modelo.Nocolision;
 import Modelo.Paises;
+import Modelo.Poliza;
+import Modelo.Sellofiscal;
+import Modelo.Usuarios;
+import Modelo.cargo;
+import Modelo.convertirNumeros;
+import Modelo.convertnum;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
+import mx.sat.cfd40.timbrarXML;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporter;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -51,23 +77,26 @@ public class fac2 extends javax.swing.JPanel {
     public ArrayList<usocfdi> arruso = new ArrayList<>();
     public ArrayList<metodopago> arrmetodo = new ArrayList<>();
     daocfdi dcfdi = new daocfdi();
-    float descuentos;
-    float impuestos;
-    float subtotal;
-    float total;
+    double descuentos;
+    double impuestos;
+    double subtotal;
+    double total;
+    public Usuarios u;
+    String relacion = "";
 
     //kardex para fac
     ArrayList<Kardexrcpt> k = new ArrayList<>();
     ArrayList<Kardexrcpt> k0 = new ArrayList<>();
+    //para factura relacionada
+    ArrayList<cargo> arrcargo = new ArrayList<>();
+    ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
 
     /**
      * Creates new form Cliente1
      */
     public fac2() {
         initComponents();
-        grupo.add(JrEmpresa);
-        grupo.add(JrEmpresa1);
-        JrEmpresa.setSelected(true);
+        JcPublico.setVisible(false);
 //        iniciarconexiones();  Solo si se usa solo la clase si no se pasan directamente desde facturacion
 // carga en combos los catalogos del sat
 
@@ -97,14 +126,11 @@ public class fac2 extends javax.swing.JPanel {
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         JcUso = new javax.swing.JComboBox<>();
+        Jlfp = new javax.swing.JLabel();
+        JlUso = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         JtDetalle = new javax.swing.JTable();
         JcPublico = new javax.swing.JCheckBox();
-        jPanel2 = new javax.swing.JPanel();
-        JrEmpresa = new javax.swing.JRadioButton();
-        JrEmpresa1 = new javax.swing.JRadioButton();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -119,6 +145,11 @@ public class fac2 extends javax.swing.JPanel {
         JtObs = new javax.swing.JTextArea();
         jLabel12 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        JsRel = new javax.swing.JScrollPane();
+        JlRel = new javax.swing.JList<>();
+        JlTcambio1 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -164,6 +195,8 @@ public class fac2 extends javax.swing.JPanel {
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
         jLabel15.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel15.setText("Metodo de Pago");
 
@@ -205,12 +238,17 @@ public class fac2 extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JcForma, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(JcForma, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Jlfp, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JcUso, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(JcUso, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JlUso, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -223,7 +261,10 @@ public class fac2 extends javax.swing.JPanel {
                         .addComponent(JcForma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel17)
                         .addComponent(JcUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 24, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Jlfp, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JlUso, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         JtDetalle.setModel(new javax.swing.table.DefaultTableModel(
@@ -234,6 +275,8 @@ public class fac2 extends javax.swing.JPanel {
 
             }
         ));
+        JtDetalle.setSelectionBackground(new java.awt.Color(213, 215, 250));
+        JtDetalle.setSelectionForeground(new java.awt.Color(0, 0, 0));
         JtDetalle.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         JtDetalle.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -243,64 +286,12 @@ public class fac2 extends javax.swing.JPanel {
         jScrollPane1.setViewportView(JtDetalle);
 
         JcPublico.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        JcPublico.setText("Publico General");
+        JcPublico.setText("Sin iva");
         JcPublico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JcPublicoActionPerformed(evt);
             }
         });
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-
-        JrEmpresa.setBackground(new java.awt.Color(255, 255, 255));
-        JrEmpresa.setText("Athletic");
-        JrEmpresa.setToolTipText("Emisor a facturar");
-        JrEmpresa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JrEmpresaActionPerformed(evt);
-            }
-        });
-
-        JrEmpresa1.setBackground(new java.awt.Color(255, 255, 255));
-        JrEmpresa1.setText("Uptown");
-
-        jLabel18.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel18.setText("Facturar a:");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(JrEmpresa)
-                            .addComponent(JrEmpresa1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addComponent(jLabel18)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(JrEmpresa)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JrEmpresa1))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(25, 25, 25))
-        );
 
         jLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel7.setText("Subtotal");
@@ -395,6 +386,44 @@ public class fac2 extends javax.swing.JPanel {
             }
         });
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        JlRel.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        JlRel.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        JsRel.setViewportView(JlRel);
+
+        JlTcambio1.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        JlTcambio1.setText("Relacion de factura");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(JlTcambio1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                    .addComponent(JsRel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGap(0, 10, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JlTcambio1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JsRel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/propagation_calculator_calc_6110.png"))); // NOI18N
+        jLabel13.setToolTipText("Relacion de facturas");
+        jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel13MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -432,9 +461,11 @@ public class fac2 extends javax.swing.JPanel {
                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(46, 46, 46)
                         .addComponent(JtFolio1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(233, 233, 233)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel13)
+                        .addGap(54, 54, 54)
                         .addComponent(jLabel2)
                         .addGap(48, 48, 48))))
         );
@@ -443,23 +474,22 @@ public class fac2 extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGap(48, 48, 48)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(JtFolio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(33, 33, 33))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(JtFolio1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(50, 50, 50)
-                        .addComponent(jLabel2)))
-                .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel13)
+                            .addComponent(jLabel2))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -481,7 +511,7 @@ public class fac2 extends javax.swing.JPanel {
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -501,11 +531,37 @@ public class fac2 extends javax.swing.JPanel {
         JcForma.setModel(forma);
         JcMetodo.setModel(metodo);
         JcUso.setModel(uso);
+    }
 
+    private void setcombos() {
+        boolean band = false;
+        boolean band1 = false;
+        int row = JtFolio1.getSelectedIndex();
+        for (int i = 0; i < arrfpago.size(); i++) {
+            if (k.get(0).getFp().equals(arrfpago.get(i).getFormapago())) {
+                JcForma.setSelectedIndex(i);
+                band = true;
+                break;
+            }
+        }
+
+        for (int i = 0; i < arruso.size(); i++) {
+            if (k.get(0).getUso().equals(arruso.get(i).getusocfdi())) {
+                JcUso.setSelectedIndex(i);
+                band1 = true;
+                break;
+            }
+        }
+        if (!band) {
+            Jlfp.setText("No se encontro la forma de pago");
+        }
+        if (!band1) {
+            JlUso.setText("No se encontro el uso cfdi");
+        }
     }
 
     private void JtDescuentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtDescuentoActionPerformed
-        if (verificaint(JtDescuento.getText())) {
+        if (verificafloat(JtDescuento.getText())) {
 //            generatabla();
         } else {
             JOptionPane.showMessageDialog(null, "Error, solo colocar numeros enteros en el descuento");
@@ -513,13 +569,13 @@ public class fac2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtDescuentoActionPerformed
 
     private void JtClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtClienteMousePressed
-        // TODO add your handling code here:
+        JtCliente.setText("");
     }//GEN-LAST:event_JtClienteMousePressed
 
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
         String r = JtCliente.getText();
         daokardexrcpt dk = new daokardexrcpt();
-        k0 = dk.getkardexfacsimple(cpt, r, empresacob);
+        k0 = dk.getkardexfacsimple(rcpt, r, empresacob);
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         int folio = 0;
         for (int i = 0; i < k0.size(); i++) {
@@ -542,7 +598,9 @@ public class fac2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JcFormaActionPerformed
 
     private void JcUsoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsoActionPerformed
-        // TODO add your handling code here:
+        String regimen = k.get(0).getCli().getRegimen();
+        String uso = arruso.get(JcUso.getSelectedIndex()).getusocfdi();
+        verificaregimen(sqlcfdi, regimen, uso);
     }//GEN-LAST:event_JcUsoActionPerformed
 
     private void JtFolio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFolio1ActionPerformed
@@ -553,124 +611,343 @@ public class fac2 extends javax.swing.JPanel {
 //        generatabla();
     }//GEN-LAST:event_JcPublicoActionPerformed
 
-    private void JrEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JrEmpresaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JrEmpresaActionPerformed
-
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        boolean a = verificaint(JtDescuento.getText());
-        boolean a1 = verificadetalle();
-        if (!a) {
-            JOptionPane.showMessageDialog(null, "Error, solo colocar numeros enteros en el descuento");
-
-        }
-        if (!a1) {
-            JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
-        }
-        System.out.println(a + " - " + a1);
-        if (!a && !a1) {
-            JtDescuento.requestFocus();
-        } else {
-            factura f = new factura();
-            int row = JtFolio1.getSelectedIndex();
-            String condicion;
-            java.util.Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            daofactura dfac = new daofactura();
-            ArrayList<Dfactura> arrf= new ArrayList<>();
-            DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-            if (JcPublico.isSelected()) {//Setear impuestos
-                f.setIva(0);
-                f.setImpuestos(0);
-                condicion = "Contado";
+        if (!k.isEmpty()) {
+            boolean a = verificafloat(JtDescuento.getText());
+            boolean a1 = verificadetalle();
+            if (!a) {
+                JOptionPane.showMessageDialog(null, "Error, solo colocar numeros enteros en el descuento");
+            }
+            if (!a1) {
+                JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
+            }
+            System.out.println(a + " - " + a1);
+            if (!a && !a1) {
+                JtDescuento.requestFocus();
             } else {
-                f.setImpuestos(Float.parseFloat(formateador.format(impuestos)));
-                f.setIva(16);
-                condicion = "Credito";
-            }
-            // fin setear impuestos
-            f.setEmpresa((JrEmpresa.isSelected())?"1":"2");
-            f.setClaveusuario("prueba");
-            f.setSerie("FAC");
-            f.setFolio(dfac.getmaxfolio(cpt));//Obtiene y setea el foliomaximo de *documentos
-            f.setFecha(sdf.format(date));
-            f.setDescuento(descuentos);
-            f.setPedido(k.get(row).getPedido());
-            f.setFechasolicitado(sdf.format(date));
-            f.setCondicion(condicion);
-            f.setFechaentrega(sdf.format(date));
-            f.setSubtotal(subtotal);
-            f.setTotal(total);
-            f.setFoliokardex(k.get(row).getFolio());
-            f.setIdcliente(k.get(row).getCli().getCvecliente());
-            f.setNombre(k.get(row).getCli().getNombre());
-            f.setRfc(k.get(row).getCli().getRfc());
-            f.setCalle(k.get(row).getCli().getCalle());
-            f.setNexterior("0");
-            f.setNinterior("0");
-            f.setColonia(k.get(row).getCli().getColonia());
-            f.setMunicipio(k.get(row).getCli().getCiudad());
-            f.setEstado(k.get(row).getCli().getEstado());
-            f.setPais(k.get(row).getCli().getPais());
-            f.setCp(k.get(row).getCli().getCp());
-            f.setRegimen(k.get(row).getCli().getRegimen());
-            f.setObservaciones(JtObs.getText().toUpperCase());
-            f.setTotalcajas(0);
-            f.setCantidadxcaja(0);
-            f.setTiposerie("FACTURA");
-            f.setMoneda("MXN");
-            f.setTipocambio(1);
-            f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
-            f.setMetodopago(arrmetodo.get(JcMetodo.getSelectedIndex()).getMetodopago());
-            f.setDescmetodop(arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
-            f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
-            f.setLugarexpedicion("36400");
-            f.setAgente(k.get(row).getCli().getAgente());
-            f.setPlazo(k.get(row).getCli().getPlazo());
-            f.setMarca((k.get(row).getCli().getMarca().equals("1"))?"O":"T");
-            f.setTiporelacion("");
-            
-            double iva = 0.00;
-            if (!JcPublico.isSelected()) {// verifica 
-                iva = 0.16;
-            }
-            for (int i = 0; i < k.size(); i++) {
-                Dfactura df = new Dfactura();
-                if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
-
-                    float precio = Float.parseFloat(JtDetalle.getValueAt(i, 3).toString());
-                    int tpares = k.get(i).getTotalpares();
-                    float desc = Float.parseFloat(JtDescuento.getText()) / 100;
-                    float descuento = (tpares * precio) * desc;
-                    df.setRenglon(k.get(i).getRenglon());
-                    df.setProducto(k.get(i).getP().getProducto());
-                    df.setCantidad(tpares);
-                    df.setDescripcion(k.get(i).getP().getEstilo() + " " + k.get(i).getP().getDesccombinacion() + " " + k.get(i).getP().getCordesc());
-                    df.setCodigo(k.get(i).getP().getCodigosat());
-                    df.setUmedida("PR");
-                    df.setPrecio(Float.parseFloat(formateador.format(precio)));
-                    df.setBase(precio * tpares);
-                    df.setImpuesto("002");
-                    df.setTipofactor("Tasa");
-                    df.setImporta(Float.parseFloat(formateador.format(((tpares * precio)) * iva)));
-                    df.setDescuento(Float.parseFloat(formateador.format(descuento)));
-                    df.setTasaocuota(iva+"");
-                    arrf.add(df);
+                factura f = new factura();
+                int row = 0;
+                String condicion;
+                java.util.Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                daofactura dfac = new daofactura();
+                ArrayList<Dfactura> arrf = new ArrayList<>();
+                DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+                if (JcPublico.isSelected()) {//Setear impuestos
+                    f.setIva(0);
+                    f.setImpuestos(0);
+                } else {
+//                    f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
+                    f.setIva(16);
                 }
-            }
-            f.setArr(arrf);
-            //id del documento recien añadido
-            int id=dfac.nuevafac(cpt, f, ACobranza);
-            if (id!=0) {
-                System.out.println("Exito");
-                daoxml dx= new daoxml();
-                f.setId(id);
-                dx.generarfac(f, cpt,sqlempresa);
+                // fin setear impuestos
+
+                Nocolision n = new Nocolision();
+                f.setFolio(dfac.getmaxfolio(rcpt, "FAC"));//Obtiene y setea el foliomaximo de *documentos
+                n.setConnecxiones(rcpt, f.getFolio());
+                n.start();
+//                JOptionPane.showMessageDialog(null, "Espera al msj de Aceptacion de folio "+n.isAlive());
+                do {
+
+                } while (n.isAlive());
+
+                f.setFolio(n.getfolio());
+                f.setClaveusuario(u.getUsuario());
+                f.setSerie("FAC");
+//                f.setFolio(dfac.getmaxfolio(rcpt, "FAC"));//Obtiene y setea el foliomaximo de *documentos
+                f.setFecha(sdf.format(date));
+
+                f.setPedido(k.get(row).getPedido());
+                f.setFechasolicitado(sdf.format(date));
+                f.setFechaentrega(sdf.format(date));
+
+                f.setFoliokardex(k.get(row).getFolio());
+                f.setIdcliente(k.get(row).getCli().getCvecliente());
+                f.setNombre(k.get(row).getCli().getNombre());
+                f.setRfc(k.get(row).getCli().getRfc());
+                f.setCalle(k.get(row).getCli().getCalle());
+                f.setNexterior("0");
+                f.setNinterior("0");
+                f.setColonia(k.get(row).getCli().getColonia());
+                f.setMunicipio(k.get(row).getCli().getCiudad());
+                f.setEstado(k.get(row).getCli().getEstado());
+                f.setPais(k.get(row).getCli().getPais());
+                f.setCp(k.get(row).getCli().getCp());
+                f.setRegimen(k.get(row).getCli().getRegimen());
+                f.setObservaciones(JtObs.getText().toUpperCase());
+                f.setTotalcajas(0);
+                f.setCantidadxcaja(0);
+                f.setTiposerie("FACTURA");
+                f.setMoneda("MXN");
+                f.setTipocambio(1);
+                f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
+                f.setMetodopago(arrmetodo.get(JcMetodo.getSelectedIndex()).getMetodopago());
+                f.setDescmetodop(arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
+                f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
+                condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
+                f.setCondicion(condicion);
+                f.setLugarexpedicion("36400");
+                f.setAgente(k.get(row).getCli().getAgente());
+                f.setPlazo(k.get(row).getCli().getPlazo());
+                f.setMarca((k.get(row).getCli().getMarca().equals("1")) ? "O" : "T");
+                f.setTiporelacion(relacion);
+                f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
+                String folios = "";
+                String facturas = "";
+                ArrayList<String> arruuid = new ArrayList<>();
+                if (!relacion.equals("")) {
+                    for (int i = 0; i < arrcargoseleccion.size(); i++) {
+                        if (i == 0) {
+                            folios = arrcargoseleccion.get(i).getFoliofiscal();
+                            facturas = arrcargoseleccion.get(i).getReferencia();
+                        } else {
+                            folios += ", " + arrcargoseleccion.get(i).getFoliofiscal();
+                            facturas += ", " + arrcargoseleccion.get(i).getReferencia();
+
+                        }
+                        arruuid.add(arrcargoseleccion.get(i).getFoliofiscal());
+                    }
+                    f.setRefncredito(facturas);
+                    f.setSeriefoliofiscalorig(folios);
+                    f.setArruuid(arruuid);
+                }
+                double iva = 0.00;
+                if (!JcPublico.isSelected()) {// verifica 
+                    iva = 0.16;
+                }
+                int totalpares = 0;// Se usa para la tabla facturas
+                impuestos = 0;
+                descuentos = 0;
+//                Detallado de productos selecionados
+                for (int i = 0; i < k.size(); i++) {
+                    Dfactura df = new Dfactura();
+                    if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
+                        double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
+                        int tpares = k.get(i).getTotalpares();
+                        double desc = Double.parseDouble(JtDescuento.getText()) / 100;
+                        double descuento = Double.parseDouble(formateador.format((tpares * precio) * desc));
+                        String estprice = JtDetalle.getValueAt(i, 8).toString().toUpperCase();
+                        df.setRenglon(k.get(i).getRenglon());
+                        df.setProducto(k.get(i).getP().getProducto());
+                        df.setCantidad(tpares);
+                        df.setDescripcion(estprice + " " + k.get(i).getP().getEstilo() + " " + k.get(i).getP().getDesccombinacion() + " " + k.get(i).getP().getCordesc());
+                        df.setCodigo(k.get(i).getP().getCodigosat());
+                        df.setUmedida("PR");
+                        df.setDescumedida("PARES");
+                        df.setPrecio(Double.parseDouble(formateador.format(precio)));
+                        df.setBase(Double.parseDouble(formateador.format(precio * tpares)));
+                        df.setImpuesto("002");
+                        df.setTipofactor("Tasa");
+//                        Este en especial por cuestion de centavos
+                        String as = formateador.format(((tpares * precio) - descuento) * iva);
+                        df.setImporta(Double.parseDouble(as));
+//                        df.setImporta(Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva)));
+//                        df.setDescuento(Double.parseDouble(formateador.format(descuento)));
+                        String as1 = formateador.format(descuento);
+                        df.setDescuento(Double.parseDouble(as1));
+
+                        df.setTasaocuota(iva + "");
+                        df.setC1(k.get(i).getC1());
+                        df.setC2(k.get(i).getC2());
+                        df.setC3(k.get(i).getC3());
+                        df.setC4(k.get(i).getC4());
+                        df.setC5(k.get(i).getC5());
+                        df.setC6(k.get(i).getC6());
+                        df.setC7(k.get(i).getC7());
+                        df.setC8(k.get(i).getC8());
+                        df.setC9(k.get(i).getC9());
+                        df.setC10(k.get(i).getC10());
+                        df.setC11(k.get(i).getC11());
+                        df.setC12(k.get(i).getC12());
+                        df.setC13(k.get(i).getC13());
+                        df.setC14(k.get(i).getC14());
+                        df.setAlmacen(k.get(i).getAlmacen());
+                        df.setLinea(k.get(i).getP().getLinea());
+                        df.setCorrida(k.get(i).getP().getCorrida());
+                        df.setStock(k.get(i).getStock());
+                        df.setEstilo(k.get(i).getP().getEstilo());
+                        df.setCombinacion(k.get(i).getP().getCombinacion());
+                        arrf.add(df);
+                        totalpares += tpares;
+                        impuestos += Double.parseDouble(as);
+                        descuentos += Double.parseDouble(as1);
+                    }
+                }
+                total = subtotal - descuentos + impuestos;
+                f.setTotalpares(totalpares);
+                f.setArr(arrf);
+                f.setImpuestos(formatdecimal(impuestos));
+                f.setDescuento(formatdecimal(descuentos));
+                f.setSubtotal(formatdecimal(subtotal));
+                f.setTotal(formatdecimal(total));
+                //id del documento recien añadido
+
+                ArrayList<Poliza> arrpoliza = dfac.getasientoscontable(ACobranza);
+                ArrayList<Poliza> arrpolizas = new ArrayList<>();
+                int conta = 0;
+                Formateodedatos fd = new Formateodedatos();
+                for (int i = 0; i < arrpoliza.size(); i++) {
+                    String c = arrpoliza.get(i).getCuentalarga();
+                    String cuenta = fd.convertcliente(c + k.get(row).getCli().getCvecliente());
+                    Poliza p = new Poliza();
+                    p.setCuenta(1);
+                    p.setSub(5);
+                    p.setFecha(sdf.format(date));
+                    p.setFolio(f.getFolio() + " O");
+                    p.setIdcliente(k.get(row).getCli().getCvecliente());
+                    p.setIdentificacion("M");
+                    p.setCuentalarga(cuenta);
+                    p.setCa(arrpoliza.get(i).getCa());
+                    p.setOrden(arrpoliza.get(i).getOrden());
+                    p.setDiario("000");
+                    p.setMext("            0.00");
+                    p.setAcumulativo(arrpoliza.get(i).getAcumulativo());
+                    p.setConcepto(arrpoliza.get(i).getConcepto() + f.getFolio() + " " + f.getMarca());
+                    if (arrpoliza.get(i).getCuentalarga().equals("4005")) {
+                        p.setReferencia(k.get(row).getCli().getClave() + "1" + fd.convierteagente(String.valueOf(k.get(row).getCli().getAgente())) + " 4.001");
+                    } else {
+                        p.setReferencia("4.001");
+                    }
+                    switch (conta) {
+                        case 0:
+                            p.setImporte(fd.ftotal(String.valueOf(formatdecimal(total))));
+                            conta++;
+                            break;
+                        case 1:
+                            p.setImporte(fd.ftotal(String.valueOf(formatdecimal(impuestos))));
+                            conta++;
+                            break;
+                        case 2:
+                            p.setImporte(fd.ftotal(String.valueOf(formatdecimal(subtotal))));
+                            conta = 0;
+                            break;
+                    }
+                    arrpolizas.add(p);
+                }
+                f.setArrpolizas(arrpolizas);
+
+//                Tiene 3 procesos de commit, 1. la fatura. 2. los sellos y cadena original, 3. sellos fiscales
+                if (arrf.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Error al realizar factura, intente capturar de nuevo");
+                    vaciarcampos();
+                } else {
+                    int id = dfac.nuevafac(cpt, f, ACobranza, rcpt);
+                    if (id != 0) {
+                        System.out.println("Exito");
+                        daoxml dx = new daoxml();
+                        f.setId(id);
+                        String tot = String.valueOf(total);
+
+                        dx.generarfac(f, cpt, sqlempresa);
+                        timbrarXML tim = new timbrarXML();
+                        Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
+                        dfac.Updatesellofiscal(cpt, s, id);
+                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
+                        JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
+                        vaciarcampos();
+                        JtCliente.requestFocus();
+                    } else {
+
+                    }
+                }
+
             }
         }
-
-
     }//GEN-LAST:event_jLabel2MousePressed
+
+    /**
+     * Funcion para determinar si la cantidad decimal es redondeada o truncada
+     * ya que el sat maneja ambos y no solo uno porque si no aveces saldran mal
+     * los calculos de los centavos
+     *
+     * @param cant cantidad en decimal
+     * @return Cantidad redondeada o truncada
+     */
+    private double formatdecimal(double cant) {
+        int dato = 0;
+        int punto = 0;
+        boolean band = false;
+        double resp;
+        String c = String.valueOf(cant);
+//        String cadena = "";
+        for (int i = 0; i < c.length(); i++) {
+//            Empieza a tomar datos despues del punto
+            if (c.charAt(i) == '.') {
+                band = true;
+            }
+            if (band) {
+//                3 digitos de decimal para saber qe hacer con los decimales
+                if (punto == 3) {
+                    dato = Integer.parseInt(c.charAt(i) + "");
+                    i = c.length();
+                    break;
+                }
+//                cadena += c.charAt(i);
+                punto++;
+            }
+        }
+        if ((dato <= 5)) {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
+        } else {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        }
+        return resp;
+    }
+
+    /**
+     *
+     * @param folio Folio de la factura
+     * @param arrmetodo Array que contiene el metodo de pago
+     * @param arruso Array que contiene el uso de cfdi
+     * @see Despliegue y creacion del archivo pdf con los datos previamente
+     * creados El reporte fue previamente creado en un modulo anterior que solo
+     * creaba el pdf el proyecto se llama "Facturas"
+     *
+     */
+    private void setreport(int folio, String regimen, String moneda) {
+        try {
+            daoempresa d = new daoempresa();
+//            Identificar si es de ath o uptown
+            String n = (empresa.equals("UptownCPT")) ? "2" : "1";
+            String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
+            Empresas e = d.getempresarfc(sqlempresa, n);
+//             fin identificar empresa
+            Map parametros = new HashMap();
+//            Clase que contiene el numero convertido a caracter
+            convertnum conv = new convertnum();
+            convertirNumeros cnum = new convertirNumeros();
+            DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+            String numeros = formateador.format(total);
+//            Agregar parametros al reporte
+            parametros.put("folio", folio);
+//            parametros.put("totalletra", conv.controlconversion(total).toUpperCase());
+            parametros.put("totalletra", cnum.Convertir(numeros, true, moneda));
+            parametros.put("nombre", e.getNombre());
+            parametros.put("rfc", e.getRfc());
+            parametros.put("regimen", e.getRegimen());
+            parametros.put("lugar", e.getCp());
+            parametros.put("comprobante", e.getNumcertificado());
+            parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
+            parametros.put("metodo", arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
+            parametros.put("uso", arruso.get(JcUso.getSelectedIndex()).getDescripcion());
+            parametros.put("serie", "FAC");
+            parametros.put("regimencliente", regimen);
+
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/index.jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
+            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
+            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            ver.setTitle("FAC " + folio);
+            ver.setVisible(true);
+//            Exportacion al archivo pdf
+            JRExporter exporter = new JRPdfExporter();
+            exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
+            exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\FAC_" + folio + ".pdf"));
+            exporter.exportReport();
+        } catch (JRException ex) {
+            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
         String active = JtDetalle.getValueAt(JtDetalle.getSelectedRow(), 7).toString();
@@ -685,11 +962,67 @@ public class fac2 extends javax.swing.JPanel {
         actualizaimportes();
     }//GEN-LAST:event_jLabel3MousePressed
 
+    private void jLabel13MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MousePressed
+        int row = 0;
+        k.get(row).getCli().getCvecliente();
+        if (k.isEmpty() && JtFolio1.getSelectedIndex() == -1) {
+
+        } else {
+            FactsRel f = new FactsRel(null, true);
+            daofactura df = new daofactura();
+            arrcargo = df.getfactstoFACRel(cpt, k.get(row).getCli().getCvecliente() + "", empresacob);
+            f.arrcargo = arrcargo;
+            f.setVisible(true);
+            arrcargoseleccion = f.arrcargoseleccion;
+            if (!arrcargoseleccion.isEmpty()) {
+//            DefaultListModel<String> model = new DefaultListModel<>();
+//            for (cargo arrcargoseleccion1 : arrcargoseleccion) {
+//                model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
+//            }
+//            JlRel.setModel(model);
+                llenalista();
+                relacion = "07";
+            }
+        }
+    }//GEN-LAST:event_jLabel13MousePressed
+
+    private void llenalista() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (cargo arrcargoseleccion1 : arrcargoseleccion) {
+            model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
+        }
+        JlRel.setModel(model);
+    }
+
+    private void vaciarcampos() {
+        if (!k.isEmpty()) {
+            k.clear();
+        }
+        if (!k0.isEmpty()) {
+            k0.clear();
+        }
+        if (!arrcargo.isEmpty()) {
+            arrcargo.clear();
+        }
+        if (!arrcargoseleccion.isEmpty()) {
+            arrcargoseleccion.clear();
+        }
+        JtDescuento.setText("0");
+        JtObs.setText("");
+        cargacombos();
+        generatabla();
+        JtCliente.setText("");
+        JtCliente.requestFocus();
+        llenalista();
+    }
+
     private void seleccionfolio() {
         daokardexrcpt dk = new daokardexrcpt();
         String r = k0.get(JtFolio1.getSelectedIndex()).getFolio() + "";
-        k = dk.getkardexfac(cpt, r, empresacob);// nueva carga de datos
+        k = dk.getkardexfac(rcpt, r, empresacob);// nueva carga de datos
+        System.out.println(k.size());
         generatabla();
+        setcombos();
     }
 
     public final void generatabla() {//Tabla actualizable con respecto al descuento e iva
@@ -705,33 +1038,35 @@ public class fac2 extends javax.swing.JPanel {
         model.addColumn("Impuestos");//5
         model.addColumn("Importe");//6
         model.addColumn("Activo");//7
-        float iva = 0;
+        model.addColumn("Estilo price");//8
+        double iva = 0;
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
         if (!JcPublico.isSelected()) {// verifica 
-            iva = (float) 0.16;
+            iva = 0.16;
         }
         if (!k.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
             model.setRowCount(k.size());
             for (int i = 0; i < k.size(); i++) {
                 int tpares = k.get(i).getTotalpares();
-                float desc = Float.parseFloat(JtDescuento.getText()) / 100;
-                float precio = k.get(i).getVenta();
-                float descuento = (tpares * precio) * desc;
+                double desc = Double.parseDouble(JtDescuento.getText()) / 100;
+                double precio = k.get(i).getVenta();
+                double descuento = (tpares * precio) * desc;
                 model.setValueAt(k.get(i).getP().getEstilo() + " " + k.get(i).getP().getDesccombinacion() + " " + k.get(i).getP().getCordesc(), i, 0);
                 model.setValueAt(k.get(i).getP().getCodigosat(), i, 1);
                 model.setValueAt(k.get(i).getTotalpares(), i, 2);
-                model.setValueAt(precio, i, 3);
+                model.setValueAt(formateador.format(precio), i, 3);
                 model.setValueAt(formateador.format(descuento), i, 4);
                 model.setValueAt(formateador.format(((tpares * precio) - descuento) * iva), i, 5);
                 model.setValueAt(formateador.format((tpares * precio) - descuento), i, 6);
                 model.setValueAt("", i, 7);
+                model.setValueAt("", i, 8);
                 //suma de totales
                 subtotal += tpares * precio;
             }
         }
         //Variables para manejo de totales
-        descuentos = subtotal * Float.parseFloat(JtDescuento.getText()) / 100;
-        impuestos = (float) ((subtotal - descuentos) * iva);
+        descuentos = subtotal * Double.parseDouble(JtDescuento.getText()) / 100;
+        impuestos = ((subtotal - descuentos) * iva);
         total = subtotal - descuentos + impuestos;
         //Solo para despliqgue de informacion
         JlIva.setText(formateador.format(impuestos));
@@ -762,17 +1097,19 @@ public class fac2 extends javax.swing.JPanel {
                 } else {
                     if (act.equals("*")) {// tomara en cuanta solo los que estan activos
                         int tpares = k.get(i).getTotalpares();
-                        float desc = Float.parseFloat(JtDescuento.getText()) / 100;
-                        float precio = Float.parseFloat(JtDetalle.getValueAt(i, 3).toString());
-                        float descuento = (tpares * precio) * desc;
+                        double desc = Double.parseDouble(JtDescuento.getText()) / 100;
+                        double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
+                        double descuento = (tpares * precio) * desc;
                         JtDetalle.setValueAt(precio, i, 3);
                         JtDetalle.setValueAt(formateador.format(descuento), i, 4);
                         JtDetalle.setValueAt(formateador.format(((tpares * precio) - descuento) * iva), i, 5);
                         JtDetalle.setValueAt(formateador.format((tpares * precio)), i, 6);
                         //suma de totales
-                        descuentos += Float.parseFloat(formateador.format(descuento));
+                        descuentos += Double.parseDouble(formateador.format(descuento));
+//                        subtotal += Double.parseDouble(formateador.format((tpares * precio)));
                         subtotal += tpares * precio;
-                        impuestos += Float.parseFloat(formateador.format(((tpares * precio)) * iva));
+//                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
+                        impuestos += ((tpares * precio) - descuento) * iva;
                     }
                 }
             }
@@ -780,8 +1117,13 @@ public class fac2 extends javax.swing.JPanel {
                 //Variables para manejo de totales
 //                descuentos = subtotal * Float.parseFloat(JtDescuento.getText()) / 100;
                 //impuestos =(float) ((subtotal - descuentos) * iva);
-                total = subtotal - descuentos + impuestos;
-                System.out.println(impuestos);
+                double desc = Double.parseDouble(JtDescuento.getText()) / 100;
+                descuentos = subtotal * desc;
+                impuestos = (subtotal - descuentos) * iva;
+                total = impuestos + subtotal - descuentos;
+//                total = subtotal - descuentos + impuestos;
+//                System.out.println(total + " -- " + impuestos + " -- " + subtotal + " -- " + descuentos+" --"+tot);
+//                System.out.println(impuestos);
                 //Solo para despliqgue de informacion
                 JlIva.setText(formateador.format(impuestos));
                 Jlsub.setText(formateador.format(subtotal));
@@ -825,6 +1167,17 @@ public class fac2 extends javax.swing.JPanel {
         return resp;
     }
 
+    private boolean verificaregimen(Connection cfdi, String regimen, String uso) {
+        daocfdi df = new daocfdi();
+        boolean a = true;
+        String resp = df.getRegimenxuso(cfdi, regimen, uso);
+        if (resp.equals("")) {
+            JOptionPane.showMessageDialog(null, "Error, El regimen del cliente no se puede usar con este uso cfdi");
+            a = false;
+        }
+        return a;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcForma;
     private javax.swing.JComboBox<String> JcMetodo;
@@ -832,24 +1185,26 @@ public class fac2 extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> JcUso;
     private javax.swing.JLabel JlDesc;
     private javax.swing.JLabel JlIva;
+    private javax.swing.JList<String> JlRel;
+    private javax.swing.JLabel JlTcambio1;
     private javax.swing.JLabel JlTotal;
+    private javax.swing.JLabel JlUso;
+    private javax.swing.JLabel Jlfp;
     private javax.swing.JLabel Jlsub;
-    private javax.swing.JRadioButton JrEmpresa;
-    private javax.swing.JRadioButton JrEmpresa1;
+    private javax.swing.JScrollPane JsRel;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTextField JtDescuento;
     private javax.swing.JTable JtDetalle;
     private javax.swing.JComboBox<String> JtFolio1;
     private javax.swing.JTextArea JtObs;
     private javax.swing.ButtonGroup grupo;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
@@ -857,8 +1212,8 @@ public class fac2 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;

@@ -72,7 +72,9 @@ public class sqlempresa {
             PreparedStatement st;
             ResultSet rs;
 
-            st = con.prepareStatement("select * from Empresasrfc where id=" + n);
+            String sql ="select * from Empresasrfc where id=" + n;
+            System.out.println(sql);
+            st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 e = new Empresas();
@@ -84,6 +86,9 @@ public class sqlempresa {
                 e.setKey(rs.getString("key"));
                 e.setPass(rs.getString("pass"));
                 e.setXml(rs.getString("salidaxml"));
+                e.setNumcertificado(rs.getString("numcertificado"));
+                e.setUsuariopac(rs.getString("usuariopac"));
+                e.setPasspac(rs.getString("passpac"));
             }
             rs.close();
             st.close();

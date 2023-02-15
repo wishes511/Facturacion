@@ -13,6 +13,15 @@ public class Usuarios implements java.io.Serializable{
 
     
     private String nombre,usuario,tipo_usuario,contraseña,grado,departamento;
+    private int facturacion;
+
+    public int getFacturacion() {
+        return facturacion;
+    }
+
+    public void setFacturacion(int facturacion) {
+        this.facturacion = facturacion;
+    }
 
     public int getId_tipo() {
         return id_tipo;

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class factura implements java.io.Serializable{
     int id, folio, naprobacion, estatus, retenciones, idcliente, totalcajas, cantidadxcaja
-            , addenda,enviado, cvecliente, cveagente, parcialidad, parcialidad2,foliokardex,agente,plazo;
+            , addenda,enviado, cvecliente, cveagente, parcialidad, parcialidad2,foliokardex,agente,plazo, totalpares;
     String nombrecliente, ncliente, nombreagente, claveusuario, serie, fecha, fechacancel
             , motivodex, pedido, fechasolicitado, condicion, fechaentrega, nombre, rfc
             , calle, nexterior, ninterior,colonia, localidad, referencia, municipio, estado
@@ -23,14 +23,195 @@ public class factura implements java.io.Serializable{
             , foliofiscalorig, seriefoliofiscalorig, fechafoliofiscalorig, regimen, foliofiscal
             , nodeseriecert, fechacert, sellosat, sellocfdi, usocfdi, tiporelacion, descmetodop, empresa, certificado,marca,
             cuentaabono,subabono, desccuenta,refncredito,rfcctaemisora,ctaemisora,rfcctareceptor,
-            ctareceptora,bancoemisor,bancoreceptor,ordenpago;
-    float Descuento, iva, is, subtotal, impuestos, montoiva, montoisr, total, tipocambio, montofoliofiscalorig,
-            baseimpuesto,monto;
+            ctareceptora,bancoemisor,bancoreceptor,ordenpago, seriecpt;
+    String codigo, descripcion, umedida,impuestodet,tipofac;
+    double monto, impiva16, baseiva16,totalpago16,total, subtotal, impuestos, Descuento,
+            baseimpuesto,cantidadfloat, preciodetalle,basedetalle,descuentodetalle,importedetalle,
+            iva, is, montoiva, montoisr, tipocambio, montofoliofiscalorig,impiva17, baseiva17,totalpago17;
+    float  montopago;
     Cliente c;
     ArrayList<Dfactura> arr = new ArrayList<>();
     ArrayList<String> arruuid = new ArrayList<>();
     ArrayList<cargo> arrcargo = new ArrayList<>();
     ArrayList<Detpagos> arrpagos = new ArrayList<>();
+    ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
+     ArrayList<Poliza> arrpolizas = new ArrayList<>();
+
+    public ArrayList<Poliza> getArrpolizas() {
+        return arrpolizas;
+    }
+
+    public void setArrpolizas(ArrayList<Poliza> arrpolizas) {
+        this.arrpolizas = arrpolizas;
+    }
+
+    public double getImpiva17() {
+        return impiva17;
+    }
+
+    public void setImpiva17(double impiva17) {
+        this.impiva17 = impiva17;
+    }
+
+    public double getBaseiva17() {
+        return baseiva17;
+    }
+
+    public void setBaseiva17(double baseiva17) {
+        this.baseiva17 = baseiva17;
+    }
+
+    public double getTotalpago17() {
+        return totalpago17;
+    }
+
+    public void setTotalpago17(double totalpago17) {
+        this.totalpago17 = totalpago17;
+    }
+
+    public ArrayList<Detpagos> getArrpagos17() {
+        return arrpagos17;
+    }
+
+    public void setArrpagos17(ArrayList<Detpagos> arrpagos17) {
+        this.arrpagos17 = arrpagos17;
+    }
+
+    public double getCantidadfloat() {
+        return cantidadfloat;
+    }
+
+    public void setCantidadfloat(double cantidadfloat) {
+        this.cantidadfloat = cantidadfloat;
+    }
+
+    public double getPreciodetalle() {
+        return preciodetalle;
+    }
+
+    public void setPreciodetalle(double preciodetalle) {
+        this.preciodetalle = preciodetalle;
+    }
+
+    public double getBasedetalle() {
+        return basedetalle;
+    }
+
+    public void setBasedetalle(double basedetalle) {
+        this.basedetalle = basedetalle;
+    }
+
+    public double getDescuentodetalle() {
+        return descuentodetalle;
+    }
+
+    public void setDescuentodetalle(double descuentodetalle) {
+        this.descuentodetalle = descuentodetalle;
+    }
+
+    public double getImportedetalle() {
+        return importedetalle;
+    }
+
+    public void setImportedetalle(double importedetalle) {
+        this.importedetalle = importedetalle;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getUmedida() {
+        return umedida;
+    }
+
+    public void setUmedida(String umedida) {
+        this.umedida = umedida;
+    }
+
+    public String getImpuestodet() {
+        return impuestodet;
+    }
+
+    public void setImpuestodet(String impuestodet) {
+        this.impuestodet = impuestodet;
+    }
+
+    public String getTipofac() {
+        return tipofac;
+    }
+
+    public void setTipofac(String tipofac) {
+        this.tipofac = tipofac;
+    }
+
+    public int getTotalpares() {
+        return totalpares;
+    }
+
+    public void setTotalpares(int totalpares) {
+        this.totalpares = totalpares;
+    }
+
+    public String getSeriecpt() {
+        return seriecpt;
+    }
+
+    public void setSeriecpt(String seriecpt) {
+        this.seriecpt = seriecpt;
+    }
+
+    public float getMontopago() {
+        return montopago;
+    }
+
+    public void setMontopago(float montopago) {
+        this.montopago = montopago;
+    }
+
+    public double getImpiva16() {
+        return impiva16;
+    }
+
+    public void setImpiva16(double impiva16) {
+        this.impiva16 = impiva16;
+    }
+
+    public double getBaseiva16() {
+        return baseiva16;
+    }
+
+    public void setBaseiva16(double baseiva16) {
+        this.baseiva16 = baseiva16;
+    }
+
+    public double getTotalpago16() {
+        return totalpago16;
+    }
+
+    public void setTotalpago16(double totalpago) {
+        this.totalpago16 = totalpago;
+    }
+
+    public ArrayList<Detpagos> getArrpagos() {
+        return arrpagos;
+    }
+
+    public void setArrpagos(ArrayList<Detpagos> arrpagos) {
+        this.arrpagos = arrpagos;
+    }
 
     public String getRfcctaemisora() {
         return rfcctaemisora;
@@ -88,11 +269,11 @@ public class factura implements java.io.Serializable{
         this.ordenpago = ordenpago;
     }
 
-    public float getMonto() {
+    public double getMonto() {
         return monto;
     }
 
-    public void setMonto(float monto) {
+    public void setMonto(double monto) {
         this.monto = monto;
     }
 
@@ -201,11 +382,11 @@ public class factura implements java.io.Serializable{
         this.c = c;
     }
 
-    public float getBaseimpuesto() {
+    public double getBaseimpuesto() {
         return baseimpuesto;
     }
 
-    public void setBaseimpuesto(float baseimpuesto) {
+    public void setBaseimpuesto(double baseimpuesto) {
         this.baseimpuesto = baseimpuesto;
     }
 
@@ -793,83 +974,83 @@ public class factura implements java.io.Serializable{
         this.tiporelacion = tiporelacion;
     }
 
-    public float getDescuento() {
+    public double getDescuento() {
         return Descuento;
     }
 
-    public void setDescuento(float Descuento) {
+    public void setDescuento(double Descuento) {
         this.Descuento = Descuento;
     }
 
-    public float getIva() {
+    public double getIva() {
         return iva;
     }
 
-    public void setIva(float iva) {
+    public void setIva(double iva) {
         this.iva = iva;
     }
 
-    public float getIs() {
+    public double getIs() {
         return is;
     }
 
-    public void setIs(float is) {
+    public void setIs(double is) {
         this.is = is;
     }
 
-    public float getSubtotal() {
+    public double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(float subtotal) {
+    public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
 
-    public float getImpuestos() {
+    public double getImpuestos() {
         return impuestos;
     }
 
-    public void setImpuestos(float impuestos) {
+    public void setImpuestos(double impuestos) {
         this.impuestos = impuestos;
     }
 
-    public float getMontoiva() {
+    public double getMontoiva() {
         return montoiva;
     }
 
-    public void setMontoiva(float montoiva) {
+    public void setMontoiva(double montoiva) {
         this.montoiva = montoiva;
     }
 
-    public float getMontoisr() {
+    public double getMontoisr() {
         return montoisr;
     }
 
-    public void setMontoisr(float montoisr) {
+    public void setMontoisr(double montoisr) {
         this.montoisr = montoisr;
     }
 
-    public float getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
-    public float getTipocambio() {
+    public double getTipocambio() {
         return tipocambio;
     }
 
-    public void setTipocambio(float tipocambio) {
+    public void setTipocambio(double tipocambio) {
         this.tipocambio = tipocambio;
     }
 
-    public float getMontofoliofiscalorig() {
+    public double getMontofoliofiscalorig() {
         return montofoliofiscalorig;
     }
 
-    public void setMontofoliofiscalorig(float montofoliofiscalorig) {
+    public void setMontofoliofiscalorig(double montofoliofiscalorig) {
         this.montofoliofiscalorig = montofoliofiscalorig;
     }
     

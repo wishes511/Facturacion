@@ -1,5 +1,6 @@
 package mx.sat.cfd40;
 
+import Modelo.Detpagos;
 import Modelo.cargo;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -57,6 +58,92 @@ public class xmlDAO {
     private int iddocumentos;
     private ArrayList<String> arruuid = new ArrayList<>();
     private ArrayList<cargo> arrcargo = new ArrayList<>();
+    private ArrayList<Detpagos> arrpagos = new ArrayList<>();
+    private ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
+    private float  montopago;
+    private double impiva16, baseiva16,totalpago16;
+    private double impiva17, baseiva17,totalpago17;
+    private int parcialidad;
+
+    public double getImpiva17() {
+        return impiva17;
+    }
+
+    public void setImpiva17(double impiva17) {
+        this.impiva17 = impiva17;
+    }
+
+    public double getBaseiva17() {
+        return baseiva17;
+    }
+
+    public void setBaseiva17(double baseiva17) {
+        this.baseiva17 = baseiva17;
+    }
+
+    public double getTotalpago17() {
+        return totalpago17;
+    }
+
+    public void setTotalpago17(double totalpago17) {
+        this.totalpago17 = totalpago17;
+    }
+
+    public ArrayList<Detpagos> getArrpagos17() {
+        return arrpagos17;
+    }
+
+    public void setArrpagos17(ArrayList<Detpagos> arrpagos17) {
+        this.arrpagos17 = arrpagos17;
+    }
+
+    public int getParcialidad() {
+        return parcialidad;
+    }
+
+    public void setParcialidad(int parcialidad) {
+        this.parcialidad = parcialidad;
+    }
+    
+    public double getImpiva16() {
+        return impiva16;
+    }
+
+    public void setImpiva16(double impiva16) {
+        this.impiva16 = impiva16;
+    }
+
+    public double getBaseiva16() {
+        return baseiva16;
+    }
+
+    public void setBaseiva16(double baseiva16) {
+        this.baseiva16 = baseiva16;
+    }
+
+    public double getTotalpago16() {
+        return totalpago16;
+    }
+
+    public void setTotalpago16(double totalpago16) {
+        this.totalpago16 = totalpago16;
+    }
+
+    public float getMontopago() {
+        return montopago;
+    }
+
+    public void setMontopago(float montopago) {
+        this.montopago = montopago;
+    }
+
+    public ArrayList<Detpagos> getArrpagos() {
+        return arrpagos;
+    }
+
+    public void setArrpagos(ArrayList<Detpagos> arrpagos) {
+        this.arrpagos = arrpagos;
+    }
 
     public ArrayList<cargo> getArrcargo() {
         return arrcargo;

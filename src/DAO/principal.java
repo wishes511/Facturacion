@@ -13,5 +13,5 @@ import java.sql.Connection;
  * @author GATEWAY1-
  */
 public interface principal {
-    public Usuarios getUsers(Connection c,String u, String pass);
+    public Usuarios getUsers(Connection c,String u, String pass, String columna);
 }

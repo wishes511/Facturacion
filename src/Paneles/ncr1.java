@@ -6,22 +6,39 @@
 package Paneles;
 
 import DAO.daocfdi;
+import DAO.daoempresa;
+import DAO.daofactura;
 import Modelo.Ciudades;
+import Modelo.Empresas;
 import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.Paises;
+import Modelo.convertnum;
+import Modelo.factura;
+import Modelo.metodopago;
+import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
+import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -29,15 +46,18 @@ import javax.swing.DefaultComboBoxModel;
  */
 public class ncr1 extends javax.swing.JPanel {
 
-    public String nombre;
-    Connection sqlcfdi;
-    Connection ACobranza;
+    public String empresa, empresacob;
+    public Connection sqlcfdi, sqlempresa;
+    public Connection cpt, ACobranza;
     Serverylite slite = new Serverylite();
     Serverprod prod = new Serverprod();
-    ArrayList<Formadepago> arrfpago = new ArrayList<>();
+    public ArrayList<Formadepago> arrfpago = new ArrayList<>();
+    public ArrayList<usocfdi> arruso = new ArrayList<>();
+    public ArrayList<metodopago> arrmetodo = new ArrayList<>();
     ArrayList<Paises> arrpais = new ArrayList<>();
     ArrayList<Estados> arrestado = new ArrayList<>();
     ArrayList<Ciudades> arrciudad = new ArrayList<>();
+    ArrayList<factura> arrfactura = new ArrayList<>();
     daocfdi dcfdi = new daocfdi();
     int estado = 0;
     int ciudad = 0;
@@ -48,6 +68,7 @@ public class ncr1 extends javax.swing.JPanel {
      */
     public ncr1() {
         initComponents();
+        JtCliente.requestFocus();
 //        iniciarconexiones();
     }
 
@@ -64,30 +85,43 @@ public class ncr1 extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        JtDetalle = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
-        JtCliente.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        JtCliente.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        JtCliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         JtCliente.setBorder(null);
+        JtCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtClienteActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel6.setText("# Cliente");
 
         jSeparator2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        JtDetalle.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        JtDetalle.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(JtDetalle);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/file_pdf_download_icon-icons.com_68954.png"))); // NOI18N
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -101,42 +135,140 @@ public class ncr1 extends javax.swing.JPanel {
                         .addGap(4, 4, 4)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(JtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                            .addComponent(jSeparator2)))
+                            .addComponent(jSeparator2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 992, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(217, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 992, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 207, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel6)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-    private void iniciarconexiones() {
-        try {
-            sqlcfdi = slite.getconexioncfdi();
-            ACobranza = prod.getconexionserver8("ACobranza");
 
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ncr1.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ncr1.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(ncr1.class.getName()).log(Level.SEVERE, null, ex);
+    private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
+        Buscanotas();
+    }//GEN-LAST:event_JtClienteActionPerformed
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        setreport();
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void setreport() {
+        try {
+            daoempresa d = new daoempresa();
+            String n = (empresa.equals("UPTOWNCPT")) ? "2" : "1";
+            String logo = (empresa.equals("UPTOWNCPT")) ? "Uptown.jpg" : "AF.png";
+
+            Empresas e = d.getempresarfc(sqlempresa, n);
+            Map parametros = new HashMap();
+            convertnum conv = new convertnum();
+            int folio=arrfactura.get(JtDetalle.getSelectedRow()).getFolio();
+            parametros.put("folio", folio);
+            parametros.put("totalletra", conv.controlconversion(arrfactura.get(JtDetalle.getSelectedRow()).getTotal()).toUpperCase());
+            parametros.put("nombre", e.getNombre());
+            parametros.put("rfc", e.getRfc());
+            parametros.put("regimen", e.getRegimen());
+            parametros.put("lugar", e.getCp());
+            parametros.put("comprobante", e.getNumcertificado());
+            parametros.put("logo", "C:\\af\\bin\\" + logo);
+            parametros.put("metodo", getnmetodo(arrfactura.get(JtDetalle.getSelectedRow()).getMetodopago()));
+            parametros.put("uso", getnuso(arrfactura.get(JtDetalle.getSelectedRow()).getUsocfdi()));
+            parametros.put("serie", "NCR");
+            parametros.put("regimencliente", arrfactura.get(JtDetalle.getSelectedRow()).getRegimen());
+
+
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/indexncr.jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
+            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
+            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            ver.setTitle("NCR "+folio);
+            ver.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    private String getnmetodo(String m) {
+        String r = "";
+        for (int i = 0; i < arrmetodo.size(); i++) {
+            if (m.equals(arrmetodo.get(i).getMetodopago())) {
+                r = arrmetodo.get(i).getDescripcion();
+                break;
+            }
+        }
+        return r;
+    }
+
+    private String getnuso(String m) {
+        String r = "";
+        for (int i = 0; i < arruso.size(); i++) {
+            if (m.equals(arruso.get(i).getusocfdi())) {
+                r = arruso.get(i).getDescripcion();
+                break;
+            }
+        }
+        return r;
+    }
+
+    private void Buscanotas() {
+        daofactura df = new daofactura();
+        arrfactura = df.getdoc(cpt, JtCliente.getText(), "NCR",empresacob);
+        generatabla();
+    }
+
+    private void generatabla() {
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Folio");
+        model.addColumn("Cliente");
+        model.addColumn("Subtotal");
+        model.addColumn("Impuestos");
+        model.addColumn("Total");
+        model.addColumn("Fecha");
+        model.addColumn("Forma Pago");
+        model.addColumn("Metodo Pago");
+        model.addColumn("Estado");
+        model.addColumn("Timbrado");
+        model.addColumn("Uso cfdi");
+        model.setNumRows(arrfactura.size());
+        for (int i = 0; i < arrfactura.size(); i++) {
+            String estat = (arrfactura.get(i).getEstatus() == 1) ? "ACTIVA" : "CANCELADO";
+            String estatfac = (arrfactura.get(i).getFoliofiscal().equals("")) ? "NO TIMBRADO" : "TIMBRADO";
+            model.setValueAt(arrfactura.get(i).getFolio(), i, 0);
+            model.setValueAt(arrfactura.get(i).getNombre(), i, 1);
+            model.setValueAt(arrfactura.get(i).getSubtotal(), i, 2);
+            model.setValueAt(arrfactura.get(i).getImpuestos(), i, 3);
+            model.setValueAt(arrfactura.get(i).getTotal(), i, 4);
+            model.setValueAt(arrfactura.get(i).getFecha(), i, 5);
+            model.setValueAt(arrfactura.get(i).getFormapago(), i, 6);
+            model.setValueAt(arrfactura.get(i).getMetodopago(), i, 7);
+            model.setValueAt(estat, i, 8);
+            model.setValueAt(estatfac, i, 9);
+            model.setValueAt(arrfactura.get(i).getUsocfdi(), i, 10);
+        }
+        JtDetalle.setModel(model);
+
+    }
 
     private boolean verificaint(String cad) {
         boolean resp = false;
@@ -151,9 +283,10 @@ public class ncr1 extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField JtCliente;
+    private javax.swing.JTable JtDetalle;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }

@@ -36,6 +36,7 @@ public class Cargosncr extends javax.swing.JDialog {
     ArrayList<Combinacion> arrcomb = new ArrayList<>();
     ArrayList<cargo> arrcargo = new ArrayList<>();
     ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
+    public String relacion;
 
     /**
      * Creates new form Paresremision
@@ -268,18 +269,29 @@ public class Cargosncr extends javax.swing.JDialog {
         if (!arrcargoseleccion.isEmpty()) {
             //Verificar renglon por renglon el dato del descuento y asignarselo al arreglo
             for (int i = 0; i < arrcargoseleccion.size(); i++) {
-                int renglon=arrcargoseleccion.get(i).getRenglon();
+                int renglon = arrcargoseleccion.get(i).getRenglon();
                 String desc = JtCargo.getValueAt(renglon, 4).toString();
                 if (verificaciones(desc)) {
-                    if (Float.parseFloat(desc) >= arrcargoseleccion.get(i).getImporte()) {
-                        JOptionPane.showMessageDialog(null, "Introduzca correctamente un numero valido");
-                        reset = false;
-                        break;
+//                  Verifica el tipo de relacion sea 03 por que es descuento
+                    if (relacion.equals("03")) {
+//                  El descuento no tiene que ser mayor o igual al saldo
+                        if (Float.parseFloat(desc) == arrcargoseleccion.get(i).getSaldo()
+                                || Float.parseFloat(desc) > arrcargoseleccion.get(i).getSaldo()) {
+                            JOptionPane.showMessageDialog(null, "Introduzca correctamente un numero valido");
+                            reset = false;
+                            break;
+                        } else {
+                            modarrDesc(i, desc);
+                        }
                     } else {
-                        cargo car = arrcargoseleccion.get(i);// almacena el cargo en un objeto para modificar valores
-                        car.setDescuento(Float.parseFloat(desc));
-                        arrcargoseleccion.set(i, car);// asigna de nuevo el cargo ya modificado
-                        System.out.println("descuento " + desc);
+////                Verifica que la cantidad no sea mayor al saldo
+                        if (Float.parseFloat(desc) > arrcargoseleccion.get(i).getSaldo()) {
+                            JOptionPane.showMessageDialog(null, "El valor introducido excede el saldo, intentelo de nuevo");
+                            reset = false;
+                            break;
+                        } else {
+                            modarrDesc(i, desc);
+                        }
                     }
 
                 } else {
@@ -295,9 +307,16 @@ public class Cargosncr extends javax.swing.JDialog {
         }
     }
 
+    private void modarrDesc(int i, String desc) {
+        cargo car = arrcargoseleccion.get(i);// almacena el cargo en un objeto para modificar valores
+        car.setDescuento(Float.parseFloat(desc));
+        arrcargoseleccion.set(i, car);// asigna de nuevo el cargo ya modificado
+        System.out.println("descuento " + desc);
+    }
+
     private boolean verificaciones(String r) {
         boolean resp = false;
-        System.out.println("valida "+r);
+        System.out.println("valida " + r);
         if (!r.equals("") && (verificafloat(r) || verificaint(r))) {
             resp = true;
         }

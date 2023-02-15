@@ -12,9 +12,16 @@ package Modelo;
 public class Detpagos implements java.io.Serializable{
 
     int id, iddocumento, parcialidad;
-    float cantidad, precio, monto, importesaldoant, importepagado, impsaldoinsoluto;
     String Descripcion, codigo, umedida, formadedpago, monedapago, rfcctaemisora, ctaemisora,
-            rfcctareceptora, ctareceptora, uuid, folio, moneda, metodopago;
+            rfcctareceptora, ctareceptora, uuid, folio, moneda, metodopago,ref;
+    double monto,cantidad, precio,  importesaldoant, importepagado, impsaldoinsoluto;
+    public String getRef() {
+        return ref;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
 
     public int getId() {
         return id;
@@ -40,51 +47,51 @@ public class Detpagos implements java.io.Serializable{
         this.parcialidad = parcialidad;
     }
 
-    public float getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(float cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 
-    public float getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 
-    public float getMonto() {
+    public double getMonto() {
         return monto;
     }
 
-    public void setMonto(float monto) {
+    public void setMonto(double monto) {
         this.monto = monto;
     }
 
-    public float getImportesaldoant() {
+    public double getImportesaldoant() {
         return importesaldoant;
     }
 
-    public void setImportesaldoant(float importesaldoant) {
+    public void setImportesaldoant(double importesaldoant) {
         this.importesaldoant = importesaldoant;
     }
 
-    public float getImportepagado() {
+    public double getImportepagado() {
         return importepagado;
     }
 
-    public void setImportepagado(float importepagado) {
+    public void setImportepagado(double importepagado) {
         this.importepagado = importepagado;
     }
 
-    public float getImpsaldoinsoluto() {
+    public double getImpsaldoinsoluto() {
         return impsaldoinsoluto;
     }
 
-    public void setImpsaldoinsoluto(float impsaldoinsoluto) {
+    public void setImpsaldoinsoluto(double impsaldoinsoluto) {
         this.impsaldoinsoluto = impsaldoinsoluto;
     }
 
@@ -172,6 +179,12 @@ public class Detpagos implements java.io.Serializable{
         return folio;
     }
 
+    /*
+        Referencia a la factura de cargos
+    
+    * @return possible object is {@link String }
+    
+    */
     public void setFolio(String folio) {
         this.folio = folio;
     }
