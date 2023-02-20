@@ -56,4 +56,21 @@ public class daokardexrcpt implements kardexrcpt {
         return s.getkardexfacsimple(c, r, cob);
     }
 
+    /**
+     * 
+     * @param c
+     * Conexion rcpt
+     * @param cob
+     * Nombre de la bd de cobranza
+     * @param folios
+     * Folios a utilizar
+     * @return 
+     */
+    @Override
+    public ArrayList<Kardexrcpt> getkardexfacMulti(Connection c, String cob, String folios) {
+       sqlkardex s = new sqlkardex();
+       return s.getkardexfacMulti(c, cob, folios);
+    }
+
+
 }

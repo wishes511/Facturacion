@@ -12,6 +12,7 @@ import Modelo.Producto;
 import Modelo.cargo;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -120,6 +121,7 @@ public class Cargosncr extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
+        JtCargo.setSelectionBackground(new java.awt.Color(213, 215, 250));
         JtCargo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 JtCargoMousePressed(evt);
@@ -273,7 +275,8 @@ public class Cargosncr extends javax.swing.JDialog {
                 String desc = JtCargo.getValueAt(renglon, 4).toString();
                 if (verificaciones(desc)) {
 //                  Verifica el tipo de relacion sea 03 por que es descuento
-                    if (relacion.equals("03")) {
+//                  Verifica el tipo de relacion sea 01,07 por que es descuento 15/02/2023
+                    if (relacion.equals("07") || relacion.equals("01")) {
 //                  El descuento no tiene que ser mayor o igual al saldo
                         if (Float.parseFloat(desc) == arrcargoseleccion.get(i).getSaldo()
                                 || Float.parseFloat(desc) > arrcargoseleccion.get(i).getSaldo()) {
@@ -285,7 +288,10 @@ public class Cargosncr extends javax.swing.JDialog {
                         }
                     } else {
 ////                Verifica que la cantidad no sea mayor al saldo
-                        if (Float.parseFloat(desc) > arrcargoseleccion.get(i).getSaldo()) {
+                        DecimalFormat formateador = new DecimalFormat("####.##");
+                        String ars = String.valueOf(formateador.format(arrcargoseleccion.get(i).getSaldo()));
+//                        System.out.println(Float.parseFloat(desc) + " " + arrcargoseleccion.get(i).getSaldo());
+                        if (Float.parseFloat(desc) > Float.parseFloat(ars)) {
                             JOptionPane.showMessageDialog(null, "El valor introducido excede el saldo, intentelo de nuevo");
                             reset = false;
                             break;

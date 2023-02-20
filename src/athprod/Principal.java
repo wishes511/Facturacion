@@ -12,6 +12,7 @@ import Modelo.Usuarios;
 import Paneles.pago1;
 import Server.ServerProccpt;
 import Server.Serverprod;
+import Server.Serverylite;
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -51,13 +52,14 @@ public final class Principal extends javax.swing.JFrame {
     MenuItem mi3 = new MenuItem();
     Connection cpt, rcpt, ACobranza;
     Connection concpt, conupcpt, conrcpt, conrcptup, concob, concobup;
+    Connection liteusuario;
     Conexiones conexion = new Conexiones();
     JPasswordField jp = new JPasswordField();
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "0";
-    Usuarios u;
+    String prod = "1";
+    Usuarios u = new Usuarios();
 
     public Principal() {
         initComponents();
@@ -85,8 +87,8 @@ public final class Principal extends javax.swing.JFrame {
         setconexionprueba();
 //        actualizaempresa();
         //setconexiones();
+        u.setAth("");
         if (prod.equals("0")) {
-            u = new Usuarios();
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
@@ -712,7 +714,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSesionActionPerformed
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
-            verificausuario();
+            verificausuariolite();
         } else {
             JOptionPane.showMessageDialog(null, "Selecciona la empresa a usar!");
             JrEmpresa.requestFocus();
@@ -797,12 +799,85 @@ public final class Principal extends javax.swing.JFrame {
                 JmSesion.setEnabled(false);
                 jLabel1.requestFocus();
                 timbrarXML t = new timbrarXML();
-                if(!t.getprod()){
+                if (!t.getprod()) {
                     JOptionPane.showMessageDialog(null, "Cuidado!, no estas en modo produccion");
                 }
             }
         }
-        
+
+    }
+
+    private void verificausuariolite() {
+        jp.setVisible(true);
+        jp.requestFocus();
+        jp.isFocusable();
+        JOptionPane.showMessageDialog(null, jp);
+        String a = jp.getText();
+        if (a.equals("")) {
+            JOptionPane.showMessageDialog(null, "El campo no debe ir vacio");
+            jp.requestFocus();
+        } else {
+            try {
+                Serverylite s = new Serverylite();
+                liteusuario = s.getconexionusuarios();
+                if (a.equals("0605")) {
+                    JlUsuario.setText("Michel Admin");
+                    u.setUsuario("Michel");
+                    u.setGrado("2");
+                    modoadmin();
+                    JmSesion.setEnabled(false);
+                    jLabel1.requestFocus();
+                } else {
+                    daoPrincipal dp = new daoPrincipal();
+                    u = dp.getUserlite(liteusuario, a, a);
+                    if (!u.getUsuario().equals("")) {
+                        checkempresa();
+                    }
+
+                }
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    private boolean checkempresa() {
+        boolean band = true;
+        if (!u.getAth().equals("")) {
+            if (JrEmpresa.isSelected()) {
+                if (!u.getAth().equals("1")) {
+                    band = false;
+                }
+            }
+            if (JrEmpresa1.isSelected()) {
+                if (!u.getUptown().equals("1")) {
+                    band = false;
+                }
+            }
+            if (band) {
+                if (u.getVentas().equals("1")) {
+                    JmVentas.setVisible(true);
+                }
+                if (u.getCobranza().equals("1")) {
+                    JmCobranza.setVisible(true);
+                }
+                if (u.getTipo_usuario().equals("1")) {
+                    JmConf.setVisible(true);
+                }
+                JmOut.setVisible(true);
+                JmSesion.setEnabled(false);
+                JlUsuario.setText(u.getNombre() + " " + u.getUsuario());
+            } else {
+                JOptionPane.showMessageDialog(null, "No puedes usar esta empresa, intentalo de nuevo");
+                jp.setText("");
+            }
+        }
+
+        return band;
     }
 
     private void modoadmin() {
@@ -817,22 +892,26 @@ public final class Principal extends javax.swing.JFrame {
     }
 
     private void actualizaempresa() {
-        if (JrEmpresa.isSelected()) {
-            conexion.setCpt(concpt);
-            conexion.setRcpt(conrcpt);
-            conexion.setCobranza(concob);
-            conexion.setEmpresa("CPT");
-            conexion.setEmpresacob("ACobranza");
-            conexion.setEmpresarcpt("RCPT");
-        } else {
-            conexion.setCpt(conupcpt);
-            conexion.setRcpt(conrcptup);
-            conexion.setCobranza(concobup);
-            conexion.setEmpresa("UptownCPT");
-            conexion.setEmpresacob("ACobranzauptown");
-            conexion.setEmpresarcpt("UptownRCPT");
+        boolean band = checkempresa();
+        if (band) {
+            if (JrEmpresa.isSelected()) {
+                conexion.setCpt(concpt);
+                conexion.setRcpt(conrcpt);
+                conexion.setCobranza(concob);
+                conexion.setEmpresa("CPT");
+                conexion.setEmpresacob("ACobranza");
+                conexion.setEmpresarcpt("RCPT");
+            } else {
+                conexion.setCpt(conupcpt);
+                conexion.setRcpt(conrcptup);
+                conexion.setCobranza(concobup);
+                conexion.setEmpresa("UptownCPT");
+                conexion.setEmpresacob("ACobranzauptown");
+                conexion.setEmpresarcpt("UptownRCPT");
+            }
+            System.out.println(conexion.getEmpresa());
         }
-        System.out.println(conexion.getEmpresa());
+
         //conexiones de prueba
 //        setconexiones("FATIMACPT","FATIMARCPT","ACobranzaFH");
     }
@@ -897,7 +976,7 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.getCobranza().close();
                 conexion.getRcpt().close();
             }
-
+            liteusuario.close();
             System.out.println("cerrar paneles");
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);

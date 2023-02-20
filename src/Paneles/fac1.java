@@ -17,6 +17,7 @@ import Modelo.Formadepago;
 import Modelo.Nocolision;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
+import Modelo.Setaddenda;
 import Modelo.Usuarios;
 import Modelo.convertirNumeros;
 import Modelo.convertnum;
@@ -465,44 +466,36 @@ public class fac1 extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel6MousePressed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
+
             String archivo = "C:\\af\\filesfac\\FAC_14512.xml";
-
-            Document doc;
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = dbFactory.newDocumentBuilder();
-            doc = builder.parse(archivo);
-            doc.getDocumentElement().normalize();
-//            NodeList comp1 = doc.getElementsByTagName("cfdi:Conceptos");
+            factura fac=arrfactura.get(JtDetalle.getSelectedRow());
+            Setaddenda sa= new Setaddenda(archivo,fac);
+            sa.Construyeaddenda();
             
-            Node ar = doc.getElementsByTagName("cfdi:Comprobante").item(0);
-            Element eli = doc.createElement("cfdi:Addenda");
-            eli.setAttribute("a", "a");
-            eli.setAttribute("b", "b");
-            Element elis = doc.createElement("Addenda");
-            elis.setAttribute("c", "c");
-            eli.appendChild(elis);
-            ar.appendChild(eli);
-            
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = null;
-            transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(new File(archivo));
-            transformer.transform(source, result);
+//            Document doc;
+//            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//            DocumentBuilder builder = dbFactory.newDocumentBuilder();
+//            doc = builder.parse(archivo);
+//            doc.getDocumentElement().normalize();
+////            NodeList comp1 = doc.getElementsByTagName("cfdi:Conceptos");
+//            
+//            Node ar = doc.getElementsByTagName("cfdi:Comprobante").item(0);
+//            Element eli = doc.createElement("cfdi:Addenda");
+//            eli.setAttribute("a", "a");
+//            eli.setAttribute("b", "b");
+//            Element elis = doc.createElement("Addenda");
+//            elis.setAttribute("c", "c");
+//            eli.appendChild(elis);
+//            ar.appendChild(eli);
+//            
+//            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//            Transformer transformer = null;
+//            transformer = transformerFactory.newTransformer();
+//            DOMSource source = new DOMSource(doc);
+//            StreamResult result = new StreamResult(new File(archivo));
+//            transformer.transform(source, result);
+//            System.out.println("Done");
 
-            System.out.println("Done");
-        } catch (SAXException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ParserConfigurationException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TransformerConfigurationException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (TransformerException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
 
     }//GEN-LAST:event_jButton1ActionPerformed

@@ -14,4 +14,5 @@ import java.sql.Connection;
  */
 public interface principal {
     public Usuarios getUsers(Connection c,String u, String pass, String columna);
+    public Usuarios getUserlite(Connection c, String pass, String usuario);
 }

@@ -836,14 +836,14 @@ public class ncr2 extends javax.swing.JPanel {
     }
 
     private void setfactura() {
-
+DecimalFormat formateador = new DecimalFormat("####.##");
         if (arrcargoseleccion.isEmpty()) {
             JtCliente.requestFocus();
         } else {
             double totalrev = 0;
             //Se obtiene el total de las facturas que anter se capturaron
             for (int i = 0; i < arrcargoseleccion.size(); i++) {
-                totalrev += arrcargoseleccion.get(i).getDescuento();
+                totalrev += Double.parseDouble(formateador.format(arrcargoseleccion.get(i).getDescuento()));
             }
             System.out.println(total + " " + totalrev);
             if (totalrev != total) {
@@ -857,7 +857,7 @@ public class ncr2 extends javax.swing.JPanel {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 daofactura dfac = new daofactura();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
-                DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+//                DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
 
 //                Nocolisionncr n = new Nocolisionncr();
                 f.setFolio(dfac.getmaxfolio(cpt, "NCR"));//Obtiene y setea el foliomaximo de *documentos
@@ -1172,6 +1172,9 @@ public class ncr2 extends javax.swing.JPanel {
         llenalistafac();
         actualizaimportes();
         cargacombos();
+        for(int i=0;i<model.getRowCount();i++){
+            model.removeRow(i);
+        }
     }
 
     private void actualizaimportes() {

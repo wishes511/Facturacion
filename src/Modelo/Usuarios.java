@@ -13,7 +13,64 @@ public class Usuarios implements java.io.Serializable{
 
     
     private String nombre,usuario,tipo_usuario,contraseña,grado,departamento;
+    private String cobranza, ventas, produccion, avances, ath, uptown, turno;
     private int facturacion;
+
+    public String getCobranza() {
+        return cobranza;
+    }
+
+    public void setCobranza(String cobranza) {
+        this.cobranza = cobranza;
+    }
+
+    public String getVentas() {
+        return ventas;
+    }
+
+    public void setVentas(String ventas) {
+        this.ventas = ventas;
+    }
+
+    public String getProduccion() {
+        return produccion;
+    }
+
+    public void setProduccion(String produccion) {
+        this.produccion = produccion;
+    }
+
+    public String getAvances() {
+        return avances;
+    }
+
+    public void setAvances(String avances) {
+        this.avances = avances;
+    }
+
+    public String getAth() {
+        return ath;
+    }
+
+    public void setAth(String ath) {
+        this.ath = ath;
+    }
+
+    public String getUptown() {
+        return uptown;
+    }
+
+    public void setUptown(String uptown) {
+        this.uptown = uptown;
+    }
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
 
     public int getFacturacion() {
         return facturacion;

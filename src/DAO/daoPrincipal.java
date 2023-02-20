@@ -56,4 +56,34 @@ public class daoPrincipal implements principal {
         return us;
     }
 
+    @Override
+    public Usuarios getUserlite(Connection c, String pass, String usuario) {
+        Usuarios us = new Usuarios();
+        us.setUsuario("");
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String query = "select *  from usuarios  where pass='" + pass + "' and estatus='1'";
+            st = c.prepareStatement(query);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                us.setUsuario(rs.getString("usuario"));
+                us.setNombre(rs.getString("nombre"));
+                us.setCobranza(rs.getString("cobranza"));
+                us.setVentas(rs.getString("ventas"));
+                us.setTipo_usuario(rs.getString("admin"));
+                us.setProduccion(rs.getString("produccion"));
+                us.setAvances(rs.getString("avances"));
+                us.setUptown(rs.getString("uptown"));
+                us.setAth(rs.getString("ath"));
+                us.setTurno(rs.getString("turno"));
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlficha.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return us;
+    }
+
 }

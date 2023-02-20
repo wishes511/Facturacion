@@ -13,10 +13,18 @@ import java.util.ArrayList;
  */
 public class Dfactura implements java.io.Serializable{
     int id, idoc, producto,talla,cantidad,renglon;
-    int c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14, almacen,linea,corrida,estilo,combinacion;
+    int c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14, almacen,linea,corrida,estilo,combinacion, foliokardex;
     String descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor,uuid, stock, descumedida;
     double base,  importa, descuento,precio,  cantidadfloat;
     ArrayList<String> arruuid = new ArrayList<>();
+
+    public int getFoliokardex() {
+        return foliokardex;
+    }
+
+    public void setFoliokardex(int foliokardex) {
+        this.foliokardex = foliokardex;
+    }
 
     public double getCantidadfloat() {
         return cantidadfloat;

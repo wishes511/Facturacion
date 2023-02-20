@@ -19,16 +19,18 @@ import java.sql.SQLException;
  */
 public class Serverylite {
 
-    private Connection connect, connectlite, connectlite2;
+    private Connection connect, connectlite, connectlite2, connectlite3;
     private final String URL = "jdbc:sqlserver://192.168.6.8\\datos65:9205";
     private final String drive = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     FileWriter fichero = null;
     private final String urlite = "C:\\af\\prod\\compras.db";
     private final File f = new File(urlite);
     //url lite cfdi
-    FileWriter fichero1 = null;
     private final String urlitecfdi = "C:\\af\\prod\\cfdi.db";
     private final File f1 = new File(urlitecfdi);
+
+    FileWriter fichero2 = null;
+    private final String urliteusuario = "C:\\af\\prod\\usuarios.db";
 
     public Connection getconexionS() throws ClassNotFoundException, IOException, SQLException {
         Class.forName(drive);
@@ -70,5 +72,16 @@ public class Serverylite {
 
     public void cerrarcfdi() throws SQLException {
         connectlite2.close();
+    }
+
+    public Connection getconexionusuarios() throws ClassNotFoundException, IOException, SQLException {
+        Class.forName("org.sqlite.JDBC");
+        connectlite3 = DriverManager.getConnection("jdbc:sqlite:" + urliteusuario);
+        System.out.println("Conectado usuarios");
+        return connectlite3;
+    }
+
+    public void cerrarusuario() throws SQLException {
+        connectlite3.close();
     }
 }

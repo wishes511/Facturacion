@@ -433,7 +433,7 @@ public class sqlfactura {
 //             Fin detallado de documento
 //              Status de kardex y dpedidos
             for (Dfactura arr : f.getArr()) {
-                sql = "update Kardex set statusimpresion='I', factura='" + fol + "' where folio=" + f.getFoliokardex() + " and cuenta>49 and renglon=" + arr.getRenglon();
+                sql = "update Kardex set statusimpresion='I', factura='" + fol + "' where folio=" + arr.getFoliokardex() + " and cuenta>49 and renglon=" + arr.getRenglon();
                 System.out.println("kardex " + sql + " \n");
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
@@ -1576,7 +1576,7 @@ public class sqlfactura {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select distinct '1' as cuentamov,'5' as subctamov,d.fecha,CONVERT(varchar,folio)+' O' folio,IdCliente,'M' m,"
-                    + "subtotal,Impuestos,total,asi.Cuenta, asi.SubCuenta, asi.Concepto, asi.Orden, asi.Acumulativa, ag.CveCanal,ca,c.Agente1\n"
+                    + "(subtotal-d.descuento) as subtotal,Impuestos,total,asi.Cuenta, asi.SubCuenta, asi.Concepto, asi.Orden, asi.Acumulativa, ag.CveCanal,ca,c.Agente1\n"
                     + "from Documentos d\n"
                     + "join " + cob + ".dbo.Clientes c on d.IdCliente=c.NumCliente\n"
                     + "join " + cob + ".dbo.Agentes ag on ag.CveAgente=c.Agente1\n"

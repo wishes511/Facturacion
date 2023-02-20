@@ -895,7 +895,7 @@ public class fac2E extends javax.swing.JPanel {
                             conta++;
                             break;
                         case 2:
-                            p.setImporte(fd.ftotal(String.valueOf(formatdecimal(subtotal))));
+                            p.setImporte(fd.ftotal(String.valueOf(formatdecimal(subtotal-descuentos))));
                             conta = 0;
                             break;
                     }
