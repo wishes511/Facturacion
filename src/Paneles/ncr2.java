@@ -9,7 +9,7 @@ import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daokardexrcpt;
-import DAO.daoxml;
+import DAO.daoxmlncr;
 import Modelo.Ciudades;
 import Modelo.ConceptosES;
 import Modelo.Dfactura;
@@ -30,6 +30,8 @@ import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -115,15 +117,18 @@ public class ncr2 extends javax.swing.JPanel {
         grupo = new javax.swing.ButtonGroup();
         pop = new javax.swing.JPopupMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jPanel6 = new javax.swing.JPanel();
+        JlNombre = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         JcMetodo = new javax.swing.JComboBox<>();
         jLabel16 = new javax.swing.JLabel();
-        JcForma = new javax.swing.JComboBox<>();
         jLabel17 = new javax.swing.JLabel();
+        JcForma = new javax.swing.JComboBox<>();
         JcUso = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         JtRelacion = new javax.swing.JComboBox<>();
@@ -132,6 +137,19 @@ public class ncr2 extends javax.swing.JPanel {
         jLabel19 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         JtDetalle = new javax.swing.JTable();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        JtObs = new javax.swing.JTextArea();
+        jPanel2 = new javax.swing.JPanel();
+        JcUsd = new javax.swing.JCheckBox();
+        JtTCambio = new javax.swing.JTextField();
+        JlTcambio = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        Jlcargofac = new javax.swing.JList<>();
+        jLabel21 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -141,21 +159,7 @@ public class ncr2 extends javax.swing.JPanel {
         JlDesc = new javax.swing.JLabel();
         JlIva = new javax.swing.JLabel();
         JlTotal = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        JtObs = new javax.swing.JTextArea();
         jLabel12 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        Jlcargofac = new javax.swing.JList<>();
-        jLabel21 = new javax.swing.JLabel();
-        JlNombre = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        JcUsd = new javax.swing.JCheckBox();
-        JtTCambio = new javax.swing.JTextField();
-        JlTcambio = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
 
         pop.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -173,6 +177,13 @@ public class ncr2 extends javax.swing.JPanel {
         pop.add(jMenuItem1);
 
         setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
+        JlNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        JlNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+
+        jSeparator2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         JtCliente.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
         JtCliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -192,14 +203,12 @@ public class ncr2 extends javax.swing.JPanel {
         jLabel6.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel6.setText("# Cliente");
 
-        jSeparator2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel15.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel15.setText("Metodo de Pago");
 
-        JcMetodo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        JcMetodo.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         JcMetodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JcMetodoActionPerformed(evt);
@@ -209,22 +218,58 @@ public class ncr2 extends javax.swing.JPanel {
         jLabel16.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel16.setText("Forma de Pago");
 
-        JcForma.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel17.setText("Uso Cfdi");
+
+        JcForma.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         JcForma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JcFormaActionPerformed(evt);
             }
         });
 
-        jLabel17.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel17.setText("Uso Cfdi");
-
-        JcUso.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        JcUso.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
         JcUso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JcUsoActionPerformed(evt);
             }
         });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(JcForma, 0, 441, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55)
+                        .addComponent(JcUso, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(JcMetodo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(JcMetodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(JcForma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel17)
+                    .addComponent(JcUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -253,66 +298,28 @@ public class ncr2 extends javax.swing.JPanel {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(0, 165, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel19, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JcCuenta, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JtRelacion, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(JcCuenta, 0, 341, Short.MAX_VALUE)
+                    .addComponent(JtRelacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JcCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20))
+                    .addComponent(jLabel20)
+                    .addComponent(JcCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
                     .addComponent(JtRelacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(JcMetodo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JcForma, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JcUso, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(10, 10, 10)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(JcMetodo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel16)
-                    .addComponent(JcForma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17)
-                    .addComponent(JcUso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         JtDetalle.setModel(new javax.swing.table.DefaultTableModel(
@@ -330,6 +337,102 @@ public class ncr2 extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(JtDetalle);
+
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Refresh_36729.png"))); // NOI18N
+        jLabel3.setToolTipText("Actualiza datos");
+        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel3MousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jLabel3MouseReleased(evt);
+            }
+        });
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/new.png"))); // NOI18N
+        jLabel5.setToolTipText("Actualiza datos");
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel5MousePressed(evt);
+            }
+        });
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/ic_send_128_28719.png"))); // NOI18N
+        jLabel2.setToolTipText("Procesar Nota de Credito");
+        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel2MousePressed(evt);
+            }
+        });
+
+        JtObs.setColumns(20);
+        JtObs.setRows(5);
+        jScrollPane2.setViewportView(JtObs);
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        JcUsd.setText("USD - Dolares");
+        JcUsd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JcUsdActionPerformed(evt);
+            }
+        });
+
+        JtTCambio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtTCambioActionPerformed(evt);
+            }
+        });
+
+        JlTcambio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        JlTcambio.setText("Tipo de cambio");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(JcUsd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JtTCambio)
+                    .addComponent(JlTcambio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(JcUsd)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(JlTcambio)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(JtTCambio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/flat-style-circle-save_icon-icons.com_66942.png"))); // NOI18N
+        jLabel4.setToolTipText("Actualiza datos");
+        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel4MousePressed(evt);
+            }
+        });
+
+        Jlcargofac.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane3.setViewportView(Jlcargofac);
+
+        jLabel21.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel21.setText("Facturas en Uso");
 
         jPanel3.setBackground(new java.awt.Color(10, 78, 160));
 
@@ -407,107 +510,8 @@ public class ncr2 extends javax.swing.JPanel {
                 .addGap(11, 11, 11))
         );
 
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/ic_send_128_28719.png"))); // NOI18N
-        jLabel2.setToolTipText("Procesar Nota de Credito");
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel2MousePressed(evt);
-            }
-        });
-
-        JtObs.setColumns(20);
-        JtObs.setRows(5);
-        jScrollPane2.setViewportView(JtObs);
-
         jLabel12.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel12.setText("Observaciones");
-
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Refresh_36729.png"))); // NOI18N
-        jLabel3.setToolTipText("Actualiza datos");
-        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel3MousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                jLabel3MouseReleased(evt);
-            }
-        });
-
-        Jlcargofac.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane3.setViewportView(Jlcargofac);
-
-        jLabel21.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel21.setText("Facturas en Uso");
-
-        JlNombre.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        JlNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/new.png"))); // NOI18N
-        jLabel5.setToolTipText("Actualiza datos");
-        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel5MousePressed(evt);
-            }
-        });
-
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/flat-style-circle-save_icon-icons.com_66942.png"))); // NOI18N
-        jLabel4.setToolTipText("Actualiza datos");
-        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel4MousePressed(evt);
-            }
-        });
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-
-        JcUsd.setText("USD - Dolares");
-        JcUsd.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JcUsdActionPerformed(evt);
-            }
-        });
-
-        JtTCambio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JtTCambioActionPerformed(evt);
-            }
-        });
-
-        JlTcambio.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        JlTcambio.setText("Tipo de cambio");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JcUsd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JtTCambio)
-                    .addComponent(JlTcambio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(JcUsd)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(JlTcambio)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(JtTCambio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -515,108 +519,124 @@ public class ncr2 extends javax.swing.JPanel {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 9, Short.MAX_VALUE)
+            .addGap(0, 11, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 110, Short.MAX_VALUE)
+            .addGap(0, 216, Short.MAX_VALUE)
         );
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(10, 10, 10)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel6Layout.createSequentialGroup()
+                                        .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(82, 82, 82)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addGap(0, 138, Short.MAX_VALUE)
+                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel6Layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3))
+                            .addComponent(jScrollPane1))))
+                .addGap(20, 20, 20))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel6Layout.createSequentialGroup()
+                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                            .addGap(30, 30, 30)
+                                            .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel6)
+                                                .addGroup(jPanel6Layout.createSequentialGroup()
+                                                    .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(6, 6, 6)
+                                                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                            .addGap(66, 66, 66)
+                                            .addComponent(jLabel2)))
+                                    .addGap(71, 71, 71))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel4)
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                            .addComponent(jLabel21)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addGap(124, 124, 124)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(81, Short.MAX_VALUE))
+        );
+
+        jScrollPane4.setViewportView(jPanel6);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 751, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel12))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(45, 45, 45)
-                                        .addComponent(jLabel4))
-                                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, 18))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(37, 37, 37)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addContainerGap())
+            .addComponent(jScrollPane4)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(JtCliente)
-                                            .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(13, 13, 13)
-                        .addComponent(jLabel5)
-                        .addGap(187, 187, 187))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane3)
-                                .addGap(57, 57, 57)))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36))
+            .addComponent(jScrollPane4)
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -810,7 +830,7 @@ public class ncr2 extends javax.swing.JPanel {
         if (!arrcargo.isEmpty()) {
             Cargosncr p = new Cargosncr(null, true);
 //        p.setAlwaysOnTop(true);
-            p.relacion=arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion();
+            p.relacion = arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion();
             p.arrcargo = arrcargo;
             p.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             p.setVisible(true);
@@ -836,7 +856,7 @@ public class ncr2 extends javax.swing.JPanel {
     }
 
     private void setfactura() {
-DecimalFormat formateador = new DecimalFormat("####.##");
+        DecimalFormat formateador = new DecimalFormat("####.##");
         if (arrcargoseleccion.isEmpty()) {
             JtCliente.requestFocus();
         } else {
@@ -845,8 +865,12 @@ DecimalFormat formateador = new DecimalFormat("####.##");
             for (int i = 0; i < arrcargoseleccion.size(); i++) {
                 totalrev += Double.parseDouble(formateador.format(arrcargoseleccion.get(i).getDescuento()));
             }
+
             System.out.println(total + " " + totalrev);
-            if (totalrev != total) {
+            System.out.println(total + " " + formateador.format(totalrev));
+//            if (totalrev != total) {
+            System.out.println(formatdecimal(total) + " ** " + formatdecimal(totalrev));
+            if (formatdecimal(total) != formatdecimal(totalrev)) {
                 JOptionPane.showMessageDialog(null, "El total de las lineas debe de ser igual al seleccionado en las facturas");
                 JtDetalle.requestFocus();
             } else {
@@ -877,7 +901,10 @@ DecimalFormat formateador = new DecimalFormat("####.##");
                     f.setTipocambio(1);
                 }
                 // fin setear impuestos
+//                f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
+//                f.setImpuestos(formatdecimal(subtotal*0.16));
                 f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
+                f.setExportacion("01");
                 f.setTiporelacion(arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion());
                 f.setIva(16);
 //                condicion = "Contado";
@@ -892,8 +919,8 @@ DecimalFormat formateador = new DecimalFormat("####.##");
                 f.setFechasolicitado(sdf.format(date));
 //                f.setCondicion(condicion);
                 f.setFechaentrega(sdf.format(date));
-                f.setSubtotal(subtotal);
-                f.setTotal(total);
+                f.setSubtotal(formatdecimal(subtotal));
+                f.setTotal(formatdecimal(total));
                 f.setIdcliente(arrcargoseleccion.get(0).getCliente());
                 f.setNombre(arrcargoseleccion.get(0).getNombre());
                 f.setRfc(arrcargoseleccion.get(0).getRfc());
@@ -925,6 +952,8 @@ DecimalFormat formateador = new DecimalFormat("####.##");
                 String folios = "";
                 String facturas = "";
                 //Mandar un string con los folios fiscales
+
+                ArrayList<String> arruuid = new ArrayList<>();
                 for (int i = 0; i < arrcargoseleccion.size(); i++) {
                     if (i == 0) {
                         folios = arrcargoseleccion.get(i).getFoliofiscal();
@@ -933,112 +962,46 @@ DecimalFormat formateador = new DecimalFormat("####.##");
                         folios += "," + arrcargoseleccion.get(i).getFoliofiscal();
                         facturas += ", " + arrcargoseleccion.get(i).getReferencia();
                     }
+                    arruuid.add(arrcargoseleccion.get(i).getFoliofiscal());
                 }
 
+                System.out.println("cargo seleccion " + arrcargoseleccion.size());
                 f.setRefncredito(facturas);
                 f.setObservaciones(JtObs.getText().toUpperCase() + " " + facturas);
                 f.setFoliofiscalorig(folios);
                 String rel = arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion();// seobtiene tipo de relacion
                 int tamaño = (!rel.equals("03")) ? 1 : model.getRowCount();// Numero de conceptos de acuerdo a la relacion
-                ArrayList<String> arruuid = new ArrayList<>();
                 ArrayList<cargo> arrayc = new ArrayList<>();
                 double sumatotal = 0;
                 //control interno de las lineas de seleccion
                 int x = 0;
                 //Tamaño define el numero de renglones que el ciclo tomara
-                double extra = 0;
+                int aux = 0;
+                double unidad = 0;
                 for (int i = 0; i < tamaño; i++) {
                     Dfactura df = new Dfactura();
-                    double precio;
-                    double preciointerno;
-                    int pares;
-                    String descripcion;
-                    String codigosat;
-                    String umedida;
+                    double precio = 0;
+                    int pares = 0;
+                    String descripcion = "";
+                    String codigosat = "";
+                    String umedida = "";
                     double impuesto;
                     double pre = 0;
-                    double precioantes = 0;
 
                     if (rel.equals("03")) {//numero de renglones tambien para detalle docs
-                        cargo car = new cargo();
-                        //Asignar en variables los campos
-                        //Precio se usara para el despliqgue de la NCR y desglose de iva
                         pre = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
-                        precioantes = Double.parseDouble(formateador.format((pre)));
+                        unidad = Double.parseDouble(formateador.format(pre));
                         pares = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
-
-                        precio = Double.parseDouble(formateador.format((pre) * pares));
-
-                        //Precio interno para valores enteros y sin desglose de iva
-                        preciointerno = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()) * pares;
+                        precio = Double.parseDouble(formateador.format((pre * pares) * 0.16 + (pre * pares)));
                         descripcion = JtDetalle.getValueAt(i, 0).toString();
                         codigosat = JtDetalle.getValueAt(i, 1).toString();
                         umedida = "PR";
-                        double dato = Double.parseDouble(formateador.format(sumatotal + preciointerno + (precio * 0.16)));
-                        double desc = arrcargoseleccion.get(x).getDescuento();
-                        System.out.println("precio " + preciointerno + ", desc" + desc + ", " + dato + ", sumatotal " + sumatotal);
-                        //Hacer operaciones con los importes y resetear si aplica la suma total
-                        if (dato >= desc) {
+                        arrayc = getcargosfacs();
 
-                            car.setFoliofiscal(folios);
-                            car.setCuenta(arrcargoseleccion.get(x).getCuenta());
-                            car.setSubcuenta(arrcargoseleccion.get(x).getSubcuenta());
-                            car.setCliente(arrcargoseleccion.get(x).getCliente());
-                            car.setReferencia(arrcargoseleccion.get(x).getReferencia());
-                            car.setFecha(arrcargoseleccion.get(x).getFecha());
-                            car.setDescnota(descripcion);
-                            car.setCantidad(pares);
-                            //Condiciones para saber si la suma de importes son igual o distintos al de la factura
-                            if (dato == desc) {
-//                                car.setDescuento(preciointerno + extra);// importe a descontar de cargos
-                                car.setDescuento(dato + extra);
-                                arruuid.add(arrcargoseleccion.get(x).getFoliofiscal());
-                                sumatotal = 0;
-                                x++;
-                            } else {
-                                double flotanteaux = desc - sumatotal;
-
-                                // importe inferior menos sumatotal Ej(500-400) considerando 500 como lo introducido y 400 como la suma
-                                if (flotanteaux < 0) {
-                                    car.setDescuento(flotanteaux * (-1));
-                                } else {
-                                    car.setDescuento(flotanteaux);
-                                }
-                                extra = dato - desc;
-//                                if (i + 1 == tamaño || flotanteaux + extra == desc) {
-                                if (i + 1 == tamaño || dato == desc) {
-//                                    car.setDescuento(flotanteaux + extra);
-                                    car.setDescuento(dato + extra);
-                                }
-                                arruuid.add(arrcargoseleccion.get(x).getFoliofiscal());
-                                sumatotal += preciointerno + (precio * 0.16);
-                                sumatotal -= desc;
-                                x++;
-                            }
-                            arrayc.add(car);
-                        } else {
-                            //Asignar directo ya que no interfiere con el total de una factura seleccionada
-                            //No aplica en reciclar codigo por el contador interno de la seleccion
-//                            arruuid.add(arrcargoseleccion.get(x).getFoliofiscal());
-//                            car.setDescuento(preciointerno + extra);// importe a descontar de cargos
-                            car.setDescuento(dato + extra);
-                            car.setFoliofiscal(folios);
-                            car.setCuenta(arrcargoseleccion.get(x).getCuenta());
-                            car.setSubcuenta(arrcargoseleccion.get(x).getSubcuenta());
-                            car.setCliente(arrcargoseleccion.get(x).getCliente());
-                            car.setReferencia(arrcargoseleccion.get(x).getReferencia());
-                            car.setFecha(arrcargoseleccion.get(x).getFecha());
-                            car.setDescnota(descripcion);
-                            car.setCantidad(pares);
-//                            sumatotal += preciointerno;
-                            sumatotal += dato;
-                            extra = 0;
-                            arrayc.add(car);
-                        }
                     } else {
                         //Detalle solo para 1 renglon que es la relacion 01 y 07
 //                        precio = Float.parseFloat(formateador.format(arrcargoseleccion.get(i).getDescuento() / 1.16));
-                        precio = Double.parseDouble(formateador.format(total / 1.16));
+                        precio = formatdecimal(total / 1.16);
                         pares = 1;
                         descripcion = JtObs.getText().toUpperCase() + " " + facturas;
                         codigosat = "84111506";
@@ -1046,7 +1009,7 @@ DecimalFormat formateador = new DecimalFormat("####.##");
                         //Se hace la operacion aqui ya que solo se ejecutara 1 vez
                         for (int j = 0; j < arrcargoseleccion.size(); j++) {
                             cargo car = new cargo();
-                            arruuid.add(arrcargoseleccion.get(j).getFoliofiscal());
+//                            arruuid.add(arrcargoseleccion.get(j).getFoliofiscal());
                             car.setDescuento(arrcargoseleccion.get(j).getDescuento());// importe a descontar de cargos
                             car.setFoliofiscal(folios);
                             car.setCuenta(arrcargoseleccion.get(j).getCuenta());
@@ -1060,23 +1023,34 @@ DecimalFormat formateador = new DecimalFormat("####.##");
                         }
                     }
                     if (rel.equals("03")) {
-                        df.setPrecio(precioantes);
+                        df.setPrecioant(Double.parseDouble(formateador.format(precio)));
+//                        df.setPrecio(Double.parseDouble(formateador.format(precio / 1.16)));
+                        df.setPrecio(unidad);
+                        df.setBase(Double.parseDouble(formateador.format(precio / 1.16)));
+                        precio = Double.parseDouble(formateador.format(precio / 1.16));
+                        impuesto = formatdecimal((precio * 0.16));
                     } else {
-                        df.setPrecio(Double.parseDouble(formateador.format(precio)));
+                        df.setPrecio(formatdecimal(subtotal));
+                        df.setBase(formatdecimal(subtotal));
+                        df.setPrecioant(formatdecimal(subtotal * 0.16));
+//                        df.setPrecio(Double.parseDouble(formateador.format(precio)));
+//                        df.setBase(Double.parseDouble(formateador.format(precio)));
+//                        df.setPrecioant(Double.parseDouble(formateador.format(impuestos)));
+                        impuesto = formatdecimal(impuestos);
                     }
-                    impuesto = (precio * 0.16);
+
 //                    System.out.println((float) precio * pares);
                     df.setRenglon(i + 1);
                     df.setProducto(0);
-                    df.setCantidad(pares);
+//                    df.setCantidad(pares);
+                    df.setCantidadfloat(pares);
                     df.setDescripcion(descripcion);
                     df.setCodigo(codigosat);
                     df.setUmedida(umedida);
-
-                    df.setBase(Double.parseDouble(formateador.format(precio)));
+//                    df.setBase(Double.parseDouble(formateador.format(precio)));
                     df.setImpuesto("002");
                     df.setTipofactor("Tasa");
-                    df.setImporta((Double.parseDouble(formateador.format(impuesto))));
+                    df.setImporta(impuesto);
                     df.setDescuento(0);
                     df.setTasaocuota("0.16");
                     arrf.add(df);
@@ -1093,7 +1067,7 @@ DecimalFormat formateador = new DecimalFormat("####.##");
                     int id = dfac.nuevancr(cpt, f, ACobranza, rcpt);
                     if (id != 0) {
                         System.out.println("Exito");
-                        daoxml dx = new daoxml();
+                        daoxmlncr dx = new daoxmlncr();
                         f.setId(id);
                         dx.generarfac(f, cpt, sqlempresa);
                         timbrarXML tim = new timbrarXML();
@@ -1110,6 +1084,64 @@ DecimalFormat formateador = new DecimalFormat("####.##");
             }
 
         }
+    }
+
+    private double formatdecimal(double cant) {
+        int dato = 0;
+        int punto = 0;
+        boolean band = false;
+        double resp;
+        String c = String.valueOf(cant);
+//        String cadena = "";
+        for (int i = 0; i < c.length(); i++) {
+//            Empieza a tomar datos despues del punto
+            if (c.charAt(i) == '.') {
+                band = true;
+            }
+            if (band) {
+//                3 digitos de decimal para saber qe hacer con los decimales
+                if (punto == 3) {
+                    dato = Integer.parseInt(c.charAt(i) + "");
+//                    i = c.length();
+//                    break;
+                }
+//                Para un cuarto decimal, si es mayor a
+                if (punto == 4) {
+                    int datoaux = Integer.parseInt(c.charAt(i) + "");
+                    if (datoaux > 5) {
+                        dato += 1;
+                    }
+                    i = c.length();
+                    break;
+                }
+//                cadena += c.charAt(i);
+                punto++;
+            }
+        }
+        if ((dato <= 5)) {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
+        } else {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        }
+        return resp;
+    }
+
+    public ArrayList<cargo> getcargosfacs() {
+        ArrayList<cargo> arr = new ArrayList<>();
+        DecimalFormat formateador = new DecimalFormat("####.##");
+        for (int y = 0; y < arrcargoseleccion.size(); y++) {
+            cargo car = new cargo();
+            double desc = Double.parseDouble(formateador.format(arrcargoseleccion.get(y).getDescuento()));
+            car.setDescuento(Double.parseDouble(formateador.format(desc)));
+            car.setFoliofiscal(arrcargoseleccion.get(y).getFoliofiscal());
+            car.setCuenta(arrcargoseleccion.get(y).getCuenta());
+            car.setSubcuenta(arrcargoseleccion.get(y).getSubcuenta());
+            car.setCliente(arrcargoseleccion.get(y).getCliente());
+            car.setReferencia(arrcargoseleccion.get(y).getReferencia());
+            car.setFecha(arrcargoseleccion.get(y).getFecha());
+            arr.add(car);
+        }
+        return arr;
     }
 
     /**
@@ -1165,6 +1197,10 @@ DecimalFormat formateador = new DecimalFormat("####.##");
     private void vaciarcampos() {
         arrcargoseleccion.clear();
         JtTCambio.setText("");
+        JlDesc.setText("0");
+        Jlsub.setText("0");
+        JlIva.setText("0");
+        JlTotal.setText("0");
         arrcargo.clear();
         JtCliente.setText("");
         JlNombre.setText("");
@@ -1172,7 +1208,7 @@ DecimalFormat formateador = new DecimalFormat("####.##");
         llenalistafac();
         actualizaimportes();
         cargacombos();
-        for(int i=0;i<model.getRowCount();i++){
+        for (int i = 0; i < model.getRowCount(); i++) {
             model.removeRow(i);
         }
     }
@@ -1221,26 +1257,32 @@ DecimalFormat formateador = new DecimalFormat("####.##");
                 for (int i = 0; i < arrcargoseleccion.size(); i++) {
                     double precio = arrcargoseleccion.get(i).getDescuento();
                     //suma de totales
-                    subtotal += Double.parseDouble(formateador.format(precio / 1.16));
-                    impuestos += Double.parseDouble(formateador.format((precio / 1.16) * 0.16));
+//                    subtotal += Double.parseDouble(formateador.format(precio / 1.16));
+//                    impuestos += Double.parseDouble(formateador.format((precio / 1.16) * 0.16));
+                    subtotal += formatdecimal(precio / 1.16);
+                    impuestos += formatdecimal((precio / 1.16) * 0.16);
                 }
                 if (resp) {// Si, y solo si es un entero o decimal
                     //Variables para manejo de totales
 //                descuentos = subtotal * Float.parseFloat(JtDescuento.getText()) / 100;
                     //impuestos =(float) ((subtotal - descuentos) * iva);
-                    total = subtotal + impuestos;
+//                    total = subtotal + impuestos;
+                    total = formatdecimal(subtotal + impuestos);
                     System.out.println(impuestos);
                     //Solo para despliqgue de informacion
-                    JlIva.setText(formateador.format(impuestos));
-                    Jlsub.setText(formateador.format(subtotal));
-                    JlDesc.setText(formateador.format(descuentos));
-                    JlTotal.setText(formateador.format(total));
+                    JlIva.setText(formatdecimal(impuestos)+"");
+                    Jlsub.setText(formatdecimal(subtotal) + "");
+                    JlDesc.setText(formatdecimal(descuentos) + "");
+                    JlTotal.setText(formatdecimal(total) + "");
                 }
             }
         }
-        String regimen = arrcargo.get(0).getRegimen();
-        String uso = arruso.get(JcUso.getSelectedIndex()).getusocfdi();
-        verificaregimen(sqlcfdi, regimen, uso);
+        if (!arrcargo.isEmpty()) {
+            String regimen = arrcargo.get(0).getRegimen();
+            String uso = arruso.get(JcUso.getSelectedIndex()).getusocfdi();
+            verificaregimen(sqlcfdi, regimen, uso);
+        }
+
     }
 
     private boolean verificaint(String cad) {
@@ -1298,6 +1340,81 @@ DecimalFormat formateador = new DecimalFormat("####.##");
         return resp;
     }
 
+    private void respcod() {
+//                                pre = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
+//                        precioantes = Double.parseDouble(formateador.format((pre)));
+//                        pares = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
+//
+//                        precio = Double.parseDouble(formateador.format((pre) * pares));
+//
+//                        //Precio interno para valores enteros y sin desglose de iva
+//                        preciointerno = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()) * pares;
+//                        descripcion = JtDetalle.getValueAt(i, 0).toString();
+//                        codigosat = JtDetalle.getValueAt(i, 1).toString();
+//                        umedida = "PR";
+//                        double dato = Double.parseDouble(formateador.format(sumatotal + preciointerno + (precio * 0.16)));
+//                        double desc = arrcargoseleccion.get(x).getDescuento();
+//                        System.out.println("precio " + preciointerno + ", desc" + desc + ", " + dato + ", sumatotal " + sumatotal);
+//                        //Hacer operaciones con los importes y resetear si aplica la suma total
+//                        if (dato >= desc) {
+//
+//                            car.setFoliofiscal(folios);
+//                            car.setCuenta(arrcargoseleccion.get(x).getCuenta());
+//                            car.setSubcuenta(arrcargoseleccion.get(x).getSubcuenta());
+//                            car.setCliente(arrcargoseleccion.get(x).getCliente());
+//                            car.setReferencia(arrcargoseleccion.get(x).getReferencia());
+//                            car.setFecha(arrcargoseleccion.get(x).getFecha());
+//                            car.setDescnota(descripcion);
+//                            car.setCantidad(pares);
+//                            //Condiciones para saber si la suma de importes son igual o distintos al de la factura
+//                            if (dato == desc) {
+////                                car.setDescuento(preciointerno + extra);// importe a descontar de cargos
+//                                car.setDescuento(dato + extra);
+////                                arruuid.add(arrcargoseleccion.get(x).getFoliofiscal());
+//                                sumatotal = 0;
+//                                x++;
+//                            } else {
+//                                double flotanteaux = desc - sumatotal;
+//
+//                                // importe inferior menos sumatotal Ej(500-400) considerando 500 como lo introducido y 400 como la suma
+//                                if (flotanteaux < 0) {
+//                                    car.setDescuento(flotanteaux * (-1));
+//                                } else {
+//                                    car.setDescuento(flotanteaux);
+//                                }
+//                                extra = dato - desc;
+////                                if (i + 1 == tamaño || flotanteaux + extra == desc) {
+//                                if (i + 1 == tamaño || dato == desc) {
+////                                    car.setDescuento(flotanteaux + extra);
+//                                    car.setDescuento(dato + extra);
+//                                }
+////                                arruuid.add(arrcargoseleccion.get(x).getFoliofiscal());
+//                                sumatotal += preciointerno + (precio * 0.16);
+//                                sumatotal -= desc;
+//                                x++;
+//                            }
+//                            arrayc.add(car);
+//                        } else {
+//                            //Asignar directo ya que no interfiere con el total de una factura seleccionada
+//                            //No aplica en reciclar codigo por el contador interno de la seleccion
+////                            arruuid.add(arrcargoseleccion.get(x).getFoliofiscal());
+////                            car.setDescuento(preciointerno + extra);// importe a descontar de cargos
+//                            car.setDescuento(dato + extra);
+//                            car.setFoliofiscal(folios);
+//                            car.setCuenta(arrcargoseleccion.get(x).getCuenta());
+//                            car.setSubcuenta(arrcargoseleccion.get(x).getSubcuenta());
+//                            car.setCliente(arrcargoseleccion.get(x).getCliente());
+//                            car.setReferencia(arrcargoseleccion.get(x).getReferencia());
+//                            car.setFecha(arrcargoseleccion.get(x).getFecha());
+//                            car.setDescnota(descripcion);
+//                            car.setCantidad(pares);
+////                            sumatotal += preciointerno;
+//                            sumatotal += dato;
+//                            extra = 0;
+//                            arrayc.add(car);
+//                        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcCuenta;
     private javax.swing.JComboBox<String> JcForma;
@@ -1339,9 +1456,11 @@ DecimalFormat formateador = new DecimalFormat("####.##");
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JPopupMenu pop;
     // End of variables declaration//GEN-END:variables

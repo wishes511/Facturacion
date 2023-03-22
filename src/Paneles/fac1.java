@@ -5,11 +5,15 @@
  */
 package Paneles;
 
+import DAO.daoAddenda;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daoxmlE;
+import Modelo.Addenda;
 import Modelo.Ciudades;
+import Modelo.Corridaaddenda;
+import Modelo.Destinoscoppel;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Estados;
@@ -44,6 +48,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -77,9 +82,8 @@ import org.xml.sax.SAXException;
 public class fac1 extends javax.swing.JPanel {
 
     public String nombre, empresa, empresacob;
-    public Connection sqlcfdi, sqlempresa;
+    public Connection sqlcfdi, sqlempresa, liteusuario;
     public Connection ACobranza, cpt, rcpt;
-    Serverylite slite = new Serverylite();
     Serverprod prod = new Serverprod();
     public ArrayList<Formadepago> arrfpago = new ArrayList<>();
     public ArrayList<usocfdi> arruso = new ArrayList<>();
@@ -100,6 +104,7 @@ public class fac1 extends javax.swing.JPanel {
         JtCliente.requestFocus();
         JbXml.setEnabled(false);
         JbCancelar.setEnabled(false);
+        JbAddenda.setEnabled(false);
     }
 
     /**
@@ -111,6 +116,8 @@ public class fac1 extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        Pop = new javax.swing.JPopupMenu();
+        JmPedfac = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -119,7 +126,17 @@ public class fac1 extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         JbXml = new javax.swing.JButton();
         JbCancelar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        JbAddenda = new javax.swing.JButton();
+
+        JmPedfac.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/applicationsgraphicsdrawing_103768.png"))); // NOI18N
+        JmPedfac.setText("Modificar pedido de factura");
+        JmPedfac.setToolTipText("");
+        JmPedfac.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmPedfacActionPerformed(evt);
+            }
+        });
+        Pop.add(JmPedfac);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -188,10 +205,15 @@ public class fac1 extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        JbAddenda.setBackground(new java.awt.Color(255, 255, 255));
+        JbAddenda.setForeground(new java.awt.Color(255, 255, 255));
+        JbAddenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/package_box_10801.png"))); // NOI18N
+        JbAddenda.setToolTipText("Agrega addenda");
+        JbAddenda.setBorder(null);
+        JbAddenda.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        JbAddenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                JbAddendaActionPerformed(evt);
             }
         });
 
@@ -207,6 +229,8 @@ public class fac1 extends javax.swing.JPanel {
                     .addComponent(JtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
                     .addComponent(jSeparator2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JbAddenda, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(JbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(JbXml, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -215,10 +239,8 @@ public class fac1 extends javax.swing.JPanel {
                 .addGap(22, 22, 22))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 992, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(186, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1199, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -235,16 +257,11 @@ public class fac1 extends javax.swing.JPanel {
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1)
                     .addComponent(JbXml, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(186, 186, 186))))
+                    .addComponent(JbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JbAddenda, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -307,6 +324,7 @@ public class fac1 extends javax.swing.JPanel {
                 break;
         }
         f.setId(id);
+        f.setExportacion("01");
         f.setIva(arrfacturaxml.get(0).getIva());
         f.setImpuestos(Double.parseDouble(im));
         f.setFolio(arrfacturaxml.get(0).getFolio());
@@ -364,6 +382,9 @@ public class fac1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JbXmlActionPerformed
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
+        if (evt.getButton() == 3) {// activar con clic derecho
+            Pop.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
         int row = JtDetalle.getSelectedRow();
         int e = arrfactura.get(row).getEstatus();
         String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
@@ -374,6 +395,12 @@ public class fac1 extends javax.swing.JPanel {
             JbXml.setEnabled(false);
             JbCancelar.setEnabled(true);
         }
+        if (arrfactura.get(row).getNombre().equals("COPPEL") && tim.equals("T")) {
+            JbAddenda.setEnabled(true);
+        } else {
+            JbAddenda.setEnabled(false);
+        }
+//        JbAddenda.setEnabled(true);
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void JbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelarActionPerformed
@@ -465,40 +492,47 @@ public class fac1 extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jLabel6MousePressed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void JbAddendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbAddendaActionPerformed
+        generaradenda();
+    }//GEN-LAST:event_JbAddendaActionPerformed
 
-            String archivo = "C:\\af\\filesfac\\FAC_14512.xml";
-            factura fac=arrfactura.get(JtDetalle.getSelectedRow());
-            Setaddenda sa= new Setaddenda(archivo,fac);
-            sa.Construyeaddenda();
-            
-//            Document doc;
-//            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-//            DocumentBuilder builder = dbFactory.newDocumentBuilder();
-//            doc = builder.parse(archivo);
-//            doc.getDocumentElement().normalize();
-////            NodeList comp1 = doc.getElementsByTagName("cfdi:Conceptos");
-//            
-//            Node ar = doc.getElementsByTagName("cfdi:Comprobante").item(0);
-//            Element eli = doc.createElement("cfdi:Addenda");
-//            eli.setAttribute("a", "a");
-//            eli.setAttribute("b", "b");
-//            Element elis = doc.createElement("Addenda");
-//            elis.setAttribute("c", "c");
-//            eli.appendChild(elis);
-//            ar.appendChild(eli);
-//            
-//            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-//            Transformer transformer = null;
-//            transformer = transformerFactory.newTransformer();
-//            DOMSource source = new DOMSource(doc);
-//            StreamResult result = new StreamResult(new File(archivo));
-//            transformer.transform(source, result);
-//            System.out.println("Done");
+    private void JmPedfacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPedfacActionPerformed
+        Modpedidos mped = new Modpedidos(null, true);
+        mped.rcpt = rcpt;
+        mped.cpt = cpt;
+        mped.setVisible(true);
+    }//GEN-LAST:event_JmPedfacActionPerformed
 
+    private void generaradenda() {
+        if (!arrfactura.isEmpty()) {
+            String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
+            int row = JtDetalle.getSelectedRow();
+            String archivo = getempresa(sqlempresa, e) + "\\FAC_" + arrfactura.get(row).getFolio() + ".xml";
+            System.out.println(archivo);
+            daoAddenda dadenda = new daoAddenda();
+            ArrayList<Corridaaddenda> arrcorend = dadenda.getCoraddenda(liteusuario);
+            ArrayList<Addenda> arradenda = dadenda.getAddenda(cpt, arrfactura.get(row), arrcorend);
+            ArrayList<Destinoscoppel> arrdestinos = dadenda.getDestinos(rcpt);
+            facAddenda faddenda = new facAddenda(null, true);
+            faddenda.f = arrfactura.get(row);
+            faddenda.empresa = e;
+            faddenda.arraddenda = arradenda;
+            faddenda.arrdestinos = arrdestinos;
+            faddenda.archivoxml = archivo;
+            faddenda.rcpt=rcpt;
+            faddenda.cpt=cpt;
+            faddenda.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+            faddenda.setVisible(true);
 
+        }
+    }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private String getempresa(Connection c, String n) {
+        daoempresa d = new daoempresa();
+        Empresas e = d.getempresarfc(c, n);
+        return e.getXml();
+    }
+
     /**
      *
      * @param tipo
@@ -647,11 +681,13 @@ public class fac1 extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JbAddenda;
     private javax.swing.JButton JbCancelar;
     private javax.swing.JButton JbXml;
+    private javax.swing.JMenuItem JmPedfac;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JPopupMenu Pop;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;

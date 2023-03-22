@@ -240,6 +240,7 @@ public class generarXML40pagos {
         for (int i = 0; i < f.getArrpagos().size(); i++) {// prueba con 1 elemento random
             Comprobante.Complemento.Pagos.Pago.DoctoRelacionado doc = of.createComprobanteComplementoPagosPagoDocs();
             doc.setFolio(f.getArrpagos().get(i).getRef());
+            doc.setSerie("PAG");
             doc.setIdDocumento(f.getArrpagos().get(i).getUuid());
             doc.setObjetoImpDR("02");
             doc.setMonedaDR(CMoneda.MXN);
@@ -277,58 +278,63 @@ public class generarXML40pagos {
         trasladosp.getTrasladoP().add(trasladop);
         impuestos.setTrasladosP(trasladosp);
         //Termino de impuestosP
-        Comprobante.Complemento.Pagos.Pago pago17 = of.createComprobanteComplementoPagosPago();
-        if (!f.getArrpagos17().isEmpty()) {
-            pago17.setFechaPago(fecha);
-            pago17.setFormaDePagoP("17");
-            pago17.setMonedaP(CMoneda.MXN);
-            pago17.setMonto(BigDecimal.valueOf(Double.parseDouble(formateador.format(f.getTotalpago17()))));
-            pago17.setTipoCambioP(BigDecimal.valueOf(1));
-            pago17.setNumOperacion(f.getFolio());
+        Comprobante.Complemento.Pagos.Pago pago17=null;
+        if (!f.getArrpagos17().isEmpty()) {//Este si es necesario ya que sino agrega el nodo aunque no tenga nada
+            pago17 = of.createComprobanteComplementoPagosPago();
+            if (!f.getArrpagos17().isEmpty()) {
+                pago17.setFechaPago(fecha);
+                pago17.setFormaDePagoP("17");
+                pago17.setMonedaP(CMoneda.MXN);
+                pago17.setMonto(BigDecimal.valueOf(Double.parseDouble(formateador.format(f.getTotalpago17()))));
+                pago17.setTipoCambioP(BigDecimal.valueOf(1));
+                pago17.setNumOperacion(f.getFolio());
 //        List<Comprobante.Complemento.Pagos.Pago.DoctoRelacionado> arrrel = pago.getDoctoRelacionado();
 //  Lista de documentos relacionados Arraylist de documentos
 //        for (int i = 0; i < des.size(); i++) {
-            for (int i = 0; i < f.getArrpagos17().size(); i++) {// prueba con 1 elemento random
-                Comprobante.Complemento.Pagos.Pago.DoctoRelacionado doc17 = of.createComprobanteComplementoPagosPagoDocs();
-                doc17.setFolio(f.getArrpagos17().get(i).getRef());
-                doc17.setIdDocumento(f.getArrpagos17().get(i).getUuid());
-                doc17.setObjetoImpDR("02");
-                doc17.setMonedaDR(CMoneda.MXN);
-                doc17.setImpSaldoInsoluto(BigDecimal.valueOf(f.getArrpagos17().get(i).getImpsaldoinsoluto()).setScale(2, RoundingMode.HALF_UP));
-                doc17.setImpSaldoAnt(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportesaldoant()).setScale(2, RoundingMode.HALF_UP));
-                doc17.setImpPagado(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportepagado()).setScale(2, RoundingMode.HALF_UP));
-                doc17.setEquivalenciaDR(BigDecimal.ONE);
-                doc17.setNumParcialidad(BigInteger.valueOf(f.getArrpagos17().get(i).getParcialidad()));
-                //Impuestos por documento
-                //Crear ImpuestosDR, TrasladosDR y TrasladoDR
-                Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR impdr17 = of.createComprobanteComplementoPagosPagoDocsImpuestoDR();
-                Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR trasladosdr17 = of.createComprobanteComplementoPagosPagoDocsImpuestoDRTrasladosDR();
-                Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR.TrasladoDR tr17 = of.createComprobanteComplementoPagosPagoDocsImpuestoDRTrasladosDRTrasladoDR();
-                tr17.setTipoFactorDR(CTipoFactor.TASA);
-                tr17.setTasaOCuotaDR(f.getTasaCuota());
-                tr17.setImpuestoDR("002");
-                tr17.setImporteDR(BigDecimal.valueOf((f.getArrpagos17().get(i).getImportepagado() / 1.16) * 0.16).setScale(6, RoundingMode.HALF_UP));
-                tr17.setBaseDR(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportepagado() / 1.16).setScale(6, RoundingMode.HALF_UP));
-                trasladosdr17.getTrasladoDR().add(tr17);
-                impdr17.setTrasladosDR(trasladosdr17);//traslado
-                doc17.setImpuestosDR(impdr17);//Nodo con valor de ImpuestoDR
-                pago17.getDoctoRelacionado().add(doc17);//agregar objeto al pago
+                for (int i = 0; i < f.getArrpagos17().size(); i++) {// prueba con 1 elemento random
+                    Comprobante.Complemento.Pagos.Pago.DoctoRelacionado doc17 = of.createComprobanteComplementoPagosPagoDocs();
+                    doc17.setFolio(f.getArrpagos17().get(i).getRef());
+                    doc17.setSerie("PAG");
+                    doc17.setIdDocumento(f.getArrpagos17().get(i).getUuid());
+                    doc17.setObjetoImpDR("02");
+                    doc17.setMonedaDR(CMoneda.MXN);
+                    doc17.setImpSaldoInsoluto(BigDecimal.valueOf(f.getArrpagos17().get(i).getImpsaldoinsoluto()).setScale(2, RoundingMode.HALF_UP));
+                    doc17.setImpSaldoAnt(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportesaldoant()).setScale(2, RoundingMode.HALF_UP));
+                    doc17.setImpPagado(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportepagado()).setScale(2, RoundingMode.HALF_UP));
+                    doc17.setEquivalenciaDR(BigDecimal.ONE);
+                    doc17.setNumParcialidad(BigInteger.valueOf(f.getArrpagos17().get(i).getParcialidad()));
+                    //Impuestos por documento
+                    //Crear ImpuestosDR, TrasladosDR y TrasladoDR
+                    Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR impdr17 = of.createComprobanteComplementoPagosPagoDocsImpuestoDR();
+                    Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR trasladosdr17 = of.createComprobanteComplementoPagosPagoDocsImpuestoDRTrasladosDR();
+                    Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR.TrasladoDR tr17 = of.createComprobanteComplementoPagosPagoDocsImpuestoDRTrasladosDRTrasladoDR();
+                    tr17.setTipoFactorDR(CTipoFactor.TASA);
+                    tr17.setTasaOCuotaDR(f.getTasaCuota());
+                    tr17.setImpuestoDR("002");
+                    tr17.setImporteDR(BigDecimal.valueOf((f.getArrpagos17().get(i).getImportepagado() / 1.16) * 0.16).setScale(6, RoundingMode.HALF_UP));
+                    tr17.setBaseDR(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportepagado() / 1.16).setScale(6, RoundingMode.HALF_UP));
+                    trasladosdr17.getTrasladoDR().add(tr17);
+                    impdr17.setTrasladosDR(trasladosdr17);//traslado
+                    doc17.setImpuestosDR(impdr17);//Nodo con valor de ImpuestoDR
+                    pago17.getDoctoRelacionado().add(doc17);//agregar objeto al pago
+                }
+                //Fin de documentos relacionados e impuestos DR
+                //Final del documento impuestoP
+                //Crear ImpuestosP, TrasladosP y Traslado
+                Comprobante.Complemento.Pagos.Pago.ImpuestosP impuestos17 = of.createComprobanteComplementoPagosPagoImpuestoP();
+                Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP trasladosp17 = of.createComprobanteComplementoPagosPagoImpuestoPTrasladosP();
+                Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP.TrasladoP trasladop17 = of.createComprobanteComplementoPagosPagoImpuestoPTrasladosPTrasladoP();
+                trasladop17.setTipoFactorP(CTipoFactor.TASA);
+                trasladop17.setTasaOCuotaP(f.getTasaCuota());
+                trasladop17.setImpuestoP("002");
+                trasladop17.setImporteP(BigDecimal.valueOf(f.getImpiva17()).setScale(2, RoundingMode.HALF_UP));
+                trasladop17.setBaseP(BigDecimal.valueOf(f.getBaseiva17()).setScale(2, RoundingMode.HALF_UP));
+                trasladosp17.getTrasladoP().add(trasladop17);
+                impuestos17.setTrasladosP(trasladosp17);
+                pago17.setImpuestosP(impuestos17);
+                //Termino de impuestosP
             }
-            //Fin de documentos relacionados e impuestos DR
-            //Final del documento impuestoP
-            //Crear ImpuestosP, TrasladosP y Traslado
-            Comprobante.Complemento.Pagos.Pago.ImpuestosP impuestos17 = of.createComprobanteComplementoPagosPagoImpuestoP();
-            Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP trasladosp17 = of.createComprobanteComplementoPagosPagoImpuestoPTrasladosP();
-            Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP.TrasladoP trasladop17 = of.createComprobanteComplementoPagosPagoImpuestoPTrasladosPTrasladoP();
-            trasladop17.setTipoFactorP(CTipoFactor.TASA);
-            trasladop17.setTasaOCuotaP(f.getTasaCuota());
-            trasladop17.setImpuestoP("002");
-            trasladop17.setImporteP(BigDecimal.valueOf(f.getImpiva17()).setScale(2, RoundingMode.HALF_UP));
-            trasladop17.setBaseP(BigDecimal.valueOf(f.getBaseiva17()).setScale(2, RoundingMode.HALF_UP));
-            trasladosp17.getTrasladoP().add(trasladop17);
-            impuestos17.setTrasladosP(trasladosp17);
-            pago17.setImpuestosP(impuestos17);
-            //Termino de impuestosP
+
         }
 
         //setear impuestos a pago

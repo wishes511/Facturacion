@@ -307,90 +307,90 @@ public class ObjectFactory {
     }
 
 //    Object factory de exportacion
-    public Comprobante.Complemento.ComercioExterior createComercioExterior() {
-        return new Comprobante.Complemento.ComercioExterior();
-    }
-    
-
-    /**
-     * Create an instance of {@link ComercioExterior.Mercancias }
-     *
-     */
-    public Comprobante.Complemento.ComercioExterior.Mercancias createComercioExteriorMercancias() {
-        return new Comprobante.Complemento.ComercioExterior.Mercancias();
-    }
-
-    /**
-     * Create an instance of {@link ComercioExterior.Mercancias.Mercancia }
-     *
-     */
-    public Comprobante.Complemento.ComercioExterior.Mercancias.Mercancia createComercioExteriorMercanciasMercancia() {
-        return new Comprobante.Complemento.ComercioExterior.Mercancias.Mercancia();
-    }
-
-    /**
-     * Create an instance of {@link ComercioExterior.Destinatario }
-     *
-     */
-    public Comprobante.Complemento.ComercioExterior.Destinatario createComercioExteriorDestinatario() {
-        return new Comprobante.Complemento.ComercioExterior.Destinatario();
-    }
-
-    /**
-     * Create an instance of {@link ComercioExterior.Receptor }
-     *
-     */
-    public Comprobante.Complemento.ComercioExterior.Receptor createComercioExteriorReceptor() {
-        return new Comprobante.Complemento.ComercioExterior.Receptor();
-    }
-
-    /**
-     * Create an instance of {@link ComercioExterior.Emisor }
-     *
-     */
-    public Comprobante.Complemento.ComercioExterior.Emisor createComercioExteriorEmisor() {
-        return new Comprobante.Complemento.ComercioExterior.Emisor();
-    }
-
-    /**
-     * Create an instance of {@link ComercioExterior.Propietario }
-     *
-     */
-    public Comprobante.Complemento.ComercioExterior.Propietario createComercioExteriorPropietario() {
-        return new Comprobante.Complemento.ComercioExterior.Propietario();
-    }
-
-    /**
-     * Create an instance of {@link ComercioExterior.Mercancias.Mercancia.DescripcionesEspecificas
-     * }
-     *
-     */
-    public Comprobante.Complemento.ComercioExterior.Mercancias.Mercancia.DescripcionesEspecificas createComercioExteriorMercanciasMercanciaDescripcionesEspecificas() {
-        return new Comprobante.Complemento.ComercioExterior.Mercancias.Mercancia.DescripcionesEspecificas();
-    }
-
-    /**
-     * Create an instance of {@link ComercioExterior.Destinatario.Domicilio }
-     *
-     */
-    public Comprobante.Complemento.ComercioExterior.Destinatario.Domicilio createComercioExteriorDestinatarioDomicilio() {
-        return new Comprobante.Complemento.ComercioExterior.Destinatario.Domicilio();
-    }
-
-    /**
-     * Create an instance of {@link ComercioExterior.Receptor.Domicilio }
-     *
-     */
-    public Comprobante.Complemento.ComercioExterior.Receptor.Domicilio createComercioExteriorReceptorDomicilio() {
-        return new Comprobante.Complemento.ComercioExterior.Receptor.Domicilio();
-    }
-
-    /**
-     * Create an instance of {@link ComercioExterior.Emisor.Domicilio }
-     *
-     */
-    public Comprobante.Complemento.ComercioExterior.Emisor.Domicilio createComercioExteriorEmisorDomicilio() {
-        return new Comprobante.Complemento.ComercioExterior.Emisor.Domicilio();
-    }
+//    public Comprobante.Complemento.ComercioExterior createComercioExterior() {
+//        return new Comprobante.Complemento.ComercioExterior();
+//    }
+//    
+//
+//    /**
+//     * Create an instance of {@link ComercioExterior.Mercancias }
+//     *
+//     */
+//    public Comprobante.Complemento.ComercioExterior.Mercancias createComercioExteriorMercancias() {
+//        return new Comprobante.Complemento.ComercioExterior.Mercancias();
+//    }
+//
+//    /**
+//     * Create an instance of {@link ComercioExterior.Mercancias.Mercancia }
+//     *
+//     */
+//    public Comprobante.Complemento.ComercioExterior.Mercancias.Mercancia createComercioExteriorMercanciasMercancia() {
+//        return new Comprobante.Complemento.ComercioExterior.Mercancias.Mercancia();
+//    }
+//
+//    /**
+//     * Create an instance of {@link ComercioExterior.Destinatario }
+//     *
+//     */
+//    public Comprobante.Complemento.ComercioExterior.Destinatario createComercioExteriorDestinatario() {
+//        return new Comprobante.Complemento.ComercioExterior.Destinatario();
+//    }
+//
+//    /**
+//     * Create an instance of {@link ComercioExterior.Receptor }
+//     *
+//     */
+//    public Comprobante.Complemento.ComercioExterior.Receptor createComercioExteriorReceptor() {
+//        return new Comprobante.Complemento.ComercioExterior.Receptor();
+//    }
+//
+//    /**
+//     * Create an instance of {@link ComercioExterior.Emisor }
+//     *
+//     */
+//    public Comprobante.Complemento.ComercioExterior.Emisor createComercioExteriorEmisor() {
+//        return new Comprobante.Complemento.ComercioExterior.Emisor();
+//    }
+//
+//    /**
+//     * Create an instance of {@link ComercioExterior.Propietario }
+//     *
+//     */
+//    public Comprobante.Complemento.ComercioExterior.Propietario createComercioExteriorPropietario() {
+//        return new Comprobante.Complemento.ComercioExterior.Propietario();
+//    }
+//
+//    /**
+//     * Create an instance of {@link ComercioExterior.Mercancias.Mercancia.DescripcionesEspecificas
+//     * }
+//     *
+//     */
+//    public Comprobante.Complemento.ComercioExterior.Mercancias.Mercancia.DescripcionesEspecificas createComercioExteriorMercanciasMercanciaDescripcionesEspecificas() {
+//        return new Comprobante.Complemento.ComercioExterior.Mercancias.Mercancia.DescripcionesEspecificas();
+//    }
+//
+//    /**
+//     * Create an instance of {@link ComercioExterior.Destinatario.Domicilio }
+//     *
+//     */
+//    public Comprobante.Complemento.ComercioExterior.Destinatario.Domicilio createComercioExteriorDestinatarioDomicilio() {
+//        return new Comprobante.Complemento.ComercioExterior.Destinatario.Domicilio();
+//    }
+//
+//    /**
+//     * Create an instance of {@link ComercioExterior.Receptor.Domicilio }
+//     *
+//     */
+//    public Comprobante.Complemento.ComercioExterior.Receptor.Domicilio createComercioExteriorReceptorDomicilio() {
+//        return new Comprobante.Complemento.ComercioExterior.Receptor.Domicilio();
+//    }
+//
+//    /**
+//     * Create an instance of {@link ComercioExterior.Emisor.Domicilio }
+//     *
+//     */
+//    public Comprobante.Complemento.ComercioExterior.Emisor.Domicilio createComercioExteriorEmisorDomicilio() {
+//        return new Comprobante.Complemento.ComercioExterior.Emisor.Domicilio();
+//    }
 
 }

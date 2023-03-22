@@ -5,7 +5,6 @@
  */
 package Persistencia;
 
-
 import Modelo.Agentes;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,11 +17,16 @@ import java.util.logging.Logger;
 /**
  *
  * mich
- * 
+ *
  * @author GATEWAY1-Michel araujo
  */
 public class sqlagentes {
 
+    /**
+     *Obtiene toda la lista de agentes
+     * @param con
+     * @return
+     */
     public ArrayList<Agentes> getAgentes(Connection con) {//cobranza
         ArrayList<Agentes> arr = new ArrayList<>();
         try {

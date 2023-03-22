@@ -100,7 +100,7 @@ public class generarXML40 {
 
         //Datos generales
         xml.setVersion("4.0");
-        xml.setExportacion("01");
+        xml.setExportacion(encabezado.getExportacion());
         xml.setSerie(encabezado.getSerie());
         xml.setFolio(encabezado.getFolio());
         xml.setFecha(fecha);
@@ -429,6 +429,15 @@ public class generarXML40 {
                 break;
             case "D04":
                 receptor.setUsoCFDI(CUsoCFDI.D_04);
+                break;
+            case "I05":
+                receptor.setUsoCFDI(CUsoCFDI.I_05);
+                break;
+            case "I06":
+                receptor.setUsoCFDI(CUsoCFDI.I_06);
+                break;
+            case "I07":
+                receptor.setUsoCFDI(CUsoCFDI.I_07);
                 break;
         }
         receptor.setRegimenFiscalReceptor(obj.getRegimenFR());

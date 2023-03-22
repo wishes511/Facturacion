@@ -5,6 +5,9 @@
  */
 package Modelo;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  *
  * @author GATEWAY1-
@@ -19,7 +22,7 @@ public class Formateodedatos {
      */
     public String ffecha(String fecha) {
         String resp = "";
-        for (int i = 0; i < fecha.length()-2; i++) {
+        for (int i = 0; i < fecha.length() - 2; i++) {
             if (fecha.charAt(i) == ' ') {
                 resp += "T";
             } else {
@@ -69,38 +72,82 @@ public class Formateodedatos {
      */
     public String ftotal(String cant) {
         String resp = "";
-        String respfinal="";
+        String respfinal = "";
         int a = 0;
-        int cont=0;
-        boolean band=false;
-        String decimal="";
-        String entero="";
+        int cont = 0;
+        boolean band = false;
+        String decimal = "";
+        String entero = "";
         for (int i = 0; i < cant.length(); i++) {
             if (cant.charAt(i) == '.' || band) {
-                band=true;
-                decimal+=cant.charAt(i);
+                band = true;
+                decimal += cant.charAt(i);
                 if (a == 2) {
                     resp = cant;
                     break;
                 }
                 a++;
             } else {
-                entero+=cant.charAt(i);
+                entero += cant.charAt(i);
                 cont++;
             }
-            
+
         }
-        if(decimal.length()==2){
-            decimal=decimal+"0";
+        if (decimal.length() == 2) {
+            decimal = decimal + "0";
         }
 //        System.out.println(entero+decimal);
-        int ncaracter=entero.length()+decimal.length();
-        if(band==false){
-             resp = cant + ".00";
+        int ncaracter = entero.length() + decimal.length();
+        if (band == false) {
+            resp = cant + ".00";
         }
-        for (int i=0;i<16-ncaracter;i++) {
-            respfinal+="0";
+        for (int i = 0; i < 16 - ncaracter; i++) {
+            respfinal += "0";
         }
-        return respfinal+""+entero+""+decimal;
+        return respfinal + "" + entero + "" + decimal;
     }
+
+    public double formatdecimal(double cant) {
+        int dato = 0;
+        int punto = 0;
+        boolean band = false;
+        double resp;
+        String c = String.valueOf(cant);
+//        String cadena = "";
+        for (int i = 0; i < c.length(); i++) {
+//            Empieza a tomar datos despues del punto
+            if (c.charAt(i) == '.') {
+                band = true;
+            }
+            if (band) {
+//                3 digitos de decimal para saber qe hacer con los decimales
+                if (punto == 3) {
+                    dato = Integer.parseInt(c.charAt(i) + "");
+                    i = c.length();
+                    break;
+                }
+//                cadena += c.charAt(i);
+                punto++;
+            }
+        }
+        if ((dato <= 5)) {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
+        } else {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        }
+        return resp;
+    }
+    
+    public String formatclientedigito(String cliente){
+        String resp="";
+        if(cliente.length()!=4){
+            for(int i=cliente.length();i<4;i++){
+                resp+="0";
+            }
+        }
+        resp=resp+cliente;
+        System.out.println(resp);
+        return resp;
+    }
+
 }

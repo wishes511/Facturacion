@@ -745,9 +745,11 @@ public class fac2E extends javax.swing.JPanel {
                 do {//ciclo hasta que termine la busqueda y asignacion, no es lo ideal pero es temporal y reduce colisiones
 
                 } while (n.isAlive());
+                f.setExportacion("01");
                 f.setFolio(n.getfolio());
                 f.setClaveusuario("");
                 f.setSerie("FAC");
+                f.setTurno(u.getTurno());
                 f.setFecha(sdf.format(date));
                 f.setPedido("");
                 f.setFechasolicitado(sdf.format(date));
@@ -865,7 +867,7 @@ public class fac2E extends javax.swing.JPanel {
                 Formateodedatos fd= new Formateodedatos();
                 for (int i = 0; i < arrpoliza.size(); i++) {
                     String c = arrpoliza.get(i).getCuentalarga();
-                    String cuenta = fd.convertcliente(c + arrcliente.get(row).getCvecliente());
+                    String cuenta = fd.convertcliente(c + fd.formatclientedigito(arrcliente.get(row).getCvecliente()+""));
                     Poliza p = new Poliza();
                     p.setCuenta(1);
                     p.setSub(5);
@@ -1123,6 +1125,7 @@ public class fac2E extends javax.swing.JPanel {
         JlTotal.setText("");
         Jlfp.setText("");
         JlUso.setText("");
+        relacion="";
         cargacombos();
         llenalista();
         cargaclientes();

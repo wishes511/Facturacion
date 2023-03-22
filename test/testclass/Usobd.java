@@ -5,6 +5,7 @@
  */
 package testclass;
 
+import Modelo.Formateodedatos;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -98,10 +99,12 @@ public class Usobd {
     
     public static void main(String[] args) {
         Usobd b = new Usobd();
-        b.getcon();
-        b.getavances();
-//        b.nuevoavances();
-        b.cerrarconexion();
+//        b.getcon();
+//        b.getavances();
+////        b.nuevoavances();
+//        b.cerrarconexion();
+Formateodedatos f = new Formateodedatos();
+f.formatclientedigito("9");
     }
     
 }

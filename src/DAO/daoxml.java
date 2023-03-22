@@ -52,6 +52,7 @@ public class daoxml {
                     break;
                 }
             }
+            x.setExportacion(f.getExportacion());
             x.setArruuid(f.getArruuid());
             x.setRelacion(f.getTiporelacion());
             x.setIddocumentos(f.getId());

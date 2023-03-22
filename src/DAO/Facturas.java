@@ -32,12 +32,21 @@ public interface Facturas {
      * @return
      */
     public int nuevafacE(Connection c, factura f, Connection cob, Connection rcpt);// factura y generar xml
+    
+    public int nuevafacTraslado(Connection cpt,Connection rcpt, factura f);// factura y generar xml
 
     public ArrayList<factura> getfacs(Connection c, String folio);//despliegue de facturas
 
     public factura getfac(Connection c, String folio);//despliegue de facturas
 
     public int getmaxfolio(Connection c);
+    
+    /**
+     * Trae el ultimo folio del traslado de la tabla de documentos solamente
+     * @param c Conexion de cpt
+     * @return 
+     */
+    public int getmaxtraslado(Connection c);
 
     /**
      *
@@ -52,7 +61,7 @@ public interface Facturas {
     public int getbuscafolioncr(Connection c, String serie);
 
     public void actualizacadena(Connection c, factura f);
-    
+
     public void actualizacadenapago(Connection c, factura f);
 
     public int getmaxncr(Connection c);
@@ -78,34 +87,60 @@ public interface Facturas {
     public int getmaxPago(Connection c);
 
     public ArrayList<factura> getdoc(Connection cpt, String fol, String serie, String empcobranza);
-    
+
     public ArrayList<factura> getdocxml(Connection cpt, String fol, String serie, String empcobranza);
 
     public boolean Updatesellofiscal(Connection cpt, Sellofiscal s, int id);
-    
+
     public boolean Updatesellofiscalpago(Connection cpt, Sellofiscal s, int id);
 
     public ArrayList<Cliente> getClienteface(Connection cob, String ncliente);
-    
+
     /**
-     * 
-     * @param c
-     * conexion a cpt
-     * @param r
-     * Id o nombre del cliente
-     * @param bd
-     * Nombre de bd a cobranza
-     * @return 
+     *
+     * @param c conexion a cpt
+     * @param r Id o nombre del cliente
+     * @param bd Nombre de bd a cobranza
+     * @return
      */
     public ArrayList<cargo> getfactstoFACRel(Connection c, String r, String bd);
-    
+
     /**
-     * 
+     *
      * @param cpt
      * @param rcpt
      * @param cobranza
-     * @param f 
+     * @param f
      */
     public void cancelafac(Connection cpt, Connection rcpt, Connection cobranza, factura f);
+
+    /**
+     *
+     * @param concob
+     * @return
+     */
     public ArrayList<Poliza> getasientoscontable(Connection concob);
+
+    /**
+     * Funcion para actualizar por rango de folios el numero de pedido
+     *
+     * @param rcpt Conexion de rcpt
+     * @param cpt Conexion cpt
+     * @param folio folio inicial
+     * @param foliof Folio final
+     * @param pedido
+     * @return
+     */
+    public boolean actualizapedidos(Connection rcpt, Connection cpt, int folio, int foliof, String pedido);
+
+    /**
+     * Actualiza el paquete de acuerdo a la factura
+     *
+     * @param rcpt
+     * @param cpt Conexiones para la bd
+     * @param paquete Paquete para addenda
+     * @param folio folio de la factura
+     * @return
+     */
+    public boolean setpaquetefact(Connection rcpt, Connection cpt, int paquete, int folio);
 }

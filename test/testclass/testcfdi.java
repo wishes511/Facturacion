@@ -8,6 +8,7 @@ package testclass;
 import Modelo.factura;
 import Server.Serverprod;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import mx.sat.cfd40.generarXML40;
 import mx.sat.cfd40.xmlDAO;
+import org.apache.xml.serialize.OutputFormat;
+import org.apache.xml.serialize.XMLSerializer;
 import org.jdom2.Document;
 
 /**
@@ -27,8 +30,10 @@ public class testcfdi {
     Serverprod s = new Serverprod();
     public static void main(String [] args) throws IOException{
    
-    doc();
-    
+//    doc();
+    testcfdi t = new testcfdi();
+    t.validarcert(); 
+   
     }
     
      private static void doc(){
@@ -89,12 +94,12 @@ public class testcfdi {
     }
     
     private void validarcert() throws IOException{
-//                String file = "C:\\af\\afo.cer";
+//                String file = "C:\\ESD\\CSD_ESCUELA_WILSON_ESQUIVEL_SA_DE_CV__EWE1709045U0_20190617_132205s.cer";
 //    
-//    String filekey = "C:\\af\\afo.key";
+//    String filekey = "C:\\ESD\\CSD_ESCUELA_WILSON_ESQUIVEL_SA_DE_CV__EWE1709045U0_20190617_132205.key";
 //    
 //
-//    LectorCerts cert = new LectorCerts(file, filekey, "AFO901221IC2");
+//    LectorCerts cert = new LectorCerts(file, filekey, "12345678a");
 //    
 //    System.out.println(cert.getNumeroSerie());
 //    System.out.println(cert.getVigencia());
@@ -103,7 +108,7 @@ public class testcfdi {
 //    System.out.println(cert.isVigente());
 //    System.out.println(cert.isCorrectPassword());
 //    System.out.println(cert.correspondenClaves());
-//    System.out.println(cert.verificaRFC("AFO901221IC2"));
+//    System.out.println(cert.verificaRFC("EWE1709045U0"));
 //    
 //    
 //        StringWriter sw;

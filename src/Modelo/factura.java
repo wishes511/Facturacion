@@ -23,8 +23,8 @@ public class factura implements java.io.Serializable{
             , foliofiscalorig, seriefoliofiscalorig, fechafoliofiscalorig, regimen, foliofiscal
             , nodeseriecert, fechacert, sellosat, sellocfdi, usocfdi, tiporelacion, descmetodop, empresa, certificado,marca,
             cuentaabono,subabono, desccuenta,refncredito,rfcctaemisora,ctaemisora,rfcctareceptor,
-            ctareceptora,bancoemisor,bancoreceptor,ordenpago, seriecpt;
-    String codigo, descripcion, umedida,impuestodet,tipofac;
+            ctareceptora,bancoemisor,bancoreceptor,ordenpago, seriecpt, turno;
+    String codigo, descripcion, umedida,impuestodet,tipofac, exportacion;
     double monto, impiva16, baseiva16,totalpago16,total, subtotal, impuestos, Descuento,
             baseimpuesto,cantidadfloat, preciodetalle,basedetalle,descuentodetalle,importedetalle,
             iva, is, montoiva, montoisr, tipocambio, montofoliofiscalorig,impiva17, baseiva17,totalpago17;
@@ -36,6 +36,22 @@ public class factura implements java.io.Serializable{
     ArrayList<Detpagos> arrpagos = new ArrayList<>();
     ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
      ArrayList<Poliza> arrpolizas = new ArrayList<>();
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
+
+    public String getExportacion() {
+        return exportacion;
+    }
+
+    public void setExportacion(String exportacion) {
+        this.exportacion = exportacion;
+    }
 
     public ArrayList<Poliza> getArrpolizas() {
         return arrpolizas;

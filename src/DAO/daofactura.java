@@ -290,24 +290,81 @@ public class daofactura implements Facturas {
         sqlfactura fac = new sqlfactura();
         fac.cancelafac(cpt, rcpt, cobranza, f);
     }
-/**
- * Retorna las lineas de la orden de pago de cuerdo a la subcuenta
- * @param c
- * @param op
- * @param bd
- * @param cuenta
- * @return 
- */
+
+    /**
+     * Retorna las lineas de la orden de pago de cuerdo a la subcuenta
+     *
+     * @param c
+     * @param op
+     * @param bd
+     * @param cuenta
+     * @return
+     */
     @Override
     public ArrayList<abono> getabonospago(Connection c, String op, String bd, int cuenta) {
         sqlfactura s = new sqlfactura();
-        return s.getOrdenesp(c, op, bd,cuenta);
+        return s.getOrdenesp(c, op, bd, cuenta);
     }
 
     @Override
     public ArrayList<Poliza> getasientoscontable(Connection concob) {
         sqlfactura s = new sqlfactura();
         return s.getAsientoscontables(concob);
+    }
+
+    /**
+     *
+     * @param rcpt
+     * @param cpt
+     * @param folio
+     * @param foliof
+     * @param pedido
+     * @return
+     */
+    @Override
+    public boolean actualizapedidos(Connection rcpt, Connection cpt, int folio, int foliof, String pedido) {
+        sqlfactura s = new sqlfactura();
+        return s.modpedido(rcpt, cpt, folio, foliof, pedido);
+    }
+
+    /**
+     * modifica el numero de cajas en la factura
+     *
+     * @param rcpt
+     * @param cpt
+     * @param paquete
+     * @param folio
+     * @return
+     */
+    @Override
+    public boolean setpaquetefact(Connection rcpt, Connection cpt, int paquete, int folio) {
+        sqlfactura s = new sqlfactura();
+        return s.modcajas(rcpt, cpt, paquete, folio);
+    }
+
+    /**
+     *
+     * @param c
+     * @return
+     */
+    @Override
+    public int getmaxtraslado(Connection c) {
+        sqlfactura s = new sqlfactura();
+        return s.getmaxtraslado(c);
+    }
+
+    /**
+     * Nueva factura de traslado
+     *
+     * @param cpt
+     * @param rcpt
+     * @param f
+     * @return
+     */
+    @Override
+    public int nuevafacTraslado(Connection cpt, Connection rcpt, factura f) {
+        sqlfactura s = new sqlfactura();
+        return s.insertfacturatraslado(cpt, rcpt, f);
     }
 
 }

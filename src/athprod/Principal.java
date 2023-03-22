@@ -58,7 +58,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -89,12 +89,16 @@ public final class Principal extends javax.swing.JFrame {
         //setconexiones();
         u.setAth("");
         if (prod.equals("0")) {
+
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
+            u.setTurno("0");
             modoadmin();
+
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();
+
         }
     }
 
@@ -117,6 +121,9 @@ public final class Principal extends javax.swing.JFrame {
         JmProd = new javax.swing.JMenu();
         JmCatalogoprod = new javax.swing.JMenuItem();
         JmFicha = new javax.swing.JMenuItem();
+        JmAvances = new javax.swing.JMenu();
+        JmReportes = new javax.swing.JMenu();
+        JmAvancesPt = new javax.swing.JMenuItem();
         PopMenu = new javax.swing.JPopupMenu();
         JmCobranza = new javax.swing.JMenu();
         JmClientes = new javax.swing.JMenuItem();
@@ -138,9 +145,9 @@ public final class Principal extends javax.swing.JFrame {
         JrEmpresa = new javax.swing.JRadioButton();
         JrEmpresa1 = new javax.swing.JRadioButton();
         JlUsuario = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         JdPanel = new javax.swing.JDesktopPane();
-        jLabel1 = new javax.swing.JLabel();
 
         JmSesion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/key_keys_10804.png"))); // NOI18N
         JmSesion.setText("Iniciar sesion");
@@ -209,6 +216,26 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmProd.add(JmFicha);
+
+        JmAvances.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/organizer_calendar_pen_note_6134.png"))); // NOI18N
+        JmAvances.setText("Avances");
+
+        JmReportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/file_pdf_download_icon-icons.com_68954.png"))); // NOI18N
+        JmReportes.setText("Reportes");
+
+        JmAvancesPt.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        JmAvancesPt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/ForkliftTruck_Loaded_Black_icon-icons.com_54893.png"))); // NOI18N
+        JmAvancesPt.setText("Reporte avances pt");
+        JmAvancesPt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAvancesPtActionPerformed(evt);
+            }
+        });
+        JmReportes.add(JmAvancesPt);
+
+        JmAvances.add(JmReportes);
+
+        JmProd.add(JmAvances);
 
         JmCobranza.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/exchange-dollar_icon-icons.com_53141.png"))); // NOI18N
         JmCobranza.setText("Cobranza");
@@ -318,6 +345,7 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(82, 82, 229));
         jPanel1.setForeground(new java.awt.Color(120, 152, 237));
 
         JlSerie.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -328,8 +356,11 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBackground(new java.awt.Color(153, 153, 255));
 
+        JrEmpresa.setBackground(new java.awt.Color(82, 82, 229));
+        JrEmpresa.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        JrEmpresa.setForeground(new java.awt.Color(255, 255, 255));
         JrEmpresa.setText("Athletic");
         JrEmpresa.setToolTipText("Emisor a facturar");
         JrEmpresa.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -339,6 +370,9 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
 
+        JrEmpresa1.setBackground(new java.awt.Color(82, 82, 229));
+        JrEmpresa1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        JrEmpresa1.setForeground(new java.awt.Color(255, 255, 255));
         JrEmpresa1.setText("Uptown");
         JrEmpresa1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JrEmpresa1.addActionListener(new java.awt.event.ActionListener() {
@@ -352,9 +386,9 @@ public final class Principal extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(JrEmpresa, javax.swing.GroupLayout.DEFAULT_SIZE, 79, Short.MAX_VALUE)
+                .addComponent(JrEmpresa, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JrEmpresa1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(JrEmpresa1))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -363,10 +397,19 @@ public final class Principal extends javax.swing.JFrame {
                 .addComponent(JrEmpresa1))
         );
 
-        JlUsuario.setFont(new java.awt.Font("Corbel", 0, 13)); // NOI18N
+        JlUsuario.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
+        JlUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        JlUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         JlUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 JlUsuarioMousePressed(evt);
+            }
+        });
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/seleccionblanco.png"))); // NOI18N
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel1MousePressed(evt);
             }
         });
 
@@ -375,22 +418,28 @@ public final class Principal extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 640, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(JlUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(JlSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(JlUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(2, 2, 2)
+                .addComponent(JlSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JlSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JlUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(JlSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JlUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1)))
                 .addContainerGap())
         );
 
@@ -428,32 +477,17 @@ public final class Principal extends javax.swing.JFrame {
             .addComponent(JdPanel, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/seleccion.png"))); // NOI18N
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel1MousePressed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -659,7 +693,9 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmFacturacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFacturacionActionPerformed
         try {
+            conexion.setLiteusuario(liteusuario);
             Facturacion c = new Facturacion(conexion, u);
+//            c.liteusuario = liteusuario;
             this.JdPanel.add(c);
 //            c.JtBuscar.requestFocus();
             c.setMaximum(true);
@@ -753,6 +789,27 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmFacturacionEActionPerformed
 
+    private void JmAvancesPtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAvancesPtActionPerformed
+        try {
+            Serverprod s = new Serverprod();
+            Connection av=s.getconexionserver8("Avances");
+            Reporteavancept c = new Reporteavancept(null,true);
+            c.av=av;
+            c.liteav=liteusuario;
+            c.empresacob=conexion.getEmpresacob();
+            c.empresarcpt=conexion.getEmpresarcpt();
+            c.setVisible(true);
+            av.close();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_JmAvancesPtActionPerformed
+
     private void verificausuario() {
         jp.setVisible(true);
         jp.requestFocus();
@@ -824,6 +881,7 @@ public final class Principal extends javax.swing.JFrame {
                     JlUsuario.setText("Michel Admin");
                     u.setUsuario("Michel");
                     u.setGrado("2");
+                    u.setTurno("0");
                     modoadmin();
                     JmSesion.setEnabled(false);
                     jLabel1.requestFocus();
@@ -867,6 +925,20 @@ public final class Principal extends javax.swing.JFrame {
                 }
                 if (u.getTipo_usuario().equals("1")) {
                     JmConf.setVisible(true);
+                }
+
+                if (u.getProduccion().equals("1")) {
+                    JmProd.setVisible(true);
+                }
+                if (u.getAvances().equals("1")) {
+                    JmAvances.setVisible(true);
+                    JmFicha.setVisible(false);
+                }
+                if (u.getTurno().equals("5")) {
+                    JmFacturacion.setVisible(false);
+                    JmVerfacts.setVisible(false);
+                    JmModcaja.setVisible(false);
+                    JmSalidas.setVisible(false);
                 }
                 JmOut.setVisible(true);
                 JmSesion.setEnabled(false);
@@ -937,6 +1009,7 @@ public final class Principal extends javax.swing.JFrame {
     private void setconexionprueba() {
         if (prod.equals("0")) {
             Serverprod s = new Serverprod();
+            Serverylite s1 = new Serverylite();
             try {//    Connection concpt, conupcpt, conrcpt, conrcptup, concob, concobup;
 //            Asignar a una variable cada conexion
                 conexion.setCpt(s.getconexionpruebacpt());
@@ -945,6 +1018,9 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setEmpresa("FATIMACPT");
                 conexion.setEmpresacob("ACobranzaFH");
                 conexion.setEmpresarcpt("FATIMARCPT");
+                liteusuario = s1.getconexionusuarios();
+                conexion.setLiteusuario(liteusuario);
+
             } catch (ClassNotFoundException | IOException | SQLException ex) {
                 Logger.getLogger(pago1.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -971,15 +1047,18 @@ public final class Principal extends javax.swing.JFrame {
                 conupcpt.close();
                 conrcptup.close();
                 concobup.close();
+                liteusuario.close();
             } else {
                 conexion.getCpt().close();
                 conexion.getCobranza().close();
                 conexion.getRcpt().close();
+                liteusuario.close();
             }
-            liteusuario.close();
+
             System.out.println("cerrar paneles");
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(0);
         }
     }
 
@@ -1022,6 +1101,8 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane JdPanel;
     private javax.swing.JLabel JlSerie;
     private javax.swing.JLabel JlUsuario;
+    private javax.swing.JMenu JmAvances;
+    private javax.swing.JMenuItem JmAvancesPt;
     private javax.swing.JMenuItem JmCES;
     private javax.swing.JMenuItem JmCatalogoprod;
     private javax.swing.JMenuItem JmCerrar;
@@ -1037,6 +1118,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmOut;
     private javax.swing.JMenuItem JmPagos;
     private javax.swing.JMenu JmProd;
+    private javax.swing.JMenu JmReportes;
     private javax.swing.JMenuItem JmRespaldos;
     private javax.swing.JMenuItem JmSalidas;
     private javax.swing.JMenuItem JmSesion;

@@ -438,7 +438,6 @@ public class pago1 extends javax.swing.JPanel {
                 f.setTotalpago17(0);
             }
             
-            
             Dfactura df = new Dfactura();
             df.setPrecio(0);
             df.setImpuesto("01");
@@ -447,7 +446,6 @@ public class pago1 extends javax.swing.JPanel {
             df.setUmedida("ACT");
             df.setCodigo("84111506");
             df.setCantidad(0);
-
             arrdet.add(df);
             f.setArr(arrdet);
             f.setArrpagos(arrdetpago);
@@ -473,9 +471,15 @@ public class pago1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteMousePressed
 
     private void limpiar() {
-        arrabonos.clear();
-        generatabla();
+        if(!arrabonos.isEmpty()){
+            arrabonos.clear();
+        }
+        if(!arrabonos17.isEmpty()){
+            arrabonos17.clear();
+        }
         JtCliente.setText("");
+        generatabla();
+        
     }
 
     private void generatabla() {
@@ -490,10 +494,14 @@ public class pago1 extends javax.swing.JPanel {
         model.addColumn("Saldo anterior");
         model.addColumn("Cuenta");
         model.addColumn("Subcuenta");
+        model.addColumn("Parcialidad");
         daofactura d = new daofactura();
         arrabonos = d.getabonospago(cpt, JtCliente.getText(), empresacob, 15);
         arrabonos17 = d.getabonospago(cpt, JtCliente.getText(), empresacob, 17);
-        model.setRowCount(arrabonos.size());
+        int tamaño =arrabonos.size()+arrabonos17.size();
+//        model.setRowCount(arrabonos.size());
+            model.setRowCount(tamaño);
+            int aux=0;
         for (int i = 0; i < arrabonos.size(); i++) {
             model.setValueAt(arrabonos.get(i).getOrdenpago(), i, 0);
             model.setValueAt(arrabonos.get(i).getC().getNombre(), i, 1);
@@ -505,6 +513,22 @@ public class pago1 extends javax.swing.JPanel {
             model.setValueAt(arrabonos.get(i).getAnterior(), i, 7);
             model.setValueAt(arrabonos.get(i).getCuenta(), i, 8);
             model.setValueAt(arrabonos.get(i).getSubcuenta(), i, 9);
+            model.setValueAt(arrabonos.get(i).getParcialidad(), i, 10);
+            aux++;
+        }
+        for (int i = 0; i < arrabonos17.size(); i++) {
+            model.setValueAt(arrabonos17.get(i).getOrdenpago(), aux, 0);
+            model.setValueAt(arrabonos17.get(i).getC().getNombre(), aux, 1);
+            model.setValueAt(arrabonos17.get(i).getReferencia(), aux, 2);
+            model.setValueAt(arrabonos17.get(i).getTotal(), aux, 3);
+            model.setValueAt(arrabonos17.get(i).getFolio(), aux, 4);
+            model.setValueAt(arrabonos17.get(i).getSaldo(), aux, 5);
+            model.setValueAt(arrabonos17.get(i).getPago(), aux, 6);
+            model.setValueAt(arrabonos17.get(i).getAnterior(), aux, 7);
+            model.setValueAt(arrabonos17.get(i).getCuenta(), aux, 8);
+            model.setValueAt(arrabonos17.get(i).getSubcuenta(), aux, 9);
+            model.setValueAt(arrabonos17.get(i).getParcialidad(), aux, 10);
+            aux++;
         }
         JtDetalle.setModel(model);
     }

@@ -14,6 +14,15 @@ import java.sql.Connection;
 public class Conexiones {
     Connection cpt, rcpt, cobranza;
     String empresa, empresacob, empresarcpt;
+    Connection liteusuario;
+
+    public Connection getLiteusuario() {
+        return liteusuario;
+    }
+
+    public void setLiteusuario(Connection liteusuario) {
+        this.liteusuario = liteusuario;
+    }
 
     public String getEmpresarcpt() {
         return empresarcpt;

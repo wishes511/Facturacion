@@ -43,6 +43,7 @@ public class Facturacion extends javax.swing.JInternalFrame {
     String var = "0";
     public String name, empresa, empresarcpt, empresacob;
     Connection rcpt, litecfdi, liteempresa, cobranza, cpt;
+    public Connection liteusuario;
     ArrayList<usocfdi> arruso = new ArrayList<>();
     ArrayList<Formadepago> arrforma = new ArrayList<>();
     ArrayList<metodopago> arrmetodo = new ArrayList<>();
@@ -66,6 +67,7 @@ public class Facturacion extends javax.swing.JInternalFrame {
         empresarcpt=cn.getEmpresarcpt();
         empresacob=cn.getEmpresacob();
         u=usu;
+        liteusuario=cn.getLiteusuario();
         generaciontab();//Tabs de facturacion
         conexiones();
         setarraylist();
@@ -116,6 +118,7 @@ public class Facturacion extends javax.swing.JInternalFrame {
         c1.rcpt=rcpt;
         c1.u=u;
         c1.JtCliente.requestFocus();
+        c1.liteusuario=liteusuario;
     }
 
     /**

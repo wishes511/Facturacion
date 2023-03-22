@@ -64,6 +64,24 @@ public class xmlDAO {
     private double impiva16, baseiva16,totalpago16;
     private double impiva17, baseiva17,totalpago17;
     private int parcialidad;
+    private String exportacion;
+    private String folioorig;
+
+    public String getFolioorig() {
+        return folioorig;
+    }
+
+    public void setFolioorig(String folioorig) {
+        this.folioorig = folioorig;
+    }
+
+    public String getExportacion() {
+        return exportacion;
+    }
+
+    public void setExportacion(String exportacion) {
+        this.exportacion = exportacion;
+    }
 
     public double getImpiva17() {
         return impiva17;

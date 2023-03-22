@@ -36,7 +36,7 @@ public class timbrarXML {
     String literal = "";
     String estado = "";
     Sellofiscal s = new Sellofiscal();
-    boolean produccion = true;
+    boolean produccion = false;
     String user = "testing@solucionfactible.com";
     String pass = "timbrado.SF.16672";
 
@@ -86,7 +86,7 @@ public class timbrarXML {
                             j++;
                         }
                         s.setEstado(estado);
-                        System.out.println(String.format("estadus [%d] %s", rStatus, r.getMensaje()) + "??");
+                        System.out.println(String.format("estadus** [%d] %s", rStatus, r.getMensaje()) + "??");
                         //Operación creada exitosamente o previamente ya creado
 
                         if (rStatus == 200) {

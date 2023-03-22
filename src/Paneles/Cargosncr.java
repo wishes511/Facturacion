@@ -122,6 +122,7 @@ public class Cargosncr extends javax.swing.JDialog {
             }
         });
         JtCargo.setSelectionBackground(new java.awt.Color(213, 215, 250));
+        JtCargo.setSelectionForeground(new java.awt.Color(0, 0, 0));
         JtCargo.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 JtCargoMousePressed(evt);
@@ -276,10 +277,11 @@ public class Cargosncr extends javax.swing.JDialog {
                 if (verificaciones(desc)) {
 //                  Verifica el tipo de relacion sea 03 por que es descuento
 //                  Verifica el tipo de relacion sea 01,07 por que es descuento 15/02/2023
-                    if (relacion.equals("07") || relacion.equals("01")) {
+//                    Verifica el tipo de relacion sea 01 por que es descuento 27/02/2023
+                    if (relacion.equals("01")) {
 //                  El descuento no tiene que ser mayor o igual al saldo
-                        if (Float.parseFloat(desc) == arrcargoseleccion.get(i).getSaldo()
-                                || Float.parseFloat(desc) > arrcargoseleccion.get(i).getSaldo()) {
+                        if (Float.parseFloat(desc) == arrcargoseleccion.get(i).getImporte()
+                                || Float.parseFloat(desc) > arrcargoseleccion.get(i).getImporte()) {
                             JOptionPane.showMessageDialog(null, "Introduzca correctamente un numero valido");
                             reset = false;
                             break;
@@ -315,7 +317,7 @@ public class Cargosncr extends javax.swing.JDialog {
 
     private void modarrDesc(int i, String desc) {
         cargo car = arrcargoseleccion.get(i);// almacena el cargo en un objeto para modificar valores
-        car.setDescuento(Float.parseFloat(desc));
+        car.setDescuento(Double.parseDouble(desc));
         arrcargoseleccion.set(i, car);// asigna de nuevo el cargo ya modificado
         System.out.println("descuento " + desc);
     }
