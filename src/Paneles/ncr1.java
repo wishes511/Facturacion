@@ -56,7 +56,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author GATEWAY1-
  */
 public class ncr1 extends javax.swing.JPanel {
-    
+
     public String empresa, empresacob;
     public Connection sqlcfdi, sqlempresa;
     public Connection cpt, ACobranza;
@@ -210,18 +210,19 @@ public class ncr1 extends javax.swing.JPanel {
         daofactura dfac = new daofactura();
         int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
         arrfacturaxml = dfac.getdocxml(cpt, id + "", "NCR", empresacob);
-        
+
         factura f = new factura();
         String condicion;
         java.util.Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        
+
         ArrayList<Dfactura> arrf = new ArrayList<>();
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-        String im = String.valueOf(formateador.format(arrfacturaxml.get(0).getImpuestos()));
+//        String im = String.valueOf(formateador.format(arrfacturaxml.get(0).getImpuestos()));
+        double im=formatdecimal(arrfacturaxml.get(0).getImpuestos());
         String sub = String.valueOf(BigDecimal.valueOf(arrfacturaxml.get(0).getSubtotal()).setScale(2, RoundingMode.FLOOR));
         String desc = String.valueOf(BigDecimal.valueOf(arrfacturaxml.get(0).getDescuento()).setScale(2, RoundingMode.FLOOR));
-        double sum = (Double.parseDouble(sub) + Double.parseDouble(im)) - Double.parseDouble(desc);
+        double sum = (Double.parseDouble(sub) + im) - Double.parseDouble(desc);
         if (arrfacturaxml.get(0).getTotal() != sum) {
             double partedecimal = sum % 1;
             double d = 0;
@@ -244,7 +245,7 @@ public class ncr1 extends javax.swing.JPanel {
             f.setTotal(d);
 //            f.setTotal(BigDecimal.valueOf(arrfacturaxml.get(0).getTotal()).setScale(2, RoundingMode.FLOOR).doubleValue());
         }
-        
+
         switch (arrfacturaxml.get(0).getMetodopago()) {
             case "PPD":
                 f.setDescmetodop("PAGO EN PARCIALIDADES O DIFERIDO");
@@ -261,7 +262,7 @@ public class ncr1 extends javax.swing.JPanel {
         f.setId(id);
         f.setExportacion("01");
         f.setIva(arrfacturaxml.get(0).getIva());
-        f.setImpuestos(Double.parseDouble(im));
+        f.setImpuestos(im);
         f.setFolio(arrfacturaxml.get(0).getFolio());
         f.setSerie("NCR");
         f.setFecha(sdf.format(date));
@@ -307,7 +308,7 @@ public class ncr1 extends javax.swing.JPanel {
         //Se utiliza el generar factura especial por los decimales
         daoxmlncr dx = new daoxmlncr();
         dx.generarfac(f, cpt, sqlempresa);
-        
+
         timbrarXML t = new timbrarXML();
         String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
         String fac = String.valueOf(arrfacturaxml.get(0).getFolio());
@@ -325,13 +326,19 @@ public class ncr1 extends javax.swing.JPanel {
 //            System.out.println(a1);
 //        }
     }//GEN-LAST:event_jLabel6MousePressed
-    
+
     private void setreport() {
         try {
+            String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
+            String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
+                    + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
+                    + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
+                    + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
+                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
             daoempresa d = new daoempresa();
             String n = (empresa.equals("UptownCPT")) ? "2" : "1";
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
-            
+
             Empresas e = d.getempresarfc(sqlempresa, n);
             Map parametros = new HashMap();
             convertnum conv = new convertnum();
@@ -348,6 +355,7 @@ public class ncr1 extends javax.swing.JPanel {
             parametros.put("uso", getnuso(arrfactura.get(JtDetalle.getSelectedRow()).getUsocfdi()));
             parametros.put("serie", "NCR");
             parametros.put("regimencliente", arrfactura.get(JtDetalle.getSelectedRow()).getRegimen());
+            parametros.put("confo", conformidad);
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/indexncr.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -358,7 +366,7 @@ public class ncr1 extends javax.swing.JPanel {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private String getnmetodo(String m) {
         String r = "";
         for (int i = 0; i < arrmetodo.size(); i++) {
@@ -369,7 +377,7 @@ public class ncr1 extends javax.swing.JPanel {
         }
         return r;
     }
-    
+
     private String getnuso(String m) {
         String r = "";
         for (int i = 0; i < arruso.size(); i++) {
@@ -380,13 +388,44 @@ public class ncr1 extends javax.swing.JPanel {
         }
         return r;
     }
-    
+
     private void Buscanotas() {
         daofactura df = new daofactura();
         arrfactura = df.getdoc(cpt, JtCliente.getText(), "NCR", empresacob);
         generatabla();
     }
 
+        private double formatdecimal(double cant) {
+        int dato = 0;
+        int punto = 0;
+        boolean band = false;
+        double resp;
+        String c = String.valueOf(cant);
+//        String cadena = "";
+        for (int i = 0; i < c.length(); i++) {
+//            Empieza a tomar datos despues del punto
+            if (c.charAt(i) == '.') {
+                band = true;
+            }
+            if (band) {
+//                3 digitos de decimal para saber qe hacer con los decimales
+                if (punto == 3) {
+                    dato = Integer.parseInt(c.charAt(i) + "");
+                    i = c.length();
+                    break;
+                }
+//                cadena += c.charAt(i);
+                punto++;
+            }
+        }
+        if ((dato <= 5)) {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
+        } else {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        }
+        return resp;
+    }
+    
     /**
      * Formatea los folios fiscales a usar
      *
@@ -406,14 +445,14 @@ public class ncr1 extends javax.swing.JPanel {
                     cadena += car;
                 }
             }
-            
+
         }
         if (!cadena.isEmpty()) {
             arr.add(cadena);
         }
         return arr;
     }
-    
+
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Folio");
@@ -444,9 +483,9 @@ public class ncr1 extends javax.swing.JPanel {
             model.setValueAt(arrfactura.get(i).getUsocfdi(), i, 10);
         }
         JtDetalle.setModel(model);
-        
+
     }
-    
+
     private boolean verificaint(String cad) {
         boolean resp = false;
         String patt = "[0-9]+";

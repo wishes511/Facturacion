@@ -7,6 +7,7 @@ package DAO;
 
 import Modelo.Cliente;
 import Modelo.ConceptosES;
+import Modelo.Conexiones;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
 import Modelo.abono;
@@ -365,6 +366,55 @@ public class daofactura implements Facturas {
     public int nuevafacTraslado(Connection cpt, Connection rcpt, factura f) {
         sqlfactura s = new sqlfactura();
         return s.insertfacturatraslado(cpt, rcpt, f);
+    }
+
+    @Override
+    public Conexiones nuevafacEconex(Connection c, factura f, Connection cob, Connection rcpt) {
+        sqlfactura s = new sqlfactura();
+        return s.insertfacturaEcon(c, f, cob, rcpt);
+    }
+
+    /**
+     * Obtiene el maximmo folio de acuerdo a la serie
+     *
+     * @param c
+     * @param serie
+     * @return
+     */
+    @Override
+    public int getmaxfoliotpu(Connection c, String serie) {
+        sqlfactura s = new sqlfactura();
+        return s.getmaxfactpu(c, serie);
+    }
+
+    @Override
+    public int getbuscafoliotpu(Connection c, String serie, String folio) {
+        sqlfactura s = new sqlfactura();
+        return s.buscafoliotpu(c, serie, folio);
+    }
+
+    @Override
+    public int nuevafactpu(Connection cpt, factura f, Connection cob) {
+        sqlfactura s = new sqlfactura();
+        return s.insertfacturatpu(cpt, f, cob);
+    }
+
+    @Override
+    public boolean actualizacadenatpu(Connection c, factura f) {
+        sqlfactura s = new sqlfactura();
+        return s.actualizafacturatpu(c, f);
+    }
+
+    @Override
+    public boolean Updatesellofiscaltpu(Connection cpt, Sellofiscal s, int id) {
+        sqlfactura f = new sqlfactura();
+        return f.actualizasellostpu(cpt, s, id);
+    }
+
+    @Override
+    public ArrayList<cargo> getfactstoFACReltpu(Connection c, String r, String bd) {
+        sqlfactura f = new sqlfactura();
+        return f.getfoliotoFACReltpu(c, r, bd);
     }
 
 }

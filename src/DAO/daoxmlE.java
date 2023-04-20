@@ -28,7 +28,8 @@ public class daoxmlE {
 
     ArrayList<metodopago> arrmetodo = new ArrayList<>();
 
-    public void generarfac(factura f, Connection con, Connection empresa) {// solo genera xml
+    public factura generarfac(factura f, Connection con, Connection empresa) {// solo genera xml
+
         try {
 //            daoClientes dc = new daoClientes();
 //            daofactura df = new daofactura();
@@ -116,7 +117,7 @@ public class daoxmlE {
                 y.setTasaCuota(d);
                 y.setNoIdenf(id + "");
 //                System.out.println("desc "+descuento+"- base "+base+"- baseimp "+(base-descuento));
-                y.setBaseImpuesto(BigDecimal.valueOf(base-descuento).setScale(2, RoundingMode.HALF_UP));
+                y.setBaseImpuesto(BigDecimal.valueOf(base - descuento).setScale(2, RoundingMode.HALF_UP));
                 arr.add(y);
             }
 // - Fin numero ded concepto
@@ -130,9 +131,9 @@ public class daoxmlE {
             generarXML40 xml = new generarXML40();
             xml.crearComprobante(x, arr, con, empresa);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null,"daoxml -"+ ex);
+            JOptionPane.showMessageDialog(null, "daoxml -" + ex);
             Logger.getLogger(Facturacion.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return f;
     }
 }

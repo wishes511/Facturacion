@@ -5,7 +5,6 @@
  */
 package DAO;
 
-
 import Modelo.Cliente;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -15,8 +14,15 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public interface clientes {
+
     public ArrayList<Cliente> getClientes(Connection c);
+    
+    public ArrayList<Cliente> getClientestpu(Connection c);
+
     public Cliente getCliente(Connection c, int id);
-    
-    
+
+    public Cliente getClientes(Connection c, int cliente);
+
+    public boolean importacliente(Connection c, Cliente cli);
+
 }

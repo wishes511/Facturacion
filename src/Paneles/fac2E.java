@@ -12,6 +12,7 @@ import DAO.daokardexrcpt;
 import DAO.daoxmlE;
 import Modelo.Ciudades;
 import Modelo.Cliente;
+import Modelo.Conexiones;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Estados;
@@ -864,15 +865,15 @@ public class fac2E extends javax.swing.JPanel {
                 ArrayList<Poliza> arrpolizas = new ArrayList<>();
 
                 int conta = 0;
-                Formateodedatos fd= new Formateodedatos();
+                Formateodedatos fd = new Formateodedatos();
                 for (int i = 0; i < arrpoliza.size(); i++) {
                     String c = arrpoliza.get(i).getCuentalarga();
-                    String cuenta = fd.convertcliente(c + fd.formatclientedigito(arrcliente.get(row).getCvecliente()+""));
+                    String cuenta = fd.convertcliente(c + fd.formatclientedigito(arrcliente.get(row).getCvecliente() + ""));
                     Poliza p = new Poliza();
                     p.setCuenta(1);
                     p.setSub(5);
                     p.setFecha(sdf.format(date));
-                    p.setFolio(f.getFolio()+" O");
+                    p.setFolio(f.getFolio() + " O");
                     p.setIdcliente(arrcliente.get(row).getCvecliente());
                     p.setIdentificacion("M");
                     p.setCuentalarga(cuenta);
@@ -881,7 +882,7 @@ public class fac2E extends javax.swing.JPanel {
                     p.setDiario("000");
                     p.setMext("            0.00");
                     p.setAcumulativo(arrpoliza.get(i).getAcumulativo());
-                    p.setConcepto(arrpoliza.get(i).getConcepto() +f.getFolio()+" O");
+                    p.setConcepto(arrpoliza.get(i).getConcepto() + f.getFolio() + " O");
                     if (arrpoliza.get(i).getCuentalarga().equals("4005")) {
                         p.setReferencia(arrcliente.get(row).getClave() + "1" + fd.convierteagente(String.valueOf(arrcliente.get(row).getAgente())) + " 4.001");
                     } else {
@@ -897,7 +898,7 @@ public class fac2E extends javax.swing.JPanel {
                             conta++;
                             break;
                         case 2:
-                            p.setImporte(fd.ftotal(String.valueOf(formatdecimal(subtotal-descuentos))));
+                            p.setImporte(fd.ftotal(String.valueOf(formatdecimal(subtotal - descuentos))));
                             conta = 0;
                             break;
                     }
@@ -929,6 +930,30 @@ public class fac2E extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_jLabel2MousePressed
+
+    private void Exectrans(daofactura dfac, factura f) {
+        Conexiones cn = dfac.nuevafacEconex(cpt, f, ACobranza, rcpt);
+        int id = cn.getResp();
+        if (id != 0) {
+            System.out.println("Exito");
+            daoxmlE dx = new daoxmlE();
+            f.setId(id);
+//                    dx.generarfac(f, cpt, sqlempresa);
+            dx.generarfac(f, cn.getCpt(), sqlempresa);
+            timbrarXML tim = new timbrarXML();
+            Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
+//                    Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), "", sqlempresa, "2");
+//                    dfac.Updatesellofiscal(cpt, s, id);
+            dfac.Updatesellofiscal(cn.getCpt(), s, id);
+            setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
+            JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
+            vaciarcampos();
+            JtCliente.requestFocus();
+        } else {
+
+        }
+    }
+
     /**
      * Funcion para determinar si la cantidad decimal es redondeada o truncada
      *
@@ -980,6 +1005,12 @@ public class fac2E extends javax.swing.JPanel {
         try {
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
+
+            String conformidad=(!moneda.equals("MXN"))?"De conformidad con el Art. 20 del C.F.F., informamos que "
+                    + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
+                    + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
+                    + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
+                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)":" ";
             DecimalFormat form = new DecimalFormat("####.##");//para los decimales
             String n = (empresa.equals("UptownCPT")) ? "2" : "1";
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
@@ -1005,6 +1036,7 @@ public class fac2E extends javax.swing.JPanel {
             parametros.put("uso", arruso.get(JcUso.getSelectedIndex()).getDescripcion());
             parametros.put("serie", "FAC");
             parametros.put("regimencliente", regimen);
+            parametros.put("confo", conformidad);
 
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/index.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
@@ -1125,7 +1157,7 @@ public class fac2E extends javax.swing.JPanel {
         JlTotal.setText("");
         Jlfp.setText("");
         JlUso.setText("");
-        relacion="";
+        relacion = "";
         cargacombos();
         llenalista();
         cargaclientes();

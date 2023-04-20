@@ -5,7 +5,6 @@
  */
 package DAO;
 
-
 import Modelo.Agentes;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -15,7 +14,9 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public interface agentes {
+
     public ArrayList<Agentes> getAgentes(Connection c);
-    
-    
+
+    public ArrayList<Agentes> getAgentestpu(Connection c);
+
 }

@@ -7,6 +7,7 @@ package DAO;
 
 import Modelo.Cliente;
 import Modelo.ConceptosES;
+import Modelo.Conexiones;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
 import Modelo.abono;
@@ -24,6 +25,16 @@ public interface Facturas {
     public int nuevafac(Connection c, factura f, Connection cob, Connection rcpt);// factura y generar xml
 
     /**
+     * Especificamente para generar registros y xml de tpu
+     *
+     * @param cpt
+     * @param f
+     * @param cob
+     * @return
+     */
+    public int nuevafactpu(Connection cpt, factura f, Connection cob);
+
+    /**
      *
      * @param c Conexion cpt
      * @param f Objeto de factura con lo necesario para insertar y generar xml
@@ -32,19 +43,22 @@ public interface Facturas {
      * @return
      */
     public int nuevafacE(Connection c, factura f, Connection cob, Connection rcpt);// factura y generar xml
-    
-    public int nuevafacTraslado(Connection cpt,Connection rcpt, factura f);// factura y generar xml
+
+    public Conexiones nuevafacEconex(Connection c, factura f, Connection cob, Connection rcpt);// factura y generar xml
+
+    public int nuevafacTraslado(Connection cpt, Connection rcpt, factura f);// factura y generar xml
 
     public ArrayList<factura> getfacs(Connection c, String folio);//despliegue de facturas
 
     public factura getfac(Connection c, String folio);//despliegue de facturas
 
     public int getmaxfolio(Connection c);
-    
+
     /**
      * Trae el ultimo folio del traslado de la tabla de documentos solamente
+     *
      * @param c Conexion de cpt
-     * @return 
+     * @return
      */
     public int getmaxtraslado(Connection c);
 
@@ -58,9 +72,15 @@ public interface Facturas {
 
     public int getbuscafolio(Connection c, String serie);
 
+    public int getbuscafoliotpu(Connection c, String serie, String folio);
+
+    public int getmaxfoliotpu(Connection c, String serie);
+
     public int getbuscafolioncr(Connection c, String serie);
 
     public void actualizacadena(Connection c, factura f);
+    
+    public boolean actualizacadenatpu(Connection c, factura f);
 
     public void actualizacadenapago(Connection c, factura f);
 
@@ -91,6 +111,8 @@ public interface Facturas {
     public ArrayList<factura> getdocxml(Connection cpt, String fol, String serie, String empcobranza);
 
     public boolean Updatesellofiscal(Connection cpt, Sellofiscal s, int id);
+    
+    public boolean Updatesellofiscaltpu(Connection cpt,Sellofiscal s, int id);
 
     public boolean Updatesellofiscalpago(Connection cpt, Sellofiscal s, int id);
 
@@ -104,6 +126,8 @@ public interface Facturas {
      * @return
      */
     public ArrayList<cargo> getfactstoFACRel(Connection c, String r, String bd);
+    
+    public ArrayList<cargo> getfactstoFACReltpu(Connection c, String r, String bd);
 
     /**
      *

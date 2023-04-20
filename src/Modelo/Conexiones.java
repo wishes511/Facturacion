@@ -14,7 +14,57 @@ import java.sql.Connection;
 public class Conexiones {
     Connection cpt, rcpt, cobranza;
     String empresa, empresacob, empresarcpt;
-    Connection liteusuario;
+    Connection liteusuario, litecfdi, liteempresa;
+    Connection cpttpu, rcpttpu, cobranzatpu;
+    int resp;
+
+    public Connection getLitecfdi() {
+        return litecfdi;
+    }
+
+    public void setLitecfdi(Connection litecfdi) {
+        this.litecfdi = litecfdi;
+    }
+
+    public Connection getLiteempresa() {
+        return liteempresa;
+    }
+
+    public void setLiteempresa(Connection liteempresa) {
+        this.liteempresa = liteempresa;
+    }
+
+    public Connection getCpttpu() {
+        return cpttpu;
+    }
+
+    public void setCpttpu(Connection cpttpu) {
+        this.cpttpu = cpttpu;
+    }
+
+    public Connection getRcpttpu() {
+        return rcpttpu;
+    }
+
+    public void setRcpttpu(Connection rcpttpu) {
+        this.rcpttpu = rcpttpu;
+    }
+
+    public Connection getCobranzatpu() {
+        return cobranzatpu;
+    }
+
+    public void setCobranzatpu(Connection cobranzatpu) {
+        this.cobranzatpu = cobranzatpu;
+    }
+
+    public int getResp() {
+        return resp;
+    }
+
+    public void setResp(int resp) {
+        this.resp = resp;
+    }
 
     public Connection getLiteusuario() {
         return liteusuario;

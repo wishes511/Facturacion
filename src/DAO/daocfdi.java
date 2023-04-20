@@ -7,6 +7,7 @@ package DAO;
 
 import Modelo.Agentes;
 import Modelo.Ciudades;
+import Modelo.Claveprov;
 import Modelo.Embarques;
 import Modelo.Estados;
 import Modelo.Formadepago;
@@ -141,6 +142,18 @@ public class daocfdi implements Catcfdi {
     public String getRegimenxuso(Connection c, String regimen, String uso) {
         sqlcatcfdi s = new sqlcatcfdi();
         return s.getregimenxuso(c, regimen, uso);
+    }
+
+    @Override
+    public ArrayList<Unidades> getunidades(Connection c) {
+        sqlcatcfdi s = new sqlcatcfdi();
+        return s.getunidades(c);
+    }
+
+    @Override
+    public ArrayList<Claveprov> getclaveprod(Connection c) {
+        sqlcatcfdi s = new sqlcatcfdi();
+        return s.getclavesprods(c);
     }
 
 

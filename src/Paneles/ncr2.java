@@ -716,7 +716,19 @@ public class ncr2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JcUsoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        setfactura();
+        boolean band = true;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            String col2 = JtDetalle.getValueAt(i, 1).toString();
+            if (col2.equals("")) {
+                band = false;
+            }
+        }
+        if (band) {
+            setfactura();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error, Alguna de las claves de producto esta vacia o erronea, verificalo");
+        }
+
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
@@ -1073,7 +1085,7 @@ public class ncr2 extends javax.swing.JPanel {
                         timbrarXML tim = new timbrarXML();
                         Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
                         dfac.Updatesellofiscal(cpt, s, id);
-                        setreport(f.getFolio(), f.getRegimen());
+                        setreport(f.getFolio(), f.getRegimen(),f.getMoneda());
                         JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
                         vaciarcampos();
                         JtCliente.requestFocus();
@@ -1154,8 +1166,13 @@ public class ncr2 extends javax.swing.JPanel {
      * creaba el pdf el proyecto se llama "Facturas"
      *
      */
-    private void setreport(int folio, String regimen) {
+    private void setreport(int folio, String regimen, String moneda) {
         try {
+            String conformidad=(!moneda.equals("MXN"))?"De conformidad con el Art. 20 del C.F.F., informamos que "
+                    + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
+                    + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
+                    + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
+                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)":" ";
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
             String n = (empresa.equals("UptownCPT")) ? "2" : "1";
@@ -1178,6 +1195,8 @@ public class ncr2 extends javax.swing.JPanel {
             parametros.put("uso", arruso.get(JcUso.getSelectedIndex()).getDescripcion());
             parametros.put("serie", "NCR");
             parametros.put("regimencliente", regimen);
+            parametros.put("confo", conformidad);
+            
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/indexncr.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -1270,7 +1289,7 @@ public class ncr2 extends javax.swing.JPanel {
                     total = formatdecimal(subtotal + impuestos);
                     System.out.println(impuestos);
                     //Solo para despliqgue de informacion
-                    JlIva.setText(formatdecimal(impuestos)+"");
+                    JlIva.setText(formatdecimal(impuestos) + "");
                     Jlsub.setText(formatdecimal(subtotal) + "");
                     JlDesc.setText(formatdecimal(descuentos) + "");
                     JlTotal.setText(formatdecimal(total) + "");

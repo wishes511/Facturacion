@@ -14,5 +14,8 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public interface almacenes {
+
     public ArrayList<Almacen> getalmacenes(Connection c);
+
+    public ArrayList<Almacen> getalmacenescpt(Connection c);
 }

@@ -12,11 +12,35 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public class Dfactura implements java.io.Serializable{
-    int id, idoc, producto,talla,cantidad,renglon;
+    int id, idoc, producto,talla,cantidad,renglon,id_dpedimento,id_pedimento;
     int c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14, almacen,linea,corrida,estilo,combinacion, foliokardex;
-    String descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor,uuid, stock, descumedida;
+    String descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor,uuid, stock, descumedida,dureza;
     double base,  importa, descuento,precio,  cantidadfloat, precioant;
     ArrayList<String> arruuid = new ArrayList<>();
+
+    public int getId_pedimento() {
+        return id_pedimento;
+    }
+
+    public void setId_pedimento(int id_pedimento) {
+        this.id_pedimento = id_pedimento;
+    }
+
+    public int getId_dpedimento() {
+        return id_dpedimento;
+    }
+
+    public void setId_dpedimento(int id_dpedimento) {
+        this.id_dpedimento = id_dpedimento;
+    }
+
+    public String getDureza() {
+        return dureza;
+    }
+
+    public void setDureza(String dureza) {
+        this.dureza = dureza;
+    }
 
     public double getPrecioant() {
         return precioant;

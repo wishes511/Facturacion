@@ -11,7 +11,15 @@ package Modelo;
  */
 public class Sellofiscal implements java.io.Serializable{
  
-    String sellosat,noceertificado,sellocfd,pac,fechacer,uuid, estado;
+    String sellosat,noceertificado,sellocfd,pac,fechacer,uuid, estado, estatus;
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
 
     public String getEstado() {
         return estado;

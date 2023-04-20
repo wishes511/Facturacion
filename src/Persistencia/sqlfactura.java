@@ -7,6 +7,7 @@ package Persistencia;
 
 import Modelo.Cliente;
 import Modelo.ConceptosES;
+import Modelo.Conexiones;
 import Modelo.Detpagos;
 import Modelo.Dfactura;
 import Modelo.Formateodedatos;
@@ -18,6 +19,8 @@ import Modelo.Seriecpt;
 import Modelo.abono;
 import Modelo.cargo;
 import Modelo.factura;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,6 +62,34 @@ public class sqlfactura {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select folio from documentos where folio=" + folio + " and serie='fac'";
+//            System.out.println("busca folio " + sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                f = rs.getInt("folio");
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return f;
+    }
+
+    /**
+     * Obtiene el numero de folio si existe
+     *
+     * @param con
+     * @param serie
+     * @param folio
+     * @return
+     */
+    public int buscafoliotpu(Connection con, String serie, String folio) {//obtiene datos de la factura recien ingresada
+        int f = 0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select folio from documento where folio=" + folio + " and serie='" + serie + "'";
 //            System.out.println("busca folio " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
@@ -169,7 +200,7 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select top(100) id,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formadepago,metododepago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal, d.usocfdi,fax, d.moneda,cadenaoriginal\n"
+            String sql = "select top(400) id,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formadepago,metododepago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal, d.usocfdi,fax, d.moneda,cadenaoriginal\n"
                     + "from documentos d\n"
                     + "join " + cob + ".dbo.Clientes c on d.idcliente=c.NumCliente\n"
                     + "where (d.idcliente like '%" + folio + "%' or d.nombre like '%" + folio + "%') and serie='" + serie + "'\n"
@@ -517,6 +548,192 @@ public class sqlfactura {
         return resp;
     }
 
+    public int insertfacturatpu(Connection con, factura f, Connection cobranza) {//Rcpt y cpt
+        PreparedStatement st = null;
+        ResultSet rs;
+        int pedido = 0;
+        int docu = 0;
+        try {
+            con.setAutoCommit(false);
+            cobranza.setAutoCommit(false);
+            String sql;
+            int fkardex = f.getFoliokardex();
+            int concepto = f.getConceptos();
+            String usuario = f.getClaveusuario();
+            String serie = f.getSerie();
+            int fol = f.getFolio();
+            String fecha = f.getFecha();
+            double desc = f.getDescuento();
+            String cond = f.getCondicion();
+            double subtotal = f.getSubtotal();
+            double total = f.getTotal();
+            double iva = f.getIva();
+            double imp = f.getImpuestos();
+            //cliente
+            int idcliente = f.getIdcliente();
+            String nombre = f.getNombre();
+            String rfc = f.getRfc();
+            String regimen = f.getRegimen();
+            String cp = f.getCp();
+            //fin cliente
+            String obs = f.getObservaciones();
+            String mon = f.getMoneda();
+            double tipoc = f.getTipocambio();
+            String fpago = f.getFormapago();
+            String mpago = f.getMetodopago();
+            String descmpago = f.getDescmetodop();
+            String Lugar = f.getLugarexpedicion();
+            String uso = f.getUsocfdi();
+            int plazo = f.getPlazo();
+            String m = fol + " " + f.getMarca();
+            int agente = f.getAgente();
+            String relacion = f.getTiporelacion();
+            String turno = f.getTurno();
+//            
+            for (int i = 0; i < f.getArr().size(); i++) {
+                int mat = f.getArr().get(i).getProducto();
+                int iped = f.getArr().get(i).getId_pedimento();
+                double prec = f.getArr().get(i).getPrecio();
+                double cant = f.getArr().get(i).getCantidadfloat();
+                String dur = f.getArr().get(i).getDureza();
+                sql = "insert into kardex(id_kardex,id_concepto,id_cliente,id_material,id_prov,id_almacen,id_pedimento,"
+                        + "usuario,fecha,costo,precio,cantidad,renglon,serie,estatus,estatusprod,dureza) "
+                        + "values(" + fkardex + "," + concepto + "," + idcliente + "," + mat + ",0,1," + iped + ",'" + usuario + "','" + fecha + "',"
+                        + prec + "," + prec + "," + cant + "," + (i + 1) + ",'A','1','1','" + dur + "')";
+                System.out.println("kardex " + sql);
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+            }
+
+            sql = "insert into pedido(pedido,id_cliente,id_kardex,fecha,total,subtotal,impuestos,descuento,iva,serie,estatus) "
+                    + "values(''," + idcliente + "," + fkardex + ",'" + fecha + "'," + total + "," + subtotal + "," + imp + "," + desc + "," + iva + ",'A','1')";
+            System.out.println("pedido " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+
+            sql = "select max(id_pedido) as pedido from pedido";
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                pedido = rs.getInt("pedido");
+            }
+
+            sql = "insert into Documento(id_cliente,id_agente,usuario,pedidos,folio,serie,fecha,condicion"
+                    + ",tipodoc,descuento,subtotal,impuestos,total,nombre,rfc,cp,regimen,metodopago,formapago,"
+                    + "descmetodopago,lugarexp,observaciones,totalcajas,moneda,tipocambio,usocfdi,estatus) "
+                    + "values (" + idcliente + "," + agente + ",'" + usuario + "','" + pedido + "'," + fol + ",'" + serie + "','" + fecha + "','" + cond + "','N',"
+                    + desc + "," + subtotal + "," + imp + "," + total + ",'" + nombre + "','" + rfc + "','" + cp + "','" + regimen + "','" + mpago + "','"
+                    + fpago + "','" + descmpago + "','" + Lugar + "','" + obs + "',0,'" + mon + "'," + tipoc + ",'" + uso + "','1')";
+            System.out.println("documentos " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+
+            sql = "select max(id_documento) as doc from documento";
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                docu = rs.getInt("doc");
+            }
+
+            //Fin obtener ultimo documento
+            //Insertar en cargos
+            double saldoproce = total * tipoc;
+            double saldomx = BigDecimal.valueOf(saldoproce).setScale(2, RoundingMode.HALF_UP).doubleValue();
+            sql = "insert into cargo(id_agente,id_concepto,id_cliente,referencia,fecha,importe,saldo,SIM,saldomx,turno,comision,parcialidad,estatus) "
+                    + "values(" + agente + ",1," + idcliente + ",'" + fol + "','" + fecha + "'," + total + "," + total + "," + total + "," + saldomx + "," + turno + ",0,0,'1')";
+            System.out.println("cargos " + sql);
+            st = cobranza.prepareStatement(sql);
+            st.executeUpdate();
+            //Fin insertar cargos
+//            Inserta en detallado de documentos
+            int i = 1;
+            for (Dfactura arr : f.getArr()) {//
+                int prod = arr.getProducto();
+                double c = arr.getCantidadfloat();
+                String des = arr.getDescripcion();
+                String cod = arr.getCodigo();
+                String med = arr.getUmedida();
+                double precio = arr.getPrecio();
+                double b = arr.getBase();
+                double impo = arr.getImporta();
+                double descu = arr.getDescuento();
+                String dur = arr.getDureza();
+                int id_dped = arr.getId_dpedimento();
+
+                sql = "insert into Ddocumento(id_documento,id_material,descripcion,cantidad,precio,base,impuestos,descuento,iva,unidad,codigosat) "
+                        + "values(" + docu + "," + prod + ",'" + des + "'," + c + "," + precio + "," + b + "," + impo + "," + descu + ",'16','" + med + "','" + cod + "')";
+                System.out.println("ddocs " + sql);
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+
+                sql = "insert into Dpedido(id_pedido,id_material,dureza,cantidad,precio,costo,importe,impuestos,descuento,estatus,id_dpedimento) "
+                        + "values(" + pedido + "," + prod + ",'" + dur + "'," + c + "," + precio + "," + precio + "," + b + "," + impo + "," + desc + ",'1'," + id_dped + ")";
+                System.out.println("dpeds " + sql);
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+
+                sql = "update dpedimentos set cantidadrestante=cantidadrestante-" + c + " where id_dpedimento=" + id_dped;
+                System.out.println("actualiza pedimento " + sql);
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+            }
+//             Fin detallado de documento
+//              Status de kardex y dpedidos
+//            Fin detallado documento
+//          Insercion de polizas
+            for (int x = 0; x < f.getArrpolizas().size(); x++) {
+                int cuenta = f.getArrpolizas().get(x).getCuenta();
+                int sub = f.getArrpolizas().get(x).getSub();
+                String fechas = f.getArrpolizas().get(x).getFecha();
+                int cliente = f.getArrpolizas().get(x).getIdcliente();
+                String ident = f.getArrpolizas().get(x).getIdentificacion();
+                String cuental = f.getArrpolizas().get(x).getCuentalarga();
+                int t = f.getArrpolizas().get(x).getCa();
+                String imps = f.getArrpolizas().get(x).getImporte();
+                String concep = f.getArrpolizas().get(x).getConcepto();
+                String Acum = f.getArrpolizas().get(x).getAcumulativo();
+                String ref = f.getArrpolizas().get(x).getReferencia();
+                String fo = f.getArrpolizas().get(x).getFolio();
+                String mext = f.getArrpolizas().get(x).getMext();
+                int ord = f.getArrpolizas().get(x).getOrden();
+                sql = "insert into dpolizas values(" + cuenta + "," + sub + ",'" + fechas + "','" + fo + "',"
+                        + cliente + ",'" + ident + "','" + cuental + "','" + ref + "','" + t + "','" + imps + "','000','" + mext + "','" + concep + "'," + ord + ",'" + Acum + "')";
+                System.out.println("polizas "+sql);
+                st = cobranza.prepareStatement(sql);
+                st.executeUpdate();
+            }
+
+            // Actualizacion de los numeros de folio
+            sql = "update seriesfolio set ufolio=" + fol + " where serie='" + serie + "'";
+            System.out.println("sfolios " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            if (!relacion.equals("")) {
+                sql = "update documento set tiporelacion='" + relacion + "', uuidorig='" + f.getSeriefoliofiscalorig() + "'  where id_documento=" + docu + "";
+                System.out.println("cpt relacion " + sql);
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+            }
+            con.commit();
+            cobranza.commit();
+//            con.rollback();
+//            cobranza.rollback();
+//            rcpt.rollback();
+        } catch (Exception ex) {
+            try {
+                docu = 0;
+                con.rollback();
+                cobranza.rollback();
+                JOptionPane.showMessageDialog(null, "insertar -" + ex);
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                JOptionPane.showMessageDialog(null, "inertar -" + ex1);
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return docu;
+    }
+
     /**
      * Inserta factura pero solo a las tablas de documentos y su detalle
      *
@@ -571,8 +788,8 @@ public class sqlfactura {
             String mpago = f.getMetodopago();
             String Lugar = f.getLugarexpedicion();
             String uso = f.getUsocfdi();
-            String relacion=f.getTiporelacion();
-            String folioorig=f.getFoliofiscalorig();
+            String relacion = f.getTiporelacion();
+            String folioorig = f.getFoliofiscalorig();
             sql = "insert into Documentos(claveusuario,serie,folio,numeroaprobacion,anoaprobacion,"
                     + "fecha,estatus,descuento,motivodescuento,numpedido,fechasolicitado,condicion,"
                     + "fechaentrega,retenciones,iva,ivaret,ISRret,subtotal,impuestos,"
@@ -584,8 +801,8 @@ public class sqlfactura {
                     + ",'NINGUNO','" + ped + "','" + fechasoli + "','" + cond + "','" + fechaent + "',0," + iva + ",0,0," + subtotal
                     + "," + imp + "," + total + "," + idcliente + ",'" + nombre + "','" + rfc + "','" + calle + "','" + ne + "','" + ni + "','" + colonia + "'"
                     + ",'','','" + mun + "','" + estado + "','" + pais + "','" + cp + "','" + obs + "'," + cajas + "," + cxcaja
-                    + ",'" + tiposerie + "','" + mon + "'," + tipoc + ",0,'" + fpago + "','" + mpago + "','" + Lugar + "','"+folioorig+"'"
-                    + ",'" + regimen + "','" + uso + "','"+relacion+"')";
+                    + ",'" + tiposerie + "','" + mon + "'," + tipoc + ",0,'" + fpago + "','" + mpago + "','" + Lugar + "','" + folioorig + "'"
+                    + ",'" + regimen + "','" + uso + "','" + relacion + "')";
             System.out.println("documentos " + sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
@@ -677,7 +894,7 @@ public class sqlfactura {
             double total = f.getTotal();
             double iva = f.getIva();
             double imp = f.getImpuestos();
-            String turno=f.getTurno();
+            String turno = f.getTurno();
             //cliente
             int idcliente = f.getIdcliente();
             String nombre = f.getNombre();
@@ -741,7 +958,7 @@ public class sqlfactura {
             sql = "insert into Cargos(cuenta,subcuenta,referencia,numcliente,fecha,refacturacion,"
                     + "importe,saldo,comision,turno,cveagente,plazo,fechavencimiento,fdepDxc,SIM,Usuario,"
                     + "permiso,nuevoagente,fecharegistro) "
-                    + "values(1,5,'" + m + "'," + idcliente + ",'" + fecha + "',''," + total + "," + total + ",0,"+turno+"," + agente + ","
+                    + "values(1,5,'" + m + "'," + idcliente + ",'" + fecha + "',''," + total + "," + total + ",0," + turno + "," + agente + ","
                     + plazo + ",'" + fechavencimiento + "','" + fechavencimiento + "'," + total + ",'" + usuario + "',1," + agente + ",'" + fecha + "')";
             System.out.println("cargos" + sql);
             st = cobranza.prepareStatement(sql);
@@ -835,6 +1052,202 @@ public class sqlfactura {
             }
         }
         return resp;
+    }
+
+    /**
+     * Prueba: regresa las conexiones con las inserciones completadas
+     *
+     * @param con
+     * @param f
+     * @param cobranza
+     * @param rcpt
+     * @return
+     */
+    public Conexiones insertfacturaEcon(Connection con, factura f, Connection cobranza, Connection rcpt) {//Rcpt y cpt
+        PreparedStatement st = null;
+        Conexiones conex = new Conexiones();
+        ResultSet rs;
+        int resp = 0;
+        try {
+            con.setAutoCommit(false);
+            cobranza.setAutoCommit(false);
+            rcpt.setAutoCommit(false);
+            String sql;
+            String usuario = f.getClaveusuario();
+            String serie = f.getSerie();
+            int fol = f.getFolio();
+            String fecha = f.getFecha();
+            double desc = f.getDescuento();
+            String ped = f.getPedido();
+            String fechasoli = f.getFecha();
+            String cond = f.getCondicion();
+            String fechaent = f.getFecha();
+            double subtotal = f.getSubtotal();
+            double total = f.getTotal();
+            double iva = f.getIva();
+            double imp = f.getImpuestos();
+            String turno = f.getTurno();
+            //cliente
+            int idcliente = f.getIdcliente();
+            String nombre = f.getNombre();
+            String rfc = f.getRfc();
+            String calle = f.getCalle();
+            String colonia = f.getColonia();
+            String mun = f.getMunicipio();
+            String estado = f.getEstado();
+            String pais = f.getPais();
+            String regimen = f.getRegimen();
+            String cp = f.getCp();
+            String ni = f.getNinterior();
+            String ne = f.getNexterior();
+            //fin cliente
+            String obs = f.getObservaciones();
+            int cajas = f.getTotalcajas();
+            int cxcaja = f.getCantidadxcaja();
+            String tiposerie = f.getTiposerie();
+            String mon = f.getMoneda();
+            double tipoc = f.getTipocambio();
+            String fpago = f.getFormapago();
+            String mpago = f.getMetodopago();
+            String Lugar = f.getLugarexpedicion();
+            String uso = f.getUsocfdi();
+            int plazo = f.getPlazo();
+            String m = fol + " " + f.getMarca();
+            int agente = f.getAgente();
+            int totalparesf = f.getTotalpares();
+            String relacion = f.getTiporelacion();
+            sql = "insert into Documentos(claveusuario,serie,folio,numeroaprobacion,anoaprobacion,"
+                    + "fecha,estatus,descuento,motivodescuento,numpedido,fechasolicitado,condicion,"
+                    + "fechaentrega,retenciones,iva,ivaret,ISRret,subtotal,impuestos,"
+                    + "total,idcliente,nombre,rfc,calle,numexterior,numinterior,colonia,"
+                    + "localidad,referencia,municipio,estado,pais,cp,observaciones,"
+                    + "totalcajas,cantidadporcaja,tiposerie,moneda,tipocambio,enviado,"
+                    + "formadepago,metododepago,lugarexpedicion,regimen,usocfdi) "
+                    + "values ('" + usuario + "','" + serie + "'," + fol + ",903682,2022,'" + fecha + "','1'," + desc
+                    + ",'NINGUNO','" + ped + "','" + fechasoli + "','" + cond + "','" + fechaent + "',0," + iva + ",0,0," + subtotal
+                    + "," + imp + "," + total + "," + idcliente + ",'" + nombre + "','" + rfc + "','" + calle + "','" + ne + "','" + ni + "','" + colonia + "'"
+                    + ",'','','" + mun + "','" + estado + "','" + pais + "','" + cp + "','" + obs + "'," + cajas + "," + cxcaja
+                    + ",'" + tiposerie + "','" + mon + "'," + tipoc + ",0,'" + fpago + "','" + mpago + "','" + Lugar + "','" + regimen + "','" + uso + "')";
+            System.out.println("documentos " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            //para rcpt
+            st = rcpt.prepareStatement(sql);
+            st.executeUpdate();
+            System.out.println("rcpt documentos " + sql + "\n");
+
+            //Max ultimo documento
+            st = con.prepareStatement("select top(1)max(id) as id, SUBSTRING(convert(varchar,fecha+" + plazo + " ),0,20) as fechav from documentos group by fecha order by id desc");
+            rs = st.executeQuery();
+            String fechavencimiento = fecha;
+            while (rs.next()) {
+                resp = rs.getInt("id");
+                fechavencimiento = rs.getString("fechav");
+            }
+            rs.close();
+            //Fin obtener ultimo documento
+            //Insertar en cargos
+            sql = "insert into Cargos(cuenta,subcuenta,referencia,numcliente,fecha,refacturacion,"
+                    + "importe,saldo,comision,turno,cveagente,plazo,fechavencimiento,fdepDxc,SIM,Usuario,"
+                    + "permiso,nuevoagente,fecharegistro) "
+                    + "values(1,5,'" + m + "'," + idcliente + ",'" + fecha + "',''," + total + "," + total + ",0," + turno + "," + agente + ","
+                    + plazo + ",'" + fechavencimiento + "','" + fechavencimiento + "'," + total + ",'" + usuario + "',1," + agente + ",'" + fecha + "')";
+            System.out.println("cargos" + sql);
+            st = cobranza.prepareStatement(sql);
+            st.executeUpdate();
+            //Fin insertar cargos
+//            Inserta en detallado de documentos
+            for (Dfactura arr : f.getArr()) {//
+                int doc = resp;
+                int prod = arr.getProducto();
+                double c = arr.getCantidadfloat();
+                String des = arr.getDescripcion();
+                String cod = arr.getCodigo();
+                String med = arr.getUmedida();
+                double precio = arr.getPrecio();
+                double b = arr.getBase();
+                String impu = arr.getImpuesto();
+                String tas = arr.getTasaocuota();
+                String tf = arr.getTipofactor();
+                double impo = arr.getImporta();
+                double descu = arr.getDescuento();
+
+                sql = "insert into Documentosdetalle(iddocumento,idproducto,cantidad,descripcion,"
+                        + "codigo,UMedida,precio,base,impuesto,tasaocuota,tipofactor,importe,descuento) "
+                        + "values (" + doc + "," + prod + "," + c + ",'" + des + "','" + cod + "','" + med + "'," + precio + "," + b
+                        + ",'" + impu + "','" + tas + "','" + tf + "'," + impo + "," + descu + ")";
+                System.out.println("ddocs " + sql);
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+                // solo rcpt
+                System.out.println("rcpt ddocs " + sql);
+                st = rcpt.prepareStatement(sql);
+                st.executeUpdate();
+            }
+//            Fin detallado documento
+//          
+            for (int i = 0; i < f.getArrpolizas().size(); i++) {
+                int cuenta = f.getArrpolizas().get(i).getCuenta();
+                int sub = f.getArrpolizas().get(i).getSub();
+                String fechas = f.getArrpolizas().get(i).getFecha();
+                int cliente = f.getArrpolizas().get(i).getIdcliente();
+                String ident = f.getArrpolizas().get(i).getIdentificacion();
+                String cuental = f.getArrpolizas().get(i).getCuentalarga();
+                int t = f.getArrpolizas().get(i).getCa();
+                String imps = f.getArrpolizas().get(i).getImporte();
+                String concep = f.getArrpolizas().get(i).getConcepto();
+                String Acum = f.getArrpolizas().get(i).getAcumulativo();
+                String ref = f.getArrpolizas().get(i).getReferencia();
+                String fo = f.getArrpolizas().get(i).getFolio();
+                String mext = f.getArrpolizas().get(i).getMext();
+                int ord = f.getArrpolizas().get(i).getOrden();
+                sql = "insert into dpolizas values(" + cuenta + "," + sub + ",'" + fechas + "','" + fo + "',"
+                        + cliente + ",'" + ident + "','" + cuental + "','" + ref + "','" + t + "','" + imps + "','000','" + mext + "','" + concep + "'," + ord + ",'" + Acum + "')";
+                System.out.println(sql);
+                st = cobranza.prepareStatement(sql);
+                st.executeUpdate();
+            }
+
+            // Actualizacion de los numeros de folio
+            sql = "update seriesfolios set ultimofolio=" + fol + " where serie='" + serie + "'";
+//            System.out.println("sfolios " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            sql = "update seriesfolios set ultimofolio=" + fol + " where serie='" + serie + "'";
+//            System.out.println("rcpt sfolios " + sql);
+            st = rcpt.prepareStatement(sql);
+            st.executeUpdate();
+//            actualizar relacion y series etq
+            if (!relacion.equals("")) {
+                sql = "update documentos set tiporelacion='" + relacion + "', foliofiscalorig='" + f.getSeriefoliofiscalorig() + "'  where id=" + resp + "";
+                System.out.println("rcpt sfolios " + sql);
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+            }
+            con.commit();
+            cobranza.commit();
+            rcpt.commit();
+//            con.rollback();
+//            cobranza.rollback();
+//            rcpt.rollback();
+        } catch (Exception ex) {
+            try {
+                resp = 0;
+                con.rollback();
+                cobranza.rollback();
+                rcpt.rollback();
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "insertar " + ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
+                JOptionPane.showMessageDialog(null, "insertar " + ex1);
+            }
+        }
+        conex.setRcpt(rcpt);
+        conex.setCpt(con);
+        conex.setCobranza(cobranza);
+        conex.setResp(resp);
+        return conex;
     }
 
     /**
@@ -937,7 +1350,7 @@ public class sqlfactura {
             for (Dfactura arr : f.getArr()) {//Inserta en detallado de documentos
                 int doc = resp;
                 int prod = arr.getProducto();
-                int c = arr.getCantidad();
+                double c = arr.getCantidadfloat();
                 String des = arr.getDescripcion();
                 String cod = arr.getCodigo();
                 String med = arr.getUmedida();
@@ -1238,6 +1651,62 @@ public class sqlfactura {
         return false;
     }
 
+    public boolean actualizafacturatpu(Connection con, factura f) {//Rcpt y cpt
+        PreparedStatement st = null;
+        try {
+            con.setAutoCommit(false);
+            String sql;
+            String cert = f.getCertificado();
+            String sello = f.getSello();
+            String cadena = f.getCadenaorig();
+            sql = "update documento set certificado='" + cert + "', sello='" + sello + "', cadenaoriginal='" + cadena + "' where id_documento=" + f.getId();
+            System.out.println("actualizar sello " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            con.commit();
+//            con.rollback();
+            return true;
+        } catch (Exception ex) {
+            try {
+                con.rollback();
+                JOptionPane.showMessageDialog(null, "actualizar fac -" + ex);
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                JOptionPane.showMessageDialog(null, "actualizar fac -" + ex);
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
+
+    public boolean actualizafacturaconex(Connection con, factura f) {//Rcpt y cpt
+        PreparedStatement st = null;
+        try {
+            con.setAutoCommit(false);
+            String sql;
+            String cert = f.getCertificado();
+            String sello = f.getSello();
+            String cadena = f.getCadenaorig();
+            sql = "update documentos set nodeseriecertificado='" + cert + "', sello='" + sello + "', cadenaoriginal='" + cadena + "' where id=" + f.getId();
+            System.out.println("actualizar sello " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            con.commit();
+//            con.rollback();
+            return true;
+        } catch (Exception ex) {
+            try {
+                con.rollback();
+                JOptionPane.showMessageDialog(null, "actualizar fac -" + ex);
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                JOptionPane.showMessageDialog(null, "actualizar fac -" + ex);
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
+
     /**
      *
      * @param con
@@ -1286,6 +1755,37 @@ public class sqlfactura {
             String sql = "update documentos set sellosat='" + s.getSellosat() + "',nodeseriecertificado='"
                     + s.getNoceertificado() + "', sellocfdi='" + s.getSellocfd() + "', fechacertificacion='"
                     + s.getFechacer() + "', foliofiscal='" + s.getUuid() + "' where id=" + id;
+            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            con.commit();
+//            con.rollback();
+            return true;
+        } catch (Exception ex) {
+            try {
+                con.rollback();
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Actualizar sello de tpu
+     * @param con
+     * @param s
+     * @param id
+     * @return 
+     */
+    public boolean actualizasellostpu(Connection con, Sellofiscal s, int id) {//Rcpt y cpt
+        PreparedStatement st = null;
+        try {
+            con.setAutoCommit(false);
+            String sql = "update documento set sellosat='" + s.getSellosat() + "',certificadoprov='"
+                    + s.getNoceertificado() + "', sellocfdi='" + s.getSellocfd() + "', fechacertificado='"
+                    + s.getFechacer() + "', foliofiscal='" + s.getUuid() + "' where id_documento=" + id;
             System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
@@ -1412,6 +1912,31 @@ public class sqlfactura {
         return resp;
     }
 
+    /**
+     * Obtiene el folio mayor +1 de acuerdo a la serie
+     *
+     * @param con
+     * @param serie
+     * @return
+     */
+    public int getmaxfactpu(Connection con, String serie) {//max folio de documentos
+        int resp = 0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select max(ufolio) as ufolio from seriesfolio where serie='" + serie + "'");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                resp = rs.getInt("ufolio") + 1;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
     public int getmaxncr(Connection con) {//max folio de documentos
         int resp = 0;
         try {
@@ -1459,7 +1984,7 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql="select max(folio) as folio from documentos where serie='T'";
+            String sql = "select max(folio) as folio from documentos where serie='T'";
             st = con.prepareStatement(sql);
             System.out.println(sql);
             rs = st.executeQuery();
@@ -1508,7 +2033,7 @@ public class sqlfactura {
                     + "join clientes cli on c.numcliente=cli.numcliente\n"
                     + "join " + bd + ".dbo.Documentos d on SUBSTRING(c.referencia,0,len(c.referencia)-1) =d.folio\n"
                     //                    + "where (c.numcliente like '%" + nombre + "%' or cli.nombre like '%" + nombre + "%') and c.referencia NOT Like '%NCR%'"
-                    + "where (c.numcliente = '" + nombre + "' or cli.nombre = '" + nombre + "') and c.referencia NOT Like '%NCR%'"
+                    + "where (c.numcliente = '" + nombre + "' ) and c.referencia NOT Like '%NCR%'"
                     + " and saldo!=0 and d.Serie='fac' and estatus='1' and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' order by c.fecha";
             st = con.prepareStatement(sql);
             System.out.println("sql cargos" + sql);
@@ -1591,6 +2116,40 @@ public class sqlfactura {
         return arr;
     }
 
+        public ArrayList<cargo> getfoliotoFACReltpu(Connection con, String nombre, String bd) {//cargos para ncr solo cobranza
+        ArrayList<cargo> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select d.folio,c.referencia,convert(date,d.fecha) as fecha,d.nombre, saldo, d.total, isnull(d.foliofiscal,'') as foliofiscal\n"
+                    + " from documento d\n"
+                    + "join " + bd + ".dbo.Cargo c on c.referencia=d.folio\n"
+                    + "where c.id_cliente=" + nombre + " and d.serie='FAC' and d.estatus='1' and isnull(d.foliofiscal,'')!=''\n"
+                    + "order by d.fecha desc";
+            st = con.prepareStatement(sql);
+            System.out.println("cargos fac " + sql);
+            rs = st.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                cargo c = new cargo();
+                c.setReferencia(rs.getString("referencia"));
+                c.setFecha(rs.getString("fecha"));
+                c.setSaldo(rs.getDouble("saldo"));
+                c.setNombre(rs.getString("nombre"));
+                c.setFoliofiscal(rs.getString("foliofiscal"));
+                c.setImporte(rs.getDouble("total"));
+                c.setRenglon(i);
+                arr.add(c);
+                i++;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+    
     public ArrayList<abono> getOrdenesp(Connection con, String nombre, String bd, int cuenta) {//cargos para ncr solo cobranza
         ArrayList<abono> arr = new ArrayList<>();
         try {
@@ -1850,6 +2409,7 @@ public class sqlfactura {
             PreparedStatement st = null;
             ResultSet rs = null;
             String sql = "select * from asientoscontables";
+            System.out.println("asientos " + sql);
             st = concob.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {

@@ -22,6 +22,7 @@ public interface kardexrcpt {
     public ArrayList<Kardexrcpt> getkardex(Connection c, Kardexrcpt k);
 
     public int maxkardex(Connection c);
+    public int maxkardexsincuenta(Connection c);
 
     public int maxpedido(Connection c);
 

@@ -22,5 +22,11 @@ public class daoAgentes implements agentes{
         return s.getAgentes(c);
     }
 
+    @Override
+    public ArrayList<Agentes> getAgentestpu(Connection c) {
+        sqlagentes s = new sqlagentes();
+        return s.getAgentestpu(c);
+    }
+
     
 }

@@ -45,5 +45,26 @@ public class sqlalmacenes {
         }
         return arr;
     }
+    
+        public ArrayList<Almacen> getAlmacenes(Connection con) {//cobranza
+        ArrayList<Almacen> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from almacenes where estatus='1' order by descripcion");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Almacen a = new Almacen();
+                a.setAlmacen(rs.getInt("id_almacen"));
+                a.setNombre(rs.getString("descripcion"));
+                arr.add(a);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
 
 }

@@ -7,6 +7,7 @@ package DAO;
 
 import Modelo.Agentes;
 import Modelo.Ciudades;
+import Modelo.Claveprov;
 import Modelo.Embarques;
 import Modelo.Estados;
 import Modelo.Formadepago;
@@ -54,5 +55,9 @@ public interface Catcfdi {
     public String getdescunidad(Connection c, String clave);
 
     public String getRegimenxuso(Connection c, String regimen, String uso);
+    
+    public ArrayList<Unidades> getunidades(Connection c);
+    
+    public ArrayList<Claveprov> getclaveprod(Connection c);
 
 }

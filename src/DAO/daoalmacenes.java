@@ -14,12 +14,18 @@ import java.util.ArrayList;
  *
  * @author GATEWAY1-
  */
-public class daoalmacenes implements almacenes{
+public class daoalmacenes implements almacenes {
 
     @Override
     public ArrayList<Almacen> getalmacenes(Connection c) {
         sqlalmacenes s = new sqlalmacenes();
         return s.getAgentes(c);
     }
-    
+
+    @Override
+    public ArrayList<Almacen> getalmacenescpt(Connection c) {
+        sqlalmacenes s = new sqlalmacenes();
+        return s.getAlmacenes(c);
+    }
+
 }

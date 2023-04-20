@@ -390,10 +390,10 @@ public class fac1 extends javax.swing.JPanel {
         String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
         if (e == 1 && tim.equals("N")) {
             JbXml.setEnabled(true);
-            JbCancelar.setEnabled(false);
+//            JbCancelar.setEnabled(false);
         } else {
             JbXml.setEnabled(false);
-            JbCancelar.setEnabled(true);
+//            JbCancelar.setEnabled(true);
         }
         if (arrfactura.get(row).getNombre().equals("COPPEL") && tim.equals("T")) {
             JbAddenda.setEnabled(true);
@@ -519,8 +519,8 @@ public class fac1 extends javax.swing.JPanel {
             faddenda.arraddenda = arradenda;
             faddenda.arrdestinos = arrdestinos;
             faddenda.archivoxml = archivo;
-            faddenda.rcpt=rcpt;
-            faddenda.cpt=cpt;
+            faddenda.rcpt = rcpt;
+            faddenda.cpt = cpt;
             faddenda.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             faddenda.setVisible(true);
 
@@ -570,6 +570,12 @@ public class fac1 extends javax.swing.JPanel {
     }
 
     private void setreport() {
+        String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
+        String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
+                + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
+                + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
+                + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
+                + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
         try {
             daoempresa d = new daoempresa();
             String n = (empresa.equals("UptownCPT")) ? "2" : "1";
@@ -579,7 +585,7 @@ public class fac1 extends javax.swing.JPanel {
             convertnum conv = new convertnum();
             convertirNumeros cnum = new convertirNumeros();
             int folio = arrfactura.get(JtDetalle.getSelectedRow()).getFolio();
-            String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
+            
             DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
             String numeros = formateador.format(arrfactura.get(JtDetalle.getSelectedRow()).getTotal());
             parametros.put("folio", folio);
@@ -595,6 +601,8 @@ public class fac1 extends javax.swing.JPanel {
             parametros.put("uso", getnuso(arrfactura.get(JtDetalle.getSelectedRow()).getUsocfdi()));
             parametros.put("serie", "FAC");
             parametros.put("regimencliente", arrfactura.get(JtDetalle.getSelectedRow()).getRegimen());
+            parametros.put("confo", conformidad);
+            
 
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/index.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);

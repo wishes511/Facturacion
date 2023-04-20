@@ -278,7 +278,7 @@ public class Cargosncr extends javax.swing.JDialog {
 //                  Verifica el tipo de relacion sea 03 por que es descuento
 //                  Verifica el tipo de relacion sea 01,07 por que es descuento 15/02/2023
 //                    Verifica el tipo de relacion sea 01 por que es descuento 27/02/2023
-                    if (relacion.equals("01")) {
+                    if (relacion.equals("00")) {
 //                  El descuento no tiene que ser mayor o igual al saldo
                         if (Float.parseFloat(desc) == arrcargoseleccion.get(i).getImporte()
                                 || Float.parseFloat(desc) > arrcargoseleccion.get(i).getImporte()) {

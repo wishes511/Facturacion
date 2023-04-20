@@ -6,11 +6,13 @@
 package Persistencia;
 
 import Modelo.Ciudades;
+import Modelo.Claveprov;
 import Modelo.Embarques;
 import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.Paises;
 import Modelo.Tipoclientes;
+import Modelo.Unidades;
 import Modelo.Zonas;
 import Modelo.metodopago;
 import Modelo.relacion;
@@ -354,11 +356,11 @@ public class sqlcatcfdi {
     }
 
     /**
-     * 
+     *
      * @param con
      * @param regimen
      * @param uso
-     * @return 
+     * @return
      */
     public String getregimenxuso(Connection con, String regimen, String uso) {//sqllite
         String resp = "";
@@ -379,6 +381,62 @@ public class sqlcatcfdi {
             Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resp;
+    }
+
+    /**
+     *
+     * @param con
+     * @return
+     */
+    public ArrayList<Unidades> getunidades(Connection con) {//sqllite
+        ArrayList<Unidades> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select * from Unidad order by unidad";
+//            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Unidades u = new Unidades();
+                u.setClave(rs.getString("claveunidad"));
+                u.setDescripcion(rs.getString("unidad"));
+                arr.add(u);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+    
+    /**
+     * 
+     * @param con
+     * @return 
+     */
+    public ArrayList<Claveprov> getclavesprods(Connection con) {//sqllite
+        ArrayList<Claveprov> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select * from Claveprods order by descripcion";
+//            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Claveprov u = new Claveprov();
+                u.setClaveprod(rs.getString("clave"));
+                u.setDescripcion(rs.getString("descripcion"));
+                arr.add(u);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
     }
 
 }

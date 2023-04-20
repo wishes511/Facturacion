@@ -10,9 +10,13 @@ import Modelo.Conexiones;
 import Modelo.Procserie;
 import Modelo.Usuarios;
 import Paneles.pago1;
+import Tpu.Materialestpu;
 import Server.ServerProccpt;
 import Server.Serverprod;
 import Server.Serverylite;
+import Tpu.ClientesTpu;
+import Tpu.FacturacionTpu;
+import Tpu.Pedimento;
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -53,6 +57,7 @@ public final class Principal extends javax.swing.JFrame {
     Connection cpt, rcpt, ACobranza;
     Connection concpt, conupcpt, conrcpt, conrcptup, concob, concobup;
     Connection liteusuario;
+    Connection litecfdi, liteempresa;
     Conexiones conexion = new Conexiones();
     JPasswordField jp = new JPasswordField();
     String empresa;
@@ -79,15 +84,19 @@ public final class Principal extends javax.swing.JFrame {
         PopMenu.add(JmCobranza);
 //        PopMenu.add(JmRespaldos);
         PopMenu.add(JmVentas);
+        PopMenu.add(JmTpu);
         popup();
         setinicio();
         grupo.add(JrEmpresa);
         grupo.add(JrEmpresa1);
-        setconexionesglobal();// Cuidado!!! Bases de datos de produccion
+//        setconexionesglobal();// Cuidado!!! Bases de datos de produccion
+
+        conexiones();
         setconexionprueba();
 //        actualizaempresa();
         //setconexiones();
         u.setAth("");
+        u.setUsuario("");
         if (prod.equals("0")) {
 
             JlUsuario.setText("Michel Admin");
@@ -139,6 +148,15 @@ public final class Principal extends javax.swing.JFrame {
         Jmabrir = new javax.swing.JMenuItem();
         JpClose = new java.awt.PopupMenu();
         grupo = new javax.swing.ButtonGroup();
+        JmTpu = new javax.swing.JMenu();
+        Catalogos = new javax.swing.JMenu();
+        JmMaterial = new javax.swing.JMenuItem();
+        JmProveedor = new javax.swing.JMenuItem();
+        JmCliente = new javax.swing.JMenuItem();
+        Jmreportes = new javax.swing.JMenu();
+        JtFacturaciontpu = new javax.swing.JMenuItem();
+        JmRemision = new javax.swing.JMenuItem();
+        JmPedimento = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         JlSerie = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -324,6 +342,62 @@ public final class Principal extends javax.swing.JFrame {
 
         JpClose.setLabel("popupMenu1");
 
+        JmTpu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/factory_robot_manufacturing_industry_robotics_machine_robotic_arm_automation_industrial_production_icon_231898.png"))); // NOI18N
+        JmTpu.setText("Tpu");
+
+        Catalogos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/courses_letters_blackboard_board_staff_book_1475.png"))); // NOI18N
+        Catalogos.setText("Catalogos");
+
+        JmMaterial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/material_colors_macos_bigsur_icon_189995.png"))); // NOI18N
+        JmMaterial.setText("Materiales");
+        JmMaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmMaterialActionPerformed(evt);
+            }
+        });
+        Catalogos.add(JmMaterial);
+
+        JmProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/prensauser.png"))); // NOI18N
+        JmProveedor.setText("Proveedores");
+        Catalogos.add(JmProveedor);
+
+        JmCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/User_Group-80_icon-icons.com_57247.png"))); // NOI18N
+        JmCliente.setText("Clientes");
+        JmCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmClienteActionPerformed(evt);
+            }
+        });
+        Catalogos.add(JmCliente);
+
+        JmTpu.add(Catalogos);
+
+        Jmreportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/books_21813.png"))); // NOI18N
+        Jmreportes.setText("Reportes");
+        JmTpu.add(Jmreportes);
+
+        JtFacturaciontpu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtir.png"))); // NOI18N
+        JtFacturaciontpu.setText("Facturacion");
+        JtFacturaciontpu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtFacturaciontpuActionPerformed(evt);
+            }
+        });
+        JmTpu.add(JtFacturaciontpu);
+
+        JmRemision.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirR.png"))); // NOI18N
+        JmRemision.setText("Remision");
+        JmTpu.add(JmRemision);
+
+        JmPedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/construction_project_plan_building_architect_design_develop-61_icon-icons.com_60253.png"))); // NOI18N
+        JmPedimento.setText("Pedimento");
+        JmPedimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmPedimentoActionPerformed(evt);
+            }
+        });
+        JmTpu.add(JmPedimento);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Produccion ATH ");
         setBackground(new java.awt.Color(204, 204, 204));
@@ -420,7 +494,7 @@ public final class Principal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 640, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JlUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -498,6 +572,19 @@ public final class Principal extends javax.swing.JFrame {
     private void JlSerieMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlSerieMousePressed
         cerrartodo();
     }//GEN-LAST:event_JlSerieMousePressed
+    private void conexiones() {//Conexiones a lite
+        try {
+            Serverylite l = new Serverylite();
+            litecfdi = l.getconexioncfdi();
+            liteempresa = l.getconexionC();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Facturacion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Facturacion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Facturacion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void setinicio() {
         JmVentas.setVisible(false);
@@ -508,6 +595,7 @@ public final class Principal extends javax.swing.JFrame {
         JmConf.setVisible(false);
         JmProd.setVisible(false);
         JmOut.setVisible(false);
+        JmTpu.setVisible(false);
     }
 
     private void iniciartray() {
@@ -792,12 +880,12 @@ public final class Principal extends javax.swing.JFrame {
     private void JmAvancesPtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAvancesPtActionPerformed
         try {
             Serverprod s = new Serverprod();
-            Connection av=s.getconexionserver8("Avances");
-            Reporteavancept c = new Reporteavancept(null,true);
-            c.av=av;
-            c.liteav=liteusuario;
-            c.empresacob=conexion.getEmpresacob();
-            c.empresarcpt=conexion.getEmpresarcpt();
+            Connection av = s.getconexionserver8("Avances");
+            Reporteavancept c = new Reporteavancept(null, true);
+            c.av = av;
+            c.liteav = liteusuario;
+            c.empresacob = conexion.getEmpresacob();
+            c.empresarcpt = conexion.getEmpresarcpt();
             c.setVisible(true);
             av.close();
         } catch (ClassNotFoundException ex) {
@@ -807,8 +895,55 @@ public final class Principal extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_JmAvancesPtActionPerformed
+
+    private void JmMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmMaterialActionPerformed
+        try {
+
+            Materialestpu c = new Materialestpu(conexion, u);
+//            c.liteusuario = liteusuario;
+            this.JdPanel.add(c);
+//            c.JtBuscar.requestFocus();
+            c.setMaximum(true);
+            c.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmMaterialActionPerformed
+
+    private void JmPedimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPedimentoActionPerformed
+        try {
+            Pedimento p = new Pedimento(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmPedimentoActionPerformed
+
+    private void JmClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmClienteActionPerformed
+        try {
+            ClientesTpu p = new ClientesTpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmClienteActionPerformed
+
+    private void JtFacturaciontpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFacturaciontpuActionPerformed
+        try {
+            FacturacionTpu p = new FacturacionTpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JtFacturaciontpuActionPerformed
 
     private void verificausuario() {
         jp.setVisible(true);
@@ -878,18 +1013,26 @@ public final class Principal extends javax.swing.JFrame {
                 Serverylite s = new Serverylite();
                 liteusuario = s.getconexionusuarios();
                 if (a.equals("0605")) {
+                    u.setAth("1");
                     JlUsuario.setText("Michel Admin");
-                    u.setUsuario("Michel");
+                    u.setUsuario("");
                     u.setGrado("2");
                     u.setTurno("0");
                     modoadmin();
                     JmSesion.setEnabled(false);
                     jLabel1.requestFocus();
+//                    actualizaempresa();
+                    actualizaadmin();
+                    setTpucon();
                 } else {
                     daoPrincipal dp = new daoPrincipal();
                     u = dp.getUserlite(liteusuario, a, a);
                     if (!u.getUsuario().equals("")) {
-                        checkempresa();
+//                        checkempresa();
+                        actualizaempresa();
+                        if(u.getTipo_usuario().equals("1")){
+                            setTpucon();
+                        }
                     }
 
                 }
@@ -924,7 +1067,8 @@ public final class Principal extends javax.swing.JFrame {
                     JmCobranza.setVisible(true);
                 }
                 if (u.getTipo_usuario().equals("1")) {
-                    JmConf.setVisible(true);
+//                    JmConf.setVisible(true);
+                    modoadmin();
                 }
 
                 if (u.getProduccion().equals("1")) {
@@ -935,10 +1079,12 @@ public final class Principal extends javax.swing.JFrame {
                     JmFicha.setVisible(false);
                 }
                 if (u.getTurno().equals("5")) {
-                    JmFacturacion.setVisible(false);
+                    JmFacturacion.setVisible(true);
                     JmVerfacts.setVisible(false);
                     JmModcaja.setVisible(false);
                     JmSalidas.setVisible(false);
+                    JmTpu.setVisible(true);
+                    JmTpu.setEnabled(false);
                 }
                 JmOut.setVisible(true);
                 JmSesion.setEnabled(false);
@@ -961,12 +1107,17 @@ public final class Principal extends javax.swing.JFrame {
         JmCobranza.setVisible(true);
         JmProd.setVisible(true);
         JmOut.setVisible(true);
+        JmTpu.setVisible(true);
     }
 
     private void actualizaempresa() {
         boolean band = checkempresa();
-        if (band) {
-            if (JrEmpresa.isSelected()) {
+        if (!u.getUsuario().equals("")) {
+            if (u.getTurno().equals("5")) {
+                setTpucon();
+                setconexionesglobal();//provicional
+                conexion.setLitecfdi(litecfdi);
+                conexion.setEmpresa(empresa);
                 conexion.setCpt(concpt);
                 conexion.setRcpt(conrcpt);
                 conexion.setCobranza(concob);
@@ -974,18 +1125,50 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setEmpresacob("ACobranza");
                 conexion.setEmpresarcpt("RCPT");
             } else {
-                conexion.setCpt(conupcpt);
-                conexion.setRcpt(conrcptup);
-                conexion.setCobranza(concobup);
-                conexion.setEmpresa("UptownCPT");
-                conexion.setEmpresacob("ACobranzauptown");
-                conexion.setEmpresarcpt("UptownRCPT");
+                setconexionesglobal();
+                conexion.setLiteusuario(liteusuario);
+                if (band) {
+                    if (JrEmpresa.isSelected()) {
+                        conexion.setCpt(concpt);
+                        conexion.setRcpt(conrcpt);
+                        conexion.setCobranza(concob);
+                        conexion.setEmpresa("CPT");
+                        conexion.setEmpresacob("ACobranza");
+                        conexion.setEmpresarcpt("RCPT");
+                    } else {
+                        conexion.setCpt(conupcpt);
+                        conexion.setRcpt(conrcptup);
+                        conexion.setCobranza(concobup);
+                        conexion.setEmpresa("UptownCPT");
+                        conexion.setEmpresacob("ACobranzauptown");
+                        conexion.setEmpresarcpt("UptownRCPT");
+                    }
+                    System.out.println(conexion.getEmpresa());
+                }
             }
-            System.out.println(conexion.getEmpresa());
         }
 
         //conexiones de prueba
 //        setconexiones("FATIMACPT","FATIMARCPT","ACobranzaFH");
+    }
+
+    public void actualizaadmin() {
+        setconexionesglobal();
+        if (JrEmpresa.isSelected()) {
+            conexion.setCpt(concpt);
+            conexion.setRcpt(conrcpt);
+            conexion.setCobranza(concob);
+            conexion.setEmpresa("CPT");
+            conexion.setEmpresacob("ACobranza");
+            conexion.setEmpresarcpt("RCPT");
+        } else {
+            conexion.setCpt(conupcpt);
+            conexion.setRcpt(conrcptup);
+            conexion.setCobranza(concobup);
+            conexion.setEmpresa("UptownCPT");
+            conexion.setEmpresacob("ACobranzauptown");
+            conexion.setEmpresarcpt("UptownRCPT");
+        }
     }
 
     private void setconexionesglobal() {
@@ -1006,7 +1189,19 @@ public final class Principal extends javax.swing.JFrame {
 
     }
 
+    private void setTpucon() {
+        try {
+            Serverprod s = new Serverprod();
+            conexion.setCpttpu(s.getconexionserver8("Tpucpt"));
+            conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
+//            conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
+        } catch (ClassNotFoundException | IOException | SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     private void setconexionprueba() {
+
         if (prod.equals("0")) {
             Serverprod s = new Serverprod();
             Serverylite s1 = new Serverylite();
@@ -1018,8 +1213,13 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setEmpresa("FATIMACPT");
                 conexion.setEmpresacob("ACobranzaFH");
                 conexion.setEmpresarcpt("FATIMARCPT");
+                conexion.setCpttpu(s.getconexionserver8("Tpucpt"));
+                conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
+//                conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
                 liteusuario = s1.getconexionusuarios();
                 conexion.setLiteusuario(liteusuario);
+                conexion.setLitecfdi(litecfdi);
+                conexion.setLiteempresa(liteempresa);
 
             } catch (ClassNotFoundException | IOException | SQLException ex) {
                 Logger.getLogger(pago1.class.getName()).log(Level.SEVERE, null, ex);
@@ -1040,6 +1240,7 @@ public final class Principal extends javax.swing.JFrame {
         try {
 //            Allsingleton.getC().close();
             //JOptionPane.showMessageDialog(null, Allsingleton.getC());
+
             if (prod.equals("1")) {
                 concpt.close();
                 conrcpt.close();
@@ -1048,15 +1249,23 @@ public final class Principal extends javax.swing.JFrame {
                 conrcptup.close();
                 concobup.close();
                 liteusuario.close();
+                if (u.getTurno().equals("5") || u.getTipo_usuario().equals("1")) {
+                    conexion.getCpttpu().close();
+//                    conexion.getRcpttpu().close();
+                    conexion.getCobranzatpu().close();
+                }
             } else {
                 conexion.getCpt().close();
                 conexion.getCobranza().close();
                 conexion.getRcpt().close();
+                conexion.getCpttpu().close();
+//                conexion.getRcpttpu().close();
+                conexion.getCobranzatpu().close();
                 liteusuario.close();
             }
 
             System.out.println("cerrar paneles");
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(0);
         }
@@ -1098,6 +1307,7 @@ public final class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Catalogos;
     private javax.swing.JDesktopPane JdPanel;
     private javax.swing.JLabel JlSerie;
     private javax.swing.JLabel JlUsuario;
@@ -1106,6 +1316,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmCES;
     private javax.swing.JMenuItem JmCatalogoprod;
     private javax.swing.JMenuItem JmCerrar;
+    private javax.swing.JMenuItem JmCliente;
     private javax.swing.JMenuItem JmClientes;
     private javax.swing.JMenu JmCobranza;
     private javax.swing.JMenu JmConf;
@@ -1113,21 +1324,28 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmFacturacion;
     private javax.swing.JMenuItem JmFacturacionE;
     private javax.swing.JMenuItem JmFicha;
+    private javax.swing.JMenuItem JmMaterial;
     private javax.swing.JMenuItem JmModcaja;
     private javax.swing.JMenuItem JmNotascr;
     private javax.swing.JMenuItem JmOut;
     private javax.swing.JMenuItem JmPagos;
+    private javax.swing.JMenuItem JmPedimento;
     private javax.swing.JMenu JmProd;
+    private javax.swing.JMenuItem JmProveedor;
+    private javax.swing.JMenuItem JmRemision;
     private javax.swing.JMenu JmReportes;
     private javax.swing.JMenuItem JmRespaldos;
     private javax.swing.JMenuItem JmSalidas;
     private javax.swing.JMenuItem JmSesion;
+    private javax.swing.JMenu JmTpu;
     private javax.swing.JMenu JmVentas;
     private javax.swing.JMenuItem JmVerfacts;
     private javax.swing.JMenuItem Jmabrir;
+    private javax.swing.JMenu Jmreportes;
     private java.awt.PopupMenu JpClose;
     private javax.swing.JRadioButton JrEmpresa;
     private javax.swing.JRadioButton JrEmpresa1;
+    private javax.swing.JMenuItem JtFacturaciontpu;
     private javax.swing.JPopupMenu PopMenu;
     private javax.swing.ButtonGroup grupo;
     private javax.swing.JLabel jLabel1;

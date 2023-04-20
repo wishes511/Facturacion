@@ -47,14 +47,12 @@ public class Serverylite {
     public Connection getconexionC() throws ClassNotFoundException, IOException, SQLException {
         Class.forName("org.sqlite.JDBC");
         if (!f.exists()) {
-            fichero = new FileWriter(f);
-            PrintWriter pw = new PrintWriter(fichero);
-            fichero.close();
+            
             connectlite = DriverManager.getConnection("jdbc:sqlite:" + urlite);
 //            System.out.println("Conectado");
         } else {
+            System.out.println("conectado a compras");
             connectlite = DriverManager.getConnection("jdbc:sqlite:" + urlite);
-//            System.out.println("Conectado");
         }
         return connectlite;
     }

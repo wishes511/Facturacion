@@ -11,6 +11,14 @@ package Modelo;
  */
 public class ProveedorMPrima implements java.io.Serializable{
 
+    public String getRazons() {
+        return razons;
+    }
+
+    public void setRazons(String razons) {
+        this.razons = razons;
+    }
+
     public int getProveedor() {
         return this.proveedor;
     }
@@ -167,5 +175,5 @@ public class ProveedorMPrima implements java.io.Serializable{
         this.estatus = estatus;
     }
     private int proveedor,diascredito;
-    private String nombre,calle,colonia,ciudad,estado,pais,rfc,email,telefono,telefono2,contacto,tpo,embarque,limitecredito,fechaultima,cp,estatus;
+    private String nombre,calle,colonia,ciudad,estado,pais,rfc,email,telefono,telefono2,contacto,tpo,embarque,limitecredito,fechaultima,cp,estatus,razons;
 }

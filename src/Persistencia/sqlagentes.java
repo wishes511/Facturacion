@@ -47,5 +47,25 @@ public class sqlagentes {
         }
         return arr;
     }
+        public ArrayList<Agentes> getAgentestpu(Connection con) {//cobranza
+        ArrayList<Agentes> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select id_agente,nombre from agente order by nombre");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Agentes c = new Agentes();
+                c.setIdagente(rs.getInt("id_agente"));
+                c.setNombre(rs.getString("nombre"));
+                arr.add(c);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
 
 }

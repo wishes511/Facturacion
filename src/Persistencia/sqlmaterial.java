@@ -38,6 +38,13 @@ public class sqlmaterial {
         return true;
     }
 
+    /**
+     * Obtener todos los materiales
+     * @param con
+     * conexion
+     * @param arr
+     * @return 
+     */
     public ArrayList<Materiales> getallMateriales(Connection con,ArrayList<Materiales> arr) {
         try {
             PreparedStatement st;
@@ -57,5 +64,51 @@ public class sqlmaterial {
         }
         return arr;
     }
-
+//TPU
+    public ArrayList<Materiales> getallMaterials(Connection con, String mat) {
+        ArrayList<Materiales> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select * from Materiales where descripcion like '%" + mat + "%' order by descripcion");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Materiales m = new Materiales();
+                m.setId_material(rs.getInt("id_material"));
+                m.setDescripcion(rs.getString("descripcion"));
+                m.setPrecio(rs.getDouble("precio"));
+                m.setCodigo(rs.getString("codigo"));
+                m.setUnidad(rs.getString("unidad"));
+                m.setCodigosat(rs.getString("codigosat"));
+                arr.add(m);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+    
+    public boolean Addmaterial(Connection con, Materiales m) {
+        PreparedStatement st = null;
+        try {
+            con.setAutoCommit(false);
+            String mat=m.getDescripcion();
+            double precio=m.getPrecio();
+            String unidad=m.getUnidad();
+            String codigosat=m.getCodigosat();
+            int idfam=m.getId_familia();
+            String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia) values('"+mat+"',"+precio+",'1','"+unidad+"','"+codigosat+"',"+idfam+")";
+            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            con.commit();
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(sqlmaterial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
+    
 }

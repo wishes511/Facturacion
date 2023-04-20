@@ -25,11 +25,25 @@ public class daoClientes implements clientes {
     @Override
     public Cliente getCliente(Connection c, int id) {
         sqlclientes s = new sqlclientes();
-        return s.getCliente(c,id);
+        return s.getCliente(c, id);
     }
 
+    @Override
+    public Cliente getClientes(Connection c, int cliente) {
+        sqlclientes s = new sqlclientes();
+        return s.getClientes(c, cliente);
+    }
 
+    @Override
+    public boolean importacliente(Connection c, Cliente cli) {
+        sqlclientes s = new sqlclientes();
+        return s.importacliente(c, cli);
+    }
 
-
+    @Override
+    public ArrayList<Cliente> getClientestpu(Connection c) {
+        sqlclientes s = new sqlclientes();
+        return s.getClientestpu(c);
+    }
 
 }

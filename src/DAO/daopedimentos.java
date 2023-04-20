@@ -1,0 +1,48 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package DAO;
+
+import Modelo.pedimento;
+import Persistencia.sqlpedimentos;
+import java.sql.Connection;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author GATEWAY1-
+ */
+public class daopedimentos implements pedimentos {
+
+    @Override
+    public ArrayList<pedimento> getallpedimento(Connection c, String ped) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.getallpepds(c, ped);
+    }
+
+    @Override
+    public boolean nuevopedimento(Connection cpt, Connection rcpt, pedimento ped) {
+        sqlpedimentos rs = new sqlpedimentos();
+        return rs.nuevopedimento(cpt, rcpt, ped);
+    }
+
+    @Override
+    public boolean borrarped(Connection cpt, Connection rcpt, pedimento ped) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<pedimento> getpedimentosimple(Connection cpt, String cob, String cliente) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.getpedimentosimple(cpt, cob, cliente);
+    }
+
+    @Override
+    public ArrayList<pedimento> getpedimentoaadv(Connection cpt, String referencias) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.getpedimentoadv(cpt, referencias);
+    }
+
+}

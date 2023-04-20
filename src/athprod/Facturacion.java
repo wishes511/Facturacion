@@ -53,21 +53,19 @@ public class Facturacion extends javax.swing.JInternalFrame {
     /**
      * Creates new form Clientes
      *
-     * @param cn
-     * Lista de conexiones
-     * @param usu
-     * datos de usuario
+     * @param cn Lista de conexiones
+     * @param usu datos de usuario
      */
     public Facturacion(Conexiones cn, Usuarios usu) {
         initComponents();
         cpt = cn.getCpt();
         rcpt = cn.getRcpt();
         cobranza = cn.getCobranza();
-        empresa=cn.getEmpresa();
-        empresarcpt=cn.getEmpresarcpt();
-        empresacob=cn.getEmpresacob();
-        u=usu;
-        liteusuario=cn.getLiteusuario();
+        empresa = cn.getEmpresa();
+        empresarcpt = cn.getEmpresarcpt();
+        empresacob = cn.getEmpresacob();
+        u = usu;
+        liteusuario = cn.getLiteusuario();
         generaciontab();//Tabs de facturacion
         conexiones();
         setarraylist();
@@ -92,33 +90,51 @@ public class Facturacion extends javax.swing.JInternalFrame {
         arruso = d.getusocfdi(litecfdi);
         arrmetodo = d.getMetodopago(litecfdi);
         arrforma = d.getFormadepago(litecfdi);
-        c2.arrfpago = arrforma;
-        c2.arrmetodo = arrmetodo;
-        c2.arruso = arruso;
-        //tambien conexiones y variables
-        c2.ACobranza = cobranza;
-        c2.rcpt = rcpt;
-        c2.sqlempresa = liteempresa;
-        c2.sqlcfdi = litecfdi;
-        c2.cpt = cpt;
-        c2.empresa=empresa;
-        c2.empresarcpt=empresarcpt;
-        c2.empresacob=empresacob;
-        c2.u=u;// datos del usuario
-        
-        c1.cpt=cpt;
-        c1.ACobranza=cobranza;
-        c1.empresa=empresa;
-        c1.empresacob=empresacob;
-        c1.arrfpago = arrforma;
-        c1.arrmetodo = arrmetodo;
-        c1.arruso = arruso;
-        c1.sqlcfdi=litecfdi;
-        c1.sqlempresa=liteempresa;
-        c1.rcpt=rcpt;
-        c1.u=u;
-        c1.JtCliente.requestFocus();
-        c1.liteusuario=liteusuario;
+        if (u.getTurno().equals("5")) {
+            c1.cpt = cpt;
+            c1.ACobranza = cobranza;
+            c1.empresa = empresa;
+            c1.empresacob = empresacob;
+            c1.arrfpago = arrforma;
+            c1.arrmetodo = arrmetodo;
+            c1.arruso = arruso;
+            c1.sqlcfdi = litecfdi;
+            c1.sqlempresa = liteempresa;
+            c1.rcpt = rcpt;
+            c1.u = u;
+            c1.JtCliente.requestFocus();
+            c1.liteusuario = liteusuario;
+        }else{
+            c2.arrfpago = arrforma;
+            c2.arrmetodo = arrmetodo;
+            c2.arruso = arruso;
+            //tambien conexiones y variables
+            c2.ACobranza = cobranza;
+            c2.rcpt = rcpt;
+            c2.sqlempresa = liteempresa;
+            c2.sqlcfdi = litecfdi;
+            c2.cpt = cpt;
+            c2.empresa = empresa;
+            c2.empresarcpt = empresarcpt;
+            c2.empresacob = empresacob;
+            c2.u = u;// datos del usuario
+
+            c1.cpt = cpt;
+            c1.ACobranza = cobranza;
+            c1.empresa = empresa;
+            c1.empresacob = empresacob;
+            c1.arrfpago = arrforma;
+            c1.arrmetodo = arrmetodo;
+            c1.arruso = arruso;
+            c1.sqlcfdi = litecfdi;
+            c1.sqlempresa = liteempresa;
+            c1.rcpt = rcpt;
+            c1.u = u;
+            c1.JtCliente.requestFocus();
+            c1.liteusuario = liteusuario;
+        }
+
+
     }
 
     /**
@@ -171,11 +187,20 @@ public class Facturacion extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public final void generaciontab() {//generar tabs
-        c1 = new fac1();
-        c2 = new fac2();
-        Tabbed.addTab("Listado de Facturas", c1);
-        Tabbed.setSelectedComponent(c1);
-        Tabbed.addTab("Nueva Factura", c2);
+
+        if (u.getTurno().equals("5")) {
+            c1 = new fac1();
+            Tabbed.addTab("Listado Facturas", c1);
+        } else {
+            c1 = new fac1();
+            c2 = new fac2();
+            Tabbed.addTab("Listado de Facturas", c1);
+            Tabbed.addTab("Nueva Factura", c2);
+            Tabbed.setSelectedComponent(c1);
+        }
+    }
+
+    private void valoresclase() {
 
     }
 

@@ -363,10 +363,10 @@ public class sqlkardex {
                     + "join colores col on comb.Color1=col.Color\n"
                     + "join corridas cor on prod.Corrida=cor.Corrida\n"
                     + "join lineas l on prod.Linea=l.Linea\n"
-                    + "where ("+folios+") and statusimpresion='N'\n"
+                    + "where (" + folios + ") and statusimpresion='N'\n"
                     + "order by folio desc";
             st = con.prepareStatement(sql);
-            System.out.println("folios multi"+sql);
+            System.out.println("folios multi" + sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Kardexrcpt k = new Kardexrcpt();//objeto kardex
@@ -441,7 +441,7 @@ public class sqlkardex {
         try {
             PreparedStatement st;
             ResultSet rs;
-            int nrows = (p.equals("289")) ? 45 : 16;
+            int nrows = (p.equals("289")) ? 300 : 300;
             String sql = "select distinct top(" + nrows + ") folio,k.Cl_Prv,c.Nombre40,c.RFC,c.CP \n"
                     + "from kardex k\n"
                     + "join " + cob + ".dbo.Clientes c on k.Cl_Prv=c.NumCliente\n"
@@ -466,6 +466,28 @@ public class sqlkardex {
             JOptionPane.showMessageDialog(null, "Error: " + ex);
         }
         return kardex;
+    }
+
+    public int getmaxkardexsincuenta(Connection con) {//ult kardex folio sin uso de cuentas
+        int resp = 0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "SELECT  max(id_kardex)as folio FROM Kardex";
+            System.out.println(sql);
+            st = con.prepareStatement(sql);
+
+            rs = st.executeQuery();
+            while (rs.next()) {
+                resp = rs.getInt("folio");
+            }
+            resp++;
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
     }
 
 }
