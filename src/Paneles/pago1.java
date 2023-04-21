@@ -497,7 +497,7 @@ public class pago1 extends javax.swing.JPanel {
         model.addColumn("Parcialidad");
         daofactura d = new daofactura();
         arrabonos = d.getabonospago(cpt, JtCliente.getText(), empresacob, 15);
-        arrabonos17 = d.getabonospago(cpt, JtCliente.getText(), empresacob, 17);
+        arrabonos17 = d.getabonospago(cpt, JtCliente.getText()+" 17", empresacob, 17);
         int tamaño =arrabonos.size()+arrabonos17.size();
 //        model.setRowCount(arrabonos.size());
             model.setRowCount(tamaño);

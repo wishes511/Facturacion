@@ -163,6 +163,7 @@ public class sqlpedimentos {
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
                     + "where cantidadrestante>0 and ("+referencias+")";
+            System.out.println(sql);
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {

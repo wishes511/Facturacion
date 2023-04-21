@@ -13,7 +13,8 @@ import java.util.ArrayList;
  */
 public class factura implements java.io.Serializable{
     int id, folio, naprobacion, estatus, retenciones, idcliente, totalcajas, cantidadxcaja
-            , addenda,enviado, cvecliente, cveagente, parcialidad, parcialidad2,foliokardex,agente,plazo, totalpares,conceptos;
+            , addenda,enviado, cvecliente, cveagente, parcialidad, parcialidad2,foliokardex,agente,plazo, totalpares,conceptos,
+            id_pedido;
     String nombrecliente, ncliente, nombreagente, claveusuario, serie, fecha, fechacancel
             , motivodex, pedido, fechasolicitado, condicion, fechaentrega, nombre, rfc
             , calle, nexterior, ninterior,colonia, localidad, referencia, municipio, estado
@@ -36,6 +37,14 @@ public class factura implements java.io.Serializable{
     ArrayList<Detpagos> arrpagos = new ArrayList<>();
     ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
      ArrayList<Poliza> arrpolizas = new ArrayList<>();
+
+    public int getId_pedido() {
+        return id_pedido;
+    }
+
+    public void setId_pedido(int id_pedido) {
+        this.id_pedido = id_pedido;
+    }
 
     public int getConceptos() {
         return conceptos;

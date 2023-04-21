@@ -17,6 +17,7 @@ import Server.Serverylite;
 import Tpu.ClientesTpu;
 import Tpu.FacturacionTpu;
 import Tpu.Pedimento;
+import Tpu.Remisiontpu;
 import java.awt.AWTException;
 import java.awt.Image;
 import java.awt.MenuItem;
@@ -63,7 +64,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "0";
+    String prod = "1";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -386,7 +387,12 @@ public final class Principal extends javax.swing.JFrame {
         JmTpu.add(JtFacturaciontpu);
 
         JmRemision.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirR.png"))); // NOI18N
-        JmRemision.setText("Remision");
+        JmRemision.setText("Pedidos");
+        JmRemision.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmRemisionActionPerformed(evt);
+            }
+        });
         JmTpu.add(JmRemision);
 
         JmPedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/construction_project_plan_building_architect_design_develop-61_icon-icons.com_60253.png"))); // NOI18N
@@ -945,6 +951,17 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JtFacturaciontpuActionPerformed
 
+    private void JmRemisionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmRemisionActionPerformed
+        try {
+            Remisiontpu p = new Remisiontpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmRemisionActionPerformed
+
     private void verificausuario() {
         jp.setVisible(true);
         jp.requestFocus();
@@ -1018,6 +1035,7 @@ public final class Principal extends javax.swing.JFrame {
                     u.setUsuario("");
                     u.setGrado("2");
                     u.setTurno("0");
+                    u.setTipo_usuario("1");
                     modoadmin();
                     JmSesion.setEnabled(false);
                     jLabel1.requestFocus();
@@ -1030,7 +1048,7 @@ public final class Principal extends javax.swing.JFrame {
                     if (!u.getUsuario().equals("")) {
 //                        checkempresa();
                         actualizaempresa();
-                        if(u.getTipo_usuario().equals("1")){
+                        if (u.getTipo_usuario().equals("1")) {
                             setTpucon();
                         }
                     }

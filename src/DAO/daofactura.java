@@ -417,4 +417,16 @@ public class daofactura implements Facturas {
         return f.getfoliotoFACReltpu(c, r, bd);
     }
 
+    @Override
+    public int nuevaremtpu(Connection cpt, factura f, Connection cob) {
+        sqlfactura s = new sqlfactura();
+        return s.insertremtpu(cpt, f, cob);
+    }
+
+    @Override
+    public ArrayList<factura> getpedidos(Connection cpt, String folio, String serie) {
+        sqlfactura s = new sqlfactura();
+        return s.getpedidos(cpt, folio, serie);
+    }
+
 }

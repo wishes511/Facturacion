@@ -34,6 +34,8 @@ public interface Facturas {
      */
     public int nuevafactpu(Connection cpt, factura f, Connection cob);
 
+    public int nuevaremtpu(Connection cpt, factura f, Connection cob);
+
     /**
      *
      * @param c Conexion cpt
@@ -79,7 +81,7 @@ public interface Facturas {
     public int getbuscafolioncr(Connection c, String serie);
 
     public void actualizacadena(Connection c, factura f);
-    
+
     public boolean actualizacadenatpu(Connection c, factura f);
 
     public void actualizacadenapago(Connection c, factura f);
@@ -111,8 +113,8 @@ public interface Facturas {
     public ArrayList<factura> getdocxml(Connection cpt, String fol, String serie, String empcobranza);
 
     public boolean Updatesellofiscal(Connection cpt, Sellofiscal s, int id);
-    
-    public boolean Updatesellofiscaltpu(Connection cpt,Sellofiscal s, int id);
+
+    public boolean Updatesellofiscaltpu(Connection cpt, Sellofiscal s, int id);
 
     public boolean Updatesellofiscalpago(Connection cpt, Sellofiscal s, int id);
 
@@ -126,7 +128,7 @@ public interface Facturas {
      * @return
      */
     public ArrayList<cargo> getfactstoFACRel(Connection c, String r, String bd);
-    
+
     public ArrayList<cargo> getfactstoFACReltpu(Connection c, String r, String bd);
 
     /**
@@ -167,4 +169,13 @@ public interface Facturas {
      * @return
      */
     public boolean setpaquetefact(Connection rcpt, Connection cpt, int paquete, int folio);
+
+    /**
+     * 
+     * @param cpt
+     * @param folio
+     * @param serie
+     * @return 
+     */
+    public ArrayList<factura> getpedidos(Connection cpt, String folio, String serie);
 }
