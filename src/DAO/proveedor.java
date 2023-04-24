@@ -18,8 +18,12 @@ public interface proveedor {
     ArrayList<ProveedorMPrima> getallprov(Connection c, String p);
 
     boolean nuevoprov(Connection rcpt, Connection cpt, ProveedorMPrima p);
+    
+    boolean nuevoprovtpu(Connection cpt, ProveedorMPrima p);
 
     boolean deleteprov(Connection rcpt, Connection cpt, int id);
 
     boolean updateprov(Connection rcpt, Connection cpt, ProveedorMPrima p);
+    
+    boolean updateestatus(Connection cpt, int id, String estatus);
 }

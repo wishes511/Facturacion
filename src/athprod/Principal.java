@@ -17,6 +17,7 @@ import Server.Serverylite;
 import Tpu.ClientesTpu;
 import Tpu.FacturacionTpu;
 import Tpu.Pedimento;
+import Tpu.Proveedorestpu;
 import Tpu.Remisiontpu;
 import java.awt.AWTException;
 import java.awt.Image;
@@ -64,7 +65,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -154,6 +155,8 @@ public final class Principal extends javax.swing.JFrame {
         JmMaterial = new javax.swing.JMenuItem();
         JmProveedor = new javax.swing.JMenuItem();
         JmCliente = new javax.swing.JMenuItem();
+        JmDureza = new javax.swing.JMenuItem();
+        JmFamilia = new javax.swing.JMenuItem();
         Jmreportes = new javax.swing.JMenu();
         JtFacturaciontpu = new javax.swing.JMenuItem();
         JmRemision = new javax.swing.JMenuItem();
@@ -358,11 +361,16 @@ public final class Principal extends javax.swing.JFrame {
         });
         Catalogos.add(JmMaterial);
 
-        JmProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/prensauser.png"))); // NOI18N
+        JmProveedor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/User_Group-80_icon-icons.com_57247.png"))); // NOI18N
         JmProveedor.setText("Proveedores");
+        JmProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmProveedorActionPerformed(evt);
+            }
+        });
         Catalogos.add(JmProveedor);
 
-        JmCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/User_Group-80_icon-icons.com_57247.png"))); // NOI18N
+        JmCliente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/prensauser.png"))); // NOI18N
         JmCliente.setText("Clientes");
         JmCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -370,6 +378,24 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         Catalogos.add(JmCliente);
+
+        JmDureza.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Data_Meter4_37237.png"))); // NOI18N
+        JmDureza.setText("Durezas");
+        JmDureza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmDurezaActionPerformed(evt);
+            }
+        });
+        Catalogos.add(JmDureza);
+
+        JmFamilia.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/family_pedestrian_icon_216646.png"))); // NOI18N
+        JmFamilia.setText("Familias");
+        JmFamilia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmFamiliaActionPerformed(evt);
+            }
+        });
+        Catalogos.add(JmFamilia);
 
         JmTpu.add(Catalogos);
 
@@ -962,6 +988,25 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmRemisionActionPerformed
 
+    private void JmProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmProveedorActionPerformed
+        try {
+            Proveedorestpu p = new Proveedorestpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmProveedorActionPerformed
+
+    private void JmDurezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDurezaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JmDurezaActionPerformed
+
+    private void JmFamiliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFamiliaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JmFamiliaActionPerformed
+
     private void verificausuario() {
         jp.setVisible(true);
         jp.requestFocus();
@@ -1338,9 +1383,11 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmClientes;
     private javax.swing.JMenu JmCobranza;
     private javax.swing.JMenu JmConf;
+    private javax.swing.JMenuItem JmDureza;
     private javax.swing.JMenuItem JmEmpresas;
     private javax.swing.JMenuItem JmFacturacion;
     private javax.swing.JMenuItem JmFacturacionE;
+    private javax.swing.JMenuItem JmFamilia;
     private javax.swing.JMenuItem JmFicha;
     private javax.swing.JMenuItem JmMaterial;
     private javax.swing.JMenuItem JmModcaja;

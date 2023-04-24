@@ -36,5 +36,17 @@ public class daoProveedores implements proveedor{
         sqlproveedores s = new sqlproveedores();
         return s.getallprovs(c, p);
     }
+
+    @Override
+    public boolean nuevoprovtpu(Connection cpt, ProveedorMPrima p) {
+        sqlproveedores s = new sqlproveedores();
+        return s.nuevoprovtpu(cpt, p);
+    }
+
+    @Override
+    public boolean updateestatus(Connection cpt, int id, String estatus) {
+        sqlproveedores s = new sqlproveedores();
+        return s.updateestatus(cpt, id, estatus);
+    }
     
 }

@@ -260,114 +260,31 @@ public class fac1tpurem extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        setreport();
+        DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+        int row =JtDetalle.getSelectedRow();
+        int folio=arrfactura.get(row).getId_pedido();
+        String ser=arrfactura.get(row).getSerie();
+        double total=Double.parseDouble(formateador.format(arrfactura.get(row).getTotal()));
+        String ped=arrfactura.get(row).getPedido();
+        setreport(folio, "MXN", ser, total,ped);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
         if (evt.getButton() == 3) {// activar con clic derecho
             Pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
-        int row = JtDetalle.getSelectedRow();
-        int e = arrfactura.get(row).getEstatus();
-        String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
-
-//        JbAddenda.setEnabled(true);
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void JbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelarActionPerformed
-        if (!arrfactura.isEmpty()) {
-            String botones[] = {"Aceptar", ""
-                + ""
-                + "Cancelar"};
-            int opcion = JOptionPane.showOptionDialog(this, "¿Deseas cancelar factura?, recuerda que por ahora solo se cancela la factura del sat, nada del sistema", "ATHLETIC",
-                    0, 0, null, botones, this);
-            if (opcion == JOptionPane.YES_OPTION) {
-                String resp = "";
-                int row = JtDetalle.getSelectedRow();
-                java.util.Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                factura fac = new factura();
-                daofactura df = new daofactura();
-//                Asigna valores de folio y fecha de cancelacion
-                fac.setFolio(arrfactura.get(row).getFolio());
-                fac.setFechacancel(sdf.format(date));
-//                MOvimientos en la bd para cancelacion de la factura
-                df.cancelafac(cpt, rcpt, ACobranza, fac);
-                String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
-//                Aplica solo si esta timbrada sino solo se da de baja en la bd
-                if (tim.equals("T")) {
-                    String n = (empresa.equals("UptownCPT")) ? "2" : "1";
-                    timbrarXML t = new timbrarXML();
-                    resp = t.cancelarfolio("FAC_" + arrfactura.get(row).getFolio(), sqlempresa, n, arrfactura.get(row).getFoliofiscal());
-                }
-                Buscanotas();
-                JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + resp);
-            }
-        }
+
     }//GEN-LAST:event_JbCancelarActionPerformed
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
 
-        System.out.println("Leeyendo XML");
-        try {
-            DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-            daoempresa d = new daoempresa();
-            Empresas e = d.getempresarfc(sqlempresa, "1");
-            int row = JtDetalle.getSelectedRow();
-            String archivo = e.getXml() + "\\FAC_" + arrfactura.get(row).getFolio() + ".xml";
-            System.out.println(archivo);
-            Document doc;
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = dbFactory.newDocumentBuilder();
-            doc = builder.parse(archivo);
-            doc.getDocumentElement().normalize();
-            NodeList complemento = doc.getElementsByTagName("cfdi:Concepto");
-            System.out.println(complemento.getLength());
-            double descuento = 0;
-            double impuestos = 0;
-            double baseimp = 0;
-            double total = 0;
-            String sdesc = String.valueOf(arrfactura.get(row).getDescuento());
-//            Validar descuentos
-            if (!sdesc.equals("0.0") || arrfactura.get(row).getDescuento() != 0) {
-                for (int i = 0; i < complemento.getLength(); i++) {
-                    Node nNode = complemento.item(i);
-                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                        Element element = (Element) nNode;
-                        String f = element.getAttribute("Descuento");
-                        descuento += Double.parseDouble(formateador.format(Double.parseDouble(f)));
-//                        System.out.println("descuento " + f);
-                    }
-                }
-            }
-
-            complemento = doc.getElementsByTagName("cfdi:Traslado");
-            for (int i = 0; i < complemento.getLength() - 1; i++) {
-                Node nNode = complemento.item(i);
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) nNode;
-                    String f = element.getAttribute("Importe");
-                    impuestos += Double.parseDouble(formateador.format(Double.parseDouble(f)));
-//                    System.out.println("imp " + f);
-                }
-            }
-            double partedecimal = impuestos % 1;
-            System.out.println(partedecimal);
-
-            double tot = arrfactura.get(row).getSubtotal() + impuestos - descuento;
-            System.out.println(descuento + " - " + impuestos + " " + tot);
-            System.out.println(formatdecimal(tot));//            cargarPDF(factura,total);
-            System.out.println(formatdecimal(impuestos));
-        } catch (IOException | ParserConfigurationException | SAXException e) {
-            Logger.getLogger(fac1tpurem.class.getName()).log(Level.SEVERE, null, e);
-        }
     }//GEN-LAST:event_jLabel6MousePressed
 
     private void JmPedfacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPedfacActionPerformed
-        Modpedidos mped = new Modpedidos(null, true);
-        mped.rcpt = rcpt;
-        mped.cpt = cpt;
-        mped.setVisible(true);
+
     }//GEN-LAST:event_JmPedfacActionPerformed
 
     private void JlSerieMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlSerieMousePressed
@@ -400,29 +317,6 @@ public class fac1tpurem extends javax.swing.JPanel {
 
     }//GEN-LAST:event_JlSerieKeyPressed
 
-    private void generaradenda() {
-        if (!arrfactura.isEmpty()) {
-            String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
-            int row = JtDetalle.getSelectedRow();
-            String archivo = getempresa(sqlempresa, e) + "\\FAC_" + arrfactura.get(row).getFolio() + ".xml";
-            System.out.println(archivo);
-            daoAddenda dadenda = new daoAddenda();
-            ArrayList<Corridaaddenda> arrcorend = dadenda.getCoraddenda(liteusuario);
-            ArrayList<Addenda> arradenda = dadenda.getAddenda(cpt, arrfactura.get(row), arrcorend);
-            ArrayList<Destinoscoppel> arrdestinos = dadenda.getDestinos(rcpt);
-            facAddenda faddenda = new facAddenda(null, true);
-            faddenda.f = arrfactura.get(row);
-            faddenda.empresa = e;
-            faddenda.arraddenda = arradenda;
-            faddenda.arrdestinos = arrdestinos;
-            faddenda.archivoxml = archivo;
-            faddenda.rcpt = rcpt;
-            faddenda.cpt = cpt;
-            faddenda.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-            faddenda.setVisible(true);
-
-        }
-    }
 
     private String getempresa(Connection c, String n) {
         daoempresa d = new daoempresa();
@@ -466,41 +360,40 @@ public class fac1tpurem extends javax.swing.JPanel {
         return resp;
     }
 
-    private void setreport() {
+    /**
+     * Despliega reporte del pedido individual
+     * @param folio
+     * @param regimen
+     * @param moneda
+     * @param serie
+     * @param total 
+     */
+    private void setreport(int folio, String moneda, String serie,double total, String pedido) {
         try {
             daoempresa d = new daoempresa();
-            String n = (empresa.equals("UptownCPT")) ? "2" : "1";
-            String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
+//            Identificar si es de ath o uptown
+            String n = "1";
+            String logo = "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
+//             fin identificar empresa
             Map parametros = new HashMap();
-            convertnum conv = new convertnum();
+//            Clase que contiene el numero convertido a caracter
             convertirNumeros cnum = new convertirNumeros();
-            int folio = arrfactura.get(JtDetalle.getSelectedRow()).getFolio();
-            String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
             DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-            String numeros = formateador.format(arrfactura.get(JtDetalle.getSelectedRow()).getTotal());
-            parametros.put("folio", folio);
-//            parametros.put("totalletra", conv.controlconversion(arrfactura.get(JtDetalle.getSelectedRow()).getTotal()).toUpperCase());
-            parametros.put("totalletra", cnum.Convertir(numeros, true, moneda));
-            parametros.put("nombre", e.getNombre());
-            parametros.put("rfc", e.getRfc());
-            parametros.put("regimen", e.getRegimen());
-            parametros.put("lugar", e.getCp());
-            parametros.put("comprobante", e.getNumcertificado());
-            parametros.put("logo", "C:\\af\\bin\\" + logo);
-            parametros.put("metodo", getnmetodo(arrfactura.get(JtDetalle.getSelectedRow()).getMetodopago()));
-            parametros.put("uso", getnuso(arrfactura.get(JtDetalle.getSelectedRow()).getUsocfdi()));
-            parametros.put("serie", "FAC");
-            parametros.put("regimencliente", arrfactura.get(JtDetalle.getSelectedRow()).getRegimen());
-
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/index.jasper"));
+            String numeros = formateador.format(total);
+            String letratotal = cnum.Convertir(numeros, true, moneda);
+//            Agregar parametros al reporte
+            parametros.put("id", folio);
+            parametros.put("totalletra", letratotal);
+            parametros.put("serie", serie);
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Pedidos.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("FAC " + folio);
+            ver.setTitle("Pedido "+pedido);
             ver.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(fac1tpurem.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -535,37 +428,34 @@ public class fac1tpurem extends javax.swing.JPanel {
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Pedido");
-        model.addColumn("Kardex");
         model.addColumn("Cliente");
+        model.addColumn("Kardex");
         model.addColumn("Fecha");
         model.addColumn("Subtotal");
         model.addColumn("Iva");
         model.addColumn("Total");
         model.addColumn("Serie");
         model.addColumn("Estado");
-        model.addColumn("Timbrado");
-        model.addColumn("Uso cfdi");
         model.setNumRows(arrfactura.size());
         DecimalFormat formateador = new DecimalFormat("####.##");
         for (int i = 0; i < arrfactura.size(); i++) {
-            String estat = (arrfactura.get(i).getEstatus() == 1) ? "ACTIVA" : "CANCELADO";
-            String estatfac = (arrfactura.get(i).getFoliofiscal().equals("")) ? "NO TIMBRADO" : "TIMBRADO";
+            String estat = (arrfactura.get(i).getEstatus() == 1) ? "ACTIVA" : "NO ACTIVA";
 //            System.out.println(arrfactura.get(i).getTotal());
-            model.setValueAt(arrfactura.get(i).getFolio(), i, 0);
-            model.setValueAt(arrfactura.get(i).getNombre(), i, 1);
-            model.setValueAt(formateador.format(arrfactura.get(i).getSubtotal()), i, 2);
-            model.setValueAt(formateador.format(arrfactura.get(i).getImpuestos()), i, 3);
-            model.setValueAt(formateador.format(arrfactura.get(i).getTotal()), i, 4);
-            model.setValueAt(arrfactura.get(i).getFecha(), i, 5);
-            model.setValueAt(arrfactura.get(i).getFormapago(), i, 6);
-            model.setValueAt(arrfactura.get(i).getMetodopago(), i, 7);
+            model.setValueAt(arrfactura.get(i).getPedido(), i, 0);
+            model.setValueAt(arrfactura.get(i).getNombrecliente(), i, 1);
+            model.setValueAt(arrfactura.get(i).getId_kardex(), i, 2);
+            model.setValueAt(arrfactura.get(i).getFecha(), i, 3);
+            model.setValueAt(formateador.format(arrfactura.get(i).getSubtotal()), i, 4);
+            model.setValueAt(formateador.format(arrfactura.get(i).getImpuestos()), i, 5);
+            model.setValueAt(formateador.format(arrfactura.get(i).getTotal()), i, 6);
+            model.setValueAt(arrfactura.get(i).getSerie(), i, 7);
             model.setValueAt(estat, i, 8);
-            model.setValueAt(estatfac, i, 9);
-            model.setValueAt(arrfactura.get(i).getUsocfdi(), i, 10);
         }
         JtDetalle.setModel(model);
     }
 
+    
+    
     private boolean verificaint(String cad) {
         boolean resp = false;
         String patt = "[0-9]+";

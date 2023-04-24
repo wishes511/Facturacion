@@ -178,4 +178,6 @@ public interface Facturas {
      * @return 
      */
     public ArrayList<factura> getpedidos(Connection cpt, String folio, String serie);
+    
+    public ArrayList<factura> getdocstpu(Connection cpt, String folio, String serie);
 }

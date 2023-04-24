@@ -68,6 +68,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setResizable(true);
         setTitle("Clientes");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/prensauser.png"))); // NOI18N
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -101,7 +102,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cloudrefresh_icon-icons.com_54403.png"))); // NOI18N
-        jLabel5.setToolTipText("Actualiza cliente de CPT");
+        jLabel5.setToolTipText("Actualiza cliente de CPT a TPU");
         jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {

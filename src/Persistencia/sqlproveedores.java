@@ -6,6 +6,7 @@
 package Persistencia;
 
 import Modelo.ProveedorMPrima;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,11 +37,55 @@ public class sqlproveedores {
                 p.setPais(rs.getString("pais"));
                 p.setRazons(rs.getString("razonsocial"));
                 p.setProveedor(rs.getInt("id_proveedor"));
+                p.setEstatus(rs.getString("estatus"));
                 arr.add(p);
             }
         } catch (SQLException ex) {
             Logger.getLogger(sqlproveedores.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
+    }
+
+    public boolean nuevoprovtpu(Connection cpt, ProveedorMPrima p) {
+        try {
+            PreparedStatement st;
+            cpt.setAutoCommit(false);
+            String nombre=p.getNombre();
+            String rfc=p.getRfc();
+            String cp=p.getCp();
+            String razon=p.getRazons();
+            String pais=p.getPais();
+            st = cpt.prepareStatement("insert into proveedores(nombre,rfc,cp,razonsocial,estatus,pais) \n"
+                    + "values('"+nombre+"','"+rfc+"','"+cp+"','"+razon+"','1','"+pais+"')");
+            st.executeUpdate();
+            cpt.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                cpt.rollback();
+                Logger.getLogger(sqlproveedores.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlproveedores.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+    public boolean updateestatus(Connection cpt, int id, String estatus){
+        try {
+            PreparedStatement st;
+            cpt.setAutoCommit(false);
+            st = cpt.prepareStatement("update proveedores set estatus='"+estatus+"' where id_proveedor="+id);
+            st.executeUpdate();
+            cpt.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                cpt.rollback();
+                Logger.getLogger(sqlproveedores.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlproveedores.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
     }
 }

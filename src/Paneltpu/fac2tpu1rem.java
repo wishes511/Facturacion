@@ -31,6 +31,7 @@ import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -474,6 +475,8 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 String condicion;
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                Calendar fecha = Calendar.getInstance();
+                int mes = fecha.get(Calendar.MONTH) + 1;
                 daofactura dfac = new daofactura();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
                 DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
@@ -486,6 +489,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 } while (n.isAlive());
                 int rowc = JcCliente.getSelectedIndex();
                 f.setFolio(n.getfolio());
+                f.setPedido("TPU "+mes+"-"+n.getfolio());
                 daokardexrcpt dk = new daokardexrcpt();
                 f.setFoliokardex(dk.maxkardexsincuenta(cpt));// folio del kardex
                 f.setClaveusuario(u.getUsuario());
@@ -563,7 +567,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 } else {
                     int id = dfac.nuevaremtpu(cpt, f, ACobranza);
                     if (id != 0) {
-                        setreport(id, f.getRegimen(), f.getMoneda(), f.getSerie());
+                        setreport(id, f.getRegimen(), f.getMoneda(), "B",f.getPedido());
                         JOptionPane.showMessageDialog(null, "Proceso terminado ");
                         vaciarcampos();
                         JtCliente.requestFocus();
@@ -574,14 +578,14 @@ public class fac2tpu1rem extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jLabel2MousePressed
 
-        public void cargacombos() {//catalogos de Sat
+    public void cargacombos() {//catalogos de Sat
         DefaultComboBoxModel cliente = new DefaultComboBoxModel();
         for (Cliente arruso1 : arrcliente) {
             cliente.addElement(arruso1.getNombre());
         }
         JcCliente.setModel(cliente);
     }
-    
+
     /**
      * Funcion para determinar si la cantidad decimal es redondeada o truncada
      * ya que el sat maneja ambos y no solo uno porque si no aveces saldran mal
@@ -631,7 +635,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
      * creaba el pdf el proyecto se llama "Facturas"
      *
      */
-    private void setreport(int folio, String regimen, String moneda, String serie) {
+    private void setreport(int folio, String regimen, String moneda, String serie, String pedido) {
         try {
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
@@ -659,7 +663,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Pedido");
+            ver.setTitle("Pedido "+pedido);
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);

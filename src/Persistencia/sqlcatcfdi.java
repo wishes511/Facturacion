@@ -421,7 +421,7 @@ public class sqlcatcfdi {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select * from Claveprods order by descripcion";
+            String sql = "select * from Claveprods order by clave";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();

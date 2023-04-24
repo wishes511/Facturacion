@@ -520,8 +520,8 @@ public class fac1tpu extends javax.swing.JPanel {
             faddenda.arraddenda = arradenda;
             faddenda.arrdestinos = arrdestinos;
             faddenda.archivoxml = archivo;
-            faddenda.rcpt=rcpt;
-            faddenda.cpt=cpt;
+            faddenda.rcpt = rcpt;
+            faddenda.cpt = cpt;
             faddenda.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             faddenda.setVisible(true);
 
@@ -573,31 +573,43 @@ public class fac1tpu extends javax.swing.JPanel {
     private void setreport() {
         try {
             daoempresa d = new daoempresa();
-            String n = (empresa.equals("UptownCPT")) ? "2" : "1";
-            String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
+//            Identificar si es de ath o uptown
+            String n = "1";
+            String logo = "AF.png";
+            String ser;
+            String report;
+            int row = JtDetalle.getSelectedRow();
+            double total = arrfactura.get(row).getTotal();
+            int folio = arrfactura.get(row).getFolio();
+            String moneda = arrfactura.get(row).getMoneda();
+            String metodop = arrfactura.get(row).getDescmetodop();
+            String uso = arrfactura.get(row).getUsocfdi();
+            String regimen = arrfactura.get(row).getRegimen();
             Empresas e = d.getempresarfc(sqlempresa, n);
+//             fin identificar empresa
             Map parametros = new HashMap();
-            convertnum conv = new convertnum();
+//            Clase que contiene el numero convertido a caracter
             convertirNumeros cnum = new convertirNumeros();
-            int folio = arrfactura.get(JtDetalle.getSelectedRow()).getFolio();
-            String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
             DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-            String numeros = formateador.format(arrfactura.get(JtDetalle.getSelectedRow()).getTotal());
+            String numeros = formateador.format(total);
+            String letratotal = cnum.Convertir(numeros, true, moneda);
+            ser = "FAC";
+            report = "indextpu";
+//            Agregar parametros al reporte
             parametros.put("folio", folio);
-//            parametros.put("totalletra", conv.controlconversion(arrfactura.get(JtDetalle.getSelectedRow()).getTotal()).toUpperCase());
-            parametros.put("totalletra", cnum.Convertir(numeros, true, moneda));
+            parametros.put("totalletra", letratotal);
             parametros.put("nombre", e.getNombre());
             parametros.put("rfc", e.getRfc());
             parametros.put("regimen", e.getRegimen());
             parametros.put("lugar", e.getCp());
             parametros.put("comprobante", e.getNumcertificado());
-            parametros.put("logo", "C:\\af\\bin\\" + logo);
-            parametros.put("metodo", getnmetodo(arrfactura.get(JtDetalle.getSelectedRow()).getMetodopago()));
-            parametros.put("uso", getnuso(arrfactura.get(JtDetalle.getSelectedRow()).getUsocfdi()));
-            parametros.put("serie", "FAC");
-            parametros.put("regimencliente", arrfactura.get(JtDetalle.getSelectedRow()).getRegimen());
+            parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
+            parametros.put("metodo", metodop);
+            parametros.put("uso", uso);
+            parametros.put("serie", ser);
+            parametros.put("regimencliente", regimen);
 
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/index.jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/" + report + ".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -632,7 +644,7 @@ public class fac1tpu extends javax.swing.JPanel {
 
     private void Buscanotas() {
         daofactura df = new daofactura();
-        arrfactura = df.getdoc(cpt, JtCliente.getText(), "FAC", empresacob);
+        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "FAC");
         generatabla();
     }
 
