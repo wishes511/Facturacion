@@ -18,4 +18,6 @@ public interface familias {
     public ArrayList<Familia> getallfamilia(Connection c, String f);
 
     public boolean newfamilia(Connection c, Familia f);
+    
+    boolean updateestatus(Connection cpt, int id, String estatus);
 }

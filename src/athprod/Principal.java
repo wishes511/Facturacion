@@ -15,7 +15,9 @@ import Server.ServerProccpt;
 import Server.Serverprod;
 import Server.Serverylite;
 import Tpu.ClientesTpu;
+import Tpu.Durezastpu;
 import Tpu.FacturacionTpu;
+import Tpu.Familiastpu;
 import Tpu.Pedimento;
 import Tpu.Proveedorestpu;
 import Tpu.Remisiontpu;
@@ -65,7 +67,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "0";
+    String prod = "1";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -1000,11 +1002,25 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmProveedorActionPerformed
 
     private void JmDurezaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDurezaActionPerformed
-        // TODO add your handling code here:
+        try {
+            Durezastpu p = new Durezastpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_JmDurezaActionPerformed
 
     private void JmFamiliaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFamiliaActionPerformed
-        // TODO add your handling code here:
+        try {
+            Familiastpu p = new Familiastpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_JmFamiliaActionPerformed
 
     private void verificausuario() {

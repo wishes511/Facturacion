@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author GATEWAY1-
  */
-public class daodurezas implements Durezas{
+public class daodurezas implements Durezas {
 
     @Override
     public ArrayList<Dureza> getdurezas(Connection c) {
@@ -24,7 +24,26 @@ public class daodurezas implements Durezas{
 
     @Override
     public boolean nuevadureza(Connection c, Dureza d) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        sqldureza s = new sqldureza();
+        return s.newdureza(c, d);
     }
-    
+
+    @Override
+    public boolean getdureza(Connection c, String a) {
+        sqldureza s = new sqldureza();
+        return s.getdureza(c, a);
+    }
+
+    @Override
+    public boolean updateestatus(Connection cpt, String id, String estatus) {
+        sqldureza s = new sqldureza();
+        return s.updateestatus(cpt, id, estatus);
+    }
+
+    @Override
+    public ArrayList<Dureza> getalldurezas(Connection c, String dur) {
+        sqldureza a = new sqldureza();
+        return a.getalldureza(c, dur);
+    }
+
 }

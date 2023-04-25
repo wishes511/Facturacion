@@ -875,7 +875,8 @@ public class ncr2 extends javax.swing.JPanel {
             double totalrev = 0;
             //Se obtiene el total de las facturas que anter se capturaron
             for (int i = 0; i < arrcargoseleccion.size(); i++) {
-                totalrev += Double.parseDouble(formateador.format(arrcargoseleccion.get(i).getDescuento()));
+//                totalrev += Double.parseDouble(formateador.format(arrcargoseleccion.get(i).getDescuento()));
+                totalrev += formatdecimal(arrcargoseleccion.get(i).getDescuento());
             }
 
             System.out.println(total + " " + totalrev);
@@ -1085,7 +1086,7 @@ public class ncr2 extends javax.swing.JPanel {
                         timbrarXML tim = new timbrarXML();
                         Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
                         dfac.Updatesellofiscal(cpt, s, id);
-                        setreport(f.getFolio(), f.getRegimen(),f.getMoneda());
+                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
                         JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
                         vaciarcampos();
                         JtCliente.requestFocus();
@@ -1115,22 +1116,22 @@ public class ncr2 extends javax.swing.JPanel {
                 if (punto == 3) {
                     dato = Integer.parseInt(c.charAt(i) + "");
 //                    i = c.length();
-//                    break;
-                }
-//                Para un cuarto decimal, si es mayor a
-                if (punto == 4) {
-                    int datoaux = Integer.parseInt(c.charAt(i) + "");
-                    if (datoaux > 5) {
-                        dato += 1;
-                    }
-                    i = c.length();
                     break;
                 }
+//                Para un cuarto decimal, si es mayor a
+//                if (punto == 4) {
+//                    int datoaux = Integer.parseInt(c.charAt(i) + "");
+//                    if (datoaux > 5) {
+//                        dato += 1;
+//                    }
+//                    i = c.length();
+//                    break;
+//                }
 //                cadena += c.charAt(i);
                 punto++;
             }
         }
-        if ((dato <= 5)) {
+        if ((dato < 5)) {
             resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
         } else {
             resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
@@ -1168,11 +1169,11 @@ public class ncr2 extends javax.swing.JPanel {
      */
     private void setreport(int folio, String regimen, String moneda) {
         try {
-            String conformidad=(!moneda.equals("MXN"))?"De conformidad con el Art. 20 del C.F.F., informamos que "
+            String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
                     + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
                     + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
                     + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
-                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)":" ";
+                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
             String n = (empresa.equals("UptownCPT")) ? "2" : "1";
@@ -1196,7 +1197,7 @@ public class ncr2 extends javax.swing.JPanel {
             parametros.put("serie", "NCR");
             parametros.put("regimencliente", regimen);
             parametros.put("confo", conformidad);
-            
+
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/indexncr.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -1280,6 +1281,7 @@ public class ncr2 extends javax.swing.JPanel {
 //                    impuestos += Double.parseDouble(formateador.format((precio / 1.16) * 0.16));
                     subtotal += formatdecimal(precio / 1.16);
                     impuestos += formatdecimal((precio / 1.16) * 0.16);
+                    System.out.println("01 "+impuestos+" "+ subtotal);
                 }
                 if (resp) {// Si, y solo si es un entero o decimal
                     //Variables para manejo de totales

@@ -16,6 +16,12 @@ import java.util.ArrayList;
 public interface Durezas {
 
     public ArrayList<Dureza> getdurezas(Connection c);
+    
+    public boolean getdureza(Connection c, String a);
+    
+    public ArrayList<Dureza> getalldurezas(Connection c, String dur);
 
     public boolean nuevadureza(Connection c, Dureza d);
+    
+    boolean updateestatus(Connection cpt, String id, String estatus);
 }

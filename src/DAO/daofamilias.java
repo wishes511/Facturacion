@@ -24,7 +24,14 @@ public class daofamilias implements familias{
 
     @Override
     public boolean newfamilia(Connection c, Familia f) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        sqlfamilias s = new sqlfamilias();
+        return s.newfamilia(c, f);
+    }
+
+    @Override
+    public boolean updateestatus(Connection cpt, int id, String estatus) {
+        sqlfamilias s = new sqlfamilias();
+        return s.updateestatus(cpt, id, estatus);
     }
     
 }

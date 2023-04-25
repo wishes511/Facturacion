@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author GATEWAY1-
  */
-public class daoProveedores implements proveedor{
+public class daoProveedores implements proveedor {
 
     @Override
     public boolean nuevoprov(Connection rcpt, Connection cpt, ProveedorMPrima p) {
@@ -48,5 +48,7 @@ public class daoProveedores implements proveedor{
         sqlproveedores s = new sqlproveedores();
         return s.updateestatus(cpt, id, estatus);
     }
-    
+
+
+
 }

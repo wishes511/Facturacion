@@ -286,7 +286,7 @@ public class Nuevomaterial extends javax.swing.JDialog {
             Materiales m = new Materiales();
             String unidad = arrunidad.get(JcUnidad.getSelectedIndex()).getClave();
             String claveprod = arrclave.get(JcSat.getSelectedIndex()).getClaveprod();
-            m.setDescripcion(getmatformat(JtMaterial.getText().toUpperCase()));
+            m.setDescripcion(JtMaterial.getText().toUpperCase());
             m.setPrecio(Double.parseDouble(JtPrecio.getText()));
             m.setUnidad(unidad);
             m.setCodigosat(claveprod);
