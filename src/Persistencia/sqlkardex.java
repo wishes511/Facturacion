@@ -363,7 +363,7 @@ public class sqlkardex {
                     + "join colores col on comb.Color1=col.Color\n"
                     + "join corridas cor on prod.Corrida=cor.Corrida\n"
                     + "join lineas l on prod.Linea=l.Linea\n"
-                    + "where (" + folios + ") and statusimpresion='N'\n"
+                    + "where (" + folios + ") and statusimpresion='N' and k.serie='A' and ISNULL(c.Nombre40,'')!=''\n"
                     + "order by folio desc";
             st = con.prepareStatement(sql);
             System.out.println("folios multi" + sql);
@@ -445,7 +445,8 @@ public class sqlkardex {
             String sql = "select distinct top(" + nrows + ") folio,k.Cl_Prv,c.Nombre40,c.RFC,c.CP \n"
                     + "from kardex k\n"
                     + "join " + cob + ".dbo.Clientes c on k.Cl_Prv=c.NumCliente\n"
-                    + "where (k.Cl_Prv like '%" + p + "%' or c.Nombre40 like '%" + p + "%' or c.Numcliente like '%" + p + "%') and (cuenta>49 and cuenta<100) and statusimpresion='N' \n"
+                    + "where (k.Cl_Prv like '%" + p + "%' or c.Nombre40 like '%" + p + "%' or c.Numcliente like '%" + p + "%') "
+                    + "and (cuenta>49 and cuenta<100) and statusimpresion='N' and ISNULL(c.Nombre40,'')!='' \n"
                     + "order by folio desc";
             System.out.println(sql);
             st = con.prepareStatement(sql);

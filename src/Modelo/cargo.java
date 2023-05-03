@@ -10,9 +10,33 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class cargo {
-    int cuenta,subcuenta,plazo,cliente,cantidad,agente,renglon;
+    int cuenta,subcuenta,plazo,cliente,cantidad,agente,renglon,id_concepto, id_cargo;
     String nombre, referencia, fecha, fechav, ref, foliofiscal, sumafolios,rfc,calle,
             colonia,municipio, estado,pais,cp, regimen, descnota;
+
+    public int getId_cargo() {
+        return id_cargo;
+    }
+
+    public void setId_cargo(int id_cargo) {
+        this.id_cargo = id_cargo;
+    }
+
+    public int getId_concepto() {
+        return id_concepto;
+    }
+
+    public void setId_concepto(int id_concepto) {
+        this.id_concepto = id_concepto;
+    }
+
+    public double getSaldomx() {
+        return saldomx;
+    }
+
+    public void setSaldomx(double saldomx) {
+        this.saldomx = saldomx;
+    }
 
     public String getDescnota() {
         return descnota;
@@ -101,7 +125,7 @@ public class cargo {
     public void setCp(String cp) {
         this.cp = cp;
     }
-    double importe, saldo, sim, descuento;
+    double importe, saldo, sim, descuento,saldomx;
 
     public String getRef() {
         return ref;

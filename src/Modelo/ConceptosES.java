@@ -11,6 +11,15 @@ package Modelo;
  */
 public class ConceptosES implements java.io.Serializable{
     String Cuenta, subcuenta, nombre;
+    int id_concepto;
+
+    public int getId_concepto() {
+        return id_concepto;
+    }
+
+    public void setId_concepto(int id_concepto) {
+        this.id_concepto = id_concepto;
+    }
 
     public String getCuenta() {
         return Cuenta;

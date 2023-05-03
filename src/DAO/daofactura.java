@@ -435,4 +435,41 @@ public class daofactura implements Facturas {
         return s.getdocstpu(cpt, folio, serie);
     }
 
+    @Override
+    public ArrayList<cargo> getfactsoncrtpu(Connection c, String r, String bd) {
+        sqlfactura s = new sqlfactura();
+        return s.getfoliotoNCRtpu(c, r, bd);
+    }
+
+    @Override
+    public ArrayList<ConceptosES> getalcuentastpu(Connection c, String cuenta) {
+        sqlfactura s = new sqlfactura();
+        return s.getcuentastpu(c, cuenta);
+    }
+
+    @Override
+    public int nuevancrtpu(Connection c, factura f, Connection cob, Connection rcpt) {
+        sqlfactura s = new sqlfactura();
+        return s.insertncrtpu(c, f, cob, rcpt);
+    }
+
+    @Override
+    public ArrayList<factura> getdocvspago(Connection cpt, String folio) {
+        sqlfactura s = new sqlfactura();
+        return s.getfoliovspago(cpt, Integer.parseInt(folio));
+    }
+
+    @Override
+    public ArrayList<factura> getdocvspagoall(Connection cpt, int id) {
+                sqlfactura s = new sqlfactura();
+        return s.getfoliovspagoall(cpt, id);
+    }
+
+    @Override
+    public boolean Cancelancr(Connection cpt, Connection cob, ArrayList<factura> f) {
+        sqlfactura s = new sqlfactura();
+        return s.deletencr(cpt, cob, f);
+    }
+
+
 }

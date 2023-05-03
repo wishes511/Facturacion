@@ -89,8 +89,12 @@ public interface Facturas {
     public int getmaxncr(Connection c);
 
     public ArrayList<ConceptosES> getalcuentas(Connection c, String cuenta);
+    
+    public ArrayList<ConceptosES> getalcuentastpu(Connection c, String cuenta);
 
     public ArrayList<cargo> getfactstoncr(Connection c, String r, String bd);
+    
+    public ArrayList<cargo> getfactsoncrtpu(Connection c, String r, String bd);
 
     /**
      *
@@ -101,6 +105,8 @@ public interface Facturas {
      * @return
      */
     public int nuevancr(Connection c, factura f, Connection cob, Connection rcpt);// ncr y generar xml
+    
+    public int nuevancrtpu(Connection c, factura f, Connection cob, Connection rcpt);
 
     public ArrayList<abono> getabonospago(Connection c, String op, String bd, int cuenta);
 
@@ -180,4 +186,10 @@ public interface Facturas {
     public ArrayList<factura> getpedidos(Connection cpt, String folio, String serie);
     
     public ArrayList<factura> getdocstpu(Connection cpt, String folio, String serie);
+    
+    public ArrayList<factura> getdocvspago(Connection cpt, String folio);
+    
+    public ArrayList<factura> getdocvspagoall(Connection cpt, int id);
+    
+    public boolean Cancelancr(Connection cpt, Connection cob, ArrayList<factura> f);
 }

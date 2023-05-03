@@ -18,6 +18,8 @@ import Tpu.ClientesTpu;
 import Tpu.Durezastpu;
 import Tpu.FacturacionTpu;
 import Tpu.Familiastpu;
+import Tpu.Notascrtpu;
+import Tpu.Pagostpu;
 import Tpu.Pedimento;
 import Tpu.Proveedorestpu;
 import Tpu.Remisiontpu;
@@ -67,7 +69,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -89,6 +91,7 @@ public final class Principal extends javax.swing.JFrame {
 //        PopMenu.add(JmRespaldos);
         PopMenu.add(JmVentas);
         PopMenu.add(JmTpu);
+
         popup();
         setinicio();
         grupo.add(JrEmpresa);
@@ -160,6 +163,9 @@ public final class Principal extends javax.swing.JFrame {
         JmDureza = new javax.swing.JMenuItem();
         JmFamilia = new javax.swing.JMenuItem();
         Jmreportes = new javax.swing.JMenu();
+        JmCobranzatpu = new javax.swing.JMenu();
+        JmNotascrtpu = new javax.swing.JMenuItem();
+        JmPagostpu = new javax.swing.JMenuItem();
         JtFacturaciontpu = new javax.swing.JMenuItem();
         JmRemision = new javax.swing.JMenuItem();
         JmPedimento = new javax.swing.JMenuItem();
@@ -404,6 +410,29 @@ public final class Principal extends javax.swing.JFrame {
         Jmreportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/books_21813.png"))); // NOI18N
         Jmreportes.setText("Reportes");
         JmTpu.add(Jmreportes);
+
+        JmCobranzatpu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/exchange-dollar_icon-icons.com_53141.png"))); // NOI18N
+        JmCobranzatpu.setText("Cobranza");
+
+        JmNotascrtpu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495.png"))); // NOI18N
+        JmNotascrtpu.setText("Notas de credito");
+        JmNotascrtpu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmNotascrtpuActionPerformed(evt);
+            }
+        });
+        JmCobranzatpu.add(JmNotascrtpu);
+
+        JmPagostpu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_table_order_report_history_2332.png"))); // NOI18N
+        JmPagostpu.setText("Pagos");
+        JmPagostpu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmPagostpuActionPerformed(evt);
+            }
+        });
+        JmCobranzatpu.add(JmPagostpu);
+
+        JmTpu.add(JmCobranzatpu);
 
         JtFacturaciontpu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtir.png"))); // NOI18N
         JtFacturaciontpu.setText("Facturacion");
@@ -1023,6 +1052,28 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmFamiliaActionPerformed
 
+    private void JmNotascrtpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmNotascrtpuActionPerformed
+        try {
+            Notascrtpu p = new Notascrtpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmNotascrtpuActionPerformed
+
+    private void JmPagostpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagostpuActionPerformed
+        try {
+            Pagostpu p = new Pagostpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmPagostpuActionPerformed
+
     private void verificausuario() {
         jp.setVisible(true);
         jp.requestFocus();
@@ -1398,6 +1449,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmCliente;
     private javax.swing.JMenuItem JmClientes;
     private javax.swing.JMenu JmCobranza;
+    private javax.swing.JMenu JmCobranzatpu;
     private javax.swing.JMenu JmConf;
     private javax.swing.JMenuItem JmDureza;
     private javax.swing.JMenuItem JmEmpresas;
@@ -1408,8 +1460,10 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmMaterial;
     private javax.swing.JMenuItem JmModcaja;
     private javax.swing.JMenuItem JmNotascr;
+    private javax.swing.JMenuItem JmNotascrtpu;
     private javax.swing.JMenuItem JmOut;
     private javax.swing.JMenuItem JmPagos;
+    private javax.swing.JMenuItem JmPagostpu;
     private javax.swing.JMenuItem JmPedimento;
     private javax.swing.JMenu JmProd;
     private javax.swing.JMenuItem JmProveedor;

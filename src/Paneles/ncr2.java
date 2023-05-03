@@ -950,8 +950,10 @@ public class ncr2 extends javax.swing.JPanel {
                 f.setCantidadxcaja(0);
                 f.setTiposerie("NOTA DE CREDITO");
                 f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
-                f.setMetodopago(arrmetodo.get(JcMetodo.getSelectedIndex()).getMetodopago());
-                f.setDescmetodop(arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
+//                f.setMetodopago(arrmetodo.get(JcMetodo.getSelectedIndex()).getMetodopago());
+//                f.setDescmetodop(arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
+                f.setMetodopago("PUE");
+                f.setDescmetodop("PAGO EN UNA SOLA EXHIBICION");
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
@@ -1281,7 +1283,7 @@ public class ncr2 extends javax.swing.JPanel {
 //                    impuestos += Double.parseDouble(formateador.format((precio / 1.16) * 0.16));
                     subtotal += formatdecimal(precio / 1.16);
                     impuestos += formatdecimal((precio / 1.16) * 0.16);
-                    System.out.println("01 "+impuestos+" "+ subtotal);
+                    System.out.println("01 " + impuestos + " " + subtotal);
                 }
                 if (resp) {// Si, y solo si es un entero o decimal
                     //Variables para manejo de totales
