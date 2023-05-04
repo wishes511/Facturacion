@@ -5,11 +5,17 @@
  */
 package Tpu;
 
+import DAO.daoClientes;
+import DAO.daofactura;
+import Modelo.Cliente;
 import Modelo.Conexiones;
 import Modelo.Usuarios;
 import Paneltpu.ClienteUpdate;
 import Paneltpu.Clientetpu1;
 import Paneltpu.Clientetpu2;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,10 +25,12 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
 
     Clientetpu1 c1;
     Clientetpu2 c2;
+    Cliente cli;
     String var = "0";
     public String name;
     Usuarios u;
     Conexiones con;
+    ArrayList<Cliente> arr = new ArrayList<>();
 
     /**
      * Creates new form Clientes
@@ -57,7 +65,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        JlCliente = new javax.swing.JList<>();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel2 = new javax.swing.JPanel();
         Tabbed = new javax.swing.JTabbedPane();
@@ -96,6 +104,11 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/applicationsgraphicsdrawing_103768.png"))); // NOI18N
         jLabel3.setToolTipText("Editar registro");
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel3MousePressed(evt);
+            }
+        });
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
         jLabel4.setToolTipText("Deshabilitar cliente");
@@ -137,16 +150,16 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jList1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jList1.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        jList1.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
+        JlCliente.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        JlCliente.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
+        JlCliente.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        JlCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        JlCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JlClienteMousePressed(evt);
+            }
         });
-        jList1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jList1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jScrollPane1.setViewportView(jList1);
+        jScrollPane1.setViewportView(JlCliente);
 
         jSeparator1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -232,25 +245,66 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void JtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtBuscarActionPerformed
-        
+        buscacliente();
     }//GEN-LAST:event_JtBuscarActionPerformed
 
+    private void llenalista() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        for (Cliente arr1 : arr) {
+            model.addElement(arr1.getNombre());
+        }
+        JlCliente.setModel(model);
+    }
+
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
-        ClienteUpdate cu = new ClienteUpdate(null,true);
-        cu.cpttpu=con.getCobranzatpu();
+        ClienteUpdate cu = new ClienteUpdate(null, true);
+        cu.cpttpu = con.getCobranzatpu();
         cu.setVisible(true);
     }//GEN-LAST:event_jLabel5MousePressed
+
+    private void JlClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlClienteMousePressed
+        setcampos();
+    }//GEN-LAST:event_JlClienteMousePressed
+
+    private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
+        cli = c1.getCliente();
+        if (!cli.getNombre().isEmpty()) {
+            daoClientes dc = new daoClientes();
+            if (dc.modcliente(con.getCobranzatpu(), cli)) {
+                JOptionPane.showMessageDialog(null, "Actualizacion completa");
+                JtBuscar.setText("");
+                buscacliente();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al actualizar");
+            }
+        }
+    }//GEN-LAST:event_jLabel3MousePressed
+
+    public void setcampos() {
+        int row = JlCliente.getSelectedIndex();
+        c1.c = arr.get(row);
+        c1.setcampos();
+    }
+
+    public void buscacliente() {
+        String cliente = JtBuscar.getText();
+        daoClientes dc = new daoClientes();
+        arr = dc.getClientestpuall(con.getCobranzatpu(), cliente);
+        llenalista();
+    }
+
     public final void generaciontab() {
         c1 = new Clientetpu1();
-        c2 = new Clientetpu2();
+        //c2 = new Clientetpu2();
         Tabbed.addTab("Datos cliente", c1);
         Tabbed.setSelectedComponent(c1);
-        Tabbed.addTab("Datos Extras", c2);
+        //Tabbed.addTab("Datos Extras", c2);
         c1.sqlcfdi = con.getLitecfdi();
         c1.ACobranza = con.getCobranzatpu();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<String> JlCliente;
     public javax.swing.JTextField JtBuscar;
     private javax.swing.JTabbedPane Tabbed;
     private javax.swing.JLabel jLabel1;
@@ -258,7 +312,6 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JList<String> jList1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

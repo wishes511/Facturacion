@@ -46,4 +46,16 @@ public class daoClientes implements clientes {
         return s.getClientestpu(c);
     }
 
+    @Override
+    public ArrayList<Cliente> getClientestpuall(Connection c, String cli) {
+        sqlclientes s = new sqlclientes();
+        return s.getClientestpuall(c, cli);
+    }
+
+    @Override
+    public boolean modcliente(Connection cpt, Cliente cli) {
+        sqlclientes s = new sqlclientes();
+        return s.modcliente(cpt, cli);
+    }
+
 }

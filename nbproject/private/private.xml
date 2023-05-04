@@ -16,6 +16,7 @@
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/ncr1.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneltpu/ncr2tpu.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlcatcfdi.java</file>
+            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Tpu/ClientesTpu.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlempresa.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/cargo.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Empresarfc.java</file>
@@ -31,6 +32,7 @@
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/fac2.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/Cargosncr.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoxmlE.java</file>
+            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/clientes.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/factura.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/pago1.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Empresas.java</file>
@@ -50,12 +52,13 @@
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/mx/sat/cfd40/generarXML40.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/FacturacionE.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/fac1.java</file>
+            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneltpu/Clientetpu1.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Server/Serverprod.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/abono.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/test/testclass/testproc.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Dfactura.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlclientes.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/mx/sat/cfd40/ObjectFactory.java</file>
+            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlclientes.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Kardexrcpt.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/kardexrcpt.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Notascr.java</file>

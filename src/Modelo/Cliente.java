@@ -12,8 +12,40 @@ package Modelo;
 public class Cliente implements java.io.Serializable{
     private int cvecliente, agente, plazo, canal;
     private String nombre,rfc,cp,calle,numext, numint, colonia,municipio,estado, pais,regimen,ciudad, marca,
-            formapago, usocfdi, clave, nombreagente;
+            formapago, usocfdi, clave, nombreagente,estatus,correo,cuenta,telefono;
     private Agentes ag;
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(String cuenta) {
+        this.cuenta = cuenta;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
 
     public Agentes getAg() {
         return ag;

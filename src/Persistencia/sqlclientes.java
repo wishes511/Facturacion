@@ -48,10 +48,12 @@ public class sqlclientes {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select id_cliente,c.nombre as cliente,rfc,cp,calle,usocfdi,regimen,c.id_agente as agente,a.canal from cliente c\n"
+            String sql = "select id_cliente,c.nombre as cliente,rfc,cp,calle,usocfdi,regimen,c.id_agente as agente,a.canal from cliente c\n"
                     + "join Agente a on  c.id_agente=a.id_agente\n"
                     + "where c.estatus='1'\n"
-                    + "order by c.nombre");
+                    + "order by c.nombre";
+            st = con.prepareStatement(sql);
+            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Cliente c = new Cliente();
@@ -66,6 +68,45 @@ public class sqlclientes {
                 ag.setIdagente(rs.getInt("agente"));
                 ag.setIdcanal(rs.getInt("canal"));
                 c.setAg(ag);
+                arr.add(c);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<Cliente> getClientestpuall(Connection cob, String cli) {//cobranza
+        ArrayList<Cliente> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select id_cliente, id_agente, nombre, rfc, cp, razonsocial, usocfdi, calle, colonia, pais, Estado, regimen, estatus, ciudad,correo,cuenta,telefono \n"
+                    + "from cliente c\n"
+                    + "where nombre like '%" + cli + "%'\n"
+                    + "order by nombre desc";
+            st = cob.prepareStatement(sql);
+            System.out.println(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Cliente c = new Cliente();
+                c.setCvecliente(rs.getInt("id_cliente"));
+                c.setNombre(rs.getString("nombre"));
+                c.setRfc(rs.getString("rfc"));
+                c.setCp(rs.getString("cp"));
+                c.setCalle(rs.getString("calle"));
+                c.setUsocfdi(rs.getString("usocfdi"));
+                c.setRegimen(rs.getString("regimen"));
+                c.setColonia(rs.getString("colonia"));
+                c.setPais(rs.getString("pais"));
+                c.setEstado(rs.getString("estado"));
+                c.setCiudad(rs.getString("ciudad"));
+                c.setEstatus(rs.getString("estatus"));
+                c.setCorreo(rs.getString("correo"));
+                c.setCuenta(rs.getString("cuenta"));
+                c.setTelefono(rs.getString("telefono"));
                 arr.add(c);
             }
             rs.close();
@@ -162,6 +203,32 @@ public class sqlclientes {
                 c.rollback();
                 Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
 
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public boolean modcliente(Connection cpt, Cliente c) {
+        try {
+            cpt.setAutoCommit(false);
+            PreparedStatement st;
+            String sql = "update cliente set nombre='" + c.getNombre() + "',rfc='" + c.getRfc() + "',cp='" + c.getCp() 
+                    + "',usocfdi='" + c.getUsocfdi() + "',calle='" + c.getCalle() + "',colonia='" + c.getColonia() 
+                    + "',pais='"+ c.getPais() + "',estado='" + c.getEstado() + "',regimen='" + c.getRegimen() 
+                    + "',ciudad='" + c.getCiudad() + "',correo='" + c.getCorreo() + "',cuenta='" + c.getCuenta() 
+                    + "',telefono='" + c.getTelefono() + "'  where id_cliente=" + c.getCvecliente();
+            st = cpt.prepareStatement(sql);
+            int i = st.executeUpdate();
+            System.out.println("mod cliente " + i);
+            cpt.commit();
+            st.close();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                cpt.rollback();
+                Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex1);
             }

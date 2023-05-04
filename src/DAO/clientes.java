@@ -18,11 +18,15 @@ public interface clientes {
     public ArrayList<Cliente> getClientes(Connection c);
     
     public ArrayList<Cliente> getClientestpu(Connection c);
+    
+    public ArrayList<Cliente> getClientestpuall(Connection c, String cli);
 
     public Cliente getCliente(Connection c, int id);
 
     public Cliente getClientes(Connection c, int cliente);
 
     public boolean importacliente(Connection c, Cliente cli);
+    
+    public boolean modcliente(Connection cpt, Cliente cli);
 
 }

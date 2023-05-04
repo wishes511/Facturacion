@@ -2929,7 +2929,6 @@ public class sqlfactura {
     }
 
     public boolean deletencr(Connection cpt, Connection cob, ArrayList<factura> arr) {
-
         try {
             PreparedStatement st;
             cpt.setAutoCommit(false);
@@ -2938,22 +2937,21 @@ public class sqlfactura {
             System.out.println("docs " + sql);
             st = cpt.prepareStatement(sql);
             st.executeUpdate();
-
             for (factura arr1 : arr) {
                 String car = (arr1.getMoneda().equals("MXN")) ? "saldomx" : "saldo";
                 double saldo = arr1.getMonto();
                 sql = "update cargo set estatus='0' where id_cargo=" + arr1.getIdcargo();
-                System.out.println("cargo " + sql);
+//                System.out.println("cargo " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
 
                 sql = "update cargo set " + car + "=" + car + "+" + saldo + " where id_cargo=" + arr1.getIdcargo();
-                System.out.println("saldo " + sql);
+//                System.out.println("saldo " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
 
                 sql = "update abono set estatus='0' where id_abono=" + arr1.getIdabono();
-                System.out.println("abono " + sql);
+//                System.out.println("abono " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
 

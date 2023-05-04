@@ -354,20 +354,23 @@ public class ncr1tpu extends javax.swing.JPanel {
         }        // TODO add your handling code here:
     }//GEN-LAST:event_JtDetalleMousePressed
 
+    
     private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
         int input = JOptionPane.showConfirmDialog(null, "Estas seguro que quieres cancelar?, "
                 + "\n Recuerda que posteriormente debes cancelarla en el SAT", "Selecciona una opcion", JOptionPane.YES_NO_CANCEL_OPTION);
         if (input == 0) {
+//            Obtiene los registros por si las facturas relacionadas tienen algun pago
             int folio = arrfactura.get(JtDetalle.getSelectedRow()).getId();
             daofactura df = new daofactura();
             ArrayList<factura> arr = df.getdocvspago(cpt, folio + "");
             String fol = "";
+//            Si obtiene registros manda error
             if (!arr.isEmpty()) {
                 for (int i = 0; i < arr.size(); i++) { // solo guarda las 
                     fol = arr.get(i).getFolio() + " ";
                 }
                 JOptionPane.showMessageDialog(null, "No puedes cancelar una NCR si tienes un pago hecho con las facturas: \n" + fol);
-            } else {
+            } else {// Si no Si efectua la cancelacion de la NCR
                 int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
                 arr = df.getdocvspagoall(cpt, id);
                 if (df.Cancelancr(cpt, ACobranza, arr)) {
@@ -384,6 +387,7 @@ public class ncr1tpu extends javax.swing.JPanel {
     private void setreport() {
         try {
             String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
+//            Solo se usara si el documento es en dolares
             String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
                     + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
                     + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
@@ -392,7 +396,7 @@ public class ncr1tpu extends javax.swing.JPanel {
             daoempresa d = new daoempresa();
             String n = "1";
             String logo = "AF.png";
-
+//            Obtiene los datos del emisor que en este caso en ath
             Empresas e = d.getempresarfc(sqlempresa, n);
             Map parametros = new HashMap();
             convertnum conv = new convertnum();
@@ -442,7 +446,7 @@ public class ncr1tpu extends javax.swing.JPanel {
         }
         return r;
     }
-
+// Obtiene todas las notas de acuerdo a lo que se introduzca en el campo
     private void Buscanotas() {
         daofactura df = new daofactura();
         arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "NCR");
