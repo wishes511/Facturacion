@@ -69,7 +69,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "0";
+    String prod = "1";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -1214,7 +1214,7 @@ public final class Principal extends javax.swing.JFrame {
                     JmModcaja.setVisible(false);
                     JmSalidas.setVisible(false);
                     JmTpu.setVisible(true);
-                    JmTpu.setEnabled(false);
+                    JmTpu.setEnabled(true);
                 }
                 JmOut.setVisible(true);
                 JmSesion.setEnabled(false);

@@ -5,12 +5,8 @@
  */
 package Tpu;
 
-import athprod.*;
-import DAO.daoClientes;
 import DAO.daocfdi;
 import DAO.daofactura;
-import Modelo.Cliente;
-import Modelo.ConceptosES;
 import Modelo.Conexiones;
 import Modelo.Formadepago;
 import Modelo.Usuarios;
@@ -18,13 +14,9 @@ import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.relacion;
 import Modelo.usocfdi;
-import Paneles.ncr1;
-import Paneles.ncr2;
-import Paneles.pago1;
-import Server.Serverprod;
+import Paneltpu.pagotpu1;
+import Paneltpu.pagotpu2;
 import Server.Serverylite;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -42,9 +34,10 @@ import mx.sat.cfd40.xmlDAO;
  */
 public class Pagostpu extends javax.swing.JInternalFrame {
 
-    pago1 c1;
+    pagotpu1 c1;
+    pagotpu2 c2;
     String var = "0";
-    public String name, empresa,empresacob;
+    public String name, empresa, empresacob;
     Connection rcpt, litecfdi, liteempresa, cobranza, cpt;
     ArrayList<usocfdi> arruso = new ArrayList<>();
     ArrayList<Formadepago> arrforma = new ArrayList<>();
@@ -54,16 +47,17 @@ public class Pagostpu extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Clientes
+     *
      * @param cn
      * @param u
      */
     public Pagostpu(Conexiones cn, Usuarios u) {
         initComponents();
-        cpt=cn.getCpt();
-        rcpt=cn.getRcpt();
-        cobranza=cn.getCobranza();
-        empresa=cn.getEmpresa();
-        empresacob=cn.getEmpresacob();
+        cpt = cn.getCpttpu();
+        rcpt = cn.getRcpttpu();
+        cobranza = cn.getCobranzatpu();
+        empresa = cn.getEmpresa();
+        empresacob = cn.getEmpresacob();
         generaciontab();//Tabs de facturacion
         conexiones();
         setarraylist();
@@ -88,18 +82,28 @@ public class Pagostpu extends javax.swing.JInternalFrame {
         arruso = d.getusocfdi(litecfdi);
         arrmetodo = d.getMetodopago(litecfdi);
         arrforma = d.getFormadepago(litecfdi);
-        arrrelacion=d.getrelacion(litecfdi);
-        
+        arrrelacion = d.getrelacion(litecfdi);
+
         c1.arrfpago = arrforma;
         c1.arrmetodo = arrmetodo;
         c1.arruso = arruso;
         //tambien conexiones
-        c1.empresa=empresa;
-        c1.empresacob=empresacob;
+        c1.empresa = empresa;
+        c1.empresacob = empresacob;
         c1.ACobranza = cobranza;
         c1.sqlempresa = liteempresa;
         c1.sqlcfdi = litecfdi;
         c1.cpt = cpt;
+
+        c2.arrfpago = arrforma;
+        c2.arrmetodo = arrmetodo;
+        c2.arruso = arruso;
+        //tambien conexiones
+        c2.empresa = empresa;
+        c2.ACobranza = cobranza;
+        c2.sqlempresa = liteempresa;
+        c2.sqlcfdi = litecfdi;
+        c2.cpt = cpt;
     }
 
     /**
@@ -153,8 +157,10 @@ public class Pagostpu extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public final void generaciontab() {//generar tabs
-        c1 = new pago1();
-        Tabbed.addTab("Pagos", c1);
+        c1 = new pagotpu1();
+        c2 = new pagotpu2();
+        Tabbed.addTab("Ver Pagos", c1);
+        Tabbed.addTab("Nuevo pago", c2);
         Tabbed.setSelectedComponent(c1);
 
     }

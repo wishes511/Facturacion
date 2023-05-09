@@ -1890,6 +1890,176 @@ public class sqlfactura {
         return resp;
     }
 
+        public int insertpagostpu(Connection con, factura f) {//Rcpt y cpt
+        PreparedStatement st = null;
+        ResultSet rs;
+        int resp = 0;
+        try {
+            con.setAutoCommit(false);
+//            cobranza.setAutoCommit(false);
+            String sql;
+            String usuario = f.getClaveusuario();
+            String serie = f.getSerie();
+            int fol = f.getFolio();
+            String fecha = f.getFecha();
+            double desc = f.getDescuento();
+            String ped = f.getPedido();
+            String fechasoli = f.getFecha();
+            String cond = f.getCondicion();
+            String fechaent = f.getFecha();
+            double subtotal = f.getSubtotal();
+            double total = f.getTotal();
+            double iva = f.getIva();
+            double imp = f.getImpuestos();
+            //pagos
+            String rfcctaemi = f.getRfcctaemisora();
+            String ctaemi = f.getCtaemisora();
+            String bcoemi = f.getBancoemisor();
+            String rfcctarep = f.getRfcctareceptor();
+            String ctarep = f.getCtareceptora();
+            String bcorep = f.getBancoreceptor();
+            String op = f.getOrdenpago();
+            double monto = f.getMonto();
+            System.out.println("monto " + monto);
+            //cliente
+            int idcliente = f.getIdcliente();
+            String nombre = f.getNombre();
+            String rfc = f.getRfc();
+            String calle = f.getCalle();
+            String colonia = f.getColonia();
+            String mun = f.getMunicipio();
+            String estado = f.getEstado();
+            String pais = f.getPais();
+            String regimen = f.getRegimen();
+            String cp = f.getCp();
+            String ni = f.getNinterior();
+            String ne = f.getNexterior();
+            //fin cliente
+            String obs = f.getObservaciones();
+            int cajas = f.getTotalcajas();
+            int cxcaja = f.getCantidadxcaja();
+            String tiposerie = f.getTiposerie();
+            String mon = f.getMoneda();
+            double tipoc = f.getTipocambio();
+            String fpago = f.getFormapago();
+            String mpago = f.getMetodopago();
+            String Lugar = f.getLugarexpedicion();
+            String uso = f.getUsocfdi();
+            String relacion = f.getTiporelacion();
+            String folioorig = f.getFoliofiscalorig();
+            sql = "insert into Doctospago(claveusuario,serie,folio,numeroaprobacion,anoaprobacion,"
+                    + "fecha,estatus,descuento,motivodescuento,numpedido,fechasolicitado,condicion,"
+                    + "fechaentrega,retenciones,iva,ivaret,ISRret,subtotal,impuestos,"
+                    + "total,idcliente,nombre,rfc,calle,numexterior,numinterior,colonia,"
+                    + "localidad,referencia,municipio,estado,pais,cp,observaciones,"
+                    + "totalcajas,cantidadporcaja,tiposerie,moneda,tipocambio,enviado,"
+                    + "formadepago,metododepago,lugarexpedicion,foliofiscalorig,regimen,usocfdi,Tiporelacion"
+                    + ",Monto,Rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,bancoemisor,bancoreceptor,ordenpago) "
+                    + "values ('" + usuario + "','" + serie + "'," + fol + ",903682,2022,'" + fecha + "','1'," + desc
+                    + ",'NINGUNO','" + ped + "','" + fechasoli + "','" + cond + "','" + fechaent + "',0," + iva + ",0,0," + subtotal
+                    + "," + imp + "," + total + "," + idcliente + ",'" + nombre + "','" + rfc + "','" + calle + "','" + ne + "','" + ni + "','" + colonia + "'"
+                    + ",'','','" + mun + "','" + estado + "','" + pais + "','" + cp + "','" + obs + "'," + cajas + "," + cxcaja
+                    + ",'" + tiposerie + "','" + mon + "'," + tipoc + ",0,'" + fpago + "','" + mpago + "','" + Lugar + "'"
+                    + ",'" + folioorig + "','" + regimen + "','" + uso + "','" + relacion + "'"
+                    + "," + monto + ",'" + rfcctaemi + "','" + ctaemi + "','" + rfcctarep + "','" + ctarep + "','" + bcoemi + "','" + bcorep + "','" + op + "')";
+            System.out.println("Pago " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+
+            st = con.prepareStatement("select top(1)max(id) as id from doctospago group by fecha order by id desc");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                resp = rs.getInt("id");
+            }
+            rs.close();
+//            resp = f.getFolio();
+            for (Detpagos arr : f.getArrpagos()) {
+                //Inserta en detallado de detallado pago
+                int doc = resp;
+                double cant = arr.getCantidad();
+                String de = arr.getDescripcion();
+                String co = arr.getCodigo();
+                String umed = arr.getUmedida();
+                double precio = arr.getPrecio();
+                String fp = arr.getFormadedpago();
+                String moneda = arr.getMoneda();
+                double mo = arr.getMonto();
+                String rfcce = arr.getRfcctaemisora();
+                String rfccr = arr.getRfcctareceptora();
+                String ctae = arr.getCtaemisora();
+                String ctar = arr.getCtareceptora();
+                String uuid = arr.getUuid();
+                String fo = arr.getRef();
+                String mp = arr.getMetodopago();
+                int par = arr.getParcialidad();
+                double salant = arr.getImportesaldoant();
+                double salpag = arr.getImportepagado();
+                double salin = arr.getImpsaldoinsoluto();
+                sql = "insert into doctospagodetalle(IdDocumento, Cantidad, Descripcion, Codigo, UMedida,"
+                        + " Precio, FormadePago, MonedaPagoP, Monto, RFCCtaEmisora, CtaEmisora, RFCCtaReceptora,"
+                        + " CtaReceptora, UUID, folio, Moneda, MetodoPago, \n"
+                        + "                         NoParcialidad, ImporteSdoAnt, ImportePagado, ImpSaldoInsoluto) "
+                        + "values(" + doc + "," + cant + ",'" + de + "','" + co + "','" + umed + "'," + precio + ",'" + fp + "','" + moneda + "',"
+                        + mo + ",'" + rfcce + "','" + ctae + "','" + rfccr + "','" + ctar + "','" + uuid + "','" + fo + "','" + moneda + "','" + mp + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
+                System.out.println("d pagos " + sql);
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+            }
+            for (Detpagos arr : f.getArrpagos17()) {
+                //Inserta en detallado de detallado pago
+                int doc = resp;
+                double cant = arr.getCantidad();
+                String de = arr.getDescripcion();
+                String co = arr.getCodigo();
+                String umed = arr.getUmedida();
+                double precio = arr.getPrecio();
+                String fp = arr.getFormadedpago();
+                String moneda = arr.getMoneda();
+                double mo = arr.getMonto();
+                String rfcce = arr.getRfcctaemisora();
+                String rfccr = arr.getRfcctareceptora();
+                String ctae = arr.getCtaemisora();
+                String ctar = arr.getCtareceptora();
+                String uuid = arr.getUuid();
+                String fo = arr.getRef();
+                String mp = arr.getMetodopago();
+                int par = arr.getParcialidad();
+                double salant = arr.getImportesaldoant();
+                double salpag = arr.getImportepagado();
+                double salin = arr.getImpsaldoinsoluto();
+                sql = "insert into doctospagodetalle(IdDocumento, Cantidad, Descripcion, Codigo, UMedida,"
+                        + " Precio, FormadePago, MonedaPagoP, Monto, RFCCtaEmisora, CtaEmisora, RFCCtaReceptora,"
+                        + " CtaReceptora, UUID, folio, Moneda, MetodoPago, \n"
+                        + "                         NoParcialidad, ImporteSdoAnt, ImportePagado, ImpSaldoInsoluto) "
+                        + "values(" + doc + "," + cant + ",'" + de + "','" + co + "','" + umed + "'," + precio + ",'" + fp + "','" + moneda + "',"
+                        + mo + ",'" + rfcce + "','" + ctae + "','" + rfccr + "','" + ctar + "','" + uuid + "','" + fo + "','" + moneda + "','" + mp + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
+                System.out.println("d pagos17 " + sql);
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+            }
+            // Fin detallado de documento
+
+            sql = "update seriesfolios set ultimofolio=ultimofolio+1 where serie='PAG'";
+            System.out.println("series folios " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            con.commit();
+//            cobranza.commit();
+//            con.rollback();
+//            cobranza.rollback();
+        } catch (Exception ex) {
+            try {
+                resp = 0;
+                con.rollback();
+//                cobranza.rollback();
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return resp;
+    }
+    
     public boolean actualizafactura(Connection con, factura f) {//Rcpt y cpt
         PreparedStatement st = null;
         try {

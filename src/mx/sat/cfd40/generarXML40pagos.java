@@ -257,8 +257,8 @@ public class generarXML40pagos {
             tr.setTipoFactorDR(CTipoFactor.TASA);
             tr.setTasaOCuotaDR(f.getTasaCuota());
             tr.setImpuestoDR("002");
-            tr.setImporteDR(BigDecimal.valueOf((f.getArrpagos().get(i).getImportepagado() / 1.16) * 0.16).setScale(6, RoundingMode.HALF_UP));
-            tr.setBaseDR(BigDecimal.valueOf(f.getArrpagos().get(i).getImportepagado() / 1.16).setScale(6, RoundingMode.HALF_UP));
+            tr.setImporteDR(BigDecimal.valueOf(formatdecimal((f.getArrpagos().get(i).getImportepagado() / 1.16) * 0.16)).setScale(6));
+            tr.setBaseDR(BigDecimal.valueOf(formatdecimal(f.getArrpagos().get(i).getImportepagado() / 1.16)).setScale(6));
             trasladosdr.getTrasladoDR().add(tr);
             impdr.setTrasladosDR(trasladosdr);//traslado
             doc.setImpuestosDR(impdr);//Nodo con valor de ImpuestoDR
@@ -278,7 +278,7 @@ public class generarXML40pagos {
         trasladosp.getTrasladoP().add(trasladop);
         impuestos.setTrasladosP(trasladosp);
         //Termino de impuestosP
-        Comprobante.Complemento.Pagos.Pago pago17=null;
+        Comprobante.Complemento.Pagos.Pago pago17 = null;
         if (!f.getArrpagos17().isEmpty()) {//Este si es necesario ya que sino agrega el nodo aunque no tenga nada
             pago17 = of.createComprobanteComplementoPagosPago();
             if (!f.getArrpagos17().isEmpty()) {
@@ -311,8 +311,8 @@ public class generarXML40pagos {
                     tr17.setTipoFactorDR(CTipoFactor.TASA);
                     tr17.setTasaOCuotaDR(f.getTasaCuota());
                     tr17.setImpuestoDR("002");
-                    tr17.setImporteDR(BigDecimal.valueOf((f.getArrpagos17().get(i).getImportepagado() / 1.16) * 0.16).setScale(6, RoundingMode.HALF_UP));
-                    tr17.setBaseDR(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportepagado() / 1.16).setScale(6, RoundingMode.HALF_UP));
+                    tr17.setImporteDR(BigDecimal.valueOf(formatdecimal((f.getArrpagos17().get(i).getImportepagado() / 1.16) * 0.16)).setScale(6));
+                    tr17.setBaseDR(BigDecimal.valueOf(formatdecimal(f.getArrpagos17().get(i).getImportepagado() / 1.16)).setScale(6));
                     trasladosdr17.getTrasladoDR().add(tr17);
                     impdr17.setTrasladosDR(trasladosdr17);//traslado
                     doc17.setImpuestosDR(impdr17);//Nodo con valor de ImpuestoDR
@@ -346,6 +346,42 @@ public class generarXML40pagos {
         comp.setPagos(p);
 
         return comp;
+    }
+
+    /**
+     * Formatea datos dee acuerdo al numero de decimales que en est caso es 6
+     * @param cant
+     * @return 
+     */
+    private double formatdecimal(double cant) {
+        int dato = 0;
+        int punto = 0;
+        boolean band = false;
+        double resp;
+        String c = String.valueOf(cant);
+//        String cadena = "";
+        for (int i = 0; i < c.length(); i++) {
+//            Empieza a tomar datos despues del punto
+            if (c.charAt(i) == '.') {
+                band = true;
+            }
+            if (band) {
+//                3 digitos de decimal para saber qe hacer con los decimales
+                if (punto == 7) {
+                    dato = Integer.parseInt(c.charAt(i) + "");
+                    i = c.length();
+                    break;
+                }
+//                cadena += c.charAt(i);
+                punto++;
+            }
+        }
+        if ((dato <= 5)) {
+            resp = BigDecimal.valueOf(cant).setScale(6, RoundingMode.FLOOR).doubleValue();
+        } else {
+            resp = BigDecimal.valueOf(cant).setScale(6, RoundingMode.HALF_UP).doubleValue();
+        }
+        return resp;
     }
 
     private Comprobante.Receptor createReceptor(ObjectFactory of, xmlDAO obj) {//Receptor

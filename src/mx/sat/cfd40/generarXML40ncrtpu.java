@@ -101,7 +101,7 @@ public class generarXML40ncrtpu {
         //Datos generales
         xml.setVersion("4.0");
         xml.setExportacion(encabezado.getExportacion());
-        xml.setSerie(encabezado.getSerie());
+        xml.setSerie(encabezado.getSerie()+"TPU");
         xml.setFolio(encabezado.getFolio());
         xml.setFecha(fecha);
         xml.setFormaPago(encabezado.getFormaP());

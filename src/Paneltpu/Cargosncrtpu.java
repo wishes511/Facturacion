@@ -111,7 +111,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Nombre", "Referencia", "fecha", "Importe", "Descuento", "Plazo", "Saldo", "", "Saldo mx"
+                "Nombre", "Referencia", "fecha", "Importe", "monto", "Plazo", "Saldo", "", "Saldo mx"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -249,7 +249,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
         model.addColumn("Referencia");
         model.addColumn("Fecha");
         model.addColumn("importe");
-        model.addColumn("Descuento");
+        model.addColumn("Monto");
         model.addColumn("Plazo");
         model.addColumn("Saldo");
         model.addColumn("");
@@ -271,7 +271,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
     }
 
     private void setearfacs() throws ParseException {
-        
+
         boolean reset = true;
         if (!arrcargoseleccion.isEmpty()) {
             //Verificar renglon por renglon el dato del descuento y asignarselo al arreglo
@@ -283,29 +283,28 @@ public class Cargosncrtpu extends javax.swing.JDialog {
 //                  Verifica el tipo de relacion sea 03 por que es descuento
 //                  Verifica el tipo de relacion sea 01,07 por que es descuento 15/02/2023
 //                    Verifica el tipo de relacion sea 01 por que es descuento 27/02/2023
-                    if (relacion.equals("00")) {
+
 //                  El descuento no tiene que ser mayor o igual al saldo
-                        if (Float.parseFloat(desc) == arrcargoseleccion.get(i).getImporte()
-                                || Float.parseFloat(desc) > arrcargoseleccion.get(i).getImporte()) {
-                            JOptionPane.showMessageDialog(null, "Introduzca correctamente un numero valido");
-                            reset = false;
-                            break;
-                        } else {
-                            modarrDesc(i, desc);
-                        }
+//                        if (Float.parseFloat(desc) == arrcargoseleccion.get(i).getImporte()
+//                                || Float.parseFloat(desc) > arrcargoseleccion.get(i).getImporte()) {
+                    if (Double.parseDouble(desc) > Double.parseDouble(saldomx)) {
+                        JOptionPane.showMessageDialog(null, "Introduzca correctamente un numero valido");
+                        reset = false;
+                        break;
                     } else {
+                        modarrDesc(i, desc);
+                    }
 ////                Verifica que la cantidad no sea mayor al saldo
-                        DecimalFormat formateador = new DecimalFormat("####.##");
-                        String ars = String.valueOf(formateador.format(arrcargoseleccion.get(i).getSaldo()));
+                    DecimalFormat formateador = new DecimalFormat("####.##");
+                    String ars = String.valueOf(formateador.format(arrcargoseleccion.get(i).getSaldo()));
 //                        System.out.println(Float.parseFloat(desc) + " " + arrcargoseleccion.get(i).getSaldo());
 //                        if (Float.parseFloat(desc) > Float.parseFloat(ars)) {
-                        if (Float.parseFloat(desc) > Float.parseFloat(saldomx)) {
-                            JOptionPane.showMessageDialog(null, "El valor introducido excede el saldo, intentelo de nuevo");
-                            reset = false;
-                            break;
-                        } else {
-                            modarrDesc(i, desc);
-                        }
+                    if (Float.parseFloat(desc) > Float.parseFloat(saldomx)) {
+                        JOptionPane.showMessageDialog(null, "El valor introducido excede el saldo, intentelo de nuevo");
+                        reset = false;
+                        break;
+                    } else {
+                        modarrDesc(i, desc);
                     }
 
                 } else {
