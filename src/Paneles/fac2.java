@@ -743,15 +743,15 @@ public class fac2 extends javax.swing.JPanel {
                 daofactura dfac = new daofactura();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
                 DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-                if (JcPublico.isSelected()) {//Setear impuestos
-                    f.setIva(0);
-                    f.setImpuestos(0);
-                } else {
-//                    f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
-                    f.setIva(16);
-                }
+//                if (JcPublico.isSelected()) {//Setear impuestos
+//                    f.setIva(0);
+//                    f.setImpuestos(0);
+//                } else {
+////                    f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
+//                    f.setIva(16);
+//                }
                 // fin setear impuestos
-
+                f.setIva(16);
                 Nocolision n = new Nocolision();
                 f.setFolio(dfac.getmaxfolio(rcpt, "FAC"));//Obtiene y setea el foliomaximo de *documentos
                 n.setConnecxiones(rcpt, f.getFolio());
@@ -821,10 +821,11 @@ public class fac2 extends javax.swing.JPanel {
                     f.setSeriefoliofiscalorig(folios);
                     f.setArruuid(arruuid);
                 }
-                double iva = 0.00;
-                if (!JcPublico.isSelected()) {// verifica 
-                    iva = 0.16;
-                }
+                double iva = 0.16;
+//                if (!JcPublico.isSelected()) {// verifica 
+//                    iva = 0.16;
+//                }
+                
                 int totalpares = 0;// Se usa para la tabla facturas
                 impuestos = 0;
                 descuentos = 0;
@@ -1163,9 +1164,9 @@ public class fac2 extends javax.swing.JPanel {
             for (int i = 0; i < ind.length; i++) {
                 System.out.println(ind[i]);
                 if (i == 0) {
-                    folios = "folio =" + k0.get(i).getFolio();
+                    folios = "folio =" + k0.get(ind[i]).getFolio();
                 } else {
-                    folios += " or folio =" + k0.get(i).getFolio();
+                    folios += " or folio =" + k0.get(ind[i]).getFolio();
                 }
             }
         }
@@ -1299,11 +1300,11 @@ public class fac2 extends javax.swing.JPanel {
         subtotal = 0;
         impuestos = 0;
         descuentos = 0;
-        double iva = 0;
+        double iva = 0.16;
         boolean resp = true;
-        if (!JcPublico.isSelected()) {// verifica 
-            iva = 0.16;
-        }
+//        if (!JcPublico.isSelected()) {// verifica 
+//            iva = 0.16;
+//        }
         DecimalFormat formateador = new DecimalFormat("####.##");
         if (!k.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
             for (int i = 0; i < k.size(); i++) {

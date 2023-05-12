@@ -113,6 +113,11 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
         jLabel4.setToolTipText("Deshabilitar cliente");
         jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel4MousePressed(evt);
+            }
+        });
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cloudrefresh_icon-icons.com_54403.png"))); // NOI18N
         jLabel5.setToolTipText("Actualiza cliente de CPT a TPU");
@@ -279,6 +284,11 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_jLabel3MousePressed
+
+    private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
+        int row = JlCliente.getSelectedIndex();
+        arr.get(row).getCvecliente();
+    }//GEN-LAST:event_jLabel4MousePressed
 
     public void setcampos() {
         int row = JlCliente.getSelectedIndex();

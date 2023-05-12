@@ -18,6 +18,7 @@ import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
+import Modelo.Usuarios;
 import Modelo.abono;
 import Modelo.convertirNumeros;
 import Modelo.convertnum;
@@ -72,6 +73,7 @@ public class pago1 extends javax.swing.JPanel {
     public ArrayList<abono> arrabonos = new ArrayList<>();
     public ArrayList<abono> arrabonos17 = new ArrayList<>();
     public String empresa, empresacob;
+    public Usuarios u;
 
     daocfdi dcfdi = new daocfdi();
     int estado = 0;
@@ -313,7 +315,7 @@ public class pago1 extends javax.swing.JPanel {
             int folio = dfac.getmaxfolio(cpt, "PAG");
             double total = 0;
             String optest = "";
-            f.setClaveusuario("prueba");
+            f.setClaveusuario(u.getNombre());
             //Pagos encabezado
             f.setImpiva16(((total / 1.16) * 0.16));// Nodo totales
             f.setBaseiva16((total / 1.16));

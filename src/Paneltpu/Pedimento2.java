@@ -359,7 +359,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
             p.setSubtotal(total);
             p.setTcantidad(canttotal);
             p.setImpuestos(0);
-            p.setReferencia(getmatformat(JtPedimento.getText().toUpperCase()));
+            p.setReferencia(JtPedimento.getText().toUpperCase());
             p.setId_proveedor(arrprov.get(JcProveedor.getSelectedIndex()).getProveedor());
 
             p.setFecha(fecha);

@@ -23,7 +23,7 @@ public class Serverprod {
     private final String URLpruebacpt = "jdbc:sqlserver://192.168.6.8\\SQLEXPRESS:9205;databaseName=FATIMACPT";
     private final String URLpruebarcpt = "jdbc:sqlserver://192.168.6.8\\SQLEXPRESS:9205;databaseName=FATIMARCPT";
     private final String URLpruebacob = "jdbc:sqlserver://192.168.6.8\\SQLEXPRESS:9205;databaseName=ACobranzafh";
-    
+    private final String URLP = "jdbc:sqlserver://192.168.6.75\\SQLEXPRESS:9205;databaseName=";
 
     private final String drive = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
 
@@ -47,6 +47,14 @@ public class Serverprod {
         return connect8;
     }
 
+    public Connection getconexionTPU(String bd) throws ClassNotFoundException, IOException, SQLException {
+        Class.forName(drive);
+        Connection connectm;
+        connectm = DriverManager.getConnection(URLP + bd, "mich", "mich");
+        System.out.println("Conectado a server mio prueba" + bd);
+        return connectm;
+    }
+    
     public void cerrarserver8() throws SQLException {
         connect.close();
         System.out.println("Cerrar server");

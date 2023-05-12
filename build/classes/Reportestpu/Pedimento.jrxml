@@ -7,7 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select id_pedimento,referencia,fecha,total,totalcant,prov.nombre
+		<![CDATA[select id_pedimento,referencia,fecha,total,totalcant,prov.nombre,fechapedimento
 from pedimentos p 
 join proveedores prov on p.id_proveedor=prov.id_proveedor
 where id_pedimento=$P{id}]]>
@@ -18,6 +18,7 @@ where id_pedimento=$P{id}]]>
 	<field name="total" class="java.lang.Double"/>
 	<field name="totalcant" class="java.lang.Double"/>
 	<field name="nombre" class="java.lang.String"/>
+	<field name="fechapedimento" class="java.sql.Timestamp"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -41,17 +42,24 @@ where id_pedimento=$P{id}]]>
 				<reportElement x="0" y="0" width="132" height="32" uuid="051dea46-5a85-4d5c-8cc0-359b196fbbc2"/>
 				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
 			</image>
-		</band>
-	</title>
-	<columnHeader>
-		<band height="75" splitType="Stretch">
 			<textField>
-				<reportElement x="60" y="27" width="100" height="20" uuid="280df04f-8369-4991-88dc-5d45d4ed4098"/>
+				<reportElement x="472" y="67" width="100" height="20" uuid="280df04f-8369-4991-88dc-5d45d4ed4098"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Calibri" size="12"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="412" y="67" width="60" height="20" uuid="540a4d50-ee3c-48c1-a5bb-8afd8cdd8706"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="75" splitType="Stretch">
 			<textField>
 				<reportElement x="236" y="27" width="100" height="20" uuid="c4f74ac6-aabd-425a-9a3d-21fd67bf0db7"/>
 				<textElement verticalAlignment="Middle">
@@ -66,13 +74,6 @@ where id_pedimento=$P{id}]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{totalcant}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="0" y="27" width="60" height="20" uuid="540a4d50-ee3c-48c1-a5bb-8afd8cdd8706"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Calibri" size="12"/>
-				</textElement>
-				<text><![CDATA[Fecha]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="176" y="27" width="60" height="20" uuid="208ba248-ef8a-4696-a67a-c09e39c6c756"/>
 				<textElement verticalAlignment="Middle">
@@ -132,6 +133,20 @@ where id_pedimento=$P{id}]]>
 			<line>
 				<reportElement x="0" y="58" width="572" height="1" uuid="389771ce-13cc-45bb-9f08-f72568e0ca08"/>
 			</line>
+			<textField>
+				<reportElement x="60" y="27" width="100" height="20" uuid="fffad48c-ce62-4bf8-bd1d-a19d5316ae8a"/>
+				<textElement>
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechapedimento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="27" width="60" height="20" uuid="c0bca6c0-aca0-4d00-9da2-408187a846cb"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Calibri" size="12"/>
+				</textElement>
+				<text><![CDATA[Fecha ped]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
@@ -142,7 +157,7 @@ where id_pedimento=$P{id}]]>
 					<subreportParameterExpression><![CDATA[$F{id_pedimento}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["C:\\Users\\GATEWAY1-\\Documents\\NetBeansProjects\\Athprod\\src\\Reportestpu\\Dpedimento.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\Dpedimento.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

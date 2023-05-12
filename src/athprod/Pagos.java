@@ -12,6 +12,7 @@ import Modelo.Cliente;
 import Modelo.ConceptosES;
 import Modelo.Conexiones;
 import Modelo.Formadepago;
+import Modelo.Usuarios;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.relacion;
@@ -49,18 +50,21 @@ public class Pagos extends javax.swing.JInternalFrame {
     ArrayList<metodopago> arrmetodo = new ArrayList<>();
     ArrayList<relacion> arrrelacion = new ArrayList<>();
     public Conexiones conexion;
+    public Usuarios u;
 
     /**
      * Creates new form Clientes
      * @param cn
+     * @param s
      */
-    public Pagos(Conexiones cn) {
+    public Pagos(Conexiones cn,Usuarios s) {
         initComponents();
         cpt=cn.getCpt();
         rcpt=cn.getRcpt();
         cobranza=cn.getCobranza();
         empresa=cn.getEmpresa();
         empresacob=cn.getEmpresacob();
+        u=s;
         generaciontab();//Tabs de facturacion
         conexiones();
         setarraylist();
@@ -97,6 +101,7 @@ public class Pagos extends javax.swing.JInternalFrame {
         c1.sqlempresa = liteempresa;
         c1.sqlcfdi = litecfdi;
         c1.cpt = cpt;
+        c1.u=u;
     }
 
     /**

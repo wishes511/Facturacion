@@ -184,13 +184,13 @@ public class sqlclientes {
                 ag = rs.getInt("id_agente");
             }
             if (ag == 0) {
-                sql = "insert into Agente(id_agente,nombre,canal,comision,estatus) values(" + cli.getAgente() + ",'" + cli.getNombreagente() + "',0,'1')";
+                sql = "insert into Agente(id_agente,nombre,canal,comision,estatus) values(" + cli.getAgente() + ",'" + cli.getNombreagente() + "',"+cli.getCanal()+",0,'1')";
                 System.out.println(sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
-            sql = "insert into Cliente(id_agente,nombre,rfc,cp,razonsocial,usocfdi,calle,colonia,pais,estado,regimen,estatus,ciudad) "
-                    + "values(" + cli.getAgente() + ",'" + cli.getNombre() + "','" + cli.getRfc() + "','"
+            sql = "insert into Cliente(id_cliente,id_agente,nombre,rfc,cp,razonsocial,usocfdi,calle,colonia,pais,estado,regimen,estatus,ciudad) "
+                    + "values("+cli.getCvecliente()+"," + cli.getAgente() + ",'" + cli.getNombre() + "','" + cli.getRfc() + "','"
                     + cli.getCp() + "','" + cli.getNombre() + "','" + cli.getUsocfdi() + "','" + cli.getCalle() + "','" + cli.getColonia() + "','"
                     + cli.getPais() + "','" + cli.getEstado() + "','" + cli.getRegimen() + "','1','" + cli.getCiudad() + "')";
             System.out.println(sql);

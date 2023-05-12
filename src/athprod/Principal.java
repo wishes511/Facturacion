@@ -881,7 +881,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagosActionPerformed
         try {
-            Pagos c = new Pagos(conexion);
+            Pagos c = new Pagos(conexion,u);
             this.JdPanel.add(c);
 //            c.JtBuscar.requestFocus();
             c.setMaximum(true);
@@ -1343,8 +1343,10 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setEmpresa("FATIMACPT");
                 conexion.setEmpresacob("ACobranzaFH");
                 conexion.setEmpresarcpt("FATIMARCPT");
-                conexion.setCpttpu(s.getconexionserver8("Tpucpt"));
-                conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
+//                conexion.setCpttpu(s.getconexionserver8("Tpucpt"));
+//                conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
+                conexion.setCpttpu(s.getconexionTPU("Tpucpt"));
+                conexion.setCobranzatpu(s.getconexionTPU("ACobranzatpu"));
 //                conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
                 liteusuario = s1.getconexionusuarios();
                 conexion.setLiteusuario(liteusuario);

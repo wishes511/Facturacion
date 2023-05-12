@@ -220,18 +220,21 @@ public class generarXML40pagos {
         Comprobante.Complemento.Pagos p = of.createComprobanteComplementoPago();
         Comprobante.Complemento.Pagos.Totales totales = of.createComprobanteComplementoPagosTotales();
         Comprobante.Complemento.Pagos.Pago pago = of.createComprobanteComplementoPagosPago();
-        DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
         //Totales con formato 0.00
-        totales.setMontoTotalPagos(BigDecimal.valueOf(Double.parseDouble(formateador.format(f.getTotalpago16() + f.getTotalpago17()))));
-        totales.setTotalTrasladosImpuestoIVA16(BigDecimal.valueOf(Double.parseDouble(formateador.format(f.getImpiva16() + f.getImpiva17()))));
-        totales.setTotalTrasladosBaseIVA16(BigDecimal.valueOf(Double.parseDouble(formateador.format(f.getBaseiva16() + f.getBaseiva17()))));
+//        totales.setMontoTotalPagos(BigDecimal.valueOf(formatdecimal2(f.getTotalpago16() + f.getTotalpago17())).setScale(2));
+//        totales.setTotalTrasladosImpuestoIVA16(BigDecimal.valueOf(formatdecimal2(f.getImpiva16() + f.getImpiva17())).setScale(2));
+//        totales.setTotalTrasladosBaseIVA16(BigDecimal.valueOf(formatdecimal2(f.getBaseiva16() + f.getBaseiva17())).setScale(2));
+        totales.setMontoTotalPagos(BigDecimal.valueOf(f.getTotalpago16() + f.getTotalpago17()).setScale(2, RoundingMode.FLOOR));
+        totales.setTotalTrasladosImpuestoIVA16(BigDecimal.valueOf(f.getImpiva16() + f.getImpiva17()).setScale(2, RoundingMode.FLOOR));
+        totales.setTotalTrasladosBaseIVA16(BigDecimal.valueOf(f.getBaseiva16() + f.getBaseiva17()).setScale(2, RoundingMode.FLOOR));
         //pago
         // usar por si no funciona la funcion de la linea 273 pago.getDoctoRelacionado().add(doc);
 //        List<Comprobante.Complemento.Pagos.Pago> arr = p.getPago();
         pago.setFechaPago(fecha);
         pago.setFormaDePagoP(f.getFormaP());
         pago.setMonedaP(CMoneda.MXN);
-        pago.setMonto(BigDecimal.valueOf(Double.parseDouble(formateador.format(f.getTotalpago16()))));
+//        pago.setMonto(BigDecimal.valueOf(formatdecimal2(f.getTotalpago16())).setScale(2));
+        pago.setMonto(BigDecimal.valueOf(f.getTotalpago16()).setScale(2, RoundingMode.FLOOR));
         pago.setTipoCambioP(BigDecimal.valueOf(1));
         pago.setNumOperacion(f.getFolio());
 //        List<Comprobante.Complemento.Pagos.Pago.DoctoRelacionado> arrrel = pago.getDoctoRelacionado();
@@ -244,9 +247,12 @@ public class generarXML40pagos {
             doc.setIdDocumento(f.getArrpagos().get(i).getUuid());
             doc.setObjetoImpDR("02");
             doc.setMonedaDR(CMoneda.MXN);
-            doc.setImpSaldoInsoluto(BigDecimal.valueOf(f.getArrpagos().get(i).getImpsaldoinsoluto()).setScale(2, RoundingMode.HALF_UP));
-            doc.setImpSaldoAnt(BigDecimal.valueOf(f.getArrpagos().get(i).getImportesaldoant()).setScale(2, RoundingMode.HALF_UP));
-            doc.setImpPagado(BigDecimal.valueOf(f.getArrpagos().get(i).getImportepagado()).setScale(2, RoundingMode.HALF_UP));
+//            doc.setImpSaldoInsoluto(BigDecimal.valueOf(formatdecimal2(f.getArrpagos().get(i).getImpsaldoinsoluto())).setScale(2));
+//            doc.setImpSaldoAnt(BigDecimal.valueOf(formatdecimal2(f.getArrpagos().get(i).getImportesaldoant())).setScale(2));
+//            doc.setImpPagado(BigDecimal.valueOf(formatdecimal2(f.getArrpagos().get(i).getImportepagado())).setScale(2));
+            doc.setImpSaldoInsoluto(BigDecimal.valueOf(f.getArrpagos().get(i).getImpsaldoinsoluto()).setScale(2, RoundingMode.FLOOR));
+            doc.setImpSaldoAnt(BigDecimal.valueOf(f.getArrpagos().get(i).getImportesaldoant()).setScale(2, RoundingMode.FLOOR));
+            doc.setImpPagado(BigDecimal.valueOf(f.getArrpagos().get(i).getImportepagado()).setScale(2, RoundingMode.FLOOR));
             doc.setEquivalenciaDR(BigDecimal.ONE);
             doc.setNumParcialidad(BigInteger.valueOf(f.getArrpagos().get(i).getParcialidad()));
             //Impuestos por documento
@@ -257,8 +263,10 @@ public class generarXML40pagos {
             tr.setTipoFactorDR(CTipoFactor.TASA);
             tr.setTasaOCuotaDR(f.getTasaCuota());
             tr.setImpuestoDR("002");
-            tr.setImporteDR(BigDecimal.valueOf(formatdecimal((f.getArrpagos().get(i).getImportepagado() / 1.16) * 0.16)).setScale(6));
+//            tr.setImporteDR(BigDecimal.valueOf(formatdecimal((f.getArrpagos().get(i).getImportepagado() / 1.16) * 0.16)).setScale(6,RoundingMode.HALF_UP));
             tr.setBaseDR(BigDecimal.valueOf(formatdecimal(f.getArrpagos().get(i).getImportepagado() / 1.16)).setScale(6));
+            tr.setImporteDR(BigDecimal.valueOf((f.getArrpagos().get(i).getImportepagado() / 1.16) * 0.16).setScale(6, RoundingMode.FLOOR));
+//            tr.setBaseDR(BigDecimal.valueOf(f.getArrpagos().get(i).getImportepagado() / 1.16).setScale(6, RoundingMode.HALF_UP));
             trasladosdr.getTrasladoDR().add(tr);
             impdr.setTrasladosDR(trasladosdr);//traslado
             doc.setImpuestosDR(impdr);//Nodo con valor de ImpuestoDR
@@ -266,18 +274,21 @@ public class generarXML40pagos {
         }
         //Fin de documentos relacionados e impuestos DR
         //Final del documento impuestoP
-        //Crear ImpuestosP, TrasladosP y Traslado
+        //                                                  Crear ImpuestosP, TrasladosP y Traslado
         Comprobante.Complemento.Pagos.Pago.ImpuestosP impuestos = of.createComprobanteComplementoPagosPagoImpuestoP();
         Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP trasladosp = of.createComprobanteComplementoPagosPagoImpuestoPTrasladosP();
         Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP.TrasladoP trasladop = of.createComprobanteComplementoPagosPagoImpuestoPTrasladosPTrasladoP();
         trasladop.setTipoFactorP(CTipoFactor.TASA);
         trasladop.setTasaOCuotaP(f.getTasaCuota());
         trasladop.setImpuestoP("002");
-        trasladop.setImporteP(BigDecimal.valueOf(f.getImpiva16()).setScale(2, RoundingMode.HALF_UP));
-        trasladop.setBaseP(BigDecimal.valueOf(f.getBaseiva16()).setScale(2, RoundingMode.HALF_UP));
+//        trasladop.setImporteP(BigDecimal.valueOf(formatdecimal2(f.getImpiva16())).setScale(2));
+        trasladop.setBaseP(BigDecimal.valueOf(formatdecimal2(f.getBaseiva16())).setScale(2));
+        trasladop.setImporteP(BigDecimal.valueOf(f.getImpiva16()).setScale(2, RoundingMode.FLOOR));
+//        trasladop.setBaseP(BigDecimal.valueOf(f.getBaseiva16()).setScale(2, RoundingMode.HALF_UP));
         trasladosp.getTrasladoP().add(trasladop);
         impuestos.setTrasladosP(trasladosp);
         //Termino de impuestosP
+//                                                                          IMPUESTOS 17
         Comprobante.Complemento.Pagos.Pago pago17 = null;
         if (!f.getArrpagos17().isEmpty()) {//Este si es necesario ya que sino agrega el nodo aunque no tenga nada
             pago17 = of.createComprobanteComplementoPagosPago();
@@ -285,7 +296,8 @@ public class generarXML40pagos {
                 pago17.setFechaPago(fecha);
                 pago17.setFormaDePagoP("17");
                 pago17.setMonedaP(CMoneda.MXN);
-                pago17.setMonto(BigDecimal.valueOf(Double.parseDouble(formateador.format(f.getTotalpago17()))));
+//                pago17.setMonto(BigDecimal.valueOf(Double.parseDouble(formateador.format(f.getTotalpago17()))));  
+                pago17.setMonto(BigDecimal.valueOf(f.getTotalpago17()).setScale(2, RoundingMode.FLOOR));
                 pago17.setTipoCambioP(BigDecimal.valueOf(1));
                 pago17.setNumOperacion(f.getFolio());
 //        List<Comprobante.Complemento.Pagos.Pago.DoctoRelacionado> arrrel = pago.getDoctoRelacionado();
@@ -298,9 +310,12 @@ public class generarXML40pagos {
                     doc17.setIdDocumento(f.getArrpagos17().get(i).getUuid());
                     doc17.setObjetoImpDR("02");
                     doc17.setMonedaDR(CMoneda.MXN);
-                    doc17.setImpSaldoInsoluto(BigDecimal.valueOf(f.getArrpagos17().get(i).getImpsaldoinsoluto()).setScale(2, RoundingMode.HALF_UP));
-                    doc17.setImpSaldoAnt(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportesaldoant()).setScale(2, RoundingMode.HALF_UP));
-                    doc17.setImpPagado(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportepagado()).setScale(2, RoundingMode.HALF_UP));
+//                    doc17.setImpSaldoInsoluto(BigDecimal.valueOf(formatdecimal2(f.getArrpagos17().get(i).getImpsaldoinsoluto())).setScale(2));
+//                    doc17.setImpSaldoAnt(BigDecimal.valueOf(formatdecimal2(f.getArrpagos17().get(i).getImportesaldoant())).setScale(2));
+//                    doc17.setImpPagado(BigDecimal.valueOf(formatdecimal2(f.getArrpagos17().get(i).getImportepagado())).setScale(2));
+                    doc17.setImpSaldoInsoluto(BigDecimal.valueOf(f.getArrpagos17().get(i).getImpsaldoinsoluto()).setScale(2, RoundingMode.FLOOR));
+                    doc17.setImpSaldoAnt(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportesaldoant()).setScale(2, RoundingMode.FLOOR));
+                    doc17.setImpPagado(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportepagado()).setScale(2, RoundingMode.FLOOR));
                     doc17.setEquivalenciaDR(BigDecimal.ONE);
                     doc17.setNumParcialidad(BigInteger.valueOf(f.getArrpagos17().get(i).getParcialidad()));
                     //Impuestos por documento
@@ -311,8 +326,10 @@ public class generarXML40pagos {
                     tr17.setTipoFactorDR(CTipoFactor.TASA);
                     tr17.setTasaOCuotaDR(f.getTasaCuota());
                     tr17.setImpuestoDR("002");
-                    tr17.setImporteDR(BigDecimal.valueOf(formatdecimal((f.getArrpagos17().get(i).getImportepagado() / 1.16) * 0.16)).setScale(6));
+//                    tr17.setImporteDR(BigDecimal.valueOf(formatdecimal((f.getArrpagos17().get(i).getImportepagado() / 1.16) * 0.16)).setScale(6));
                     tr17.setBaseDR(BigDecimal.valueOf(formatdecimal(f.getArrpagos17().get(i).getImportepagado() / 1.16)).setScale(6));
+                    tr17.setImporteDR(BigDecimal.valueOf((f.getArrpagos17().get(i).getImportepagado() / 1.16) * 0.16).setScale(6, RoundingMode.FLOOR));
+//                    tr17.setBaseDR(BigDecimal.valueOf(f.getArrpagos17().get(i).getImportepagado() / 1.16).setScale(6, RoundingMode.HALF_UP));
                     trasladosdr17.getTrasladoDR().add(tr17);
                     impdr17.setTrasladosDR(trasladosdr17);//traslado
                     doc17.setImpuestosDR(impdr17);//Nodo con valor de ImpuestoDR
@@ -327,8 +344,9 @@ public class generarXML40pagos {
                 trasladop17.setTipoFactorP(CTipoFactor.TASA);
                 trasladop17.setTasaOCuotaP(f.getTasaCuota());
                 trasladop17.setImpuestoP("002");
-                trasladop17.setImporteP(BigDecimal.valueOf(f.getImpiva17()).setScale(2, RoundingMode.HALF_UP));
-                trasladop17.setBaseP(BigDecimal.valueOf(f.getBaseiva17()).setScale(2, RoundingMode.HALF_UP));
+                trasladop17.setBaseP(BigDecimal.valueOf(formatdecimal2(f.getBaseiva17())).setScale(2));
+                trasladop17.setImporteP(BigDecimal.valueOf(f.getImpiva17()).setScale(2, RoundingMode.FLOOR));
+//                trasladop17.setBaseP(BigDecimal.valueOf(f.getBaseiva17()).setScale(2, RoundingMode.HALF_UP));
                 trasladosp17.getTrasladoP().add(trasladop17);
                 impuestos17.setTrasladosP(trasladosp17);
                 pago17.setImpuestosP(impuestos17);
@@ -350,8 +368,9 @@ public class generarXML40pagos {
 
     /**
      * Formatea datos dee acuerdo al numero de decimales que en est caso es 6
+     *
      * @param cant
-     * @return 
+     * @return
      */
     private double formatdecimal(double cant) {
         int dato = 0;
@@ -380,6 +399,37 @@ public class generarXML40pagos {
             resp = BigDecimal.valueOf(cant).setScale(6, RoundingMode.FLOOR).doubleValue();
         } else {
             resp = BigDecimal.valueOf(cant).setScale(6, RoundingMode.HALF_UP).doubleValue();
+        }
+        return resp;
+    }
+
+    private double formatdecimal2(double cant) {
+        int dato = 0;
+        int punto = 0;
+        boolean band = false;
+        double resp;
+        String c = String.valueOf(cant);
+//        String cadena = "";
+        for (int i = 0; i < c.length(); i++) {
+//            Empieza a tomar datos despues del punto
+            if (c.charAt(i) == '.') {
+                band = true;
+            }
+            if (band) {
+//                3 digitos de decimal para saber qe hacer con los decimales
+                if (punto == 3) {
+                    dato = Integer.parseInt(c.charAt(i) + "");
+                    i = c.length();
+                    break;
+                }
+//                cadena += c.charAt(i);
+                punto++;
+            }
+        }
+        if ((dato <= 5)) {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
+        } else {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
         }
         return resp;
     }
