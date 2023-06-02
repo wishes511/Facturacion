@@ -529,13 +529,14 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
             for (int i = 0; i < ind.length; i++) {
                 System.out.println(ind[i]);
                 if (i == 0) {
-                    folios = "factura ='" + arrfactura.get(ind[i]).getReferencia() + "'";
+                    folios = "(factura ='" + arrfactura.get(ind[i]).getReferencia() + "'";
 //                    folios = "referencia ='" + k1.get(ind[i]).getReferencia() + "'";
                 } else {
 //                    folios += " or referencia ='" + k1.get(ind[i]).getReferencia() + "'";
                     folios += " or factura ='" + arrfactura.get(ind[i]).getReferencia() + "'";
                 }
             }
+            folios+=")";
         }
         
 //        arrd = df.getfactwithseriedetallado(rcpt, arrfactura.get(row).getReferencia(), arrfactura.get(row).getYear());
