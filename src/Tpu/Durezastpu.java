@@ -80,6 +80,7 @@ public class Durezastpu extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
         setResizable(true);
         setTitle("Durezas");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Data_Meter4_37237.png"))); // NOI18N

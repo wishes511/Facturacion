@@ -965,7 +965,7 @@ public class fac2 extends javax.swing.JPanel {
                     if (traslado.equals("1")) {
                         int nfolio = dfac.getmaxtraslado(cpt) + 1;
                         f.setFolio(nfolio);
-                        f.setSerie("T");
+                        f.setSerie("TR");
                         f.setTiporelacion("05");
                         f.setFoliofiscalorig(s.getUuid());
                         id = dfac.nuevafacTraslado(cpt, rcpt, f);
@@ -977,7 +977,7 @@ public class fac2 extends javax.swing.JPanel {
                             timbrarXML tim = new timbrarXML();
                             s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
                             dfac.Updatesellofiscal(cpt, s, id);
-                            setreport(f.getFolio(), f.getRegimen(), "XXX", "T");
+                            setreport(f.getFolio(), f.getRegimen(), "XXX", "TR");
                             JOptionPane.showMessageDialog(null, "Proceso de facturacion y traslado terminado: \n " + s.getEstado());
                             vaciarcampos();
                             JtCliente.requestFocus();
@@ -1062,9 +1062,9 @@ public class fac2 extends javax.swing.JPanel {
             DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
             String numeros = formateador.format(total);
             String letratotal = "";
-            if (serie.equals("T")) {
+            if (serie.equals("TR")) {
                 letratotal = "CERO PESOS, 00/100";
-                ser = "T";
+                ser = "TR";
                 report = "index_traslado";
             } else {
                 letratotal = cnum.Convertir(numeros, true, moneda);

@@ -818,6 +818,7 @@ public class fac2E extends javax.swing.JPanel {
                 int totalpares = 0;// Se usa para la tabla facturas
                 impuestos = 0;
                 descuentos = 0;
+                subtotal=0;
                 for (int i = 0; i < t; i++) {
                     Dfactura df = new Dfactura();
                     daocfdi d = new daocfdi();
@@ -849,6 +850,7 @@ public class fac2E extends javax.swing.JPanel {
                     totalpares += tpares;
                     impuestos += Double.parseDouble(as);
                     descuentos += Double.parseDouble(as1);
+                    subtotal +=formatdecimal(precio * tpares);
                 }
                 total = subtotal - descuentos + impuestos;
                 f.setTotalpares(totalpares);

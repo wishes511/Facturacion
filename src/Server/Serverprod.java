@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class Serverprod {
 
-    private Connection connect, pruebacpt, pruebarcpt, pruebacob;
+    private Connection connect, pruebacpt, pruebarcpt, pruebacob, conB;
 
     private final String URL = "jdbc:sqlserver://192.168.6.75\\SQLEXPRESS:9205;databaseName=Produccionath";
     private final String URL8 = "jdbc:sqlserver://192.168.6.8\\SQLEXPRESS:9205;databaseName=";
@@ -24,8 +24,16 @@ public class Serverprod {
     private final String URLpruebarcpt = "jdbc:sqlserver://192.168.6.8\\SQLEXPRESS:9205;databaseName=FATIMARCPT";
     private final String URLpruebacob = "jdbc:sqlserver://192.168.6.8\\SQLEXPRESS:9205;databaseName=ACobranzafh";
     private final String URLP = "jdbc:sqlserver://192.168.6.75\\SQLEXPRESS:9205;databaseName=";
+    private final String urlB = "jdbc:sqlserver://192.168.90.1\\datos620:1433;database=";
 
     private final String drive = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+
+    public Connection getconexionB(String bd) throws ClassNotFoundException, IOException, SQLException {
+        Class.forName(drive);
+        conB = DriverManager.getConnection(urlB+bd, "sa", "Admin1305");
+        System.out.println("Conectado a server B");
+        return conB;
+    }
 
     public Connection getconexionS() throws ClassNotFoundException, IOException, SQLException {
         Class.forName(drive);
@@ -54,7 +62,7 @@ public class Serverprod {
         System.out.println("Conectado a server mio prueba" + bd);
         return connectm;
     }
-    
+
     public void cerrarserver8() throws SQLException {
         connect.close();
         System.out.println("Cerrar server");

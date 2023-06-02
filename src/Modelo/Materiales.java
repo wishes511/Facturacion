@@ -10,9 +10,17 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Materiales implements java.io.Serializable{
-    private String descripcion,codigo,codigosat,unidad, materialpedimento,dureza;
+    private String descripcion,codigo,codigosat,unidad, materialpedimento,dureza,moneda;
     private int id_material, id_familia, id_almacen;
     private double precio, costo, cantidad;
+
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
+    }
 
     public String getDureza() {
         return dureza;

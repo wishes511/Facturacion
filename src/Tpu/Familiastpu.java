@@ -80,6 +80,8 @@ public class Familiastpu extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Familias");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/family_pedestrian_icon_216646.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(1280, 720));

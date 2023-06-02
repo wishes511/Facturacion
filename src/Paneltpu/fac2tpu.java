@@ -1195,9 +1195,9 @@ public class fac2tpu extends javax.swing.JPanel {
             for (int i = 0; i < ind.length; i++) {
                 System.out.println(ind[i]);
                 if (i == 0) {
-                    folios = "referencia ='" + k1.get(i).getReferencia() + "'";
+                    folios = "referencia ='" + k1.get(ind[i]).getReferencia() + "'";
                 } else {
-                    folios += " or referencia ='" + k1.get(i).getReferencia() + "'";
+                    folios += " or referencia ='" + k1.get(ind[i]).getReferencia() + "'";
                 }
             }
         }
@@ -1438,7 +1438,7 @@ public class fac2tpu extends javax.swing.JPanel {
     
     private boolean verificadetalle() {
         boolean resp = true;
-        for (int i = 0; i < k1.size(); i++) {
+        for (int i = 0; i < k2.size(); i++) {
             String precio = JtDetalle.getValueAt(i, 3).toString();
             if (!verificafloat(precio)) {
                 resp = false;

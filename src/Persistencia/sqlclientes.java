@@ -27,12 +27,20 @@ public class sqlclientes {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select numcliente,nombre from clientes order by nombre");
+            st = con.prepareStatement("select * from clientes \n"
+                    + "where ISNULL(nombre40,'')!=''\n"
+                    + "order by nombre40");
             rs = st.executeQuery();
             while (rs.next()) {
                 Cliente c = new Cliente();
                 c.setCvecliente(rs.getInt("numcliente"));
-                c.setNombre(rs.getString("Nombre"));
+                c.setNombre(rs.getString("Nombre40"));
+                c.setRfc(rs.getString("rfc"));
+                c.setCalle(rs.getString("calle"));
+                c.setColonia(rs.getString("colonia"));
+                c.setCp(rs.getString("cp"));
+                c.setRegimen(rs.getString("fax"));
+                c.setAgente(rs.getInt("agente1"));
                 arr.add(c);
             }
             rs.close();
@@ -184,13 +192,13 @@ public class sqlclientes {
                 ag = rs.getInt("id_agente");
             }
             if (ag == 0) {
-                sql = "insert into Agente(id_agente,nombre,canal,comision,estatus) values(" + cli.getAgente() + ",'" + cli.getNombreagente() + "',"+cli.getCanal()+",0,'1')";
+                sql = "insert into Agente(id_agente,nombre,canal,comision,estatus) values(" + cli.getAgente() + ",'" + cli.getNombreagente() + "'," + cli.getCanal() + ",0,'1')";
                 System.out.println(sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
             sql = "insert into Cliente(id_cliente,id_agente,nombre,rfc,cp,razonsocial,usocfdi,calle,colonia,pais,estado,regimen,estatus,ciudad) "
-                    + "values("+cli.getCvecliente()+"," + cli.getAgente() + ",'" + cli.getNombre() + "','" + cli.getRfc() + "','"
+                    + "values(" + cli.getCvecliente() + "," + cli.getAgente() + ",'" + cli.getNombre() + "','" + cli.getRfc() + "','"
                     + cli.getCp() + "','" + cli.getNombre() + "','" + cli.getUsocfdi() + "','" + cli.getCalle() + "','" + cli.getColonia() + "','"
                     + cli.getPais() + "','" + cli.getEstado() + "','" + cli.getRegimen() + "','1','" + cli.getCiudad() + "')";
             System.out.println(sql);
@@ -214,10 +222,10 @@ public class sqlclientes {
         try {
             cpt.setAutoCommit(false);
             PreparedStatement st;
-            String sql = "update cliente set nombre='" + c.getNombre() + "',rfc='" + c.getRfc() + "',cp='" + c.getCp() 
-                    + "',usocfdi='" + c.getUsocfdi() + "',calle='" + c.getCalle() + "',colonia='" + c.getColonia() 
-                    + "',pais='"+ c.getPais() + "',estado='" + c.getEstado() + "',regimen='" + c.getRegimen() 
-                    + "',ciudad='" + c.getCiudad() + "',correo='" + c.getCorreo() + "',cuenta='" + c.getCuenta() 
+            String sql = "update cliente set nombre='" + c.getNombre() + "',rfc='" + c.getRfc() + "',cp='" + c.getCp()
+                    + "',usocfdi='" + c.getUsocfdi() + "',calle='" + c.getCalle() + "',colonia='" + c.getColonia()
+                    + "',pais='" + c.getPais() + "',estado='" + c.getEstado() + "',regimen='" + c.getRegimen()
+                    + "',ciudad='" + c.getCiudad() + "',correo='" + c.getCorreo() + "',cuenta='" + c.getCuenta()
                     + "',telefono='" + c.getTelefono() + "'  where id_cliente=" + c.getCvecliente();
             st = cpt.prepareStatement(sql);
             int i = st.executeUpdate();

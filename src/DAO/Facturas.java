@@ -8,6 +8,7 @@ package DAO;
 import Modelo.Cliente;
 import Modelo.ConceptosES;
 import Modelo.Conexiones;
+import Modelo.Dfactura;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
 import Modelo.abono;
@@ -192,4 +193,10 @@ public interface Facturas {
     public ArrayList<factura> getdocvspagoall(Connection cpt, int id);
     
     public boolean Cancelancr(Connection cpt, Connection cob, ArrayList<factura> f);
+    
+    public int insertpagotpu(Connection cpt, Connection cob, factura f);
+    
+    public ArrayList<factura> getfactwithserie(Connection rcpt, String ncobranza, String serie);
+    
+    public ArrayList<Dfactura> getfactwithseriedetallado(Connection rcpt, String factura, int año);
 }

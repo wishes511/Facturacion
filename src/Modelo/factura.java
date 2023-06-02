@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class factura implements java.io.Serializable{
     int id, folio, naprobacion, estatus, retenciones, idcliente, totalcajas, cantidadxcaja
             , addenda,enviado, cvecliente, cveagente, parcialidad, parcialidad2,foliokardex,agente,plazo, totalpares,conceptos,
-            id_pedido,id_kardex,foliopago,idcargo,idabono;
+            id_pedido,id_kardex,foliopago,idcargo,idabono,year;
     String nombrecliente, ncliente, nombreagente, claveusuario, serie, fecha, fechacancel
             , motivodex, pedido, fechasolicitado, condicion, fechaentrega, nombre, rfc
             , calle, nexterior, ninterior,colonia, localidad, referencia, municipio, estado
@@ -24,7 +24,7 @@ public class factura implements java.io.Serializable{
             , foliofiscalorig, seriefoliofiscalorig, fechafoliofiscalorig, regimen, foliofiscal
             , nodeseriecert, fechacert, sellosat, sellocfdi, usocfdi, tiporelacion, descmetodop, empresa, certificado,marca,
             cuentaabono,subabono, desccuenta,refncredito,rfcctaemisora,ctaemisora,rfcctareceptor,
-            ctareceptora,bancoemisor,bancoreceptor,ordenpago, seriecpt, turno;
+            ctareceptora,bancoemisor,bancoreceptor,ordenpago, seriecpt, turno,fechapago;
     String codigo, descripcion, umedida,impuestodet,tipofac, exportacion;
     double monto, impiva16, baseiva16,totalpago16,total, subtotal, impuestos, Descuento,
             baseimpuesto,cantidadfloat, preciodetalle,basedetalle,descuentodetalle,importedetalle,
@@ -37,6 +37,22 @@ public class factura implements java.io.Serializable{
     ArrayList<Detpagos> arrpagos = new ArrayList<>();
     ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
      ArrayList<Poliza> arrpolizas = new ArrayList<>();
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public String getFechapago() {
+        return fechapago;
+    }
+
+    public void setFechapago(String fechapago) {
+        this.fechapago = fechapago;
+    }
 
     public int getIdabono() {
         return idabono;

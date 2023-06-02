@@ -69,7 +69,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -105,16 +105,13 @@ public final class Principal extends javax.swing.JFrame {
         u.setAth("");
         u.setUsuario("");
         if (prod.equals("0")) {
-
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
             u.setTurno("0");
             modoadmin();
-
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();
-
         }
     }
 

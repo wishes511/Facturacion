@@ -10,10 +10,18 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class abono {
-    String ref, referencia,ordenpago, nombre, folio;
+    String ref, referencia,ordenpago, nombre, folio,fechapago;
     int cliente, cuenta, subcuenta, parcialidad;
     double total,totalpago, pago, saldo, anterior;
     Cliente c;
+
+    public String getFechapago() {
+        return fechapago;
+    }
+
+    public void setFechapago(String fechapago) {
+        this.fechapago = fechapago;
+    }
 
     public int getParcialidad() {
         return parcialidad;

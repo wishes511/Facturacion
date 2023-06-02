@@ -6,9 +6,7 @@
 package Tpu;
 
 import DAO.daoProveedores;
-import DAO.daomateriales;
 import Modelo.Conexiones;
-import Modelo.Materiales;
 import Modelo.ProveedorMPrima;
 import Modelo.Usuarios;
 import Paneltpu.Nuevoproveedor;
@@ -82,6 +80,7 @@ public class Proveedorestpu extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
+        setResizable(true);
         setTitle("Proveedores");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/User_Group-80_icon-icons.com_57247.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(1280, 720));

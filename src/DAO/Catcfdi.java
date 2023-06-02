@@ -59,5 +59,7 @@ public interface Catcfdi {
     public ArrayList<Unidades> getunidades(Connection c);
     
     public ArrayList<Claveprov> getclaveprod(Connection c);
+    
+    public ArrayList<Claveprov> getclaveprod(Connection c,String n);
 
 }

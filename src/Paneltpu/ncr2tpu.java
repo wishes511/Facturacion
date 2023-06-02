@@ -644,12 +644,15 @@ public class ncr2tpu extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
+// Carga los combos para el uso de la forma de pago, relacion, cuentas y uso de cfdi
     public void cargacombos() {//catalogos de Sat
+//        Se creará cada ves que se ejecute la funcion del cual dependa
         DefaultComboBoxModel metodo = new DefaultComboBoxModel();
         DefaultComboBoxModel forma = new DefaultComboBoxModel();
         DefaultComboBoxModel uso = new DefaultComboBoxModel();
         DefaultComboBoxModel relacion = new DefaultComboBoxModel();
         DefaultComboBoxModel cuentas = new DefaultComboBoxModel();
+//        Recorrerá cada uno de los arrays 
         for (Formadepago arrfpago1 : arrfpago) {
             forma.addElement(arrfpago1.getFormapago() + " - " + arrfpago1.getConcepto());
         }
@@ -668,6 +671,7 @@ public class ncr2tpu extends javax.swing.JPanel {
         JtRelacion.setModel(relacion);
         // Cuentas
         daofactura d = new daofactura();
+//        Busca las cuentas que sean tipo '60' y tambien las asigna a un combo para su uso
         arrcuentas = d.getalcuentastpu(ACobranza, "60");
         for (ConceptosES arruso1 : arrcuentas) {
             cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
@@ -680,11 +684,12 @@ public class ncr2tpu extends javax.swing.JPanel {
         JtCliente.setText("");
     }//GEN-LAST:event_JtClienteMousePressed
 
+//    Carga datos del cliente para el uso de ncr
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
-
         String r = JtCliente.getText();
         daofactura df = new daofactura();
         arrcargo = df.getfactsoncrtpu(cpt, r, empresa);// cpt a usar
+//        Revisa que haya cargos de facturas pendientes si no manda mensaje
         if (arrcargo.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
             JtCliente.setText("");
@@ -833,8 +838,10 @@ public class ncr2tpu extends javax.swing.JPanel {
         JtCliente.requestFocus();
         llenalistafac();
     }
+//      Despliega la interfaz de los cargos pendientes con el cliente
 
     private void cargacargos() {
+//        Solamente se podraa utilizar siempre y cuando haya registros sino no hara nada
         if (!arrcargo.isEmpty()) {
             Cargosncrtpu p = new Cargosncrtpu(null, true);
 //        p.setAlwaysOnTop(true);
@@ -842,7 +849,10 @@ public class ncr2tpu extends javax.swing.JPanel {
             p.arrcargo = arrcargo;
             p.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             p.setVisible(true);
+//            Importante ya que se traerá cada no de los registros seleccionados
             arrcargoseleccion = p.arrcargoseleccion;
+//           Fin de registros seleccionados
+//          Actualiza la lista de documentos a utilizar, actualiza y revisa las relaciones al documento
             llenalistafac();
             actualizaimportes();
             relaciones();
@@ -853,6 +863,7 @@ public class ncr2tpu extends javax.swing.JPanel {
         }
 
     }
+//  Actualiza el objeto de la lista, solo es para que se pueda visualizar el d
 
     private void llenalistafac() {
         DefaultListModel<String> model = new DefaultListModel<>();

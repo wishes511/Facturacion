@@ -191,7 +191,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="6" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{Fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{FechaEntrega}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="522" y="11" width="50" height="12" forecolor="#666666" uuid="2b3097c5-2a1c-49a9-a170-7248680395b9"/>
@@ -354,12 +354,12 @@
 				</textElement>
 				<text><![CDATA[RFC: ]]></text>
 			</staticText>
-			<textField pattern="EEE, d MMM yyyy HH:mm:ss Z">
+			<textField pattern="dd/MM/yyyy h.mm a">
 				<reportElement x="342" y="132" width="140" height="14" uuid="88a609ab-5ff1-4013-b3a7-534925698e89"/>
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{FechaEntrega}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{Fecha}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="260" y="132" width="82" height="14" uuid="eb3c598c-950d-438c-b1cd-fb3f99213440"/>

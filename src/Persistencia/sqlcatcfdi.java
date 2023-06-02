@@ -288,7 +288,7 @@ public class sqlcatcfdi {
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
-//                System.out.println(rs.getString("descripcion"));
+                System.out.println(rs.getString("descripcion"));
                 resp = true;
             }
             rs.close();
@@ -316,7 +316,7 @@ public class sqlcatcfdi {
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
-//                System.out.println(rs.getString("unidad"));
+                System.out.println(rs.getString("unidad"));
                 resp = true;
             }
             rs.close();
@@ -410,11 +410,11 @@ public class sqlcatcfdi {
         }
         return arr;
     }
-    
+
     /**
-     * 
+     *
      * @param con
-     * @return 
+     * @return
      */
     public ArrayList<Claveprov> getclavesprods(Connection con) {//sqllite
         ArrayList<Claveprov> arr = new ArrayList<>();
@@ -422,6 +422,37 @@ public class sqlcatcfdi {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select * from Claveprods order by clave";
+//            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Claveprov u = new Claveprov();
+                u.setClaveprod(rs.getString("clave"));
+                u.setDescripcion(rs.getString("descripcion"));
+                arr.add(u);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    /**
+     * 
+     * @param con
+     * @param n palabra a buscar en la bd, se utiliza like
+     * @return 
+     */
+    public ArrayList<Claveprov> getclavesprods(Connection con, String n) {//sqllite
+        ArrayList<Claveprov> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select clave,descripcion from Claveprods\n"
+                    + "where clave like '%" + n + "%' or descripcion like '%" + n + "%'\n"
+                    + "order by clave ";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();

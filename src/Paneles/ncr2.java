@@ -916,7 +916,8 @@ public class ncr2 extends javax.swing.JPanel {
                 // fin setear impuestos
 //                f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
 //                f.setImpuestos(formatdecimal(subtotal*0.16));
-                f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
+//                f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
+                f.setImpuestos(formatdecimal(impuestos));
                 f.setExportacion("01");
                 f.setTiporelacion(arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion());
                 f.setIva(16);
@@ -1038,11 +1039,13 @@ public class ncr2 extends javax.swing.JPanel {
                         }
                     }
                     if (rel.equals("03")) {
-                        df.setPrecioant(Double.parseDouble(formateador.format(precio)));
-//                        df.setPrecio(Double.parseDouble(formateador.format(precio / 1.16)));
+//                        df.setPrecioant(Double.parseDouble(formateador.format(precio)));
+//                        df.setBase(Double.parseDouble(formateador.format(precio / 1.16)));
+//                        precio = Double.parseDouble(formateador.format(precio / 1.16));
+                        df.setPrecioant(formatdecimal(precio));
+                        df.setBase(formatdecimal(precio / 1.16));
+                        precio = formatdecimal(precio / 1.16);
                         df.setPrecio(unidad);
-                        df.setBase(Double.parseDouble(formateador.format(precio / 1.16)));
-                        precio = Double.parseDouble(formateador.format(precio / 1.16));
                         impuesto = formatdecimal((precio * 0.16));
                     } else {
                         df.setPrecio(formatdecimal(subtotal));
@@ -1255,8 +1258,10 @@ public class ncr2 extends javax.swing.JPanel {
                             || verificaflotante(JtDetalle.getValueAt(i, 2).toString())) {
                         double precio = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         int can = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
-                        subtotal += Double.parseDouble(formateador.format((precio) * can));
-                        impuestos += Double.parseDouble(formateador.format(((precio) * can) * 0.16));
+//                        subtotal += Double.parseDouble(formateador.format((precio) * can));
+//                        impuestos += Double.parseDouble(formateador.format(((precio) * can) * 0.16));
+                        subtotal +=formatdecimal((precio) * can);
+                        impuestos += formatdecimal((precio * can) * 0.16);
                     } else {
                         JOptionPane.showMessageDialog(null, "Introduce solo numeros e intentalo de nuevo");
                         break;

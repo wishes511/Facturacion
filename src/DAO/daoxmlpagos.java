@@ -34,7 +34,7 @@ public class daoxmlpagos {
             xmlDAO x = new xmlDAO();
 //            Cliente c = dc.getCliente(cobranza, f.getIdcliente());// Busca
             String descmetodo = "";
-
+            x.setFecha(f.getFechapago());
             x.setImpiva16(f.getImpiva16());
             x.setBaseiva16(f.getBaseiva16());
             x.setTotalpago16(f.getTotalpago16());

@@ -29,6 +29,8 @@ import Server.Serverprod;
 import Server.Serverylite;
 import athprod.Pagos;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -317,9 +319,9 @@ public class pago1 extends javax.swing.JPanel {
             String optest = "";
             f.setClaveusuario(u.getNombre());
             //Pagos encabezado
-            f.setImpiva16(((total / 1.16) * 0.16));// Nodo totales
-            f.setBaseiva16((total / 1.16));
-            f.setTotalpago16(total);
+//            f.setImpiva16(((total / 1.16) * 0.16));// Nodo totales
+//            f.setBaseiva16((total / 1.16));
+//            f.setTotalpago16(total);
             f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
             //Fin pagos encabezado
             f.setEmpresa(!empresa.equals("UptownCPT") ? "1" : "2");
@@ -369,6 +371,8 @@ public class pago1 extends javax.swing.JPanel {
             f.setBancoemisor("");
             f.setBancoreceptor("");
             f.setOrdenpago(arrabonos.get(0).getOrdenpago());
+            f.setFechapago(formatfecha(arrabonos.get(0).getFechapago()));
+            formatfecha(formatfecha(arrabonos.get(0).getFechapago()));
             ArrayList<Detpagos> arrdetpago = new ArrayList<>();
             ArrayList<Detpagos> arrdetpago17 = new ArrayList<>();
             ArrayList<Dfactura> arrdet = new ArrayList<>();
@@ -427,19 +431,19 @@ public class pago1 extends javax.swing.JPanel {
             }
 
 //            valor a totales e iva
-            f.setImpiva16(((arrabonos.get(0).getTotal() / 1.16) * 0.16));// Nodo totales
-            f.setBaseiva16((arrabonos.get(0).getTotal() / 1.16));
+            f.setImpiva16(formatdecimal(((arrabonos.get(0).getTotal() / 1.16) * 0.16)));// Nodo totales
+            f.setBaseiva16(formatdecimal((arrabonos.get(0).getTotal() / 1.16)));
             f.setTotalpago16(arrabonos.get(0).getTotal());
-            if(!arrabonos17.isEmpty()){
-                f.setImpiva17(((arrabonos17.get(0).getTotal() / 1.16) * 0.16));// Nodo totales
-                f.setBaseiva17((arrabonos17.get(0).getTotal() / 1.16));
+            if (!arrabonos17.isEmpty()) {
+                f.setImpiva17(formatdecimal(((arrabonos17.get(0).getTotal() / 1.16) * 0.16)));// Nodo totales
+                f.setBaseiva17(formatdecimal((arrabonos17.get(0).getTotal() / 1.16)));
                 f.setTotalpago17(arrabonos17.get(0).getTotal());
-            }else{
+            } else {
                 f.setImpiva17(0);// Nodo totales
                 f.setBaseiva17(0);
                 f.setTotalpago17(0);
             }
-            
+
             Dfactura df = new Dfactura();
             df.setPrecio(0);
             df.setImpuesto("01");
@@ -472,16 +476,47 @@ public class pago1 extends javax.swing.JPanel {
         JtCliente.setText("");
     }//GEN-LAST:event_JtClienteMousePressed
 
+        private double formatdecimal(double cant) {
+        int dato = 0;
+        int punto = 0;
+        boolean band = false;
+        double resp;
+        String c = String.valueOf(cant);
+//        String cadena = "";
+        for (int i = 0; i < c.length(); i++) {
+//            Empieza a tomar datos despues del punto
+            if (c.charAt(i) == '.') {
+                band = true;
+            }
+            if (band) {
+//                3 digitos de decimal para saber qe hacer con los decimales
+                if (punto == 3) {
+                    dato = Integer.parseInt(c.charAt(i) + "");
+                    i = c.length();
+                    break;
+                }
+//                cadena += c.charAt(i);
+                punto++;
+            }
+        }
+        if ((dato <= 5)) {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
+        } else {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        }
+        return resp;
+    }
+    
     private void limpiar() {
-        if(!arrabonos.isEmpty()){
+        if (!arrabonos.isEmpty()) {
             arrabonos.clear();
         }
-        if(!arrabonos17.isEmpty()){
+        if (!arrabonos17.isEmpty()) {
             arrabonos17.clear();
         }
         JtCliente.setText("");
         generatabla();
-        
+
     }
 
     private void generatabla() {
@@ -499,11 +534,12 @@ public class pago1 extends javax.swing.JPanel {
         model.addColumn("Parcialidad");
         daofactura d = new daofactura();
         arrabonos = d.getabonospago(cpt, JtCliente.getText(), empresacob, 15);
-        arrabonos17 = d.getabonospago(cpt, JtCliente.getText()+" 17", empresacob, 17);
-        int tamaño =arrabonos.size()+arrabonos17.size();
+        arrabonos17 = d.getabonospago(cpt, JtCliente.getText() + " 17", empresacob, 17);
+        int tamaño = arrabonos.size() + arrabonos17.size();
 //        model.setRowCount(arrabonos.size());
-            model.setRowCount(tamaño);
-            int aux=0;
+        formatfecha(arrabonos.get(0).getFechapago());
+        model.setRowCount(tamaño);
+        int aux = 0;
         for (int i = 0; i < arrabonos.size(); i++) {
             model.setValueAt(arrabonos.get(i).getOrdenpago(), i, 0);
             model.setValueAt(arrabonos.get(i).getC().getNombre(), i, 1);
@@ -557,6 +593,16 @@ public class pago1 extends javax.swing.JPanel {
             }
             i++;
         }
+    }
+
+    private String formatfecha(String fe) {
+        String nfecha = "";
+        for (int i = 0; i < fe.length() - 2; i++) {
+            nfecha += (fe.charAt(i) == ' ') ? "T" : fe.charAt(i) + "";
+        }
+//        System.out.println(fe);
+//        System.out.println(nfecha);
+        return nfecha;
     }
 
     private boolean verificaint(String cad) {

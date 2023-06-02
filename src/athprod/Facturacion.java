@@ -17,6 +17,8 @@ import Modelo.metodopago;
 import Modelo.usocfdi;
 import Paneles.fac1;
 import Paneles.fac2;
+import Paneltpu.cfditransportetpu;
+import Paneltpu.cfditransportetpuv2;
 import Server.Serverprod;
 import Server.Serverylite;
 import java.awt.Image;
@@ -40,6 +42,8 @@ public class Facturacion extends javax.swing.JInternalFrame {
 
     fac1 c1;
     fac2 c2;
+    cfditransportetpu c3;
+    cfditransportetpuv2 c4;
     String var = "0";
     public String name, empresa, empresarcpt, empresacob;
     Connection rcpt, litecfdi, liteempresa, cobranza, cpt;
@@ -104,7 +108,7 @@ public class Facturacion extends javax.swing.JInternalFrame {
             c1.u = u;
             c1.JtCliente.requestFocus();
             c1.liteusuario = liteusuario;
-        }else{
+        } else {
             c2.arrfpago = arrforma;
             c2.arrmetodo = arrmetodo;
             c2.arruso = arruso;
@@ -132,8 +136,33 @@ public class Facturacion extends javax.swing.JInternalFrame {
             c1.u = u;
             c1.JtCliente.requestFocus();
             c1.liteusuario = liteusuario;
+            
+            c3.cpt = cpt;
+            c3.ACobranza = cobranza;
+            c3.empresa = empresa;
+            c3.empresacob = empresacob;
+            c3.arrfpago = arrforma;
+            c3.arrmetodo = arrmetodo;
+            c3.arruso = arruso;
+            c3.sqlcfdi = litecfdi;
+            c3.sqlempresa = liteempresa;
+            c3.rcpt = rcpt;
+            c3.u = u;
+            c3.cargaclientes();
+            
+            c4.cpt = cpt;
+            c4.ACobranza = cobranza;
+            c4.empresa = empresa;
+            c4.empresacob = empresacob;
+            c4.arrfpago = arrforma;
+            c4.arrmetodo = arrmetodo;
+            c4.arruso = arruso;
+            c4.sqlcfdi = litecfdi;
+            c4.sqlempresa = liteempresa;
+            c4.rcpt = rcpt;
+            c4.u = u;
+            c4.cargaclientes();
         }
-
 
     }
 
@@ -152,6 +181,7 @@ public class Facturacion extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
         setResizable(true);
         setTitle("Facturacion");
 
@@ -194,8 +224,14 @@ public class Facturacion extends javax.swing.JInternalFrame {
         } else {
             c1 = new fac1();
             c2 = new fac2();
+            c3 = new cfditransportetpu();
+            c4 = new cfditransportetpuv2();
+            
             Tabbed.addTab("Listado de Facturas", c1);
             Tabbed.addTab("Nueva Factura", c2);
+            Tabbed.addTab("Cfdi traslado libre", c3);
+            Tabbed.addTab("Cfdi traslado remision", c4);
+
             Tabbed.setSelectedComponent(c1);
         }
     }

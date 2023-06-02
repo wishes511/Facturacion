@@ -40,7 +40,7 @@ public class daoxmlTraslado {
             x.setIddocumentos(f.getId());
             x.setEmpresa(f.getEmpresa());
             x.setFolio(f.getFolio() + "");                              // Folio
-            x.setSerie("T");       // metodo descripcion
+            x.setSerie("TR");       // metodo descripcion
             x.setSubT(BigDecimal.ZERO);             // Subtotal
             x.setMoneda("XXX");                                 // Moneda
             x.setTotal(BigDecimal.ZERO);                            // CP emisor

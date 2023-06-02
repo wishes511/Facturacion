@@ -296,8 +296,8 @@ public class ncr1 extends javax.swing.JPanel {
             df.setBase(arrfacturaxml.get(i).getBasedetalle());
             df.setImpuesto(arrfacturaxml.get(i).getImpuestodet());
             df.setTipofactor(arrfacturaxml.get(i).getTipofac());
-            df.setImporta(Double.parseDouble(formateador.format((arrfacturaxml.get(i).getImportedetalle()))));
-            df.setDescuento(Double.parseDouble(formateador.format(arrfacturaxml.get(i).getDescuentodetalle())));
+            df.setImporta(formatdecimal(arrfacturaxml.get(i).getImportedetalle()));
+            df.setDescuento(formatdecimal(arrfacturaxml.get(i).getDescuentodetalle()));
             df.setTasaocuota(iva + "");
 //            df.setDescumedida(dcfdi.getdescunidad(sqlcfdi, arrfacturaxml.get(i).getUmedida()));
             df.setUmedida("PR");

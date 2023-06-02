@@ -243,7 +243,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
         System.out.println("---------");
     }//GEN-LAST:event_JtCargoMousePressed
 
-    private void desplieguecargos() {
+    public void desplieguecargos() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Nombre");
         model.addColumn("Referencia");

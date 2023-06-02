@@ -12,11 +12,35 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public class Dfactura implements java.io.Serializable{
-    int id, idoc, producto,talla,cantidad,renglon,id_dpedimento,id_pedimento;
+    int id, idoc, producto,talla,cantidad,renglon,id_dpedimento,id_pedimento, years;
     int c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14, almacen,linea,corrida,estilo,combinacion, foliokardex;
-    String descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor,uuid, stock, descumedida,dureza;
+    String factura,descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor,uuid, stock, descumedida,dureza,fecha;
     double base,  importa, descuento,precio,  cantidadfloat, precioant;
     ArrayList<String> arruuid = new ArrayList<>();
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public int getYears() {
+        return years;
+    }
+
+    public void setYears(int years) {
+        this.years = years;
+    }
+
+    public String getFactura() {
+        return factura;
+    }
+
+    public void setFactura(String factura) {
+        this.factura = factura;
+    }
 
     public int getId_pedimento() {
         return id_pedimento;

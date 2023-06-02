@@ -80,6 +80,7 @@ public class sqlmaterial {
                 m.setCodigo(rs.getString("codigo"));
                 m.setUnidad(rs.getString("unidad"));
                 m.setCodigosat(rs.getString("codigosat"));
+                m.setMoneda(rs.getString("moneda"));
                 arr.add(m);
             }
             rs.close();
@@ -99,7 +100,8 @@ public class sqlmaterial {
             String unidad=m.getUnidad();
             String codigosat=m.getCodigosat();
             int idfam=m.getId_familia();
-            String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia) values('"+mat+"',"+precio+",'1','"+unidad+"','"+codigosat+"',"+idfam+")";
+            String mon=m.getMoneda();
+            String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia,moneda) values('"+mat+"',"+precio+",'1','"+unidad+"','"+codigosat+"',"+idfam+",'"+mon+"')";
             System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();

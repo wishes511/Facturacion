@@ -68,6 +68,8 @@ public class Materialestpu extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Materiales");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/material_colors_macos_bigsur_icon_189995.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(1280, 720));
@@ -180,12 +182,14 @@ public class Materialestpu extends javax.swing.JInternalFrame {
         model.addColumn("precio");
         model.addColumn("unidad");
         model.addColumn("Clavesat");
+        model.addColumn("Moneda");
         model.setNumRows(arrmat.size());
         for (int i = 0; i < arrmat.size(); i++) {
             model.setValueAt(arrmat.get(i).getDescripcion(), i, 0);
             model.setValueAt(arrmat.get(i).getPrecio(), i, 1);
             model.setValueAt(arrmat.get(i).getUnidad(), i, 2);
             model.setValueAt(arrmat.get(i).getCodigosat(), i, 3);
+            model.setValueAt(arrmat.get(i).getMoneda(), i, 4);
         }
         JtDetalle.setModel(model);
     }

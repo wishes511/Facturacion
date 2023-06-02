@@ -156,6 +156,12 @@ public class daocfdi implements Catcfdi {
         return s.getclavesprods(c);
     }
 
+    @Override
+    public ArrayList<Claveprov> getclaveprod(Connection c, String n) {
+        sqlcatcfdi s = new sqlcatcfdi();
+        return s.getclavesprods(c,n);
+    }
+
 
 
 

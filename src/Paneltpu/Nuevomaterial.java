@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -59,14 +60,19 @@ public class Nuevomaterial extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         JtPrecio = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        JcSat = new javax.swing.JComboBox<>();
         JcUnidad = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         JcFamilia = new javax.swing.JComboBox<>();
+        jSeparator4 = new javax.swing.JSeparator();
+        JtCodigo = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        JlSat = new javax.swing.JList<>();
+        jLabel8 = new javax.swing.JLabel();
+        JcMoneda = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -114,9 +120,6 @@ public class Nuevomaterial extends javax.swing.JDialog {
             }
         });
 
-        jLabel8.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel8.setText("Codigo de sat");
-
         jLabel9.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel9.setText("Unidad");
 
@@ -139,37 +142,51 @@ public class Nuevomaterial extends javax.swing.JDialog {
         jLabel10.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel10.setText("Familia");
 
+        jSeparator4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        JtCodigo.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
+        JtCodigo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        JtCodigo.setBorder(null);
+        JtCodigo.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        JtCodigo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JtCodigoMousePressed(evt);
+            }
+        });
+        JtCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtCodigoActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel11.setText("Codigo");
+
+        JlSat.setFont(new java.awt.Font("Calibri", 0, 10)); // NOI18N
+        JlSat.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(JlSat);
+
+        jLabel8.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel8.setText("Moneda");
+
+        JcMoneda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "MXN", "USD" }));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel8)
-                .addGap(166, 166, 166))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(198, 198, 198))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JcFamilia, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel2)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JcUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 172, Short.MAX_VALUE))
-                            .addComponent(JcSat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -181,8 +198,33 @@ public class Nuevomaterial extends javax.swing.JDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jSeparator3, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
-                                    .addComponent(JtPrecio))))
-                        .addContainerGap())))
+                                    .addComponent(JtPrecio)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(JcFamilia, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(JcUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 172, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(4, 4, 4)
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jSeparator4, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                                    .addComponent(JtCodigo))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(JcMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,13 +240,20 @@ public class Nuevomaterial extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(JtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel7)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
-                .addComponent(jLabel8)
-                .addGap(18, 18, 18)
-                .addComponent(JcSat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel11)
+                            .addComponent(JtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jSeparator4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addComponent(JcUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -212,7 +261,11 @@ public class Nuevomaterial extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addComponent(JcFamilia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(JcMoneda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -232,25 +285,22 @@ public class Nuevomaterial extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setcombos() {
-        DefaultComboBoxModel clave = new DefaultComboBoxModel();
+
         DefaultComboBoxModel unidad = new DefaultComboBoxModel();
-        DefaultComboBoxModel fami= new DefaultComboBoxModel();
+        DefaultComboBoxModel fami = new DefaultComboBoxModel();
         daocfdi d = new daocfdi();
-        daofamilias df= new daofamilias();
+        daofamilias df = new daofamilias();
         arrunidad = d.getunidades(litecfdi);
-        arrclave = d.getclaveprod(litecfdi);
-        arrfam=df.getallfamilia(cpt, "");
+        arrfam = df.getallfamilia(cpt, "");
         for (Unidades arrunidad1 : arrunidad) {
             unidad.addElement(arrunidad1.getClave() + " - " + arrunidad1.getDescripcion());
         }
-        for (Claveprov arrclave1 : arrclave) {
-            clave.addElement(arrclave1.getClaveprod() + "-" + arrclave1.getDescripcion());
-        }
+
         for (Familia fam : arrfam) {
             fami.addElement(fam.getDescripcion());
         }
         JcUnidad.setModel(unidad);
-        JcSat.setModel(clave);
+//        JcSat.setModel(clave);
         JcFamilia.setModel(fami);
     }
 
@@ -268,7 +318,7 @@ public class Nuevomaterial extends javax.swing.JDialog {
     }//GEN-LAST:event_JtPrecioMousePressed
 
     private void JtPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtPrecioActionPerformed
-        // TODO add your handling code here:
+        JtCodigo.requestFocus();
     }//GEN-LAST:event_JtPrecioActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
@@ -285,16 +335,19 @@ public class Nuevomaterial extends javax.swing.JDialog {
             daomateriales dm = new daomateriales();
             Materiales m = new Materiales();
             String unidad = arrunidad.get(JcUnidad.getSelectedIndex()).getClave();
-            String claveprod = arrclave.get(JcSat.getSelectedIndex()).getClaveprod();
+            String claveprod = arrclave.get(JlSat.getSelectedIndex()).getClaveprod();
             m.setDescripcion(JtMaterial.getText().toUpperCase());
             m.setPrecio(Double.parseDouble(JtPrecio.getText()));
             m.setUnidad(unidad);
             m.setCodigosat(claveprod);
+            m.setMoneda(JcMoneda.getSelectedItem().toString());
             m.setId_familia(arrfam.get(JcFamilia.getSelectedIndex()).getId_familia());
             if (dm.nuevomat(cpt, rcpt, m)) {
                 JOptionPane.showMessageDialog(null, "Alta de material Completo");
                 JtMaterial.setText("");
                 JtPrecio.setText("");
+                JtCodigo.setText("");
+                getprov();
                 JtMaterial.requestFocus();
             } else {
                 JOptionPane.showMessageDialog(null, "Error al dar de alta material, intentelo de nuevo");
@@ -304,6 +357,28 @@ public class Nuevomaterial extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_jLabel1MousePressed
+
+    private void JtCodigoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtCodigoMousePressed
+        JtCodigo.setText("");
+    }//GEN-LAST:event_JtCodigoMousePressed
+
+    private void JtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCodigoActionPerformed
+        getprov();
+    }//GEN-LAST:event_JtCodigoActionPerformed
+
+    private void getprov() {
+        DefaultListModel<String> model = new DefaultListModel<>();
+        daocfdi d = new daocfdi();
+        arrclave = d.getclaveprod(litecfdi, JtCodigo.getText());
+        for (Claveprov arrclave1 : arrclave) {
+            model.addElement(arrclave1.getClaveprod() + "-" + arrclave1.getDescripcion());
+        }
+        JlSat.setModel(model);
+        if (!arrclave.isEmpty()) {
+            JlSat.requestFocus();
+            JlSat.setSelectedIndex(0);
+        }
+    }
 
     /**
      * Formatear para que no tome en cuenta los espacios
@@ -377,19 +452,24 @@ public class Nuevomaterial extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcFamilia;
-    private javax.swing.JComboBox<String> JcSat;
+    private javax.swing.JComboBox<String> JcMoneda;
     private javax.swing.JComboBox<String> JcUnidad;
+    private javax.swing.JList<String> JlSat;
+    public javax.swing.JTextField JtCodigo;
     public javax.swing.JTextField JtMaterial;
     public javax.swing.JTextField JtPrecio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
     // End of variables declaration//GEN-END:variables
 }

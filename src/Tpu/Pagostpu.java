@@ -44,6 +44,7 @@ public class Pagostpu extends javax.swing.JInternalFrame {
     ArrayList<metodopago> arrmetodo = new ArrayList<>();
     ArrayList<relacion> arrrelacion = new ArrayList<>();
     public Conexiones conexion;
+    public Usuarios u;
 
     /**
      * Creates new form Clientes
@@ -58,6 +59,7 @@ public class Pagostpu extends javax.swing.JInternalFrame {
         cobranza = cn.getCobranzatpu();
         empresa = cn.getEmpresa();
         empresacob = cn.getEmpresacob();
+        this.u=u;
         generaciontab();//Tabs de facturacion
         conexiones();
         setarraylist();
@@ -104,6 +106,7 @@ public class Pagostpu extends javax.swing.JInternalFrame {
         c2.sqlempresa = liteempresa;
         c2.sqlcfdi = litecfdi;
         c2.cpt = cpt;
+        c2.u=u;
     }
 
     /**
@@ -162,6 +165,8 @@ public class Pagostpu extends javax.swing.JInternalFrame {
         Tabbed.addTab("Ver Pagos", c1);
         Tabbed.addTab("Nuevo pago", c2);
         Tabbed.setSelectedComponent(c1);
+        c2.JtCliente.requestFocus();
+        c1.JtCliente.requestFocus();
 
     }
 

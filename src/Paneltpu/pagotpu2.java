@@ -10,6 +10,7 @@ import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daoxmlncrtpu;
+import DAO.daoxmlpagostpu;
 import Modelo.ConceptosES;
 import Modelo.Detpagos;
 import Modelo.Dfactura;
@@ -337,7 +338,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/ic_send_128_28719.png"))); // NOI18N
-        jLabel2.setToolTipText("Procesar Nota de Credito");
+        jLabel2.setToolTipText("Procesar Pago");
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -781,6 +782,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 //        p.setAlwaysOnTop(true);
 //            p.relacion = arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion();
             p.arrcargo = arrcargo;
+            p.desplieguecargos();
             p.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             p.setVisible(true);
             arrcargoseleccion = p.arrcargoseleccion;
@@ -829,7 +831,6 @@ public class pagotpu2 extends javax.swing.JPanel {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 daofactura dfac = new daofactura();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
-//                DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
 //                Nocolisionncr n = new Nocolisionncr();
                 f.setFolio(dfac.getmaxfoliotpu(cpt, "PAG"));//Obtiene y setea el foliomaximo de *documentos
 //                n.setConnecxiones(rcpt, f.getFolio());
@@ -861,7 +862,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                 f.setPedido("");
                 f.setFechasolicitado(sdf.format(date));
                 f.setTurno(u.getTurno());
-                f.setFechaentrega(sdf.format(date));
+                f.setFechapago(sdf.format(JtFecha.getDate()));
                 f.setSubtotal(0);
                 f.setTotal(0);
                 f.setIdcliente(arrcargoseleccion.get(0).getCliente());
@@ -899,7 +900,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                     d.setUmedida("ACT");
                     d.setPrecio(0);
                     d.setMoneda("MXN");
-                    d.setMonto(total);
+                    d.setMonto(formatdecimal(total));
                     d.setRfcctaemisora("AB");
                     d.setCtaemisora("12");
                     d.setRfcctareceptora("BC");
@@ -943,20 +944,21 @@ public class pagotpu2 extends javax.swing.JPanel {
                 if (verifica != 0) {
                     JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
                 } else {
-                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
-                    if (id != 0) {
-                        System.out.println("Exito");
-                        daoxmlncrtpu dx = new daoxmlncrtpu();
-                        f.setId(id);
-                        dx.generarfac(f, cpt, sqlempresa);
-                        timbrarXML tim = new timbrarXML();
-                        Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
-                        dfac.Updatesellofiscaltpu(cpt, s, id);
-                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
-                        JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
-                        vaciarcampos();
-                        JtCliente.requestFocus();
-                    }
+//                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
+                    int id=dfac.insertpagotpu(cpt, ACobranza, f);
+//                    if (id != 0) {
+//                        System.out.println("Exito");
+//                        daoxmlpagostpu dx = new daoxmlpagostpu();
+//                        f.setId(id);
+//                        dx.generarfac(f, cpt, sqlempresa);
+//                        timbrarXML tim = new timbrarXML();
+//                        Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
+//                        dfac.Updatesellofiscaltpu(cpt, s, id);
+//                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
+//                        JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
+//                        vaciarcampos();
+//                        JtCliente.requestFocus();
+//                    }
                 }
             }
 

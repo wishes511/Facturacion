@@ -642,6 +642,7 @@ public class fac1tpu extends javax.swing.JPanel {
         return r;
     }
 
+//    Busca las facturas que encuentre
     private void Buscanotas() {
         daofactura df = new daofactura();
         arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "FAC");
@@ -658,9 +659,10 @@ public class fac1tpu extends javax.swing.JPanel {
         model.addColumn("Fecha");
         model.addColumn("Forma Pago");
         model.addColumn("Metodo Pago");
-        model.addColumn("Estado");
         model.addColumn("Timbrado");
         model.addColumn("Uso cfdi");
+        model.addColumn("Moneda");
+        model.addColumn("Estado");
         model.setNumRows(arrfactura.size());
         DecimalFormat formateador = new DecimalFormat("####.##");
         for (int i = 0; i < arrfactura.size(); i++) {
@@ -675,9 +677,10 @@ public class fac1tpu extends javax.swing.JPanel {
             model.setValueAt(arrfactura.get(i).getFecha(), i, 5);
             model.setValueAt(arrfactura.get(i).getFormapago(), i, 6);
             model.setValueAt(arrfactura.get(i).getMetodopago(), i, 7);
-            model.setValueAt(estat, i, 8);
-            model.setValueAt(estatfac, i, 9);
-            model.setValueAt(arrfactura.get(i).getUsocfdi(), i, 10);
+            model.setValueAt(estatfac, i, 8);
+            model.setValueAt(arrfactura.get(i).getUsocfdi(), i, 9);
+            model.setValueAt(arrfactura.get(i).getMoneda(), i, 10);
+            model.setValueAt(estat, i, 11);
         }
         JtDetalle.setModel(model);
     }

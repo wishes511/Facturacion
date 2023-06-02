@@ -8,6 +8,7 @@ package DAO;
 import Modelo.Cliente;
 import Modelo.ConceptosES;
 import Modelo.Conexiones;
+import Modelo.Dfactura;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
 import Modelo.abono;
@@ -470,6 +471,26 @@ public class daofactura implements Facturas {
         sqlfactura s = new sqlfactura();
         return s.deletencr(cpt, cob, f);
     }
+
+    @Override
+    public int insertpagotpu(Connection cpt, Connection cob, factura f) {
+        sqlfactura s = new sqlfactura();
+        return s.insertpagostpu(cpt, f, cob);
+    }
+
+    @Override
+    public ArrayList<factura> getfactwithserie(Connection rcpt, String ncobranza, String serie) {
+        sqlfactura s = new sqlfactura();
+        return s.getfactwithserie(rcpt, ncobranza, serie);
+    }
+
+    @Override
+    public ArrayList<Dfactura> getfactwithseriedetallado(Connection rcpt, String factura, int año) {
+        sqlfactura s = new sqlfactura();
+        return s.getfactwithseriedetallado(rcpt, factura, año);
+    }
+
+    
 
 
 }
