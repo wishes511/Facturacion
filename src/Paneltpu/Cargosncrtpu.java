@@ -254,6 +254,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
         model.addColumn("Saldo");
         model.addColumn("");
         model.addColumn("Saldo mx");
+        model.addColumn("Parcialidad");
         model.setNumRows(arrcargo.size());
         //Carga las facturas registyradas en cargos
         for (int i = 0; i < arrcargo.size(); i++) {
@@ -266,6 +267,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
             model.setValueAt(arrcargo.get(i).getSaldo(), i, 6);
             model.setValueAt("", i, 7);
             model.setValueAt(arrcargo.get(i).getSaldomx(), i, 8);
+            model.setValueAt("1", i, 9);
         }
         JtCargo.setModel(model);
     }
@@ -279,6 +281,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
                 int renglon = arrcargoseleccion.get(i).getRenglon();
                 String desc = JtCargo.getValueAt(renglon, 4).toString();
                 String saldomx = JtCargo.getValueAt(renglon, 8).toString();
+                String parci = JtCargo.getValueAt(renglon, 9).toString();
                 if (verificaciones(desc)) {
 //                  Verifica el tipo de relacion sea 03 por que es descuento
 //                  Verifica el tipo de relacion sea 01,07 por que es descuento 15/02/2023
@@ -292,11 +295,8 @@ public class Cargosncrtpu extends javax.swing.JDialog {
                         reset = false;
                         break;
                     } else {
-                        modarrDesc(i, desc);
+                        modarrDesc(i, desc,parci);
                     }
-////                Verifica que la cantidad no sea mayor al saldo
-                    DecimalFormat formateador = new DecimalFormat("####.##");
-                    String ars = String.valueOf(formateador.format(arrcargoseleccion.get(i).getSaldo()));
 //                        System.out.println(Float.parseFloat(desc) + " " + arrcargoseleccion.get(i).getSaldo());
 //                        if (Float.parseFloat(desc) > Float.parseFloat(ars)) {
                     if (Float.parseFloat(desc) > Float.parseFloat(saldomx)) {
@@ -304,7 +304,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
                         reset = false;
                         break;
                     } else {
-                        modarrDesc(i, desc);
+                        modarrDesc(i, desc,parci);
                     }
 
                 } else {
@@ -320,9 +320,10 @@ public class Cargosncrtpu extends javax.swing.JDialog {
         }
     }
 
-    private void modarrDesc(int i, String desc) {
+    private void modarrDesc(int i, String desc, String parci) {
         cargo car = arrcargoseleccion.get(i);// almacena el cargo en un objeto para modificar valores
         car.setDescuento(Double.parseDouble(desc));
+        car.setParcialidad(Integer.parseInt(parci));
         arrcargoseleccion.set(i, car);// asigna de nuevo el cargo ya modificado
         System.out.println("descuento " + desc);
     }

@@ -642,4 +642,41 @@ public class generarXML40pagos {
         byte[] signature = sing.sign();
         return new String(Base64.encode(signature));
     }
+    
+            private double getnewcantidades6(double a, String tipo) {
+        double cant = 0;
+        switch (tipo) {
+            case "importe":
+                cant = BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16;
+                break;
+            case "iva":
+                cant = (BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16) * 0.16;
+                break;
+        }
+        return cant;
+    }
+
+    private double getnewcantidades(double a, String tipo) {
+        double cant = 0;
+        switch (tipo) {
+            case "importe":
+                cant = BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16;
+                break;
+            case "iva":
+                cant = (BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16) * 0.16;
+                break;
+        }
+        cant = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return cant;
+    }
+
+    private double getcant16(double a) {
+        double cant = BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue();
+        return cant;
+    }
+
+    private double getcant(double a) {
+        double cant = BigDecimal.valueOf(a).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return cant;
+    }
 }

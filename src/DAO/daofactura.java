@@ -462,7 +462,7 @@ public class daofactura implements Facturas {
 
     @Override
     public ArrayList<factura> getdocvspagoall(Connection cpt, int id) {
-                sqlfactura s = new sqlfactura();
+        sqlfactura s = new sqlfactura();
         return s.getfoliovspagoall(cpt, id);
     }
 
@@ -490,7 +490,16 @@ public class daofactura implements Facturas {
         return s.getfactwithseriedetallado(rcpt, factura, año);
     }
 
-    
+    @Override
+    public void actualizacadenapagotpu(Connection c, factura f) {
+        sqlfactura s = new sqlfactura();
+        s.actualizapagotpu(c, f);
+    }
 
+    @Override
+    public boolean Updatesellofiscalpagotpu(Connection cpt, Sellofiscal s, int id) {
+        sqlfactura sw = new sqlfactura();
+        return sw.actualizasellotpupago(cpt, s, id);
+    }
 
 }

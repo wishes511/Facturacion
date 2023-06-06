@@ -38,6 +38,43 @@ import javax.swing.JOptionPane;
  */
 public class sqlfactura {
 
+    private double getnewcantidades6(double a, String tipo) {
+        double cant = 0;
+        switch (tipo) {
+            case "importe":
+                cant = BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16;
+                break;
+            case "iva":
+                cant = (BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16) * 0.16;
+                break;
+        }
+        return cant;
+    }
+
+    private double getnewcantidades(double a, String tipo) {
+        double cant = 0;
+        switch (tipo) {
+            case "importe":
+                cant = BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16;
+                break;
+            case "iva":
+                cant = (BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16) * 0.16;
+                break;
+        }
+        cant = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return cant;
+    }
+
+    private double getcant16(double a) {
+        double cant = BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue();
+        return cant;
+    }
+
+    private double getcant(double a) {
+        double cant = BigDecimal.valueOf(a).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return cant;
+    }
+
     public String formateafecha(String f) {
         //Solo da formato para que pueda entrar a la bd
         String nuevafecha = "";
@@ -1751,7 +1788,7 @@ public class sqlfactura {
             double total = f.getTotal();
             double iva = f.getIva();
             double imp = f.getImpuestos();
-            String fechap=f.getFechapago();
+            String fechap = f.getFechapago();
             //pagos
             String rfcctaemi = f.getRfcctaemisora();
             String ctaemi = f.getCtaemisora();
@@ -1914,6 +1951,7 @@ public class sqlfactura {
             int fol = f.getFolio();
             String fecha = f.getFecha();
             String fechap = f.getFechapago();
+            String turno = f.getTurno();
             //pagos
 //            String rfcctaemi = f.getRfcctaemisora();
 //            String ctaemi = f.getCtaemisora();
@@ -1921,10 +1959,7 @@ public class sqlfactura {
 //            String rfcctarep = f.getRfcctareceptor();
 //            String ctarep = f.getCtareceptora();
 //            String bcorep = f.getBancoreceptor();
-            String op = f.getOrdenpago();
             String metodo = f.getMetodopago();
-            double monto = f.getMonto();
-            System.out.println("monto " + monto);
             //cliente
             int idcliente = f.getIdcliente();
             String nombre = f.getNombre();
@@ -1960,6 +1995,7 @@ public class sqlfactura {
 
 //            resp = f.getFolio();
             for (Detpagos arr : f.getArrpagos()) {
+                DecimalFormat formateador = new DecimalFormat("####.##");
                 //Inserta en detallado de detallado pago
                 double cant = arr.getCantidad();
                 String de = arr.getDescripcion();
@@ -1968,18 +2004,19 @@ public class sqlfactura {
                 double precio = arr.getPrecio();
                 String fp = arr.getFormadedpago();
                 String moneda = arr.getMoneda();
-                double mo = arr.getMonto();
+                double mo = getcant(arr.getMonto());
                 String rfcce = arr.getRfcctaemisora();
                 String rfccr = arr.getRfcctareceptora();
                 String ctae = arr.getCtaemisora();
                 String ctar = arr.getCtareceptora();
                 String uuid = arr.getUuid();
                 String fo = arr.getFolio();
+                double sald= arr.getSaldo();
                 String mp = arr.getMetodopago();
                 int par = arr.getParcialidad();
-                double salant = arr.getImportesaldoant();
-                double salpag = arr.getImportepagado();
-                double salin = arr.getImpsaldoinsoluto();
+                double salant = getcant(arr.getImportesaldoant());
+                double salpag = getcant(arr.getImportepagado());
+                double salin = getcant(arr.getImpsaldoinsoluto());
                 int idcargo = arr.getIdcargo();
                 sql = "insert into Ddoctospagotpu(id_doctopago,cantidad,descripcion,codigosat,unidad,precio,formapagop,monedap,"
                         + "monto,rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,uuid,foliorel,moneda,metodopago,"
@@ -1991,10 +2028,10 @@ public class sqlfactura {
                 st.executeUpdate();
                 String saldo;
                 if (moneda.equals("MXN")) {
-                    sql = "update cargo set saldomx=saldomx-" + salpag + " where id_cargo=" + idcargo;
+                    sql = "update cargo set saldomx=" + formateador.format(sald)+ " where id_cargo=" + idcargo;
                     saldo = "saldo";
                 } else {
-                    sql = "update cargo set saldo=saldo-" + salpag + " where id_cargo=" + idcargo;
+                    sql = "update cargo set saldo=" + formateador.format(sald) + " where id_cargo=" + idcargo;
                     saldo = "saldomx";
                 }
                 System.out.println("cargos " + sql);
@@ -2008,8 +2045,12 @@ public class sqlfactura {
                     st.executeUpdate();
                 }
 
-                sql = "insert into abono() "
-                        + "values()";
+                sql = "insert into abono(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
+                        + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
+                        + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + fol + "','" + fol + "','" + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + fol + "','" + usuario + "','1')";
+                System.out.println("abonos  " + sql);
+                st = cob.prepareStatement(sql);
+                st.executeUpdate();
 
             }
             // Fin detallado de documento
@@ -2154,6 +2195,32 @@ public class sqlfactura {
         return false;
     }
 
+    public boolean actualizapagotpu(Connection con, factura f) {//Rcpt y cpt
+        PreparedStatement st = null;
+        try {
+            con.setAutoCommit(false);
+            String sql;
+            String cert = f.getCertificado();
+            String sello = f.getSello();
+            String cadena = f.getCadenaorig();
+            sql = "update doctospagotpu set certificadoprov='" + cert + "', sello='" + sello + "', cadenaoriginal='" + cadena + "' where id_doctopago=" + f.getId();
+            System.out.println("actualizar pago sello " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            con.commit();
+//            con.rollback();
+            return true;
+        } catch (Exception ex) {
+            try {
+                con.rollback();
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
+
     /**
      *
      * @param con: conexion a cpt o rcpt
@@ -2219,6 +2286,29 @@ public class sqlfactura {
         return false;
     }
 
+        public boolean actualizasellotpupago(Connection con, Sellofiscal s, int id) {//Rcpt y cpt
+        PreparedStatement st = null;
+        try {
+            con.setAutoCommit(false);
+            String sql = "update doctospagotpu set sellosat='" + s.getSellosat() + "',certificadoprov='"
+                    + s.getNoceertificado() + "', sellocfdi='" + s.getSellocfd() + "', fechacertificado='"
+                    + s.getFechacer() + "', foliofiscal='" + s.getUuid() + "' where id_doctopago=" + id;
+            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            con.commit();
+//            con.rollback();
+            return true;
+        } catch (Exception ex) {
+            try {
+                con.rollback();
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return false;
+    }
     /**
      *
      * @param con
@@ -2464,11 +2554,11 @@ public class sqlfactura {
                     + "join ClavesProductos cp on p.Codigo=cp.ClaveProdServ\n"
                     + "join combinaciones c on p.Combinacion=c.Combinacion\n"
                     + "join materiales m on c.Material1=m.material\n"
-                    + "join colores col on c.Color1=col.Color\n" 
-                     +"where "+fac+" and year(fecha)="+year;
+                    + "join colores col on c.Color1=col.Color\n"
+                    + "where " + fac + " and year(fecha)=" + year;
 //                    +"where factura='"+fac+"' and year(fecha)="+year;
             st = con.prepareStatement(sql);
-            System.out.println("detalle "+sql);
+            System.out.println("detalle " + sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Dfactura d = new Dfactura();

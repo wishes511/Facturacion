@@ -86,6 +86,8 @@ public interface Facturas {
     public boolean actualizacadenatpu(Connection c, factura f);
 
     public void actualizacadenapago(Connection c, factura f);
+    
+    public void actualizacadenapagotpu(Connection c, factura f);
 
     public int getmaxncr(Connection c);
 
@@ -124,6 +126,8 @@ public interface Facturas {
     public boolean Updatesellofiscaltpu(Connection cpt, Sellofiscal s, int id);
 
     public boolean Updatesellofiscalpago(Connection cpt, Sellofiscal s, int id);
+    
+        public boolean Updatesellofiscalpagotpu(Connection cpt, Sellofiscal s, int id);
 
     public ArrayList<Cliente> getClienteface(Connection cob, String ncliente);
 

@@ -69,7 +69,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
     Usuarios u = new Usuarios();
 
     public Principal() {

@@ -10,9 +10,17 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class cargo {
-    int cuenta,subcuenta,plazo,cliente,cantidad,agente,renglon,id_concepto, id_cargo;
+    int cuenta,subcuenta,plazo,cliente,cantidad,agente,renglon,id_concepto, id_cargo,parcialidad;
     String nombre, referencia, fecha, fechav, ref, foliofiscal, sumafolios,rfc,calle,
             colonia,municipio, estado,pais,cp, regimen, descnota;
+
+    public int getParcialidad() {
+        return parcialidad;
+    }
+
+    public void setParcialidad(int parcialidad) {
+        this.parcialidad = parcialidad;
+    }
 
     public int getId_cargo() {
         return id_cargo;

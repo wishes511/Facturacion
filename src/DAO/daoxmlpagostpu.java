@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mx.sat.cfd40.generarXML40pagos;
+import mx.sat.cfd40.generarXML40pagostpu;
 import mx.sat.cfd40.xmlDAO;
 
 /**
@@ -67,7 +68,7 @@ public class daoxmlpagostpu {
             x.setArrpagos17(f.getArrpagos17());
             BigDecimal d = new BigDecimal("0.160000");//tomando en cuenta los 6 decimales
             x.setTasaCuota(d);
-            generarXML40pagos xml = new generarXML40pagos();
+            generarXML40pagostpu xml = new generarXML40pagostpu();
             xml.crearComprobante(x, con, empresa);
         } catch (Exception ex) {
             Logger.getLogger(Facturacion.class.getName()).log(Level.SEVERE, null, ex);

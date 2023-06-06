@@ -14,7 +14,15 @@ public class Detpagos implements java.io.Serializable{
     int id, iddocumento, parcialidad, idcargo;
     String Descripcion, codigo, umedida, formadedpago, monedapago, rfcctaemisora, ctaemisora,
             rfcctareceptora, ctareceptora, uuid, folio, moneda, metodopago,ref;
-    double monto,cantidad, precio,  importesaldoant, importepagado, impsaldoinsoluto;
+    double monto,cantidad, precio,  importesaldoant, importepagado, impsaldoinsoluto,saldo;
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
 
     public int getIdcargo() {
         return idcargo;
