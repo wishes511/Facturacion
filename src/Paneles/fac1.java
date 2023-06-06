@@ -6,12 +6,14 @@
 package Paneles;
 
 import DAO.daoAddenda;
+import DAO.daoClientes;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daoxmlE;
 import Modelo.Addenda;
 import Modelo.Ciudades;
+import Modelo.Cliente;
 import Modelo.Corridaaddenda;
 import Modelo.Destinoscoppel;
 import Modelo.Dfactura;
@@ -105,6 +107,7 @@ public class fac1 extends javax.swing.JPanel {
         JbXml.setEnabled(false);
         JbCancelar.setEnabled(false);
         JbAddenda.setEnabled(false);
+        JmNombre.setVisible(false);
     }
 
     /**
@@ -118,6 +121,7 @@ public class fac1 extends javax.swing.JPanel {
 
         Pop = new javax.swing.JPopupMenu();
         JmPedfac = new javax.swing.JMenuItem();
+        JmNombre = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -137,6 +141,15 @@ public class fac1 extends javax.swing.JPanel {
             }
         });
         Pop.add(JmPedfac);
+
+        JmNombre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/floppydiskregular_106322.png"))); // NOI18N
+        JmNombre.setText("Corregir nombre en factura");
+        JmNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmNombreActionPerformed(evt);
+            }
+        });
+        Pop.add(JmNombre);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -390,9 +403,11 @@ public class fac1 extends javax.swing.JPanel {
         String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
         if (e == 1 && tim.equals("N")) {
             JbXml.setEnabled(true);
+            JmNombre.setVisible(true);
 //            JbCancelar.setEnabled(false);
         } else {
             JbXml.setEnabled(false);
+            JmNombre.setVisible(false);
 //            JbCancelar.setEnabled(true);
         }
         if (arrfactura.get(row).getNombre().equals("COPPEL") && tim.equals("T")) {
@@ -503,6 +518,23 @@ public class fac1 extends javax.swing.JPanel {
         mped.setVisible(true);
     }//GEN-LAST:event_JmPedfacActionPerformed
 
+    private void JmNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmNombreActionPerformed
+        setmod();
+    }//GEN-LAST:event_JmNombreActionPerformed
+
+    private void setmod() {
+        int row = JtDetalle.getSelectedRow();
+        daofactura df = new daofactura();
+        daoClientes dc= new daoClientes();
+        Cliente c=dc.getCliente(ACobranza, arrfactura.get(row).getIdcliente());
+        if (df.updateclientefacv2(cpt, c, arrfactura.get(row).getId())) {
+            JOptionPane.showMessageDialog(null, "Modificacion completa  ");
+            Buscanotas();
+        }else{
+        JOptionPane.showMessageDialog(null, "No se pudo modificar, avisa a sistemas");
+        }
+    }
+
     private void generaradenda() {
         if (!arrfactura.isEmpty()) {
             String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
@@ -585,7 +617,7 @@ public class fac1 extends javax.swing.JPanel {
             convertnum conv = new convertnum();
             convertirNumeros cnum = new convertirNumeros();
             int folio = arrfactura.get(JtDetalle.getSelectedRow()).getFolio();
-            
+
             DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
             String numeros = formateador.format(arrfactura.get(JtDetalle.getSelectedRow()).getTotal());
             parametros.put("folio", folio);
@@ -602,7 +634,6 @@ public class fac1 extends javax.swing.JPanel {
             parametros.put("serie", "FAC");
             parametros.put("regimencliente", arrfactura.get(JtDetalle.getSelectedRow()).getRegimen());
             parametros.put("confo", conformidad);
-            
 
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/index.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
@@ -692,6 +723,7 @@ public class fac1 extends javax.swing.JPanel {
     private javax.swing.JButton JbAddenda;
     private javax.swing.JButton JbCancelar;
     private javax.swing.JButton JbXml;
+    private javax.swing.JMenuItem JmNombre;
     private javax.swing.JMenuItem JmPedfac;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;

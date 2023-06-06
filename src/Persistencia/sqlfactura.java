@@ -238,7 +238,7 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select top(400) id,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formadepago,metododepago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal, d.usocfdi,fax, d.moneda,cadenaoriginal\n"
+            String sql = "select top(400) id,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formadepago,metododepago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal, d.usocfdi,fax, d.moneda,cadenaoriginal,c.numcliente as cli\n"
                     + "from documentos d\n"
                     + "join " + cob + ".dbo.Clientes c on d.idcliente=c.NumCliente\n"
                     + "where (d.idcliente like '%" + folio + "%' or d.nombre like '%" + folio + "%') and serie='" + serie + "'\n"
@@ -264,6 +264,7 @@ public class sqlfactura {
                 f.setRegimen(rs.getString("fax"));
                 f.setMoneda(rs.getString("moneda"));
                 f.setCadenaorig(rs.getString("cadenaoriginal"));
+                f.setIdcliente(rs.getInt("cli"));
                 arr.add(f);
             }
             rs.close();
@@ -2011,7 +2012,7 @@ public class sqlfactura {
                 String ctar = arr.getCtareceptora();
                 String uuid = arr.getUuid();
                 String fo = arr.getFolio();
-                double sald= arr.getSaldo();
+                double sald = arr.getSaldo();
                 String mp = arr.getMetodopago();
                 int par = arr.getParcialidad();
                 double salant = getcant(arr.getImportesaldoant());
@@ -2028,7 +2029,7 @@ public class sqlfactura {
                 st.executeUpdate();
                 String saldo;
                 if (moneda.equals("MXN")) {
-                    sql = "update cargo set saldomx=" + formateador.format(sald)+ " where id_cargo=" + idcargo;
+                    sql = "update cargo set saldomx=" + formateador.format(sald) + " where id_cargo=" + idcargo;
                     saldo = "saldo";
                 } else {
                     sql = "update cargo set saldo=" + formateador.format(sald) + " where id_cargo=" + idcargo;
@@ -2286,7 +2287,7 @@ public class sqlfactura {
         return false;
     }
 
-        public boolean actualizasellotpupago(Connection con, Sellofiscal s, int id) {//Rcpt y cpt
+    public boolean actualizasellotpupago(Connection con, Sellofiscal s, int id) {//Rcpt y cpt
         PreparedStatement st = null;
         try {
             con.setAutoCommit(false);
@@ -2309,6 +2310,7 @@ public class sqlfactura {
         }
         return false;
     }
+
     /**
      *
      * @param con
@@ -3284,6 +3286,32 @@ public class sqlfactura {
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public boolean updateclientedoc(Connection c, Cliente cl, int id) {
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement st;
+            String n=cl.getNombre();
+            String rfc=cl.getRfc();
+            String cp=cl.getCp();
+            String sql = "update documentos set nombre='"+n+"', rfc='"+rfc+"',cp='"+cp+"'  where id=" + id;
+            System.out.println("update cliente " + sql);
+            st = c.prepareStatement(sql);
+            st.executeUpdate();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+                JOptionPane.showMessageDialog(null, ex1);
             }
             return false;
         }

@@ -203,4 +203,7 @@ public interface Facturas {
     public ArrayList<factura> getfactwithserie(Connection rcpt, String ncobranza, String serie);
     
     public ArrayList<Dfactura> getfactwithseriedetallado(Connection rcpt, String factura, int año);
+    
+   
+    public boolean updateclientefacv2(Connection con, Cliente c, int id_documento);
 }

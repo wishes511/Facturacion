@@ -69,7 +69,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "0";
+    String prod = "1";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -1140,6 +1140,7 @@ public final class Principal extends javax.swing.JFrame {
                 liteusuario = s.getconexionusuarios();
                 if (a.equals("0605")) {
                     u.setAth("1");
+                    u.setUptown("1");
                     JlUsuario.setText("Michel Admin");
                     u.setUsuario("");
                     u.setGrado("2");

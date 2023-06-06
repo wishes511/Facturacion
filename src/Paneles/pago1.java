@@ -396,7 +396,8 @@ public class pago1 extends javax.swing.JPanel {
                 d.setRef(arrabonos.get(i).getRef());
                 d.setFormadedpago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
                 d.setMetodopago(arrmetodo.get(JcMetodo.getSelectedIndex()).getMetodopago());
-                d.setParcialidad(1);
+//                d.setParcialidad(1);
+                d.setParcialidad(arrabonos.get(i).getParcialidad());
 //                d.setParcialidad(arrabonos.get(i).getParcialidad());
                 d.setImportesaldoant(arrabonos.get(i).getAnterior());
                 d.setImportepagado(arrabonos.get(i).getPago());
@@ -476,7 +477,7 @@ public class pago1 extends javax.swing.JPanel {
         JtCliente.setText("");
     }//GEN-LAST:event_JtClienteMousePressed
 
-        private double formatdecimal(double cant) {
+    private double formatdecimal(double cant) {
         int dato = 0;
         int punto = 0;
         boolean band = false;
@@ -506,7 +507,7 @@ public class pago1 extends javax.swing.JPanel {
         }
         return resp;
     }
-    
+
     private void limpiar() {
         if (!arrabonos.isEmpty()) {
             arrabonos.clear();
