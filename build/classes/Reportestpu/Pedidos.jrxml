@@ -13,9 +13,8 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select id_pedido,pedido,fecha,total,subtotal,impuestos,serie,c.nombre
+		<![CDATA[select id_pedido,pedido,fecha,total,subtotal,impuestos,serie,nombre
 from pedido p
-join ACobranzaTpu.dbo.Cliente c on p.id_cliente=c.id_cliente
 where p.estatus='1' and serie= $P{serie} and id_pedido=$P{id}]]>
 	</queryString>
 	<field name="id_pedido" class="java.lang.Integer"/>
@@ -150,7 +149,7 @@ where p.estatus='1' and serie= $P{serie} and id_pedido=$P{id}]]>
 					<subreportParameterExpression><![CDATA[$F{id_pedido}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["C:\\Users\\GATEWAY1-\\Documents\\NetBeansProjects\\Athprod\\src\\Reportestpu\\Dpedido.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["C:\\af\\prodf\\Reportestpu\\Dpedido.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

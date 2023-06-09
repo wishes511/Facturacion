@@ -864,7 +864,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                 f.setTurno(u.getTurno());
                 f.setFechapago(sdf.format(JtFecha.getDate()));
                 f.setSubtotal(0);
-                f.setTotal(0);
+                f.setTotal(total);
                 f.setIdcliente(arrcargoseleccion.get(0).getCliente());
                 f.setNombre(arrcargoseleccion.get(0).getNombre());
                 f.setRfc(arrcargoseleccion.get(0).getRfc());
@@ -939,7 +939,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                 f.setArrpagos17(arrdetpago17);
 
                 f.setRefncredito(facturas);
-                f.setObservaciones(JtObs.getText().toUpperCase() + ", Facturas: " + facturas);
+                f.setObservaciones(JtObs.getText().toUpperCase());
                 f.setFoliofiscalorig(folios);
                 int verifica = dfac.getbuscafoliotpu(cpt, "PAG", f.getFolio() + "");
                 if (verifica != 0) {

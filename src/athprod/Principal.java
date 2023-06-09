@@ -16,6 +16,7 @@ import Server.Serverprod;
 import Server.Serverylite;
 import Tpu.ClientesTpu;
 import Tpu.Durezastpu;
+import Tpu.EntradasSalidas;
 import Tpu.FacturacionTpu;
 import Tpu.Familiastpu;
 import Tpu.Notascrtpu;
@@ -69,7 +70,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -166,6 +167,7 @@ public final class Principal extends javax.swing.JFrame {
         JtFacturaciontpu = new javax.swing.JMenuItem();
         JmRemision = new javax.swing.JMenuItem();
         JmPedimento = new javax.swing.JMenuItem();
+        JmEntradasS = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         JlSerie = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -457,6 +459,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmTpu.add(JmPedimento);
+
+        JmEntradasS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/move_23058.png"))); // NOI18N
+        JmEntradasS.setText("Entradas/Salidas");
+        JmEntradasS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmEntradasSActionPerformed(evt);
+            }
+        });
+        JmTpu.add(JmEntradasS);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Produccion ATH ");
@@ -878,7 +889,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagosActionPerformed
         try {
-            Pagos c = new Pagos(conexion,u);
+            Pagos c = new Pagos(conexion, u);
             this.JdPanel.add(c);
 //            c.JtBuscar.requestFocus();
             c.setMaximum(true);
@@ -1070,6 +1081,17 @@ public final class Principal extends javax.swing.JFrame {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_JmPagostpuActionPerformed
+
+    private void JmEntradasSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEntradasSActionPerformed
+        try {
+            EntradasSalidas p = new EntradasSalidas(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmEntradasSActionPerformed
 
     private void verificausuario() {
         jp.setVisible(true);
@@ -1322,6 +1344,8 @@ public final class Principal extends javax.swing.JFrame {
             Serverprod s = new Serverprod();
             conexion.setCpttpu(s.getconexionserver8("Tpucpt"));
             conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
+            conexion.setCobranzatpuB(s.getconexionB("RACobranzaTpu"));
+
 //            conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
         } catch (ClassNotFoundException | IOException | SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -1345,6 +1369,7 @@ public final class Principal extends javax.swing.JFrame {
 //                conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
                 conexion.setCpttpu(s.getconexionTPU("Tpucpt"));
                 conexion.setCobranzatpu(s.getconexionTPU("ACobranzatpu"));
+                conexion.setCobranzatpuB(s.getconexionB("RACobranzaTpu"));
 //                conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
                 liteusuario = s1.getconexionusuarios();
                 conexion.setLiteusuario(liteusuario);
@@ -1383,6 +1408,7 @@ public final class Principal extends javax.swing.JFrame {
                     conexion.getCpttpu().close();
 //                    conexion.getRcpttpu().close();
                     conexion.getCobranzatpu().close();
+                    conexion.getCobranzatpuB().close();
                 }
             } else {
                 conexion.getCpt().close();
@@ -1391,6 +1417,7 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.getCpttpu().close();
 //                conexion.getRcpttpu().close();
                 conexion.getCobranzatpu().close();
+                conexion.getCobranzatpuB().close();
                 liteusuario.close();
             }
 
@@ -1453,6 +1480,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu JmConf;
     private javax.swing.JMenuItem JmDureza;
     private javax.swing.JMenuItem JmEmpresas;
+    private javax.swing.JMenuItem JmEntradasS;
     private javax.swing.JMenuItem JmFacturacion;
     private javax.swing.JMenuItem JmFacturacionE;
     private javax.swing.JMenuItem JmFamilia;

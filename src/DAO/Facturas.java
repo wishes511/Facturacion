@@ -119,6 +119,10 @@ public interface Facturas {
 
     public ArrayList<factura> getdoc(Connection cpt, String fol, String serie, String empcobranza);
 
+    public ArrayList<factura> getdocpagos(Connection cpt, String fol, String serie, String empcobranza);
+    
+    public ArrayList<factura> getdocpagostpu(Connection cpt, String fol, String serie);
+    
     public ArrayList<factura> getdocxml(Connection cpt, String fol, String serie, String empcobranza);
 
     public boolean Updatesellofiscal(Connection cpt, Sellofiscal s, int id);

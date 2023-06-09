@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public interface conceptos {
     public ArrayList<ConceptosES> getConceptos(Connection c);
+    public ArrayList<ConceptosES> getConceptos(Connection c,int cuenta);
     
     
 }

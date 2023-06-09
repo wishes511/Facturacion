@@ -85,7 +85,7 @@ public class fac1tpurem extends javax.swing.JPanel {
 
     public String nombre, empresa, empresacob;
     public Connection sqlcfdi, sqlempresa, liteusuario;
-    public Connection ACobranza, cpt, rcpt;
+    public Connection ACobranza, cpt, rcpt,cobB;
     Serverprod prod = new Serverprod();
     public ArrayList<Formadepago> arrfpago = new ArrayList<>();
     public ArrayList<usocfdi> arruso = new ArrayList<>();

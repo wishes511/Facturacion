@@ -740,7 +740,7 @@ public class fac2tpu extends javax.swing.JPanel {
         //daokardexrcpt dk = new daokardexrcpt();
         daopedimentos dk1 = new daopedimentos();
         //k0 = dk.getkardexfacsimple(rcpt, r, empresacob);
-        k1 = dk1.getpedimentosimple(cpt, r, empresacob);
+        k1 = dk1.getpedimentosimple(cpt, empresacob,r);
 //        DefaultComboBoxModel model = new DefaultComboBoxModel();
 //        int folio = 0;
 //        for (int i = 0; i < k0.size(); i++) {
@@ -898,7 +898,7 @@ public class fac2tpu extends javax.swing.JPanel {
                         df.setRenglon(i + 1);
                         df.setProducto(k2.get(i).getDp().getId_material());
                         df.setCantidadfloat(tpares);
-                        df.setDescripcion(k2.get(i).getDp().getMatped());
+                        df.setDescripcion(k2.get(i).getDp().getMatped()+" (PEDIMENTO: "+k2.get(i).getReferencia()+", ADUANA: 160 MANZANILLO COLIMA,"+k2.get(i).getFechapedimento()+")");
                         df.setCodigo(k2.get(i).getDp().getCodigosat());
                         df.setUmedida(k2.get(i).getDp().getUnidad());
                         df.setDureza(k2.get(i).getDp().getDureza());

@@ -83,10 +83,10 @@ public class sqlpedimentos {
             double imp = p.getImpuestos();
             String u = p.getUsuario();
             int cl = p.getId_proveedor();
-            String obs=p.getObservaciones();
+            String obs = p.getObservaciones();
 //            Fin insercion kardex
             sql = "insert into pedimentos(id_proveedor,referencia,fecha,total,impuestos,subtotal,totalcant,serie,estatus,fechapedimento,observaciones)"
-                    + " values(" + cl + ",'" + ref + "','" + fecha + "'," + tot + "," + imp + "," + sub + "," + totalcant + ",'A','1','" + fechaped + "','"+obs+"')";
+                    + " values(" + cl + ",'" + ref + "','" + fecha + "'," + tot + "," + imp + "," + sub + "," + totalcant + ",'A','1','" + fechaped + "','" + obs + "')";
 //            System.out.println("pedimento " + sql);
             st = cpt.prepareStatement(sql);
             st.executeUpdate();
@@ -134,10 +134,13 @@ public class sqlpedimentos {
     public ArrayList<pedimento> getpedimentosimple(Connection cpt, String cob, String cliente) {
         ArrayList<pedimento> arr = new ArrayList<>();
         try {
-            CallableStatement st;
+            PreparedStatement st;
             ResultSet rs;
-            st = cpt.prepareCall("{call sppedimentosimple(?)}");
-            st.setString(1, cliente);
+            String sql = "select id_pedimento,referencia,p.id_proveedor,nombre from pedimentos p\n"
+                    + "join proveedores prov on p.id_proveedor=prov.id_proveedor\n"
+                    + "where nombre like '%"+cliente+"%' and id_pedimento in (select id_pedimento from DPedimentos where cantidadrestante>0)";
+            st = cpt.prepareStatement(sql);
+            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 pedimento p = new pedimento();
@@ -158,12 +161,13 @@ public class sqlpedimentos {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select p.id_pedimento as ped,id_dpedimento,referencia,matpedimento,cantidadrestante,unidad,dp.precio as precio,codigosat,dureza,dp.id_material as mat"
+            String sql = "select p.id_pedimento as ped,id_dpedimento,referencia,matpedimento,cantidadrestante,unidad,dp.precio as precio,"
+                    + "codigosat,dureza,dp.id_material as mat, convert(date,fechapedimento) as fechaped"
                     + "  from pedimentos p\n"
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
-                    + "where cantidadrestante>0 and ("+referencias+")";
-//            System.out.println(sql);
+                    + "where cantidadrestante>0 and (" + referencias + ")";
+            System.out.println(sql);
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -179,6 +183,7 @@ public class sqlpedimentos {
                 dp.setCodigosat(rs.getString("codigosat"));
                 dp.setDureza(rs.getString("dureza"));
                 dp.setId_material(rs.getInt("mat"));
+                p.setFechapedimento(rs.getString("fechaped"));
                 p.setDp(dp);
                 arr.add(p);
             }

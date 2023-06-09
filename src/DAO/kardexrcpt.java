@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Modelo.KardexCmp;
 import Modelo.Kardexrcpt;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -17,11 +18,14 @@ public interface kardexrcpt {
 
     public boolean nuevokardex(Connection c, Kardexrcpt k);
 
+    public boolean nuevokardextpu(Connection c, ArrayList<KardexCmp> k);
+
     public ArrayList<Kardexrcpt> getkardex(Connection c);
 
     public ArrayList<Kardexrcpt> getkardex(Connection c, Kardexrcpt k);
 
     public int maxkardex(Connection c);
+
     public int maxkardexsincuenta(Connection c);
 
     public int maxpedido(Connection c);

@@ -45,7 +45,7 @@ public class Remisiontpu extends javax.swing.JInternalFrame {
     fac2tpu1rem c2;
     String var = "0";
     public String name, empresa, empresarcpt, empresacob;
-    Connection rcpt, litecfdi, liteempresa, cobranza, cpt;
+    Connection rcpt, litecfdi, liteempresa, cobranza, cpt,cobB;
     public Connection liteusuario;
     ArrayList<usocfdi> arruso = new ArrayList<>();
     ArrayList<Formadepago> arrforma = new ArrayList<>();
@@ -70,6 +70,7 @@ public class Remisiontpu extends javax.swing.JInternalFrame {
         empresa="Tpucpt";
         empresarcpt="Tpurcpt";
         empresacob="ACobranzaTpu";
+        cobB=cn.getCobranzatpuB();
         u=usu;
         liteusuario=cn.getLiteusuario();
         generaciontab();//Tabs de facturacion
@@ -94,7 +95,7 @@ public class Remisiontpu extends javax.swing.JInternalFrame {
     private void setarraylist() {
         daocfdi d = new daocfdi();
         daoClientes dc= new daoClientes();
-        arrcliente=dc.getClientestpu(cobranza);
+        arrcliente=dc.getClientestpu(cobB);
         arruso = d.getusocfdi(litecfdi);
         arrmetodo = d.getMetodopago(litecfdi);
         arrforma = d.getFormadepago(litecfdi);
@@ -112,6 +113,7 @@ public class Remisiontpu extends javax.swing.JInternalFrame {
         c2.empresarcpt=empresarcpt;
         c2.empresacob=empresacob;
         c2.u=u;// datos del usuario
+        c2.cobB=cobB;
         
         c1.cpt=cpt;
         c1.ACobranza=cobranza;
@@ -126,6 +128,7 @@ public class Remisiontpu extends javax.swing.JInternalFrame {
         c1.u=u;
         c1.JtCliente.requestFocus();
         c1.liteusuario=liteusuario;
+        c1.cobB=cobB;
     }
 
     /**

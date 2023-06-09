@@ -502,11 +502,22 @@ public class daofactura implements Facturas {
         return sw.actualizasellotpupago(cpt, s, id);
     }
 
-
     @Override
     public boolean updateclientefacv2(Connection con, Cliente c, int id_documento) {
         sqlfactura s = new sqlfactura();
         return s.updateclientedoc(con, c, id_documento);
+    }
+
+    @Override
+    public ArrayList<factura> getdocpagos(Connection cpt, String fol, String serie, String empcobranza) {
+        sqlfactura s = new sqlfactura();
+        return s.getdocspagos(cpt, fol, serie, empcobranza);
+    }
+
+    @Override
+    public ArrayList<factura> getdocpagostpu(Connection cpt, String fol, String serie) {
+        sqlfactura s = new sqlfactura();
+        return s.getdocspagostpu(cpt, fol, serie);
     }
 
 }

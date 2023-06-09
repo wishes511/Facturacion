@@ -20,6 +20,7 @@ import Modelo.usocfdi;
 import Paneles.ncr1;
 import Paneles.ncr2;
 import Paneles.pago1;
+import Paneles.pago2;
 import Server.Serverprod;
 import Server.Serverylite;
 import java.awt.Image;
@@ -42,8 +43,9 @@ import mx.sat.cfd40.xmlDAO;
 public class Pagos extends javax.swing.JInternalFrame {
 
     pago1 c1;
+    pago2 c2;
     String var = "0";
-    public String name, empresa,empresacob;
+    public String name, empresa, empresacob;
     Connection rcpt, litecfdi, liteempresa, cobranza, cpt;
     ArrayList<usocfdi> arruso = new ArrayList<>();
     ArrayList<Formadepago> arrforma = new ArrayList<>();
@@ -54,17 +56,18 @@ public class Pagos extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Clientes
+     *
      * @param cn
      * @param s
      */
-    public Pagos(Conexiones cn,Usuarios s) {
+    public Pagos(Conexiones cn, Usuarios s) {
         initComponents();
-        cpt=cn.getCpt();
-        rcpt=cn.getRcpt();
-        cobranza=cn.getCobranza();
-        empresa=cn.getEmpresa();
-        empresacob=cn.getEmpresacob();
-        u=s;
+        cpt = cn.getCpt();
+        rcpt = cn.getRcpt();
+        cobranza = cn.getCobranza();
+        empresa = cn.getEmpresa();
+        empresacob = cn.getEmpresacob();
+        u = s;
         generaciontab();//Tabs de facturacion
         conexiones();
         setarraylist();
@@ -89,19 +92,31 @@ public class Pagos extends javax.swing.JInternalFrame {
         arruso = d.getusocfdi(litecfdi);
         arrmetodo = d.getMetodopago(litecfdi);
         arrforma = d.getFormadepago(litecfdi);
-        arrrelacion=d.getrelacion(litecfdi);
-        
+        arrrelacion = d.getrelacion(litecfdi);
+
         c1.arrfpago = arrforma;
         c1.arrmetodo = arrmetodo;
         c1.arruso = arruso;
         //tambien conexiones
-        c1.empresa=empresa;
-        c1.empresacob=empresacob;
+        c1.empresa = empresa;
+        c1.empresacob = empresacob;
         c1.ACobranza = cobranza;
         c1.sqlempresa = liteempresa;
         c1.sqlcfdi = litecfdi;
         c1.cpt = cpt;
-        c1.u=u;
+        c1.u = u;
+
+        c2.arrfpago = arrforma;
+        c2.arrmetodo = arrmetodo;
+        c2.arruso = arruso;
+        //tambien conexiones
+        c2.empresa = empresa;
+        c2.empresacob = empresacob;
+        c2.ACobranza = cobranza;
+        c2.sqlempresa = liteempresa;
+        c2.sqlcfdi = litecfdi;
+        c2.cpt = cpt;
+        c2.u = u;
     }
 
     /**
@@ -120,7 +135,8 @@ public class Pagos extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
-        setTitle("Notas de credito");
+        setTitle("Complemento a pagos");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_table_order_report_history_2332.png"))); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -155,7 +171,9 @@ public class Pagos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
     public final void generaciontab() {//generar tabs
         c1 = new pago1();
-        Tabbed.addTab("Pagos", c1);
+        c2 = new pago2();
+        Tabbed.addTab("Realizar Pago", c1);
+        Tabbed.addTab("Ver pagos", c2);
         Tabbed.setSelectedComponent(c1);
 
     }

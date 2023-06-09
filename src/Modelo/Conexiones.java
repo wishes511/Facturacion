@@ -15,8 +15,16 @@ public class Conexiones {
     Connection cpt, rcpt, cobranza;
     String empresa, empresacob, empresarcpt;
     Connection liteusuario, litecfdi, liteempresa;
-    Connection cpttpu, rcpttpu, cobranzatpu;
+    Connection cpttpu, rcpttpu, cobranzatpu,cobranzatpuB;
     int resp;
+
+    public Connection getCobranzatpuB() {
+        return cobranzatpuB;
+    }
+
+    public void setCobranzatpuB(Connection cobranzatpuB) {
+        this.cobranzatpuB = cobranzatpuB;
+    }
 
     public Connection getLitecfdi() {
         return litecfdi;

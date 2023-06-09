@@ -16,7 +16,7 @@ import java.sql.SQLException;
  */
 public class Serverprod {
 
-    private Connection connect, pruebacpt, pruebarcpt, pruebacob, conB;
+    private Connection connect, pruebacpt, pruebarcpt, pruebacob;
 
     private final String URL = "jdbc:sqlserver://192.168.6.75\\SQLEXPRESS:9205;databaseName=Produccionath";
     private final String URL8 = "jdbc:sqlserver://192.168.6.8\\SQLEXPRESS:9205;databaseName=";
@@ -30,6 +30,7 @@ public class Serverprod {
 
     public Connection getconexionB(String bd) throws ClassNotFoundException, IOException, SQLException {
         Class.forName(drive);
+        Connection conB;
         conB = DriverManager.getConnection(urlB+bd, "sa", "Admin1305");
         System.out.println("Conectado a server B");
         return conB;

@@ -5,7 +5,6 @@
  */
 package Persistencia;
 
-
 import Modelo.ConceptosES;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -30,6 +29,35 @@ public class sqlconceptos {
             rs = st.executeQuery();
             while (rs.next()) {
                 ConceptosES c = new ConceptosES();
+                c.setCuenta(rs.getString("cuenta"));
+                c.setSubcuenta(rs.getString("subcuenta"));
+                c.setNombre(rs.getString("descripcion"));
+                arr.add(c);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    /**
+     * Conceptos de tpu
+     * @param con
+     * @param cuenta
+     * @return 
+     */
+    public ArrayList<ConceptosES> getConceptosES(Connection con, int cuenta) {//cobranza
+        ArrayList<ConceptosES> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select id_concepto,cuenta,subcuenta,descripcion from Conceptos where cuenta=" + cuenta + " order by cuenta");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                ConceptosES c = new ConceptosES();
+                c.setId_concepto(rs.getInt("id_concepto"));
                 c.setCuenta(rs.getString("cuenta"));
                 c.setSubcuenta(rs.getString("subcuenta"));
                 c.setNombre(rs.getString("descripcion"));

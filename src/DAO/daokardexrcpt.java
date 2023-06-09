@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Modelo.KardexCmp;
 import Modelo.Kardexrcpt;
 import Persistencia.sqlkardex;
 import java.sql.Connection;
@@ -73,6 +74,12 @@ public class daokardexrcpt implements kardexrcpt {
     public int maxkardexsincuenta(Connection c) {
         sqlkardex s = new sqlkardex();
         return s.getmaxkardexsincuenta(c);
+    }
+
+    @Override
+    public boolean nuevokardextpu(Connection c, ArrayList<KardexCmp> k) {
+        sqlkardex s = new sqlkardex();
+        return s.insertkardextpu(c, k);
     }
 
 }

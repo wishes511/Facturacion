@@ -13,6 +13,7 @@ import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import Modelo.Agentes;
 import Modelo.Cliente;
+import Modelo.ConceptosES;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
@@ -59,7 +60,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
 
     public String nombre, empresa, empresarcpt, empresacob;
     public Connection sqlcfdi, sqlempresa;
-    public Connection ACobranza, rcpt, cpt;
+    public Connection ACobranza, rcpt, cpt,cobB;
     Serverylite slite = new Serverylite();
     Serverprod prod = new Serverprod();
     public ArrayList<Formadepago> arrfpago = new ArrayList<>();
@@ -67,6 +68,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
     public ArrayList<metodopago> arrmetodo = new ArrayList<>();
     public ArrayList<Agentes> arragente = new ArrayList<>();
     public ArrayList<Cliente> arrcliente = new ArrayList<>();
+    public ArrayList<ConceptosES> arrcuentas = new ArrayList<>();
     daocfdi dcfdi = new daocfdi();
     double descuentos;
     double impuestos;
@@ -131,6 +133,8 @@ public class fac2tpu1rem extends javax.swing.JPanel {
         JcUsd1 = new javax.swing.JCheckBox();
         JtTCambio1 = new javax.swing.JTextField();
         JlTcambio2 = new javax.swing.JLabel();
+        JcConceptos = new javax.swing.JComboBox<>();
+        jLabel21 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -341,6 +345,9 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        jLabel21.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
+        jLabel21.setText("Conceptos");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -367,9 +374,16 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(78, 78, 78)
                                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(JcConceptos, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(64, 64, 64)
+                                .addComponent(jLabel21)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(199, 199, 199)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel2)
                         .addGap(48, 48, 48))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -385,7 +399,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 751, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(41, 41, 41))
         );
@@ -409,15 +423,19 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                                         .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(16, 16, 16)
-                        .addComponent(jLabel20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel21))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JcConceptos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(70, 70, 70)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -447,7 +465,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
         String r = JtCliente.getText();
         daopedimentos dk1 = new daopedimentos();
-        k1 = dk1.getpedimentosimple(cpt, r, empresacob);
+        k1 = dk1.getpedimentosimple(cpt, empresacob, r);
         llenalistasalida();
         cargacombos();
     }//GEN-LAST:event_JtClienteActionPerformed
@@ -495,7 +513,8 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 f.setClaveusuario(u.getUsuario());
                 f.setSerie("REM");
                 f.setTurno(u.getTurno());
-                f.setConceptos(15);
+                f.setConceptos(arrcuentas.get(JcConceptos.getSelectedIndex()).getId_concepto());
+//                f.setConceptos(15);
                 f.setFecha(sdf.format(date));
                 f.setIdcliente(arrcliente.get(rowc).getCvecliente());
                 f.setNombre(arrcliente.get(rowc).getNombre());
@@ -565,7 +584,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(null, "Error al realizar factura, intente capturar de nuevo");
                     vaciarcampos();
                 } else {
-                    int id = dfac.nuevaremtpu(cpt, f, ACobranza);
+                    int id = dfac.nuevaremtpu(cpt, f, cobB);
                     if (id != 0) {
                         setreport(id, f.getRegimen(), f.getMoneda(), "B",f.getPedido());
                         JOptionPane.showMessageDialog(null, "Proceso terminado ");
@@ -580,10 +599,17 @@ public class fac2tpu1rem extends javax.swing.JPanel {
 
     public void cargacombos() {//catalogos de Sat
         DefaultComboBoxModel cliente = new DefaultComboBoxModel();
+        DefaultComboBoxModel cuentas = new DefaultComboBoxModel();
+        daofactura d = new daofactura();
         for (Cliente arruso1 : arrcliente) {
             cliente.addElement(arruso1.getNombre());
         }
+        arrcuentas = d.getalcuentastpu(cobB, "1");
+        for (ConceptosES arruso1 : arrcuentas) {
+            cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
+        }
         JcCliente.setModel(cliente);
+        JcConceptos.setModel(cuentas);
     }
 
     /**
@@ -933,6 +959,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcCliente;
+    private javax.swing.JComboBox<String> JcConceptos;
     private javax.swing.JCheckBox JcUsd1;
     private javax.swing.JList<String> JlCliente1;
     private javax.swing.JLabel JlDesc;
@@ -953,6 +980,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;

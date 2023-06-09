@@ -167,7 +167,7 @@ public class sqlclientes {
             rs = st.executeQuery();
             while (rs.next()) {
                 c.setCvecliente(rs.getInt("numcliente"));
-                c.setNombre(rs.getString("Nombre"));
+                c.setNombre(rs.getString("Nombre40"));
                 c.setRfc(rs.getString("rfc"));
                 c.setCp(rs.getString("cp"));
             }

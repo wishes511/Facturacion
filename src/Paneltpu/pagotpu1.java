@@ -513,35 +513,29 @@ public class pagotpu1 extends javax.swing.JPanel {
 
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Folio");
+        model.addColumn("Pago");
         model.addColumn("Cliente");
-        model.addColumn("Subtotal");
-        model.addColumn("Impuestos");
-        model.addColumn("Total");
-        model.addColumn("Fecha");
-        model.addColumn("Forma Pago");
-        model.addColumn("Metodo Pago");
+        model.addColumn("Total pago");
+        model.addColumn("forma de pago");
+        model.addColumn("Metodo de pago");
         model.addColumn("Estado");
-        model.addColumn("Timbrado");
-        model.addColumn("Uso cfdi");
-        model.setNumRows(arrfactura.size());
+        model.addColumn("Estado sat");
+        daofactura d = new daofactura();
+        arrfactura = d.getdocpagostpu(cpt, JtCliente.getText(), "PAG");
+        int tamaño = arrfactura.size();
+        model.setRowCount(tamaño);
         for (int i = 0; i < arrfactura.size(); i++) {
-            String estat = (arrfactura.get(i).getEstatus() == 1) ? "ACTIVA" : "CANCELADO";
-            String estatfac = (arrfactura.get(i).getFoliofiscal().equals("")) ? "NO TIMBRADO" : "TIMBRADO";
+            String a = (arrfactura.get(i).getEstatus() == 1) ? "Activo" : "Inactivo";
+            String a1 = (arrfactura.get(i).getFoliofiscal().equals("")) ? "No timbrado" : "Timbrado";
             model.setValueAt(arrfactura.get(i).getFolio(), i, 0);
             model.setValueAt(arrfactura.get(i).getNombre(), i, 1);
-            model.setValueAt(arrfactura.get(i).getSubtotal(), i, 2);
-            model.setValueAt(arrfactura.get(i).getImpuestos(), i, 3);
-            model.setValueAt(arrfactura.get(i).getTotal(), i, 4);
-            model.setValueAt(arrfactura.get(i).getFecha(), i, 5);
-            model.setValueAt(arrfactura.get(i).getFormapago(), i, 6);
-            model.setValueAt(arrfactura.get(i).getMetodopago(), i, 7);
-            model.setValueAt(estat, i, 8);
-            model.setValueAt(estatfac, i, 9);
-            model.setValueAt(arrfactura.get(i).getUsocfdi(), i, 10);
+            model.setValueAt(arrfactura.get(i).getTotal(), i, 2);
+            model.setValueAt(arrfactura.get(i).getFormapago(), i, 3);
+            model.setValueAt(arrfactura.get(i).getMetodopago(), i, 4);
+            model.setValueAt(a, i, 5);
+            model.setValueAt(a1, i, 6);
         }
         JtDetalle.setModel(model);
-
     }
 
     private boolean verificaint(String cad) {

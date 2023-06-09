@@ -6,6 +6,7 @@
 package Persistencia;
 
 import Modelo.Cliente;
+import Modelo.KardexCmp;
 import Modelo.Kardexrcpt;
 import Modelo.Producto;
 import Modelo.Seriecpt;
@@ -168,6 +169,59 @@ public class sqlkardex {
             }
         }
         return false;
+    }
+
+    /**
+     * AActualizar kardex para ingresar nuevo registro
+     *
+     * @param c
+     * @param k
+     * @return
+     */
+    public boolean insertkardextpu(Connection c, ArrayList<KardexCmp> k) {
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement st;
+            for (int i = 0; i < k.size(); i++) {
+                int concepto = k.get(i).getCuenta();
+                int cliente = k.get(i).getId_cliente();
+                int kardex = k.get(i).getId_kardex();
+                int mat = k.get(i).getId_material();
+                int alm = k.get(i).getAlmacen();
+                int prov = k.get(i).getId_prov();
+                int pedimento = k.get(i).getId_pedimento();
+                int dpedimento = k.get(i).getId_dpedimento();
+                int ren = k.get(i).getRenglon();
+                String usuario = k.get(i).getNombreusuario();
+                String f = k.get(i).getFechamov();
+                double precio = k.get(i).getCosto();
+                double cantidad = k.get(i).getCantidad();
+                String dur = k.get(i).getDureza();
+                String ref = k.get(i).getDocref();
+                double crestante = k.get(i).getCantrestante();
+                String sql = "insert into Kardex(id_kardex,id_concepto,id_cliente,id_material,id_prov,id_almacen,id_pedimento,"
+                        + "usuario,fecha,costo,precio,cantidad,renglon,serie,estatus,estatusprod,dureza,referencia) "
+                        + "values(" + kardex + "," + concepto + "," + cliente + "," + mat + "," + prov + "," + alm + "," + pedimento + ",'" + usuario + "','"
+                        + f + "'," + precio + "," + precio + "," + cantidad + "," + ren + ",'B','1','1','" + dur + "','" + ref + "')";
+                System.out.println("kardex "+sql);
+                st = c.prepareStatement(sql);
+                st.executeUpdate();
+                sql = "update dpedimentos set cantidadrestante=" + crestante+" where id_dpedimento="+dpedimento;
+                System.out.println("dpedimento "+sql);
+                st = c.prepareStatement(sql);
+                st.executeUpdate();
+            }
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlkardex.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlkardex.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
     }
 
     public boolean insertkardex(Connection con) {//Rcpt

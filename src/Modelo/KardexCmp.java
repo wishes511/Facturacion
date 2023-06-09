@@ -13,7 +13,71 @@ import java.util.ArrayList;
  */
 public class KardexCmp implements java.io.Serializable{
     private String fechamov, fechadoc, serie,tipo, nombrecuenta,nombreproveedor,nombrealmacen,
-            docref,nombrematerial,nombreusuario,status,operacion,Ordenc;
+            docref,nombrematerial,nombreusuario,status,operacion,Ordenc,dureza;
+
+    public double getCantkardex() {
+        return cantkardex;
+    }
+
+    public void setCantkardex(double cantkardex) {
+        this.cantkardex = cantkardex;
+    }
+
+    public int getId_dpedimento() {
+        return id_dpedimento;
+    }
+
+    public void setId_dpedimento(int id_dpedimento) {
+        this.id_dpedimento = id_dpedimento;
+    }
+
+    public double getCantrestante() {
+        return cantrestante;
+    }
+
+    public void setCantrestante(double cantrestante) {
+        this.cantrestante = cantrestante;
+    }
+
+    public int getId_kardex() {
+        return id_kardex;
+    }
+
+    public void setId_kardex(int id_kardex) {
+        this.id_kardex = id_kardex;
+    }
+
+    public String getDureza() {
+        return dureza;
+    }
+
+    public void setDureza(String dureza) {
+        this.dureza = dureza;
+    }
+
+    public int getId_pedimento() {
+        return id_pedimento;
+    }
+
+    public void setId_pedimento(int id_pedimento) {
+        this.id_pedimento = id_pedimento;
+    }
+
+    public int getId_cliente() {
+        return id_cliente;
+    }
+
+    public void setId_cliente(int id_cliente) {
+        this.id_cliente = id_cliente;
+    }
+
+    public int getId_prov() {
+        return id_prov;
+    }
+
+    public void setId_prov(int id_prov) {
+        this.id_prov = id_prov;
+    }
 
     public String getOrdenc() {
         return Ordenc;
@@ -48,7 +112,7 @@ public class KardexCmp implements java.io.Serializable{
     public void setOperacion(String operacion) {
         this.operacion = operacion;
     }
-    private int cuenta,subcuenta,folio,proveedor,almacen,renglon,usuario,Ordenfolio,id_material;
+    private int cuenta,subcuenta,folio,proveedor,almacen,renglon,usuario,Ordenfolio,id_material,id_cliente,id_prov,id_pedimento,id_kardex,id_dpedimento;
 
     public int getUsuario() {
         return usuario;
@@ -57,7 +121,7 @@ public class KardexCmp implements java.io.Serializable{
     public void setUsuario(int usuario) {
         this.usuario = usuario;
     }
-    private float costo,importe,cantidad,impuesto,total;
+    private double costo,importe,cantidad,impuesto,total,cantrestante,cantkardex;
 
     public int getId_material() {
         return id_material;
@@ -67,19 +131,19 @@ public class KardexCmp implements java.io.Serializable{
         this.id_material = id_material;
     }
 
-    public float getImpuesto() {
+    public double getImpuesto() {
         return impuesto;
     }
 
-    public void setImpuesto(float impuesto) {
+    public void setImpuesto(double impuesto) {
         this.impuesto = impuesto;
     }
 
-    public float getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
@@ -211,11 +275,11 @@ public class KardexCmp implements java.io.Serializable{
         this.almacen = almacen;
     }
 
-    public float getCantidad() {
+    public double getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(float cantidad) {
+    public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
     }
 
@@ -227,19 +291,19 @@ public class KardexCmp implements java.io.Serializable{
         this.renglon = renglon;
     }
 
-    public float getCosto() {
+    public double getCosto() {
         return costo;
     }
 
-    public void setCosto(float costo) {
+    public void setCosto(double costo) {
         this.costo = costo;
     }
 
-    public float getImporte() {
+    public double getImporte() {
         return importe;
     }
 
-    public void setImporte(float importe) {
+    public void setImporte(double importe) {
         this.importe = importe;
     }
 }
