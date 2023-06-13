@@ -21,6 +21,8 @@ public interface kardexrcpt {
     public boolean nuevokardextpu(Connection c, ArrayList<KardexCmp> k);
 
     public ArrayList<Kardexrcpt> getkardex(Connection c);
+    
+    public ArrayList<KardexCmp> getkardex(Connection c, String serie, String cob, String tipo, String var);
 
     public ArrayList<Kardexrcpt> getkardex(Connection c, Kardexrcpt k);
 
@@ -35,4 +37,6 @@ public interface kardexrcpt {
     public ArrayList<Kardexrcpt> getkardexfacsimple(Connection c, String r, String cob);
 
     public ArrayList<Kardexrcpt> getkardexfacMulti(Connection c, String cob, String folios);
+    
+    public boolean deleterow(Connection c, KardexCmp k);
 }

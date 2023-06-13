@@ -203,11 +203,11 @@ public class sqlkardex {
                         + "usuario,fecha,costo,precio,cantidad,renglon,serie,estatus,estatusprod,dureza,referencia) "
                         + "values(" + kardex + "," + concepto + "," + cliente + "," + mat + "," + prov + "," + alm + "," + pedimento + ",'" + usuario + "','"
                         + f + "'," + precio + "," + precio + "," + cantidad + "," + ren + ",'B','1','1','" + dur + "','" + ref + "')";
-                System.out.println("kardex "+sql);
+                System.out.println("kardex " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
-                sql = "update dpedimentos set cantidadrestante=" + crestante+" where id_dpedimento="+dpedimento;
-                System.out.println("dpedimento "+sql);
+                sql = "update dpedimentos set cantidadrestante=" + crestante + " where id_dpedimento=" + dpedimento;
+                System.out.println("dpedimento " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -543,6 +543,103 @@ public class sqlkardex {
             Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resp;
+    }
+
+    public ArrayList<KardexCmp> getkardex(Connection c, String serie, String cob, String tipo, String var) {
+        ArrayList<KardexCmp> kardex = new ArrayList<>();
+        try {
+
+            PreparedStatement st;
+            ResultSet rs;
+            String sql;
+            if (tipo.equals("60")) {
+                sql = "select k.id_kardex,k.id_cliente,id_prov,k.serie,p.nombre as n,k.fecha,c.cuenta,subcuenta,c.descripcion as concepto,"
+                        + "m.descripcion as mat,k.dureza,k.cantidad,k.precio,(k.cantidad*k.precio) as importe,k.estatus,isnull(pedido,'') as pedido,k.renglon,id_dpedimento\n"
+                        + "from Kardex k\n"
+                        + "join Conceptos c on k.id_concepto=c.id_concepto\n"
+                        + "join " + cob + ".dbo.Cliente p on k.id_cliente=p.id_cliente\n"
+                        + "join Materiales m on k.id_material=m.id_material\n"
+                        + "left join pedido ped on k.id_kardex=ped.id_kardex "
+                        + "join Pedimentos pedimento on k.id_pedimento=pedimento.id_pedimento\n"
+                        + "join DPedimentos dped on dped.id_pedimento=pedimento.id_pedimento\n"
+                        + "where (p.id_cliente like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and c.cuenta=60\n"
+                        + "order by k.fecha desc";
+            } else {
+                sql = "select k.id_kardex,k.id_cliente,id_prov,k.serie,p.nombre as n,k.fecha,cuenta,subcuenta,c.descripcion as concepto,"
+                        + "m.descripcion as mat,k.dureza,k.cantidad,k.precio,(k.cantidad*k.precio) as importe,k.estatus,isnull(pedido,'') as pedido,k.renglon,id_dpedimento\n"
+                        + "from Kardex k\n"
+                        + "join Conceptos c on k.id_concepto=c.id_concepto\n"
+                        + "join Proveedores p on k.id_prov=p.id_proveedor\n"
+                        + "join Materiales m on k.id_material=m.id_material\n"
+                        + "left join pedido ped on k.id_kardex=ped.id_kardex\n"
+                        + "join Pedimentos pedimento on k.id_pedimento=pedimento.id_pedimento\n"
+                        + "join DPedimentos dped on dped.id_pedimento=pedimento.id_pedimento\n"
+                        + "where (p.id_proveedor like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and c.cuenta=01\n"
+                        + "order by k.fecha desc";
+            }
+            System.out.println("kardex " + sql);
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                KardexCmp k = new KardexCmp();
+                k.setId_kardex(rs.getInt("id_kardex"));
+                k.setNombreproveedor(rs.getString("n"));
+                k.setSerie(serie);
+                k.setFechamov(rs.getString("fecha"));
+                k.setCuenta(rs.getInt("cuenta"));
+                k.setNombrecuenta(rs.getString("concepto"));
+                k.setNombrematerial(rs.getString("mat"));
+                k.setDureza(rs.getString("dureza"));
+                k.setCantidad(rs.getDouble("cantidad"));
+                k.setCosto(rs.getDouble("precio"));
+                k.setImporte(rs.getDouble("importe"));
+                k.setStatus(rs.getString("estatus"));
+                k.setRenglon(rs.getInt("renglon"));
+                k.setPedido(rs.getString("pedido"));
+                k.setId_dpedimento(rs.getInt("id_dpedimento"));
+                kardex.add(k);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlkardex.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return kardex;
+    }
+
+    /**
+     * Da de baja el folio siendo serie B y devuelve la cantidad al pedimento
+     * @param c conexion cpttpu
+     * @param k objeto de kardex a usar
+     * @return 
+     */
+    public boolean deleterow(Connection c, KardexCmp k) {
+        try {
+            PreparedStatement st;
+            c.setAutoCommit(false);
+            int kardex = k.getId_kardex();
+            int ren = k.getRenglon();
+            int dped=k.getId_dpedimento();
+            double cant=k.getCantidad();
+            String sql = "update kardex set estatus='0' where id_kardex=" + kardex + " and renglon=" + ren;
+            System.out.println("del kardex "+sql);
+            st = c.prepareStatement(sql);
+            st.executeUpdate();
+            sql = "update dpedimentos set cantidadrestante=cantidadrestante+"+cant+" where id_dpedimento="+dped;
+            System.out.println("del dpedimento "+sql);
+            st = c.prepareStatement(sql);
+            st.executeUpdate();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlkardex.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlkardex.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            return false;
+        }
     }
 
 }

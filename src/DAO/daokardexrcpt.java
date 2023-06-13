@@ -82,4 +82,25 @@ public class daokardexrcpt implements kardexrcpt {
         return s.insertkardextpu(c, k);
     }
 
+    /**
+     *
+     * @param c
+     * @param serie serie del movimiento
+     * @param cob valor que va a tomar para usar la bd de clientes
+     * @param tipo la cuenta, si es salida o entrada
+     * @param var
+     * @return
+     */
+    @Override
+    public ArrayList<KardexCmp> getkardex(Connection c, String serie, String cob, String tipo, String var) {
+        sqlkardex s = new sqlkardex();
+        return s.getkardex(c, serie, cob, tipo, var);
+    }
+
+    @Override
+    public boolean deleterow(Connection c, KardexCmp k) {
+        sqlkardex s = new sqlkardex();
+        return s.deleterow(c, k);
+    }
+
 }

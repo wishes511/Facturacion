@@ -10,6 +10,7 @@ import DAO.daoAddenda;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
+import DAO.daokardexrcpt;
 import DAO.daoxmlE;
 import Modelo.Addenda;
 import Modelo.Ciudades;
@@ -19,6 +20,7 @@ import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Estados;
 import Modelo.Formadepago;
+import Modelo.KardexCmp;
 import Modelo.Nocolision;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
@@ -85,13 +87,14 @@ public class Inout1 extends javax.swing.JPanel {
 
     public String nombre, empresa, empresacob;
     public Connection sqlcfdi, sqlempresa, liteusuario;
-    public Connection ACobranza, cpt, rcpt,cobB;
+    public Connection ACobranza, cpt, rcpt, cobB;
     Serverprod prod = new Serverprod();
     public ArrayList<Formadepago> arrfpago = new ArrayList<>();
     public ArrayList<usocfdi> arruso = new ArrayList<>();
     public ArrayList<metodopago> arrmetodo = new ArrayList<>();
     ArrayList<factura> arrfactura = new ArrayList<>();
     ArrayList<factura> arrfacturaxml = new ArrayList<>();
+    ArrayList<KardexCmp> k = new ArrayList<>();
     daocfdi dcfdi = new daocfdi();
     int estado = 0;
     int ciudad = 0;
@@ -100,7 +103,8 @@ public class Inout1 extends javax.swing.JPanel {
     int clic = 0;
     int clic2 = 0;
     int clic3 = 0;
-    String serie="A";
+    String serie = "A";
+    int cuenta = 1;
 
     /**
      * Creates new form Cliente1
@@ -108,7 +112,10 @@ public class Inout1 extends javax.swing.JPanel {
     public Inout1() {
         initComponents();
         JtCliente.requestFocus();
-        JbCancelar.setEnabled(false);
+        JbCancelar.setEnabled(true);
+        grupo.add(Be);
+        grupo.add(Bs);
+        Be.setSelected(true);
     }
 
     /**
@@ -121,25 +128,27 @@ public class Inout1 extends javax.swing.JPanel {
     private void initComponents() {
 
         Pop = new javax.swing.JPopupMenu();
-        JmPedfac = new javax.swing.JMenuItem();
+        JbCancelar = new javax.swing.JMenuItem();
+        grupo = new javax.swing.ButtonGroup();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         JtDetalle = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        JbCancelar = new javax.swing.JButton();
         JlSerie = new javax.swing.JLabel();
+        Be = new javax.swing.JRadioButton();
+        Bs = new javax.swing.JRadioButton();
 
-        JmPedfac.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/applicationsgraphicsdrawing_103768.png"))); // NOI18N
-        JmPedfac.setText("Modificar pedido de factura");
-        JmPedfac.setToolTipText("");
-        JmPedfac.addActionListener(new java.awt.event.ActionListener() {
+        JbCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
+        JbCancelar.setText("Cancelar salida");
+        JbCancelar.setToolTipText("");
+        JbCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JmPedfacActionPerformed(evt);
+                JbCancelarActionPerformed(evt);
             }
         });
-        Pop.add(JmPedfac);
+        Pop.add(JbCancelar);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -186,18 +195,6 @@ public class Inout1 extends javax.swing.JPanel {
             }
         });
 
-        JbCancelar.setBackground(new java.awt.Color(255, 255, 255));
-        JbCancelar.setForeground(new java.awt.Color(255, 255, 255));
-        JbCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
-        JbCancelar.setToolTipText("Cancela XML");
-        JbCancelar.setBorder(null);
-        JbCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        JbCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JbCancelarActionPerformed(evt);
-            }
-        });
-
         JlSerie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/sticker_120054A.png"))); // NOI18N
         JlSerie.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -207,6 +204,22 @@ public class Inout1 extends javax.swing.JPanel {
         JlSerie.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 JlSerieKeyPressed(evt);
+            }
+        });
+
+        Be.setBackground(new java.awt.Color(255, 255, 255));
+        Be.setText("Entrada");
+        Be.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BeActionPerformed(evt);
+            }
+        });
+
+        Bs.setBackground(new java.awt.Color(255, 255, 255));
+        Bs.setText("Salida");
+        Bs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BsActionPerformed(evt);
             }
         });
 
@@ -223,9 +236,11 @@ public class Inout1 extends javax.swing.JPanel {
                     .addComponent(jSeparator2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(JlSerie)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(JbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(187, 187, 187)
+                .addComponent(Be)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Bs)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(22, 22, 22))
             .addGroup(layout.createSequentialGroup()
@@ -237,20 +252,26 @@ public class Inout1 extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(Be)
+                            .addComponent(Bs))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel1)
-                    .addComponent(JbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JlSerie))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(4, 4, 4)
+                                        .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1)
+                            .addComponent(JlSerie))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -260,32 +281,44 @@ public class Inout1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-        int row =JtDetalle.getSelectedRow();
-        int folio=arrfactura.get(row).getId_pedido();
-        String ser=arrfactura.get(row).getSerie();
-        double total=Double.parseDouble(formateador.format(arrfactura.get(row).getTotal()));
-        String ped=arrfactura.get(row).getPedido();
-        setreport(folio, "MXN", ser, total,ped);
+//        DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+//        int row =JtDetalle.getSelectedRow();
+//        int folio=arrfactura.get(row).getId_pedido();
+//        String ser=arrfactura.get(row).getSerie();
+//        double total=Double.parseDouble(formateador.format(arrfactura.get(row).getTotal()));
+//        String ped=arrfactura.get(row).getPedido();
+//        setreport(folio, "MXN", ser, total,ped);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
+        int row = JtDetalle.getSelectedRow();
+        String ped= k.get(row).getPedido();
+        if (k.get(row).getStatus().equals("1")) {
+            if (cuenta == 60 && serie.equals("B") && ped.equals("")) {
+                JbCancelar.setVisible(true);
+            }else{
+                JbCancelar.setVisible(false);
+            }
+        }else{
+            JbCancelar.setVisible(false);
+        }
         if (evt.getButton() == 3) {// activar con clic derecho
             Pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_JtDetalleMousePressed
 
-    private void JbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelarActionPerformed
-
-    }//GEN-LAST:event_JbCancelarActionPerformed
-
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
 
     }//GEN-LAST:event_jLabel6MousePressed
 
-    private void JmPedfacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPedfacActionPerformed
-
-    }//GEN-LAST:event_JmPedfacActionPerformed
+    private void JbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelarActionPerformed
+        int row = JtDetalle.getSelectedRow();
+        daokardexrcpt dk= new daokardexrcpt();
+        if(dk.deleterow(cpt, k.get(row))){
+            JOptionPane.showMessageDialog(null, "Proceso completo");
+            Buscanotas();
+        }
+    }//GEN-LAST:event_JbCancelarActionPerformed
 
     private void JlSerieMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlSerieMousePressed
         if (evt.getButton() == 1) {
@@ -311,18 +344,22 @@ public class Inout1 extends javax.swing.JPanel {
                 clic3 = 0;
             }
         }
+        Buscanotas();
     }//GEN-LAST:event_JlSerieMousePressed
 
     private void JlSerieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JlSerieKeyPressed
 
     }//GEN-LAST:event_JlSerieKeyPressed
 
+    private void BeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BeActionPerformed
+        cuenta = 1;
+        Buscanotas();
+    }//GEN-LAST:event_BeActionPerformed
 
-    private String getempresa(Connection c, String n) {
-        daoempresa d = new daoempresa();
-        Empresas e = d.getempresarfc(c, n);
-        return e.getXml();
-    }
+    private void BsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BsActionPerformed
+        cuenta = 60;
+        Buscanotas();
+    }//GEN-LAST:event_BsActionPerformed
 
     /**
      *
@@ -362,13 +399,14 @@ public class Inout1 extends javax.swing.JPanel {
 
     /**
      * Despliega reporte del pedido individual
+     *
      * @param folio
      * @param regimen
      * @param moneda
      * @param serie
-     * @param total 
+     * @param total
      */
-    private void setreport(int folio, String moneda, String serie,double total, String pedido) {
+    private void setreport(int folio, String moneda, String serie, double total, String pedido) {
         try {
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
@@ -390,72 +428,60 @@ public class Inout1 extends javax.swing.JPanel {
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Pedido "+pedido);
+            ver.setTitle("Pedido " + pedido);
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private String getnmetodo(String m) {
-        String r = "";
-        for (int i = 0; i < arrmetodo.size(); i++) {
-            if (m.equals(arrmetodo.get(i).getMetodopago())) {
-                r = arrmetodo.get(i).getDescripcion();
-                break;
-            }
-        }
-        return r;
-    }
-
-    private String getnuso(String m) {
-        String r = "";
-        for (int i = 0; i < arruso.size(); i++) {
-            if (m.equals(arruso.get(i).getusocfdi())) {
-                r = arruso.get(i).getDescripcion();
-                break;
-            }
-        }
-        return r;
-    }
-
+//  Importante ya que es donde se usara la base de datos con clientes fiscales o internos
     private void Buscanotas() {
-        daofactura df = new daofactura();
-        arrfactura = df.getpedidos(cpt, JtCliente.getText(), serie);
+        String cob = (serie.equals("B")) ? "[192.168.90.1\\DATOS620].RACobranzaTpu" : "ACobranzaTpu";
+        String tipo = String.valueOf(cuenta);
+        String var = JtCliente.getText();
+        daokardexrcpt dk = new daokardexrcpt();
+        k = dk.getkardex(cpt, serie, cob, tipo, var);
+//        daofactura df = new daofactura();
+//        arrfactura = df.getpedidos(cpt, JtCliente.getText(), serie);
         generatabla();
     }
 
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Pedido");
-        model.addColumn("Cliente");
-        model.addColumn("Kardex");
-        model.addColumn("Fecha");
-        model.addColumn("Subtotal");
-        model.addColumn("Iva");
-        model.addColumn("Total");
+        model.addColumn("Folio");
+        model.addColumn("Nombre");
         model.addColumn("Serie");
+        model.addColumn("Fecha");
+        model.addColumn("Cuenta");
+        model.addColumn("Concepto");
+        model.addColumn("Material");
+        model.addColumn("Cantidad");
+        model.addColumn("Precio");
+        model.addColumn("Importe");
+        model.addColumn("Pedido");
         model.addColumn("Estado");
-        model.setNumRows(arrfactura.size());
+        model.setNumRows(k.size());
         DecimalFormat formateador = new DecimalFormat("####.##");
-        for (int i = 0; i < arrfactura.size(); i++) {
-            String estat = (arrfactura.get(i).getEstatus() == 1) ? "ACTIVA" : "NO ACTIVA";
+        for (int i = 0; i < k.size(); i++) {
+            String estat = (k.get(i).getStatus().equals("1")) ? "ACTIVA" : "NO ACTIVA";
 //            System.out.println(arrfactura.get(i).getTotal());
-            model.setValueAt(arrfactura.get(i).getPedido(), i, 0);
-            model.setValueAt(arrfactura.get(i).getNombrecliente(), i, 1);
-            model.setValueAt(arrfactura.get(i).getId_kardex(), i, 2);
-            model.setValueAt(arrfactura.get(i).getFecha(), i, 3);
-            model.setValueAt(formateador.format(arrfactura.get(i).getSubtotal()), i, 4);
-            model.setValueAt(formateador.format(arrfactura.get(i).getImpuestos()), i, 5);
-            model.setValueAt(formateador.format(arrfactura.get(i).getTotal()), i, 6);
-            model.setValueAt(arrfactura.get(i).getSerie(), i, 7);
-            model.setValueAt(estat, i, 8);
+            model.setValueAt(k.get(i).getId_kardex(), i, 0);
+            model.setValueAt(k.get(i).getNombreproveedor(), i, 1);
+            model.setValueAt(k.get(i).getSerie(), i, 2);
+            model.setValueAt(k.get(i).getFechamov(), i, 3);
+            model.setValueAt(k.get(i).getCuenta(), i, 4);
+            model.setValueAt(k.get(i).getNombrecuenta(), i, 5);
+            model.setValueAt(k.get(i).getNombrematerial() + " " + k.get(i).getDureza(), i, 6);
+            model.setValueAt(formateador.format(k.get(i).getCantidad()), i, 7);
+            model.setValueAt(formateador.format(k.get(i).getCosto()), i, 8);
+            model.setValueAt(formateador.format(k.get(i).getImporte()), i, 9);
+            model.setValueAt(k.get(i).getPedido(), i, 10);
+            model.setValueAt(estat, i, 11);
         }
         JtDetalle.setModel(model);
     }
 
-    
-    
     private boolean verificaint(String cad) {
         boolean resp = false;
         String patt = "[0-9]+";
@@ -468,12 +494,14 @@ public class Inout1 extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton JbCancelar;
+    private javax.swing.JRadioButton Be;
+    private javax.swing.JRadioButton Bs;
+    private javax.swing.JMenuItem JbCancelar;
     private javax.swing.JLabel JlSerie;
-    private javax.swing.JMenuItem JmPedfac;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;
     private javax.swing.JPopupMenu Pop;
+    private javax.swing.ButtonGroup grupo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;

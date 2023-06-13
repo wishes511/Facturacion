@@ -13,7 +13,15 @@ import java.util.ArrayList;
  */
 public class KardexCmp implements java.io.Serializable{
     private String fechamov, fechadoc, serie,tipo, nombrecuenta,nombreproveedor,nombrealmacen,
-            docref,nombrematerial,nombreusuario,status,operacion,Ordenc,dureza;
+            docref,nombrematerial,nombreusuario,status,operacion,Ordenc,dureza,pedido;
+
+    public String getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(String pedido) {
+        this.pedido = pedido;
+    }
 
     public double getCantkardex() {
         return cantkardex;
