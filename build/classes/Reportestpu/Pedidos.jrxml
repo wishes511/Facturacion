@@ -149,7 +149,7 @@ where p.estatus='1' and serie= $P{serie} and id_pedido=$P{id}]]>
 					<subreportParameterExpression><![CDATA[$F{id_pedido}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["C:\\af\\prodf\\Reportestpu\\Dpedido.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\Dpedido.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

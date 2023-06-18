@@ -719,6 +719,8 @@ public class Inout2 extends javax.swing.JPanel {
         model.addColumn("Activo");//7
         model.addColumn("Unidad");//8
         model.addColumn("Pedimento");//9
+        model.addColumn("Total actual");//9
+        
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
         if (!k2.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
             model.setRowCount(k2.size());
@@ -729,7 +731,7 @@ public class Inout2 extends javax.swing.JPanel {
                 double descuento = (tpares * precio) * 0;
                 model.setValueAt(k2.get(i).getDp().getMatped(), i, 0);
                 model.setValueAt(k2.get(i).getDp().getCodigosat(), i, 1);
-                model.setValueAt(tpares, i, 2);
+                model.setValueAt("", i, 2);
                 model.setValueAt(formateador.format(precio), i, 3);
                 model.setValueAt(formateador.format(descuento), i, 4);
                 model.setValueAt("0", i, 5);
@@ -737,6 +739,7 @@ public class Inout2 extends javax.swing.JPanel {
                 model.setValueAt("", i, 7);
                 model.setValueAt(k2.get(i).getDp().getUnidad(), i, 8);
                 model.setValueAt(k2.get(i).getReferencia(), i, 9);
+                model.setValueAt(tpares, i, 10);
                 //suma de totales
                 subtotal += tpares * precio;
             }
@@ -830,7 +833,7 @@ public class Inout2 extends javax.swing.JPanel {
 
     private boolean verificadetalle() {
         boolean resp = true;
-        for (int i = 0; i < k1.size(); i++) {
+        for (int i = 0; i < k2.size(); i++) {
             String precio = JtDetalle.getValueAt(i, 3).toString();
             if (!verificafloat(precio)) {
                 resp = false;

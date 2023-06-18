@@ -604,7 +604,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
         for (Cliente arruso1 : arrcliente) {
             cliente.addElement(arruso1.getNombre());
         }
-        arrcuentas = d.getalcuentastpu(cobB, "1");
+        arrcuentas = d.getalcuentastpu(cobB, "60");
         for (ConceptosES arruso1 : arrcuentas) {
             cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
         }
@@ -936,7 +936,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
 
     private boolean verificadetalle() {
         boolean resp = true;
-        for (int i = 0; i < k1.size(); i++) {
+        for (int i = 0; i < k2.size(); i++) {
             String precio = JtDetalle.getValueAt(i, 3).toString();
             if (!verificafloat(precio)) {
                 resp = false;

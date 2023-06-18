@@ -10,6 +10,7 @@ import DAO.daoAddenda;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
+import DAO.daokardexrcpt;
 import DAO.daoxmlE;
 import Modelo.Addenda;
 import Modelo.Ciudades;
@@ -19,6 +20,7 @@ import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Estados;
 import Modelo.Formadepago;
+import Modelo.KardexCmp;
 import Modelo.Nocolision;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
@@ -85,13 +87,14 @@ public class fac1tpurem extends javax.swing.JPanel {
 
     public String nombre, empresa, empresacob;
     public Connection sqlcfdi, sqlempresa, liteusuario;
-    public Connection ACobranza, cpt, rcpt,cobB;
+    public Connection ACobranza, cpt, rcpt, cobB;
     Serverprod prod = new Serverprod();
     public ArrayList<Formadepago> arrfpago = new ArrayList<>();
     public ArrayList<usocfdi> arruso = new ArrayList<>();
     public ArrayList<metodopago> arrmetodo = new ArrayList<>();
     ArrayList<factura> arrfactura = new ArrayList<>();
     ArrayList<factura> arrfacturaxml = new ArrayList<>();
+    ArrayList<KardexCmp> k = new ArrayList<>();
     daocfdi dcfdi = new daocfdi();
     int estado = 0;
     int ciudad = 0;
@@ -100,7 +103,7 @@ public class fac1tpurem extends javax.swing.JPanel {
     int clic = 0;
     int clic2 = 0;
     int clic3 = 0;
-    String serie="A";
+    String serie = "A";
 
     /**
      * Creates new form Cliente1
@@ -108,7 +111,7 @@ public class fac1tpurem extends javax.swing.JPanel {
     public fac1tpurem() {
         initComponents();
         JtCliente.requestFocus();
-        JbCancelar.setEnabled(false);
+        JbCancelar1.setEnabled(true);
     }
 
     /**
@@ -121,25 +124,24 @@ public class fac1tpurem extends javax.swing.JPanel {
     private void initComponents() {
 
         Pop = new javax.swing.JPopupMenu();
-        JmPedfac = new javax.swing.JMenuItem();
+        JbCancelar1 = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         JtDetalle = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        JbCancelar = new javax.swing.JButton();
         JlSerie = new javax.swing.JLabel();
 
-        JmPedfac.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/applicationsgraphicsdrawing_103768.png"))); // NOI18N
-        JmPedfac.setText("Modificar pedido de factura");
-        JmPedfac.setToolTipText("");
-        JmPedfac.addActionListener(new java.awt.event.ActionListener() {
+        JbCancelar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
+        JbCancelar1.setText("Cancelar salida");
+        JbCancelar1.setToolTipText("");
+        JbCancelar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JmPedfacActionPerformed(evt);
+                JbCancelar1ActionPerformed(evt);
             }
         });
-        Pop.add(JmPedfac);
+        Pop.add(JbCancelar1);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -186,18 +188,6 @@ public class fac1tpurem extends javax.swing.JPanel {
             }
         });
 
-        JbCancelar.setBackground(new java.awt.Color(255, 255, 255));
-        JbCancelar.setForeground(new java.awt.Color(255, 255, 255));
-        JbCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
-        JbCancelar.setToolTipText("Cancela XML");
-        JbCancelar.setBorder(null);
-        JbCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        JbCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JbCancelarActionPerformed(evt);
-            }
-        });
-
         JlSerie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/sticker_120054A.png"))); // NOI18N
         JlSerie.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -224,13 +214,11 @@ public class fac1tpurem extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(JlSerie)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(JbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1)
                 .addGap(22, 22, 22))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1199, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1162, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -247,10 +235,9 @@ public class fac1tpurem extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1)
-                    .addComponent(JbCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JlSerie))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -261,31 +248,31 @@ public class fac1tpurem extends javax.swing.JPanel {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-        int row =JtDetalle.getSelectedRow();
-        int folio=arrfactura.get(row).getId_pedido();
-        String ser=arrfactura.get(row).getSerie();
-        double total=Double.parseDouble(formateador.format(arrfactura.get(row).getTotal()));
-        String ped=arrfactura.get(row).getPedido();
-        setreport(folio, "MXN", ser, total,ped);
+        int row = JtDetalle.getSelectedRow();
+        int folio = arrfactura.get(row).getId_pedido();
+        String ser = arrfactura.get(row).getSerie();
+        double total = Double.parseDouble(formateador.format(arrfactura.get(row).getTotal()));
+        String ped = arrfactura.get(row).getPedido();
+        setreport(folio, "MXN", ser, total, ped);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
+
+        int row = JtDetalle.getSelectedRow();
+        String estados=arrfactura.get(row).getEstatus()+"";
+        if (arrfactura.get(row).getSerie().equals("B") && estados.equals("1")) {
+            JbCancelar1.setVisible(true);
+        }else{
+            JbCancelar1.setVisible(false);
+        }
         if (evt.getButton() == 3) {// activar con clic derecho
             Pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_JtDetalleMousePressed
 
-    private void JbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelarActionPerformed
-
-    }//GEN-LAST:event_JbCancelarActionPerformed
-
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
 
     }//GEN-LAST:event_jLabel6MousePressed
-
-    private void JmPedfacActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPedfacActionPerformed
-
-    }//GEN-LAST:event_JmPedfacActionPerformed
 
     private void JlSerieMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlSerieMousePressed
         if (evt.getButton() == 1) {
@@ -317,6 +304,16 @@ public class fac1tpurem extends javax.swing.JPanel {
 
     }//GEN-LAST:event_JlSerieKeyPressed
 
+    private void JbCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelar1ActionPerformed
+        int row = JtDetalle.getSelectedRow();
+        Cancelapedidos can= new Cancelapedidos(null,true);
+        can.cpt=cpt;
+        can.cob=cobB;
+        can.u=u;
+        can.muestradatos(arrfactura.get(row).getNombrecliente(), arrfactura.get(row).getPedido(),arrfactura.get(row).getId_pedido(),arrfactura.get(row).getIdcliente());
+        can.setVisible(true);
+        Buscanotas();
+    }//GEN-LAST:event_JbCancelar1ActionPerformed
 
     private String getempresa(Connection c, String n) {
         daoempresa d = new daoempresa();
@@ -362,13 +359,14 @@ public class fac1tpurem extends javax.swing.JPanel {
 
     /**
      * Despliega reporte del pedido individual
+     *
      * @param folio
      * @param regimen
      * @param moneda
      * @param serie
-     * @param total 
+     * @param total
      */
-    private void setreport(int folio, String moneda, String serie,double total, String pedido) {
+    private void setreport(int folio, String moneda, String serie, double total, String pedido) {
         try {
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
@@ -390,7 +388,7 @@ public class fac1tpurem extends javax.swing.JPanel {
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Pedido "+pedido);
+            ver.setTitle("Pedido " + pedido);
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
@@ -454,8 +452,6 @@ public class fac1tpurem extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
-    
-    
     private boolean verificaint(String cad) {
         boolean resp = false;
         String patt = "[0-9]+";
@@ -468,9 +464,8 @@ public class fac1tpurem extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton JbCancelar;
+    private javax.swing.JMenuItem JbCancelar1;
     private javax.swing.JLabel JlSerie;
-    private javax.swing.JMenuItem JmPedfac;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;
     private javax.swing.JPopupMenu Pop;

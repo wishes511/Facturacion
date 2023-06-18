@@ -2799,6 +2799,7 @@ public class sqlfactura {
                     + "join ACobranzaTpu.dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
                     + "join Documento d on c.referencia =d.folio\n"
                     + "where (c.id_cliente = " + nombre + " ) and c.referencia NOT Like '%NCR%' and saldo!=0 and d.Serie='fac' and d.estatus='1' and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' order by c.fecha";
+            System.out.println("get clientencr "+sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             int ren = 0;
@@ -3263,13 +3264,15 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select id_pedido,pedido,id_kardex,fecha,total,subtotal,impuestos,serie,estatus as estatus,nombre\n"
+            String sql = "select id_pedido,pedido,id_kardex,fecha,total,subtotal,impuestos,serie,estatus as estatus,nombre,id_cliente\n"
                     + "from pedido\n"
                     + "where serie='"+serie+"' and nombre like '%"+folio+"%'";
+            
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 factura f = new factura();
+                f.setIdcliente(rs.getInt("id_cliente"));
                 f.setId_pedido(rs.getInt("id_pedido"));
                 f.setPedido(rs.getString("pedido"));
                 f.setId_kardex(rs.getInt("id_kardex"));
