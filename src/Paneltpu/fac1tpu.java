@@ -196,8 +196,8 @@ public class fac1tpu extends javax.swing.JPanel {
 
         JbCancelar.setBackground(new java.awt.Color(255, 255, 255));
         JbCancelar.setForeground(new java.awt.Color(255, 255, 255));
-        JbCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
-        JbCancelar.setToolTipText("Cancela XML");
+        JbCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Return_icon-icons.com_54801.png"))); // NOI18N
+        JbCancelar.setToolTipText("Devoluciones");
         JbCancelar.setBorder(null);
         JbCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JbCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -391,10 +391,10 @@ public class fac1tpu extends javax.swing.JPanel {
         String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
         if (e == 1 && tim.equals("N")) {
             JbXml.setEnabled(true);
-//            JbCancelar.setEnabled(false);
+            JbCancelar.setEnabled(false);
         } else {
             JbXml.setEnabled(false);
-//            JbCancelar.setEnabled(true);
+            JbCancelar.setEnabled(true);
         }
         if (arrfactura.get(row).getNombre().equals("COPPEL") && tim.equals("T")) {
             JbAddenda.setEnabled(true);
@@ -409,29 +409,19 @@ public class fac1tpu extends javax.swing.JPanel {
             String botones[] = {"Aceptar", ""
                 + ""
                 + "Cancelar"};
-            int opcion = JOptionPane.showOptionDialog(this, "¿Deseas cancelar factura?, recuerda que por ahora solo se cancela la factura del sat, nada del sistema", "ATHLETIC",
+            int opcion = JOptionPane.showOptionDialog(this, "¿Deseas realizar una devolucion sobre la factura seleccionada?", "ATHLETIC",
                     0, 0, null, botones, this);
             if (opcion == JOptionPane.YES_OPTION) {
                 String resp = "";
                 int row = JtDetalle.getSelectedRow();
-                java.util.Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                factura fac = new factura();
-                daofactura df = new daofactura();
-//                Asigna valores de folio y fecha de cancelacion
-                fac.setFolio(arrfactura.get(row).getFolio());
-                fac.setFechacancel(sdf.format(date));
-//                MOvimientos en la bd para cancelacion de la factura
-                df.cancelafac(cpt, rcpt, ACobranza, fac);
-                String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
-//                Aplica solo si esta timbrada sino solo se da de baja en la bd
-                if (tim.equals("T")) {
-                    String n = (empresa.equals("UptownCPT")) ? "2" : "1";
-                    timbrarXML t = new timbrarXML();
-                    resp = t.cancelarfolio("FAC_" + arrfactura.get(row).getFolio(), sqlempresa, n, arrfactura.get(row).getFoliofiscal());
-                }
+                Cancelapedidosfac can = new Cancelapedidosfac(null, true);
+                can.cpt = cpt;
+                can.cob = ACobranza;
+                can.u = u;
+                can.muestradatos(arrfactura.get(row).getNombre(), arrfactura.get(row).getFolio()+"", arrfactura.get(row).getId(), arrfactura.get(row).getIdcliente());
+                can.setVisible(true);
                 Buscanotas();
-                JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + resp);
+//                JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + resp);
             }
         }
     }//GEN-LAST:event_JbCancelarActionPerformed
@@ -617,6 +607,23 @@ public class fac1tpu extends javax.swing.JPanel {
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1tpu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void respcancela() {
+        factura fac = new factura();
+        daofactura df = new daofactura();
+//                Asigna valores de folio y fecha de cancelacion
+        fac.setFolio(arrfactura.get(0).getFolio());
+        fac.setFechacancel("");
+//                MOvimientos en la bd para cancelacion de la factura
+        df.cancelafac(cpt, rcpt, ACobranza, fac);
+        String tim = (arrfactura.get(0).getFoliofiscal().equals("")) ? "N" : "T";
+//                Aplica solo si esta timbrada sino solo se da de baja en la bd
+        if (tim.equals("T")) {
+            String n = (empresa.equals("UptownCPT")) ? "2" : "1";
+            timbrarXML t = new timbrarXML();
+            String resp = t.cancelarfolio("FAC_" + arrfactura.get(0).getFolio(), sqlempresa, n, arrfactura.get(0).getFoliofiscal());
         }
     }
 

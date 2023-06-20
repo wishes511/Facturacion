@@ -11,7 +11,23 @@ package Modelo;
  */
 public class Motivosdev {
     private int idmotivo;
-    private String descripcion,estatus;
+    private String descripcion,estatus,tipodev,stock;
+
+    public String getTipodev() {
+        return tipodev;
+    }
+
+    public void setTipodev(String tipodev) {
+        this.tipodev = tipodev;
+    }
+
+    public String getStock() {
+        return stock;
+    }
+
+    public void setStock(String stock) {
+        this.stock = stock;
+    }
 
     public int getIdmotivo() {
         return idmotivo;

@@ -11,9 +11,17 @@ package Modelo;
  */
 public class Ddevolucion implements java.io.Serializable{
     private int id_ddevolucion,id_devolucion,id_kardex,idmaterial,renglon,id_dpedimento,id_kardexnuevo,
-            id_pedido,id_dpedido,id_cargo,id_material,id_pedimento;
+            id_pedido,id_dpedido,id_cargo,id_material,id_pedimento,id_documento;
     private String dureza,descripcion,estatus,pedido,fecha,serie;
     private double precio,cantidad, importe;
+
+    public int getId_documento() {
+        return id_documento;
+    }
+
+    public void setId_documento(int id_documento) {
+        this.id_documento = id_documento;
+    }
 
     public int getId_pedimento() {
         return id_pedimento;

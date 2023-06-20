@@ -375,7 +375,7 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select top(100) id_documento,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formapago,metodopago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal,d.usocfdi,d.regimen,moneda,cadenaoriginal,descmetodopago\n"
+            String sql = "select top(100) id_documento,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formapago,metodopago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal,d.usocfdi,d.regimen,moneda,cadenaoriginal,descmetodopago,c.id_cliente\n"
                     + "from documento d\n"
                     + "join ACobranzaTpu.dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
                     + "where (d.id_cliente like '%" + folio + "%') and serie='" + serie + "'";
@@ -400,6 +400,7 @@ public class sqlfactura {
                 f.setMoneda(rs.getString("moneda"));
                 f.setCadenaorig(rs.getString("cadenaoriginal"));
                 f.setDescmetodop(rs.getString("descmetodopago"));
+                f.setIdcliente(rs.getInt("id_cliente"));
                 arr.add(f);
             }
             rs.close();

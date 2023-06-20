@@ -913,7 +913,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                     d.setIdcargo(arrcargoseleccion.get(i).getId_cargo());
 
                     double sa;
-                    double pa;
+                    double pa; 
                     double sal;
                     sa = (f.getMoneda().equals("MXN")) ? arrcargoseleccion.get(i).getSaldomx() : arrcargoseleccion.get(i).getSaldo();
                     d.setSaldo(sa-arrcargoseleccion.get(i).getDescuento());

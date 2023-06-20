@@ -13,9 +13,41 @@ import java.util.ArrayList;
  */
 public class Devolucion implements java.io.Serializable{
     private int id_dev,id_cliente,id_concepto,id_kardex,id_kardexnuevo,id_motivo,id_cargoenc,id_pedido;
-    private String nombre,fecha,desc,serie,estatus,usuario;
+    private String nombre,fecha,desc,serie,estatus,usuario,npedido,nmotivo,foliofac,stock;
     private double total;
     private ArrayList<Ddevolucion>arr = new ArrayList<>();
+
+    public String getStock() {
+        return stock;
+    }
+
+    public void setStock(String stock) {
+        this.stock = stock;
+    }
+
+    public String getFoliofac() {
+        return foliofac;
+    }
+
+    public void setFoliofac(String foliofac) {
+        this.foliofac = foliofac;
+    }
+
+    public String getNmotivo() {
+        return nmotivo;
+    }
+
+    public void setNmotivo(String nmotivo) {
+        this.nmotivo = nmotivo;
+    }
+
+    public String getNpedido() {
+        return npedido;
+    }
+
+    public void setNpedido(String npedido) {
+        this.npedido = npedido;
+    }
 
     public String getUsuario() {
         return usuario;

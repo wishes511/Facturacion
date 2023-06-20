@@ -5,6 +5,7 @@
  */
 package Paneltpu;
 
+import DAO.daoConceptos;
 import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
@@ -600,11 +601,12 @@ public class fac2tpu1rem extends javax.swing.JPanel {
     public void cargacombos() {//catalogos de Sat
         DefaultComboBoxModel cliente = new DefaultComboBoxModel();
         DefaultComboBoxModel cuentas = new DefaultComboBoxModel();
-        daofactura d = new daofactura();
         for (Cliente arruso1 : arrcliente) {
             cliente.addElement(arruso1.getNombre());
         }
-        arrcuentas = d.getalcuentastpu(cobB, "60");
+        daoConceptos d = new daoConceptos();
+        arrcuentas = d.getConceptos(cpt, 60);
+//        arrcuentas = d.getalcuentastpu(cobB, "60");
         for (ConceptosES arruso1 : arrcuentas) {
             cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
         }

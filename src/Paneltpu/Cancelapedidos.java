@@ -38,7 +38,7 @@ public class Cancelapedidos extends javax.swing.JDialog {
     int id_pedido = 0;
     int id_cliente = 0;
     String nombre;
-    Usuarios u ;
+    Usuarios u;
     ArrayList<ConceptosES> arrc = new ArrayList<>();
     ArrayList<Motivosdev> arrm = new ArrayList<>();
     ArrayList<Ddevolucion> arrd = new ArrayList<>();
@@ -232,42 +232,49 @@ public class Cancelapedidos extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-        Devolucion dev = new Devolucion();
-        java.util.Date date = new Date();
-        daoDevolucion dd = new daoDevolucion();
-        daokardexrcpt dk = new daokardexrcpt();
-        DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        dev.setId_concepto(arrc.get(0).getId_concepto());
-        dev.setId_motivo(arrm.get(JcMotivo.getSelectedIndex()).getIdmotivo());
-        dev.setFecha(sdf.format(date));
-        dev.setId_kardex(arrd.get(0).getId_kardex());
-        dev.setId_pedido(arrd.get(0).getId_pedido());
-        dev.setDesc(JtObservaciones.getText().toUpperCase());
-        dev.setNombre("");
-        dev.setId_cliente(id_cliente);
-        dev.setSerie("B");
-        dev.setId_cargoenc(arrd.get(0).getId_cargo());
-        dev.setUsuario(u.getUsuario());
-        dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
-        ArrayList<Ddevolucion> arrdn = new ArrayList<>();
-        for (int i = 0; i < arrd.size(); i++) {
-            if (JtDetalle.getValueAt(i, 6).toString().equals("*")) {
-                Ddevolucion d = arrd.get(i);
-                double cant = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 4).toString())));
-                double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
-                double importe = Double.parseDouble(formateador.format(cant * precio));
-                d.setImporte(importe);
-                d.setCantidad(cant);
-                d.setPrecio(precio);
-                arrdn.add(d);
+        if (JtObservaciones.getText().isEmpty() || JtObservaciones.getText().length()<15) {
+            JOptionPane.showMessageDialog(null, "Ingresa una descripcion del porque es la devolucion o un numero minimo de 15 caracteres");
+            JtObservaciones.requestFocus();
+        } else {
+            Devolucion dev = new Devolucion();
+            java.util.Date date = new Date();
+            daoDevolucion dd = new daoDevolucion();
+            daokardexrcpt dk = new daokardexrcpt();
+            DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            dev.setId_concepto(arrc.get(0).getId_concepto());
+            dev.setId_motivo(arrm.get(JcMotivo.getSelectedIndex()).getIdmotivo());
+            
+            dev.setFecha(sdf.format(date));
+            dev.setId_kardex(arrd.get(0).getId_kardex());
+            dev.setId_pedido(arrd.get(0).getId_pedido());
+            dev.setDesc(JtObservaciones.getText().toUpperCase());
+            dev.setNombre(nombre);
+            dev.setId_cliente(id_cliente);
+            dev.setSerie("B");
+            dev.setId_cargoenc(arrd.get(0).getId_cargo());
+            dev.setUsuario(u.getUsuario());
+            dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
+            ArrayList<Ddevolucion> arrdn = new ArrayList<>();
+            for (int i = 0; i < arrd.size(); i++) {
+                if (JtDetalle.getValueAt(i, 6).toString().equals("*")) {
+                    Ddevolucion d = arrd.get(i);
+                    double cant = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 4).toString())));
+                    double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
+                    double importe = Double.parseDouble(formateador.format(cant * precio));
+                    d.setImporte(importe);
+                    d.setCantidad(cant);
+                    d.setPrecio(precio);
+                    arrdn.add(d);
+                }
+            }
+            dev.setArr(arrdn);
+            if (dd.newdev(cpt, dev, cob)) {
+                JOptionPane.showMessageDialog(null, "Completo");
+                dispose();
             }
         }
-        dev.setArr(arrdn);
-        if(dd.newdev(cpt, dev, cob)){
-            JOptionPane.showMessageDialog(null, "Completo");
-            dispose();
-        }
+
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void JcMotivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcMotivoActionPerformed
@@ -286,7 +293,7 @@ public class Cancelapedidos extends javax.swing.JDialog {
     public void muestradatos(String nombre, String folio, int id, int cliente) {
         JlNombre.setText(nombre);
         JlFolio.setText(folio);
-        this.nombre=nombre;
+        this.nombre = nombre;
         id_pedido = id;
         id_cliente = cliente;
         rellenacomboandgetconcepto();

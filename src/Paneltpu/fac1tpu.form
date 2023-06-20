@@ -201,9 +201,9 @@
           <Color blue="ff" green="ff" red="ff" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/Recursos/Cancel_icon-icons.com_54824.png"/>
+          <Image iconType="3" name="/Recursos/Return_icon-icons.com_54801.png"/>
         </Property>
-        <Property name="toolTipText" type="java.lang.String" value="Cancela XML"/>
+        <Property name="toolTipText" type="java.lang.String" value="Devoluciones"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="null"/>
         </Property>

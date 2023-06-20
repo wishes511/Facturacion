@@ -15,6 +15,7 @@ import Server.ServerProccpt;
 import Server.Serverprod;
 import Server.Serverylite;
 import Tpu.ClientesTpu;
+import Tpu.Devolucionestpu;
 import Tpu.Durezastpu;
 import Tpu.EntradasSalidas;
 import Tpu.FacturacionTpu;
@@ -32,8 +33,6 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -168,6 +167,7 @@ public final class Principal extends javax.swing.JFrame {
         JmRemision = new javax.swing.JMenuItem();
         JmPedimento = new javax.swing.JMenuItem();
         JmEntradasS = new javax.swing.JMenuItem();
+        JmDevoluciones = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         JlSerie = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -468,6 +468,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmTpu.add(JmEntradasS);
+
+        JmDevoluciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Return_icon-icons.com_54801.png"))); // NOI18N
+        JmDevoluciones.setText("Devoluciones");
+        JmDevoluciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmDevolucionesActionPerformed(evt);
+            }
+        });
+        JmTpu.add(JmDevoluciones);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Produccion ATH ");
@@ -1093,6 +1102,17 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmEntradasSActionPerformed
 
+    private void JmDevolucionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDevolucionesActionPerformed
+        try {
+            Devolucionestpu p = new Devolucionestpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmDevolucionesActionPerformed
+
     private void verificausuario() {
         jp.setVisible(true);
         jp.requestFocus();
@@ -1478,6 +1498,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu JmCobranza;
     private javax.swing.JMenu JmCobranzatpu;
     private javax.swing.JMenu JmConf;
+    private javax.swing.JMenuItem JmDevoluciones;
     private javax.swing.JMenuItem JmDureza;
     private javax.swing.JMenuItem JmEmpresas;
     private javax.swing.JMenuItem JmEntradasS;

@@ -41,4 +41,16 @@ public class daoDevolucion implements Devoluciones {
         return s.newdevolucion(c, d, cob);
     }
 
+    @Override
+    public ArrayList<Ddevolucion> arrfac(Connection c, int folio) {
+        sqldevolucion s = new sqldevolucion();
+        return s.getpedidowithpedidofac(c, folio);
+    }
+
+    @Override
+    public ArrayList<Devolucion> getalldevswithn(Connection c, String serie) {
+        sqldevolucion s = new sqldevolucion();
+        return s.getalldevs(c,serie);
+    }
+
 }
