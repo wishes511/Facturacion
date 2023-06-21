@@ -520,4 +520,17 @@ public class daofactura implements Facturas {
         return s.getdocspagostpu(cpt, fol, serie);
     }
 
+    /**
+     *Busca una nota de credito o pago de acuerdo al id de la factura
+     * @param c
+     * @param iddoc
+     * @param serie
+     * @return
+     */
+    @Override
+    public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie) {
+        sqlfactura s = new sqlfactura();
+        return s.searchPagncrtofac(c, iddoc, serie);
+    }
+
 }

@@ -19,6 +19,8 @@ public interface Devoluciones {
 
     public ArrayList<Motivosdev> arrmotivos(Connection c);
     
+    public int verificadevs (Connection c, String serie, int idped);
+    
     public ArrayList<Devolucion> arr(Connection c, String s);
     
     public ArrayList<Ddevolucion> arr(Connection c, int id_pedido);
@@ -28,4 +30,10 @@ public interface Devoluciones {
     public boolean newdev(Connection c, Devolucion d, Connection cob);
     
     public ArrayList<Devolucion> getalldevswithn(Connection c,String serie);
+    
+    public ArrayList<Ddevolucion> getpedscancel(Connection c,int iddoc,String serie, String bdcob);
+    
+    public ArrayList<Ddevolucion> getdevolucion(Connection c, int id);
+    
+    public boolean nuevacancelacion(Connection c, Connection cob, Devolucion d, ArrayList<Ddevolucion> arrs);
 }

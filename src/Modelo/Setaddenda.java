@@ -80,7 +80,7 @@ public class Setaddenda {
                 requestpayment.appendChild(getlineItem(doc, i));
             }
             requestpayment.appendChild(getTotalamouunt(doc, f.getSubtotal()));
-            requestpayment.appendChild(getTotalallowance(doc));
+            requestpayment.appendChild(getTotalallowance(doc,f.getDescuento()));
             requestpayment.appendChild(getBaseamount(doc, f.getSubtotal()));
             requestpayment.appendChild(getTax(doc,f.getImpuestos()));
             requestpayment.appendChild(getPayableamount(doc, f.getTotal()));
@@ -347,13 +347,13 @@ public class Setaddenda {
      * @param doc
      * @return Elemento de total allowance
      */
-    private Element getTotalallowance(Document doc) {
+    private Element getTotalallowance(Document doc, double d) {
         Element Totalallowance = doc.createElement("TotalAllowanceCharge");
         Totalallowance.setAttribute("allowanceOrChargeType", "ALLOWANCE");
         Element sp = doc.createElement("specialServicesType");
         sp.setTextContent("TD");
         Element Amount = doc.createElement("Amount");
-        Amount.setTextContent("0");
+        Amount.setTextContent(d+"");
         Totalallowance.appendChild(sp);
         Totalallowance.appendChild(Amount);
         return Totalallowance;

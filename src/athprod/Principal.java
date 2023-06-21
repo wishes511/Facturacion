@@ -69,7 +69,7 @@ public final class Principal extends javax.swing.JFrame {
     String empresa;
     int cont = 0;
     String admin = "0";
-    String prod = "0";
+    String prod = "1";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -1389,7 +1389,7 @@ public final class Principal extends javax.swing.JFrame {
 //                conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
                 conexion.setCpttpu(s.getconexionTPU("Tpucpt"));
                 conexion.setCobranzatpu(s.getconexionTPU("ACobranzatpu"));
-                conexion.setCobranzatpuB(s.getconexionB("RACobranzaTpu"));
+                conexion.setCobranzatpuB(s.getconexionTPU("RACobranzatpu"));
 //                conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
                 liteusuario = s1.getconexionusuarios();
                 conexion.setLiteusuario(liteusuario);

@@ -12,10 +12,26 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public class Devolucion implements java.io.Serializable{
-    private int id_dev,id_cliente,id_concepto,id_kardex,id_kardexnuevo,id_motivo,id_cargoenc,id_pedido;
+    private int id_dev,id_cliente,id_concepto,id_kardex,id_kardexnuevo,id_motivo,id_cargoenc,id_pedido,cuenta1,cuenta2;
     private String nombre,fecha,desc,serie,estatus,usuario,npedido,nmotivo,foliofac,stock;
     private double total;
     private ArrayList<Ddevolucion>arr = new ArrayList<>();
+
+    public int getCuenta1() {
+        return cuenta1;
+    }
+
+    public void setCuenta1(int cuenta1) {
+        this.cuenta1 = cuenta1;
+    }
+
+    public int getCuenta2() {
+        return cuenta2;
+    }
+
+    public void setCuenta2(int cuenta2) {
+        this.cuenta2 = cuenta2;
+    }
 
     public String getStock() {
         return stock;

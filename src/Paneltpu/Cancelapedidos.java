@@ -244,7 +244,7 @@ public class Cancelapedidos extends javax.swing.JDialog {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             dev.setId_concepto(arrc.get(0).getId_concepto());
             dev.setId_motivo(arrm.get(JcMotivo.getSelectedIndex()).getIdmotivo());
-            
+            dev.setStock(arrm.get(JcMotivo.getSelectedIndex()).getStock());
             dev.setFecha(sdf.format(date));
             dev.setId_kardex(arrd.get(0).getId_kardex());
             dev.setId_pedido(arrd.get(0).getId_pedido());
@@ -256,9 +256,11 @@ public class Cancelapedidos extends javax.swing.JDialog {
             dev.setUsuario(u.getUsuario());
             dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
             ArrayList<Ddevolucion> arrdn = new ArrayList<>();
+            int renglon=1;
             for (int i = 0; i < arrd.size(); i++) {
                 if (JtDetalle.getValueAt(i, 6).toString().equals("*")) {
                     Ddevolucion d = arrd.get(i);
+                    d.setRenglon(renglon);
                     double cant = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 4).toString())));
                     double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
                     double importe = Double.parseDouble(formateador.format(cant * precio));
@@ -267,6 +269,7 @@ public class Cancelapedidos extends javax.swing.JDialog {
                     d.setPrecio(precio);
                     arrdn.add(d);
                 }
+                renglon++;
             }
             dev.setArr(arrdn);
             if (dd.newdev(cpt, dev, cob)) {

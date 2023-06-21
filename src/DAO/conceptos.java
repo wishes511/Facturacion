@@ -5,7 +5,6 @@
  */
 package DAO;
 
-
 import Modelo.ConceptosES;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -15,8 +14,11 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public interface conceptos {
+
     public ArrayList<ConceptosES> getConceptos(Connection c);
-    public ArrayList<ConceptosES> getConceptos(Connection c,int cuenta);
-    
-    
+
+    public ArrayList<ConceptosES> getConceptos(Connection c, int cuenta);
+
+    public ConceptosES getConceptos(Connection c, int cuenta, int subcuenta);
+
 }

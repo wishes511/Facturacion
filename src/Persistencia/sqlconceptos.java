@@ -44,9 +44,10 @@ public class sqlconceptos {
 
     /**
      * Conceptos de tpu
+     *
      * @param con
      * @param cuenta
-     * @return 
+     * @return
      */
     public ArrayList<ConceptosES> getConceptosES(Connection con, int cuenta) {//cobranza
         ArrayList<ConceptosES> arr = new ArrayList<>();
@@ -69,6 +70,30 @@ public class sqlconceptos {
             Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
+    }
+
+    public ConceptosES getConceptosES(Connection con, int cuenta, int subcuenta) {//cobranza
+        ConceptosES c = new ConceptosES();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select id_concepto,cuenta,subcuenta,descripcion "
+                    + "from Conceptos "
+                    + "where cuenta=" + cuenta + " and subcuenta=" + subcuenta + " order by cuenta");
+            rs = st.executeQuery();
+            while (rs.next()) {
+
+                c.setId_concepto(rs.getInt("id_concepto"));
+                c.setCuenta(rs.getString("cuenta"));
+                c.setSubcuenta(rs.getString("subcuenta"));
+                c.setNombre(rs.getString("descripcion"));
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return c;
     }
 
 }

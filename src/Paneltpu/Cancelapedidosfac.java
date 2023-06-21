@@ -249,15 +249,18 @@ public class Cancelapedidosfac extends javax.swing.JDialog {
             dev.setId_pedido(arrd.get(0).getId_pedido());
             dev.setDesc(JtObservaciones.getText().toUpperCase());
             dev.setNombre(nombre);
+            dev.setStock(arrm.get(JcMotivo.getSelectedIndex()).getStock());
             dev.setId_cliente(id_cliente);
             dev.setSerie("A");
             dev.setId_cargoenc(arrd.get(0).getId_cargo());
             dev.setUsuario(u.getUsuario());
             dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
             ArrayList<Ddevolucion> arrdn = new ArrayList<>();
+            int renglon=1;
             for (int i = 0; i < arrd.size(); i++) {
                 if (JtDetalle.getValueAt(i, 6).toString().equals("*")) {
                     Ddevolucion d = arrd.get(i);
+                    d.setRenglon(renglon);
                     double cant = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 4).toString())));
                     double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
                     double importe = Double.parseDouble(formateador.format(cant * precio));
@@ -266,6 +269,7 @@ public class Cancelapedidosfac extends javax.swing.JDialog {
                     d.setPrecio(precio);
                     arrdn.add(d);
                 }
+                renglon++;
             }
             dev.setArr(arrdn);
             if (dd.newdev(cpt, dev, cob)) {
@@ -292,6 +296,7 @@ public class Cancelapedidosfac extends javax.swing.JDialog {
     public void muestradatos(String nombre, String folio, int iddoc, int cliente) {
         JlNombre.setText(nombre);
         JlFolio.setText(folio);
+        this.nombre=nombre;
         this.iddoc = iddoc;
         id_cliente = cliente;
         rellenacomboandgetconcepto();

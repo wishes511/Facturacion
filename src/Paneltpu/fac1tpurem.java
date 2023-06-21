@@ -5,10 +5,16 @@
  */
 package Paneltpu;
 
+import DAO.daoConceptos;
+import DAO.daoDevolucion;
 import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
+import DAO.daokardexrcpt;
+import Modelo.ConceptosES;
+import Modelo.Ddevolucion;
+import Modelo.Devolucion;
 import Modelo.Empresas;
 import Modelo.Formadepago;
 import Modelo.KardexCmp;
@@ -22,7 +28,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -30,6 +38,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
@@ -85,6 +94,7 @@ public class fac1tpurem extends javax.swing.JPanel {
 
         Pop = new javax.swing.JPopupMenu();
         JbCancelar1 = new javax.swing.JMenuItem();
+        Cancelamiento = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -93,8 +103,8 @@ public class fac1tpurem extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
         JlSerie = new javax.swing.JLabel();
 
-        JbCancelar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
-        JbCancelar1.setText("Cancelar salida");
+        JbCancelar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Return_icon-icons.com_54801.png"))); // NOI18N
+        JbCancelar1.setText("Devoluacion salida");
         JbCancelar1.setToolTipText("");
         JbCancelar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -102,6 +112,16 @@ public class fac1tpurem extends javax.swing.JPanel {
             }
         });
         Pop.add(JbCancelar1);
+
+        Cancelamiento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
+        Cancelamiento.setText("Cancelacion Pedido");
+        Cancelamiento.setToolTipText("");
+        Cancelamiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelamientoActionPerformed(evt);
+            }
+        });
+        Pop.add(Cancelamiento);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -197,7 +217,7 @@ public class fac1tpurem extends javax.swing.JPanel {
                     .addComponent(jLabel1)
                     .addComponent(JlSerie))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 523, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -219,10 +239,10 @@ public class fac1tpurem extends javax.swing.JPanel {
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
 
         int row = JtDetalle.getSelectedRow();
-        String estados=arrfactura.get(row).getEstatus()+"";
+        String estados = arrfactura.get(row).getEstatus() + "";
         if (arrfactura.get(row).getSerie().equals("B") && estados.equals("1")) {
             JbCancelar1.setVisible(true);
-        }else{
+        } else {
             JbCancelar1.setVisible(false);
         }
         if (evt.getButton() == 3) {// activar con clic derecho
@@ -266,15 +286,87 @@ public class fac1tpurem extends javax.swing.JPanel {
 
     private void JbCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelar1ActionPerformed
         int row = JtDetalle.getSelectedRow();
-        Cancelapedidos can= new Cancelapedidos(null,true);
-        can.cpt=cpt;
-        can.cob=cobB;
-        can.u=u;
-        
-        can.muestradatos(arrfactura.get(row).getNombrecliente(), arrfactura.get(row).getPedido(),arrfactura.get(row).getId_pedido(),arrfactura.get(row).getIdcliente());
+        Cancelapedidos can = new Cancelapedidos(null, true);
+        can.cpt = cpt;
+        can.cob = cobB;
+        can.u = u;
+
+        can.muestradatos(arrfactura.get(row).getNombrecliente(), arrfactura.get(row).getPedido(), arrfactura.get(row).getId_pedido(), arrfactura.get(row).getIdcliente());
         can.setVisible(true);
         Buscanotas();
     }//GEN-LAST:event_JbCancelar1ActionPerformed
+
+    private void CancelamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelamientoActionPerformed
+        String botones[] = {"Aceptar", ""
+            + ""
+            + "Cancelar"};
+        int opcion = JOptionPane.showOptionDialog(this, "¿Estas seguro que deseas realizar la cancelacion?, \nRecuerda que ya no hay retroceso en este proceso", "ATHLETIC",
+                0, 0, null, botones, this);
+        if (opcion == JOptionPane.YES_OPTION) {
+            int row = JtDetalle.getSelectedRow();
+            boolean ncr = getdoccancel(arrfactura.get(row).getId(), "NCR");
+            boolean pag = getdoccancel(arrfactura.get(row).getId(), "PAG");
+            if (!ncr && !pag) {
+                daoDevolucion d = new daoDevolucion();
+                String bdcob = "ACobranzatpu";
+                ArrayList<Ddevolucion> arrd = d.getpedscancel(cpt, arrfactura.get(row).getId(), "A", bdcob);
+                ArrayList<Ddevolucion> arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
+                if (arrd.isEmpty() || arrdevpedimento.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Error al cancelar, contacta a sistemas");
+                } else {
+                    daokardexrcpt dk = new daokardexrcpt();
+                    daoConceptos dc = new daoConceptos();
+                    java.util.Date date = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                    ConceptosES cuentacancel = dc.getConceptos(cpt, 70, 20);
+                    ConceptosES cuentadevstock = dc.getConceptos(cpt, 20, 1);
+                    Devolucion dev = new Devolucion();
+                    dev.setCuenta1(cuentacancel.getId_concepto());
+                    dev.setCuenta2(cuentadevstock.getId_concepto());
+                    dev.setFecha(sdf.format(date));
+                    dev.setId_pedido(arrd.get(0).getId_pedido());
+                    dev.setNombre(arrfactura.get(row).getNombre());
+                    dev.setId_cliente(arrfactura.get(row).getIdcliente());
+                    dev.setSerie("A");
+                    dev.setId_cargoenc(arrd.get(0).getId_cargo());
+                    dev.setId_dev(arrd.get(0).getId_devolucion());
+                    dev.setUsuario(u.getUsuario());
+                    dev.setId_kardex(dk.maxkardexsincuenta(cpt));
+                    dev.setId_kardexnuevo(dev.getId_kardex() + 1);
+                    dev.setArr(arrd);
+                    if (d.nuevacancelacion(cpt, ACobranza, dev, arrdevpedimento)) {
+                        JOptionPane.showMessageDialog(null, "Proceso completo");
+                        Buscanotas();
+                        JtCliente.requestFocus();
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_CancelamientoActionPerformed
+
+    /**
+     * Funcion para corroborar que no haya algun documento relacionado con la
+     * factura Que debidamente dedbe ser cancelado
+     *
+     * @param id
+     * @param serie
+     * @return
+     */
+    private boolean getdoccancel(int id, String serie) {
+        boolean resp = true;
+        daofactura df = new daofactura();
+        ArrayList<factura> arrf = df.searchPagncrtofac(cpt, id, serie);
+        if (arrf.isEmpty()) {
+            resp = false;
+        } else {
+            String var = "";
+            for (factura arrf1 : arrf) {
+                var += arrf1.getReferencia() + "\n";
+            }
+            JOptionPane.showMessageDialog(null, "Necesitas cancelar estas " + serie + " para continuar:\n" + var);
+        }
+        return resp;
+    }
 
     private String getempresa(Connection c, String n) {
         daoempresa d = new daoempresa();
@@ -425,6 +517,7 @@ public class fac1tpurem extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem Cancelamiento;
     private javax.swing.JMenuItem JbCancelar1;
     private javax.swing.JLabel JlSerie;
     public javax.swing.JTextField JtCliente;

@@ -50,7 +50,31 @@ public class daoDevolucion implements Devoluciones {
     @Override
     public ArrayList<Devolucion> getalldevswithn(Connection c, String serie) {
         sqldevolucion s = new sqldevolucion();
-        return s.getalldevs(c,serie);
+        return s.getalldevs(c, serie);
+    }
+
+    @Override
+    public ArrayList<Ddevolucion> getpedscancel(Connection c, int iddoc, String serie, String bdcob) {
+        sqldevolucion s = new sqldevolucion();
+        return s.getpedidocancel(c, iddoc, serie,bdcob);
+    }
+
+    @Override
+    public ArrayList<Ddevolucion> getdevolucion(Connection c, int id) {
+        sqldevolucion s = new sqldevolucion();
+        return s.getdevolucion(c, id);
+    }
+
+    @Override
+    public boolean nuevacancelacion(Connection c, Connection cob, Devolucion d, ArrayList<Ddevolucion> arrs) {
+        sqldevolucion s = new sqldevolucion();
+        return s.newcancelacion(c, cob, d, arrs);
+    }
+
+    @Override
+    public int verificadevs(Connection c, String serie, int idped) {
+        sqldevolucion s = new sqldevolucion();
+        return s.verificadevs(c, serie, idped);
     }
 
 }

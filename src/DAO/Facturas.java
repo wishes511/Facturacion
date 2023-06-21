@@ -208,6 +208,7 @@ public interface Facturas {
     
     public ArrayList<Dfactura> getfactwithseriedetallado(Connection rcpt, String factura, int año);
     
-   
     public boolean updateclientefacv2(Connection con, Cliente c, int id_documento);
+    
+    public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie);
 }

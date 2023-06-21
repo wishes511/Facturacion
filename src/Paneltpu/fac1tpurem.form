@@ -11,13 +11,25 @@
         <MenuItem class="javax.swing.JMenuItem" name="JbCancelar1">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Recursos/Cancel_icon-icons.com_54824.png"/>
+              <Image iconType="3" name="/Recursos/Return_icon-icons.com_54801.png"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Cancelar salida"/>
+            <Property name="text" type="java.lang.String" value="Devoluacion salida"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JbCancelar1ActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="Cancelamiento">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Recursos/Cancel_icon-icons.com_54824.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Cancelacion Pedido"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CancelamientoActionPerformed"/>
           </Events>
         </MenuItem>
       </SubComponents>
@@ -84,7 +96,7 @@
                   <Component id="JlSerie" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="523" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="520" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>

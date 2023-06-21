@@ -28,6 +28,11 @@ public class daoConceptos implements conceptos{
         return s.getConceptosES(c,cuenta);
     }
 
+    @Override
+    public ConceptosES getConceptos(Connection c, int cuenta, int subcuenta) {
+        sqlconceptos s = new sqlconceptos();
+        return s.getConceptosES(c, cuenta, subcuenta);
+    }
     
     
 }
