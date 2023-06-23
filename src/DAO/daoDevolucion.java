@@ -56,7 +56,7 @@ public class daoDevolucion implements Devoluciones {
     @Override
     public ArrayList<Ddevolucion> getpedscancel(Connection c, int iddoc, String serie, String bdcob) {
         sqldevolucion s = new sqldevolucion();
-        return s.getpedidocancel(c, iddoc, serie,bdcob);
+        return s.getpedidocancel(c, iddoc, serie, bdcob);
     }
 
     @Override
@@ -75,6 +75,30 @@ public class daoDevolucion implements Devoluciones {
     public int verificadevs(Connection c, String serie, int idped) {
         sqldevolucion s = new sqldevolucion();
         return s.verificadevs(c, serie, idped);
+    }
+
+    @Override
+    public ArrayList<Ddevolucion> getpedscancelrem(Connection c, int iddoc, String serie, String bdcob) {
+        sqldevolucion s = new sqldevolucion();
+        return s.getpedidocancelrem(c, iddoc, serie, bdcob);
+    }
+
+    @Override
+    public int verificadevsped(Connection c, String serie, int idped) {
+        sqldevolucion s = new sqldevolucion();
+        return s.verificadevsped(c, serie, idped);
+    }
+
+    @Override
+    public ArrayList<Ddevolucion> getpedidocancelsindev(Connection c, int iddoc, String serie, String bdcob) {
+        sqldevolucion s = new sqldevolucion();
+        return s.getpedidocancelsindev(c, iddoc, serie, bdcob);
+    }
+
+    @Override
+    public ArrayList<Ddevolucion> getpedidocancelsindevfac(Connection c, int iddoc, String serie, String bdcob) {
+        sqldevolucion s = new sqldevolucion();
+        return s.getpedidocancelsindevfac(c, iddoc, serie, bdcob);
     }
 
 }

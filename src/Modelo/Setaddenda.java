@@ -79,9 +79,9 @@ public class Setaddenda {
             for(int i=0;i<na.getArrad().size();i++){
                 requestpayment.appendChild(getlineItem(doc, i));
             }
-            requestpayment.appendChild(getTotalamouunt(doc, f.getSubtotal()));
+            requestpayment.appendChild(getTotalamouunt(doc, f.getSubtotal()-f.getDescuento()));
             requestpayment.appendChild(getTotalallowance(doc,f.getDescuento()));
-            requestpayment.appendChild(getBaseamount(doc, f.getSubtotal()));
+            requestpayment.appendChild(getBaseamount(doc, f.getSubtotal()-f.getDescuento()));
             requestpayment.appendChild(getTax(doc,f.getImpuestos()));
             requestpayment.appendChild(getPayableamount(doc, f.getTotal()));
             requestpayment.appendChild(getCadenaO(doc, f.getCadenaorig()));

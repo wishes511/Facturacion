@@ -21,6 +21,8 @@ public interface Devoluciones {
     
     public int verificadevs (Connection c, String serie, int idped);
     
+    public int verificadevsped(Connection c, String serie, int idped);
+    
     public ArrayList<Devolucion> arr(Connection c, String s);
     
     public ArrayList<Ddevolucion> arr(Connection c, int id_pedido);
@@ -32,6 +34,12 @@ public interface Devoluciones {
     public ArrayList<Devolucion> getalldevswithn(Connection c,String serie);
     
     public ArrayList<Ddevolucion> getpedscancel(Connection c,int iddoc,String serie, String bdcob);
+    
+    public ArrayList<Ddevolucion> getpedscancelrem(Connection c,int iddoc,String serie, String bdcob);
+    
+    public ArrayList<Ddevolucion> getpedidocancelsindev(Connection c,int iddoc,String serie, String bdcob);
+    
+    public ArrayList<Ddevolucion> getpedidocancelsindevfac(Connection c,int iddoc,String serie, String bdcob);
     
     public ArrayList<Ddevolucion> getdevolucion(Connection c, int id);
     

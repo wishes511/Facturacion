@@ -104,7 +104,7 @@ public class fac1tpurem extends javax.swing.JPanel {
         JlSerie = new javax.swing.JLabel();
 
         JbCancelar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Return_icon-icons.com_54801.png"))); // NOI18N
-        JbCancelar1.setText("Devoluacion salida");
+        JbCancelar1.setText("Devolucion salida");
         JbCancelar1.setToolTipText("");
         JbCancelar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,9 +242,12 @@ public class fac1tpurem extends javax.swing.JPanel {
         String estados = arrfactura.get(row).getEstatus() + "";
         if (arrfactura.get(row).getSerie().equals("B") && estados.equals("1")) {
             JbCancelar1.setVisible(true);
+            Cancelamiento.setVisible(true);
         } else {
             JbCancelar1.setVisible(false);
+            Cancelamiento.setVisible(false);
         }
+
         if (evt.getButton() == 3) {// activar con clic derecho
             Pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
@@ -285,15 +288,21 @@ public class fac1tpurem extends javax.swing.JPanel {
     }//GEN-LAST:event_JlSerieKeyPressed
 
     private void JbCancelar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelar1ActionPerformed
-        int row = JtDetalle.getSelectedRow();
-        Cancelapedidos can = new Cancelapedidos(null, true);
-        can.cpt = cpt;
-        can.cob = cobB;
-        can.u = u;
+        daoDevolucion de = new daoDevolucion();
+        int rows = de.verificadevsped(cpt, "B", arrfactura.get(JtDetalle.getSelectedRow()).getId_pedido());
+        if (rows != 0) {
+            JOptionPane.showMessageDialog(null, "Ya hay una devolucion existente ", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            int row = JtDetalle.getSelectedRow();
+            Cancelapedidos can = new Cancelapedidos(null, true);
+            can.cpt = cpt;
+            can.cob = cobB;
+            can.u = u;
 
-        can.muestradatos(arrfactura.get(row).getNombrecliente(), arrfactura.get(row).getPedido(), arrfactura.get(row).getId_pedido(), arrfactura.get(row).getIdcliente());
-        can.setVisible(true);
-        Buscanotas();
+            can.muestradatos(arrfactura.get(row).getNombrecliente(), arrfactura.get(row).getPedido(), arrfactura.get(row).getId_pedido(), arrfactura.get(row).getIdcliente());
+            can.setVisible(true);
+            Buscanotas();
+        }
     }//GEN-LAST:event_JbCancelar1ActionPerformed
 
     private void CancelamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelamientoActionPerformed
@@ -306,40 +315,51 @@ public class fac1tpurem extends javax.swing.JPanel {
             int row = JtDetalle.getSelectedRow();
             boolean ncr = getdoccancel(arrfactura.get(row).getId(), "NCR");
             boolean pag = getdoccancel(arrfactura.get(row).getId(), "PAG");
+            ArrayList<Ddevolucion> arrd = new ArrayList<>();
+            ArrayList<Ddevolucion> arrdevpedimento = new ArrayList();
+            Devolucion dev = new Devolucion();
+            String bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+//            String bdcob = "RACobranzatpu.dbo.Cargo c on p.pedido=c.referencia";
             if (!ncr && !pag) {
                 daoDevolucion d = new daoDevolucion();
-                String bdcob = "ACobranzatpu";
-                ArrayList<Ddevolucion> arrd = d.getpedscancel(cpt, arrfactura.get(row).getId(), "A", bdcob);
-                ArrayList<Ddevolucion> arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
-                if (arrd.isEmpty() || arrdevpedimento.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Error al cancelar, contacta a sistemas");
-                } else {
-                    daokardexrcpt dk = new daokardexrcpt();
-                    daoConceptos dc = new daoConceptos();
-                    java.util.Date date = new Date();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                    ConceptosES cuentacancel = dc.getConceptos(cpt, 70, 20);
-                    ConceptosES cuentadevstock = dc.getConceptos(cpt, 20, 1);
-                    Devolucion dev = new Devolucion();
-                    dev.setCuenta1(cuentacancel.getId_concepto());
-                    dev.setCuenta2(cuentadevstock.getId_concepto());
-                    dev.setFecha(sdf.format(date));
-                    dev.setId_pedido(arrd.get(0).getId_pedido());
-                    dev.setNombre(arrfactura.get(row).getNombre());
-                    dev.setId_cliente(arrfactura.get(row).getIdcliente());
-                    dev.setSerie("A");
-                    dev.setId_cargoenc(arrd.get(0).getId_cargo());
-                    dev.setId_dev(arrd.get(0).getId_devolucion());
-                    dev.setUsuario(u.getUsuario());
+                daokardexrcpt dk = new daokardexrcpt();
+                int rows = d.verificadevsped(cpt, "B", arrfactura.get(JtDetalle.getSelectedRow()).getId_pedido());
+//                Verifica si hay devoluciones o no, si tiene entra sino solo hace el regreso al kardex
+                if (rows != 0) {
+                    arrd = d.getpedscancelrem(cpt, arrfactura.get(row).getId_pedido(), "B", bdcob);
+                    arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
                     dev.setId_kardex(dk.maxkardexsincuenta(cpt));
                     dev.setId_kardexnuevo(dev.getId_kardex() + 1);
-                    dev.setArr(arrd);
-                    if (d.nuevacancelacion(cpt, ACobranza, dev, arrdevpedimento)) {
-                        JOptionPane.showMessageDialog(null, "Proceso completo");
-                        Buscanotas();
-                        JtCliente.requestFocus();
-                    }
+                } else {
+                    arrd = d.getpedidocancelsindev(cpt, arrfactura.get(row).getId_pedido(), "B", bdcob);
+                    dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
                 }
+//                if (arrd.isEmpty() || arrdevpedimento.isEmpty()) {
+//                    JOptionPane.showMessageDialog(null, "Error al cancelar, contacta a sistemas");
+//                } else {
+
+                daoConceptos dc = new daoConceptos();
+                java.util.Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                ConceptosES cuentacancel = dc.getConceptos(cpt, 70, 20);
+                ConceptosES cuentadevstock = dc.getConceptos(cpt, 20, 1);
+                dev.setCuenta1(cuentacancel.getId_concepto());
+                dev.setCuenta2(cuentadevstock.getId_concepto());
+                dev.setFecha(sdf.format(date));
+                dev.setId_pedido(arrd.get(0).getId_pedido());
+                dev.setNombre(arrfactura.get(row).getNombre());
+                dev.setId_cliente(arrfactura.get(row).getIdcliente());
+                dev.setSerie("B");
+                dev.setId_cargoenc(arrd.get(0).getId_cargo());
+                dev.setId_dev(arrd.get(0).getId_devolucion());
+                dev.setUsuario(u.getUsuario());
+                dev.setArr(arrd);
+                if (d.nuevacancelacion(cpt, cobB, dev, arrdevpedimento)) {
+                    JOptionPane.showMessageDialog(null, "Proceso completo");
+                    Buscanotas();
+                    JtCliente.requestFocus();
+                }
+
             }
         }
     }//GEN-LAST:event_CancelamientoActionPerformed

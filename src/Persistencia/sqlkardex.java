@@ -529,9 +529,8 @@ public class sqlkardex {
             PreparedStatement st;
             ResultSet rs;
             String sql = "SELECT  max(id_kardex)as folio FROM Kardex";
-            System.out.println(sql);
+            System.out.println("MAX KARDEx "+sql);
             st = con.prepareStatement(sql);
-
             rs = st.executeQuery();
             while (rs.next()) {
                 resp = rs.getInt("folio");

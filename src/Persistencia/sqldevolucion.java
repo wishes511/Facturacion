@@ -46,6 +46,14 @@ public class sqldevolucion {
         return arr;
     }
 
+    /**
+     * Verifica si la factura ya tiene devolucion
+     *
+     * @param c
+     * @param serie
+     * @param idped
+     * @return
+     */
     public int verificadevs(Connection c, String serie, int idped) {
         int rows = 0;
         try {
@@ -53,11 +61,32 @@ public class sqldevolucion {
             ResultSet rs;
             String sql = "select p.nombre \n"
                     + "from pedido p\n"
+                    + "join Devoluciones d on d.id_pedido=p.id_pedido join \n"
+                    + "documento doc on p.id_pedido=doc.pedidos\n"
+                    + "where p.serie='" + serie + "' and d.estatus='1' and id_documento=" + idped;
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                rows++;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqldevolucion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return rows;
+    }
+
+    public int verificadevsped(Connection c, String serie, int idped) {
+        int rows = 0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select p.nombre \n"
+                    + "from pedido p\n"
                     + "join Devoluciones d on d.id_pedido=p.id_pedido\n"
-                    + "where p.serie='"+serie+"' and d.estatus='1' and p.id_pedido="+idped;
-            st=c.prepareStatement(sql);
-            rs=st.executeQuery();
-            while(rs.next()){
+                    + "where p.serie='" + serie + "' and d.estatus='1' and p.id_pedido=" + idped;
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
                 rows++;
             }
         } catch (SQLException ex) {
@@ -83,8 +112,8 @@ public class sqldevolucion {
                     + "join Dpedido dp on dp.id_pedido=p.id_pedido\n"
                     + "join Materiales m on dp.id_material=m.id_material\n"
                     + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
-                    //                    + "join [192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
-                    + "join RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
+                    + "join [192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
+//                    + "join RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
                     + "where serie='B' and p.id_pedido=" + id;
             System.out.println("dev ped " + sql);
             st = c.prepareStatement(sql);
@@ -129,7 +158,7 @@ public class sqldevolucion {
             String sql = "select d.id_devolucion,k.id_material,k.dureza,k.renglon,k.cantidad,k.precio,k.id_kardex,id_pedimento,k.serie\n"
                     + "from devoluciones d\n"
                     + "join kardex k on k.id_kardex=d.id_kardex\n"
-                    + "where d.id_devolucion=" + id+" and d.estatus='1'";
+                    + "where d.id_devolucion=" + id + " and d.estatus='1'";
             System.out.println("dev id " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
@@ -243,7 +272,7 @@ public class sqldevolucion {
                     + "join Materiales m on dp.id_material=m.id_material\n"
                     + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
                     + "join Documento d on d.pedidos=p.id_pedido\n"
-                    + "join "+bdcob+".dbo.Cargo c on d.folio=c.referencia\n"
+                    + "join ACobranzatpu.dbo.Cargo c on d.folio=c.referencia\n"
                     + "join devoluciones dev on p.id_pedido=dev.id_pedido \n"
                     + "where p.serie='" + serie + "' and d.serie='FAC' and dev.estatus='1' and id_documento=" + id;
             System.out.println("dev ped " + sql);
@@ -267,6 +296,132 @@ public class sqldevolucion {
                 d.setIdmaterial(rs.getInt("id_material"));
                 d.setId_documento(rs.getInt("id_documento"));
                 d.setId_devolucion(rs.getInt("id_devolucion"));
+                arr.add(d);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqldevolucion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<Ddevolucion> getpedidocancelrem(Connection c, int id, String serie, String bdcob) {
+        ArrayList<Ddevolucion> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select distinct p.id_pedido,dp.id_dpedido,p.pedido,p.fecha,p.id_kardex,c.id_cargo,dp.id_dpedimento,dp.cantidad,\n"
+                    + "dp.costo,dp.importe,m.descripcion,dp.dureza,m.id_material,dpp.id_pedimento,dev.id_devolucion\n"
+                    + "from pedido p\n"
+                    + "join Dpedido dp on dp.id_pedido=p.id_pedido\n"
+                    + "join Materiales m on dp.id_material=m.id_material\n"
+                    + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
+                    + "join " + bdcob + "\n"
+                    + "join devoluciones dev on p.id_pedido=dev.id_pedido\n"
+                    + "where p.serie='" + serie + "' and dev.estatus='1' and p.id_pedido=" + id;
+            System.out.println("dev ped " + sql);
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Ddevolucion d = new Ddevolucion();
+                d.setId_pedido(rs.getInt("id_pedido"));
+                d.setId_dpedido(rs.getInt("id_dpedido"));
+                d.setPedido(rs.getString("pedido"));
+                d.setFecha(rs.getString("fecha"));
+                d.setId_kardex(rs.getInt("id_kardex"));
+                d.setId_cargo(rs.getInt("id_cargo"));
+                d.setId_dpedimento(rs.getInt("id_dpedimento"));
+                d.setId_pedimento(rs.getInt("id_pedimento"));
+                d.setCantidad(rs.getDouble("cantidad"));
+                d.setPrecio(rs.getDouble("costo"));
+                d.setImporte(rs.getDouble("importe"));
+                d.setDescripcion(rs.getString("descripcion"));
+                d.setDureza(rs.getString("dureza"));
+                d.setIdmaterial(rs.getInt("id_material"));
+                d.setId_devolucion(rs.getInt("id_devolucion"));
+                arr.add(d);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqldevolucion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<Ddevolucion> getpedidocancelsindev(Connection c, int id, String serie, String bdcob) {
+        ArrayList<Ddevolucion> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select distinct p.id_pedido,dp.id_dpedido,p.pedido,p.fecha,p.id_kardex,c.id_cargo,dp.id_dpedimento,dp.cantidad,\n"
+                    + "dp.costo,dp.importe,m.descripcion,dp.dureza,m.id_material,dpp.id_pedimento\n"
+                    + "from pedido p\n"
+                    + "join Dpedido dp on dp.id_pedido=p.id_pedido\n"
+                    + "join Materiales m on dp.id_material=m.id_material\n"
+                    + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
+                    + "join " + bdcob + "\n"
+                    + "where p.serie='" + serie + "' and p.id_pedido=" + id;
+            System.out.println("sin dev ped " + sql);
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Ddevolucion d = new Ddevolucion();
+                d.setId_pedido(rs.getInt("id_pedido"));
+                d.setId_dpedido(rs.getInt("id_dpedido"));
+                d.setPedido(rs.getString("pedido"));
+                d.setFecha(rs.getString("fecha"));
+                d.setId_kardex(rs.getInt("id_kardex"));
+                d.setId_cargo(rs.getInt("id_cargo"));
+                d.setId_dpedimento(rs.getInt("id_dpedimento"));
+                d.setId_pedimento(rs.getInt("id_pedimento"));
+                d.setCantidad(rs.getDouble("cantidad"));
+                d.setPrecio(rs.getDouble("costo"));
+                d.setImporte(rs.getDouble("importe"));
+                d.setDescripcion(rs.getString("descripcion"));
+                d.setDureza(rs.getString("dureza"));
+                d.setIdmaterial(rs.getInt("id_material"));
+                d.setId_devolucion(0);
+                arr.add(d);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqldevolucion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<Ddevolucion> getpedidocancelsindevfac(Connection c, int id, String serie, String bdcob) {
+        ArrayList<Ddevolucion> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select distinct p.id_pedido,dp.id_dpedido,p.pedido,p.fecha,p.id_kardex,c.id_cargo,dp.id_dpedimento,dp.cantidad,\n"
+                    + "dp.costo,dp.importe,m.descripcion,dp.dureza,m.id_material,dpp.id_pedimento,doc.id_documento\n"
+                    + "from pedido p\n"
+                    + "join Dpedido dp on dp.id_pedido=p.id_pedido\n"
+                    + "join Materiales m on dp.id_material=m.id_material\n"
+                    + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
+                    + "join documento doc on doc.pedidos=p.id_pedido\n"
+                    + "join " + bdcob + "\n"
+                    + "where p.serie='" + serie + "' and doc.id_documento=" + id;
+            System.out.println("sin dev ped " + sql);
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Ddevolucion d = new Ddevolucion();
+                d.setId_pedido(rs.getInt("id_pedido"));
+                d.setId_dpedido(rs.getInt("id_dpedido"));
+                d.setPedido(rs.getString("pedido"));
+                d.setFecha(rs.getString("fecha"));
+                d.setId_kardex(rs.getInt("id_kardex"));
+                d.setId_cargo(rs.getInt("id_cargo"));
+                d.setId_dpedimento(rs.getInt("id_dpedimento"));
+                d.setId_pedimento(rs.getInt("id_pedimento"));
+                d.setCantidad(rs.getDouble("cantidad"));
+                d.setPrecio(rs.getDouble("costo"));
+                d.setImporte(rs.getDouble("importe"));
+                d.setDescripcion(rs.getString("descripcion"));
+                d.setDureza(rs.getString("dureza"));
+                d.setIdmaterial(rs.getInt("id_material"));
+                d.setId_devolucion(0);
+                d.setId_documento(id);
                 arr.add(d);
             }
         } catch (SQLException ex) {
@@ -390,11 +545,8 @@ public class sqldevolucion {
             int k1 = d.getId_kardex();
             int k2 = d.getId_kardexnuevo();
             String serie = d.getSerie();
-            String sql = "update devoluciones set estatus='0' where id_devolucion=" + iddev;
-            System.out.println("cancel dev" + sql);
-            st = c.prepareStatement(sql);
-            st.executeUpdate();
-            sql = "update cargo set estatus='0',saldo=0,saldomx=0 where id_cargo=" + idcargo;
+
+            String sql = "update cargo set estatus='0',saldo=0,saldomx=0 where id_cargo=" + idcargo;
             System.out.println("cancel cargo" + sql);
             st = cob.prepareStatement(sql);
             st.executeUpdate();
@@ -402,6 +554,12 @@ public class sqldevolucion {
             System.out.println("cancel dped" + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
+            if (!arrd.isEmpty()) {
+                sql = "update devoluciones set estatus='0' where id_devolucion=" + iddev;
+                System.out.println("cancel dev" + sql);
+                st = c.prepareStatement(sql);
+                st.executeUpdate();
+            }
             if (serie.equals("A")) {
                 sql = "update documento set estatus='0' where id_documento=" + iddoc;
                 System.out.println("cancel doc" + sql);
@@ -440,9 +598,10 @@ public class sqldevolucion {
                 double cant = arr.getCantidad();
                 int dped = arr.getId_dpedimento();
                 int idpedimento = arr.getId_pedimento();
+                String pedido = arr.getPedido();
                 sql = "insert into kardex "
                         + "values(" + k2 + "," + c2 + "," + cliente + "," + idmat + ",0,1," + idpedimento + ",'" + usuario + "','"
-                        + fecha + "'," + precio + "," + precio + "," + cant + "," + ren + ",'" + serie + "','1','1','" + dur + "','PED " + idped + "')";
+                        + fecha + "'," + precio + "," + precio + "," + cant + "," + ren + ",'" + serie + "','1','1','" + dur + "','PED " + pedido + "')";
                 System.out.println("kar dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
