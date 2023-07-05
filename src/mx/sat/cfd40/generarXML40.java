@@ -147,7 +147,6 @@ public class generarXML40 {
                 xml.setMetodoPago(CMetodoPago.PIP);
                 break;
         }
-
         xml.setLugarExpedicion(lugar);
 
         //Datos del emisor

@@ -25,7 +25,7 @@ public interface Devoluciones {
     
     public ArrayList<Devolucion> arr(Connection c, String s);
     
-    public ArrayList<Ddevolucion> arr(Connection c, int id_pedido);
+    public ArrayList<Ddevolucion> arr(Connection c, int id_pedido, String bdname);
     
     public ArrayList<Ddevolucion> arrfac(Connection c, int folio);
 

@@ -536,7 +536,7 @@ public class ncr2 extends javax.swing.JPanel {
                         .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addComponent(jLabel6)
-                                .addGap(10, 10, 10)
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel6Layout.createSequentialGroup()
@@ -586,11 +586,12 @@ public class ncr2 extends javax.swing.JPanel {
                                 .addGroup(jPanel6Layout.createSequentialGroup()
                                     .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(jPanel6Layout.createSequentialGroup()
-                                            .addGap(30, 30, 30)
+                                            .addGap(29, 29, 29)
                                             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jLabel6)
                                                 .addGroup(jPanel6Layout.createSequentialGroup()
-                                                    .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(jLabel6))
                                                     .addGap(6, 6, 6)
                                                     .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addComponent(JlNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -645,6 +646,7 @@ public class ncr2 extends javax.swing.JPanel {
         model.addColumn("Clave sat");
         model.addColumn("Descuento");
         model.addColumn("Cantidad");
+        model.addColumn("Unidad");
         JtDetalle.setModel(model);
     }
 
@@ -717,16 +719,17 @@ public class ncr2 extends javax.swing.JPanel {
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         boolean band = true;
+        boolean band1= checkunidad();
         for (int i = 0; i < model.getRowCount(); i++) {
             String col2 = JtDetalle.getValueAt(i, 1).toString();
             if (col2.equals("")) {
                 band = false;
             }
         }
-        if (band) {
+        if (band && band1) {
             setfactura();
         } else {
-            JOptionPane.showMessageDialog(null, "Error, Alguna de las claves de producto esta vacia o erronea, verificalo");
+            JOptionPane.showMessageDialog(null, "Error, Alguna de las claves de producto o unidad esta vacia o erronea, verificalo");
         }
 
     }//GEN-LAST:event_jLabel2MousePressed
@@ -766,7 +769,7 @@ public class ncr2 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No puedes usar este tipo de relacion para agregar renglones, cambialo e intentalo de nuevo");
             JtRelacion.requestFocus();
         } else {
-            String[] rowt = {"", "", "", ""};
+            String[] rowt = {"", "", "", "",""};
             model.addRow(rowt);
             JtDetalle.setModel(model);
         }
@@ -869,6 +872,7 @@ public class ncr2 extends javax.swing.JPanel {
 
     private void setfactura() {
         DecimalFormat formateador = new DecimalFormat("####.##");
+
         if (arrcargoseleccion.isEmpty()) {
             JtCliente.requestFocus();
         } else {
@@ -1011,7 +1015,8 @@ public class ncr2 extends javax.swing.JPanel {
                         precio = Double.parseDouble(formateador.format((pre * pares) * 0.16 + (pre * pares)));
                         descripcion = JtDetalle.getValueAt(i, 0).toString();
                         codigosat = JtDetalle.getValueAt(i, 1).toString();
-                        umedida = "PR";
+//                        umedida = "PR";
+                        umedida = JtDetalle.getValueAt(i, 4).toString().toUpperCase();
                         arrayc = getcargosfacs();
 
                     } else {
@@ -1060,12 +1065,10 @@ public class ncr2 extends javax.swing.JPanel {
 //                    System.out.println((float) precio * pares);
                     df.setRenglon(i + 1);
                     df.setProducto(0);
-//                    df.setCantidad(pares);
                     df.setCantidadfloat(pares);
                     df.setDescripcion(descripcion);
                     df.setCodigo(codigosat);
                     df.setUmedida(umedida);
-//                    df.setBase(Double.parseDouble(formateador.format(precio)));
                     df.setImpuesto("002");
                     df.setTipofactor("Tasa");
                     df.setImporta(impuesto);
@@ -1253,21 +1256,22 @@ public class ncr2 extends javax.swing.JPanel {
                 DecimalFormat formateador = new DecimalFormat("####.##");
                 for (int i = 0; i < rows; i++) {
                     //Verifica de que sea un numero y no cualquier cosa
-
-                    if (verificafloat(JtDetalle.getValueAt(i, 2).toString()) || verificaint(JtDetalle.getValueAt(i, 2).toString())
-                            || verificaflotante(JtDetalle.getValueAt(i, 2).toString())) {
+                    if ((verificafloat(JtDetalle.getValueAt(i, 2).toString()) || verificaint(JtDetalle.getValueAt(i, 2).toString())
+                            || verificaflotante(JtDetalle.getValueAt(i, 2).toString()) )&& !JtDetalle.getValueAt(i, 4).toString().isEmpty()) {
                         double precio = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         int can = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
 //                        subtotal += Double.parseDouble(formateador.format((precio) * can));
 //                        impuestos += Double.parseDouble(formateador.format(((precio) * can) * 0.16));
-                        subtotal +=formatdecimal((precio) * can);
+                        subtotal += formatdecimal((precio) * can);
                         impuestos += formatdecimal((precio * can) * 0.16);
                     } else {
                         JOptionPane.showMessageDialog(null, "Introduce solo numeros e intentalo de nuevo");
                         break;
 
                     }
+
                 }
+
                 total = subtotal + impuestos;
                 System.out.println(impuestos);
                 //Solo para despliqgue de informacion
@@ -1311,6 +1315,19 @@ public class ncr2 extends javax.swing.JPanel {
             verificaregimen(sqlcfdi, regimen, uso);
         }
 
+    }
+
+    private boolean checkunidad() {
+        boolean band = true;
+        int t = model.getRowCount();
+        
+        for (int i = 0; i < t; i++) {
+            if(JtDetalle.getValueAt(i, 4).toString().isEmpty()){
+                band=false;
+                break;
+            }
+        }
+        return band;
     }
 
     private boolean verificaint(String cad) {

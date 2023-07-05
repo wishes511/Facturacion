@@ -641,6 +641,7 @@ public class ncr2tpu extends javax.swing.JPanel {
         model.addColumn("Clave sat");
         model.addColumn("Descuento");
         model.addColumn("Cantidad");
+        model.addColumn("Unidad");
         JtDetalle.setModel(model);
     }
 
@@ -718,13 +719,14 @@ public class ncr2tpu extends javax.swing.JPanel {
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         boolean band = true;
+        boolean band1 = checkunidad();
         for (int i = 0; i < model.getRowCount(); i++) {
             String col2 = JtDetalle.getValueAt(i, 1).toString();
             if (col2.equals("")) {
                 band = false;
             }
         }
-        if (band) {
+        if (band && band1) {
             setfactura();
         } else {
             JOptionPane.showMessageDialog(null, "Error, Alguna de las claves de producto esta vacia o erronea, verificalo");
@@ -767,7 +769,7 @@ public class ncr2tpu extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No puedes usar este tipo de relacion para agregar renglones, cambialo e intentalo de nuevo");
             JtRelacion.requestFocus();
         } else {
-            String[] rowt = {"", "", "", ""};
+            String[] rowt = {"", "", "", "", ""};
             model.addRow(rowt);
             JtDetalle.setModel(model);
         }
@@ -830,6 +832,19 @@ public class ncr2tpu extends javax.swing.JPanel {
             JtObs.setText("SERVICIOS DE FACTURACION APLICACION DE ANTICIPO");
             JtObs.requestFocus();
         }
+    }
+
+    private boolean checkunidad() {
+        boolean band = true;
+        int t = model.getRowCount();
+
+        for (int i = 0; i < t; i++) {
+            if (JtDetalle.getValueAt(i, 4).toString().isEmpty()) {
+                band = false;
+                break;
+            }
+        }
+        return band;
     }
 
     private void actualizaempresa() {
@@ -1009,7 +1024,8 @@ public class ncr2tpu extends javax.swing.JPanel {
                         precio = Double.parseDouble(formateador.format((pre * pares) * 0.16 + (pre * pares)));
                         descripcion = JtDetalle.getValueAt(i, 0).toString();
                         codigosat = JtDetalle.getValueAt(i, 1).toString();
-                        umedida = "PR";
+                        umedida = JtDetalle.getValueAt(i, 4).toString().toUpperCase();
+//                        Lista de Cargos a caplicar
                         arrayc = getcargosfacs();
 
                     } else {
@@ -1024,7 +1040,13 @@ public class ncr2tpu extends javax.swing.JPanel {
                         for (int j = 0; j < arrcargoseleccion.size(); j++) {
                             cargo car = new cargo();
 //                            arruuid.add(arrcargoseleccion.get(j).getFoliofiscal());
-                            car.setDescuento(arrcargoseleccion.get(j).getDescuento());// importe a descontar de cargos
+                            double desc = arrcargoseleccion.get(j).getDescuento();
+                            if (JcUsd.isSelected()) {
+                                desc = Double.parseDouble(formateador.format(arrcargoseleccion.get(j).getSaldo() - desc));
+                            } else {
+                                desc = Double.parseDouble(formateador.format(arrcargoseleccion.get(j).getSaldomx() - desc));
+                            }
+                            car.setDescuento(desc);// importe a descontar de cargos
                             car.setFoliofiscal(folios);
                             car.setCuenta(arrcargoseleccion.get(j).getCuenta());
                             car.setSubcuenta(arrcargoseleccion.get(j).getSubcuenta());
@@ -1140,19 +1162,30 @@ public class ncr2tpu extends javax.swing.JPanel {
         return resp;
     }
 
+    /**
+     * Formatear arraylist de cargos
+     *
+     * @return
+     */
     public ArrayList<cargo> getcargosfacs() {
         ArrayList<cargo> arr = new ArrayList<>();
         DecimalFormat formateador = new DecimalFormat("####.##");
         for (int y = 0; y < arrcargoseleccion.size(); y++) {
             cargo car = new cargo();
-            double desc = Double.parseDouble(formateador.format(arrcargoseleccion.get(y).getDescuento()));
-            car.setDescuento(Double.parseDouble(formateador.format(desc)));
+            double desc = arrcargoseleccion.get(y).getDescuento();
+            if (JcUsd.isSelected()) {
+                desc = Double.parseDouble(formateador.format(arrcargoseleccion.get(y).getSaldo() - desc));
+            } else {
+                desc = Double.parseDouble(formateador.format(arrcargoseleccion.get(y).getSaldomx() - desc));
+            }
+            car.setDescuento(desc);
             car.setFoliofiscal(arrcargoseleccion.get(y).getFoliofiscal());
             car.setCuenta(arrcargoseleccion.get(y).getCuenta());
             car.setSubcuenta(arrcargoseleccion.get(y).getSubcuenta());
             car.setCliente(arrcargoseleccion.get(y).getCliente());
             car.setReferencia(arrcargoseleccion.get(y).getReferencia());
             car.setFecha(arrcargoseleccion.get(y).getFecha());
+            car.setId_cargo(arrcargoseleccion.get(y).getId_cargo());
             arr.add(car);
         }
         return arr;
@@ -1250,16 +1283,15 @@ public class ncr2tpu extends javax.swing.JPanel {
                 for (int i = 0; i < rows; i++) {
                     //Verifica de que sea un numero y no cualquier cosa
 
-                    if (verificafloat(JtDetalle.getValueAt(i, 2).toString()) || verificaint(JtDetalle.getValueAt(i, 2).toString())
-                            || verificaflotante(JtDetalle.getValueAt(i, 2).toString())) {
+                    if ((verificafloat(JtDetalle.getValueAt(i, 2).toString()) || verificaint(JtDetalle.getValueAt(i, 2).toString())
+                            || verificaflotante(JtDetalle.getValueAt(i, 2).toString())) && !JtDetalle.getValueAt(i, 4).toString().isEmpty()) {
                         double precio = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         int can = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
                         subtotal += Double.parseDouble(formateador.format((precio) * can));
                         impuestos += Double.parseDouble(formateador.format(((precio) * can) * 0.16));
                     } else {
-                        JOptionPane.showMessageDialog(null, "Introduce solo numeros e intentalo de nuevo");
+                        JOptionPane.showMessageDialog(null, "Introduce solo numeros o el campo de unidad esta vacio, intentalo de nuevo");
                         break;
-
                     }
                 }
                 total = subtotal + impuestos;

@@ -5,6 +5,7 @@
  */
 package Paneltpu;
 
+import DAO.daoAgentes;
 import DAO.daoConceptos;
 import DAO.daoDevolucion;
 import Paneles.*;
@@ -228,11 +229,21 @@ public class fac1tpurem extends javax.swing.JPanel {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+        daoAgentes a = new daoAgentes();
+        
         int row = JtDetalle.getSelectedRow();
         int folio = arrfactura.get(row).getId_pedido();
         String ser = arrfactura.get(row).getSerie();
         double total = Double.parseDouble(formateador.format(arrfactura.get(row).getTotal()));
         String ped = arrfactura.get(row).getPedido();
+        if (u.getTurno().equals("6")) {
+            String name = JOptionPane.showInputDialog("Introduzca el nombre del cliente:");
+            if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "No se puede mostrar el reporte del cliente ya que no se introdujo nada, intentelo de nuevo");
+            } else {
+                setreportcliente(folio, "MXN", ser, total, ped, name.toUpperCase());
+            }
+        }
         setreport(folio, "MXN", ser, total, ped);
     }//GEN-LAST:event_jLabel1MouseClicked
 
@@ -313,14 +324,21 @@ public class fac1tpurem extends javax.swing.JPanel {
                 0, 0, null, botones, this);
         if (opcion == JOptionPane.YES_OPTION) {
             int row = JtDetalle.getSelectedRow();
-            boolean ncr = getdoccancel(arrfactura.get(row).getId(), "NCR");
-            boolean pag = getdoccancel(arrfactura.get(row).getId(), "PAG");
+//            boolean ncr = getdoccancel(arrfactura.get(row).getId(), "NCR");
+//            boolean pag = getdoccancel(arrfactura.get(row).getId(), "PAG");
             ArrayList<Ddevolucion> arrd = new ArrayList<>();
             ArrayList<Ddevolucion> arrdevpedimento = new ArrayList();
             Devolucion dev = new Devolucion();
-            String bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+            String bdcob="";
+            if (u.getTurno().equals("5")) {
+                bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+            }
+            if (u.getTurno().equals("6")) {
+                bdcob = "[192.168.90.1\\DATOS620].RACobranzamaq.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+            }
+//            bdcob = (u.getTurno().equals("5")) ? "RACobranzaTpu" : "RACobranzamaq";
 //            String bdcob = "RACobranzatpu.dbo.Cargo c on p.pedido=c.referencia";
-            if (!ncr && !pag) {
+//            if (!ncr && !pag) {
                 daoDevolucion d = new daoDevolucion();
                 daokardexrcpt dk = new daokardexrcpt();
                 int rows = d.verificadevsped(cpt, "B", arrfactura.get(JtDetalle.getSelectedRow()).getId_pedido());
@@ -360,75 +378,9 @@ public class fac1tpurem extends javax.swing.JPanel {
                     JtCliente.requestFocus();
                 }
 
-            }
+//            }
         }
     }//GEN-LAST:event_CancelamientoActionPerformed
-
-    /**
-     * Funcion para corroborar que no haya algun documento relacionado con la
-     * factura Que debidamente dedbe ser cancelado
-     *
-     * @param id
-     * @param serie
-     * @return
-     */
-    private boolean getdoccancel(int id, String serie) {
-        boolean resp = true;
-        daofactura df = new daofactura();
-        ArrayList<factura> arrf = df.searchPagncrtofac(cpt, id, serie);
-        if (arrf.isEmpty()) {
-            resp = false;
-        } else {
-            String var = "";
-            for (factura arrf1 : arrf) {
-                var += arrf1.getReferencia() + "\n";
-            }
-            JOptionPane.showMessageDialog(null, "Necesitas cancelar estas " + serie + " para continuar:\n" + var);
-        }
-        return resp;
-    }
-
-    private String getempresa(Connection c, String n) {
-        daoempresa d = new daoempresa();
-        Empresas e = d.getempresarfc(c, n);
-        return e.getXml();
-    }
-
-    /**
-     *
-     * @param tipo
-     * @param cant
-     *
-     * @return
-     */
-    private double formatdecimal(double cant) {
-        int dato = 0;
-        int punto = 0;
-        boolean band = false;
-        double resp = 0;
-        String c = String.valueOf(cant);
-        String cadena = "";
-        for (int i = 0; i < c.length(); i++) {
-            if (c.charAt(i) == '.') {
-                band = true;
-            }
-            if (band) {
-                if (punto == 3) {
-                    dato = Integer.parseInt(c.charAt(i) + "");
-                    i = c.length();
-                    break;
-                }
-                cadena += c.charAt(i);
-                punto++;
-            }
-        }
-        if ((dato <= 5)) {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
-        } else {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        }
-        return resp;
-    }
 
     /**
      * Despliega reporte del pedido individual
@@ -441,11 +393,7 @@ public class fac1tpurem extends javax.swing.JPanel {
      */
     private void setreport(int folio, String moneda, String serie, double total, String pedido) {
         try {
-            daoempresa d = new daoempresa();
-//            Identificar si es de ath o uptown
-            String n = "1";
-            String logo = "AF.png";
-            Empresas e = d.getempresarfc(sqlempresa, n);
+            String dir = (u.getTurno().equals("5")) ? "Reportestpu" : "ReportesMaq";
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter
@@ -457,7 +405,7 @@ public class fac1tpurem extends javax.swing.JPanel {
             parametros.put("id", folio);
             parametros.put("totalletra", letratotal);
             parametros.put("serie", serie);
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Pedidos.jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/" + dir + "/Pedidos.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -468,26 +416,39 @@ public class fac1tpurem extends javax.swing.JPanel {
         }
     }
 
-    private String getnmetodo(String m) {
-        String r = "";
-        for (int i = 0; i < arrmetodo.size(); i++) {
-            if (m.equals(arrmetodo.get(i).getMetodopago())) {
-                r = arrmetodo.get(i).getDescripcion();
-                break;
-            }
+    /**
+     * Exclusivamente para el apartado de el modulo de maquinas de nailea
+     *
+     * @param folio
+     * @param moneda
+     * @param serie
+     * @param total
+     * @param pedido
+     * @param ncliente
+     */
+    private void setreportcliente(int folio, String moneda, String serie, double total, String pedido, String ncliente) {
+        try {
+//             fin identificar empresa
+            Map parametros = new HashMap();
+//            Clase que contiene el numero convertido a caracter
+            convertirNumeros cnum = new convertirNumeros();
+            DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+            String numeros = formateador.format(total);
+            String letratotal = cnum.Convertir(numeros, true, moneda);
+//            Agregar parametros al reporte
+            parametros.put("id", folio);
+            parametros.put("totalletra", letratotal);
+            parametros.put("serie", serie);
+            parametros.put("ncliente", ncliente);
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/ReportesMaq/Pedidos_cliente.jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
+            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
+            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            ver.setTitle("Pedido " + pedido);
+            ver.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return r;
-    }
-
-    private String getnuso(String m) {
-        String r = "";
-        for (int i = 0; i < arruso.size(); i++) {
-            if (m.equals(arruso.get(i).getusocfdi())) {
-                r = arruso.get(i).getDescripcion();
-                break;
-            }
-        }
-        return r;
     }
 
     private void Buscanotas() {
@@ -525,16 +486,6 @@ public class fac1tpurem extends javax.swing.JPanel {
         JtDetalle.setModel(model);
     }
 
-    private boolean verificaint(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Cancelamiento;

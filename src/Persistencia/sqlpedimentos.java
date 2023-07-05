@@ -138,7 +138,10 @@ public class sqlpedimentos {
             ResultSet rs;
             String sql = "select id_pedimento,referencia,p.id_proveedor,nombre from pedimentos p\n"
                     + "join proveedores prov on p.id_proveedor=prov.id_proveedor\n"
-                    + "where nombre like '%"+cliente+"%' and id_pedimento in (select id_pedimento from DPedimentos where cantidadrestante>0)";
+                    + "where nombre like '%"+cliente+"%' and p.estatus='1'";
+//                        String sql = "select id_pedimento,referencia,p.id_proveedor,nombre from pedimentos p\n"
+//                    + "join proveedores prov on p.id_proveedor=prov.id_proveedor\n"
+//                    + "where nombre like '%"+cliente+"%' and id_pedimento in (select id_pedimento from DPedimentos where cantidadrestante>0)";
             st = cpt.prepareStatement(sql);
             System.out.println(sql);
             rs = st.executeQuery();
@@ -166,7 +169,7 @@ public class sqlpedimentos {
                     + "  from pedimentos p\n"
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
-                    + "where cantidadrestante>0 and (" + referencias + ")";
+                    + "where (" + referencias + ")";
             System.out.println(sql);
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
@@ -191,5 +194,36 @@ public class sqlpedimentos {
             Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
+    }
+    
+    public boolean newmatpedimento(Connection c, Dpedimento p){
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement st;
+            int ped=p.getId_pedimento();
+            int mat=p.getId_material();
+            double cant=p.getCantidad();
+            double precio=p.getPrecio();
+            double costo=p.getCosto();
+            double crestante=p.getCantrestante();
+            String nmaterial=p.getMatped();
+            String dur=p.getDureza();
+            String sql="insert into Dpedimentos(id_material,id_pedimento,cantidad,precio,costo,importe,cantidadrestante,estatus,matpedimento,dureza) "
+                    + "values ("+mat+","+ped+","+cant+","+precio+","+costo+",0,"+crestante+",'1','"+nmaterial+"','"+dur+"')";
+            System.out.println("new mat "+sql);
+            st=c.prepareStatement(sql);
+            st.executeUpdate();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+        
     }
 }

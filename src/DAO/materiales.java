@@ -16,8 +16,12 @@ import java.util.ArrayList;
 public interface materiales {
 
     public boolean nuevomat(Connection cpt, Connection rcpt, Materiales m);
+    
+    public boolean nuevomatmaq(Connection cpt, Materiales m);
 
     public ArrayList<Materiales> getmateriales(Connection rcpt, String mat);
+    
+    public ArrayList<Materiales> getmaterialesmaq(Connection rcpt, String mat);
 
     public boolean deletemat(int material);
 

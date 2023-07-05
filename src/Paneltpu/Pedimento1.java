@@ -5,6 +5,9 @@
  */
 package Paneltpu;
 
+import DAO.daoalmacenes;
+import DAO.daodurezas;
+import DAO.daomateriales;
 import DAO.daopedimentos;
 import Modelo.Conexiones;
 import Modelo.Usuarios;
@@ -46,6 +49,7 @@ public class Pedimento1 extends javax.swing.JPanel {
         initComponents();
         this.c = co;
         this.u = u;
+//        JmAddmaterial.setEnabled(false);
     }
 
     /**
@@ -59,6 +63,7 @@ public class Pedimento1 extends javax.swing.JPanel {
 
         pop = new javax.swing.JPopupMenu();
         JmImprimir = new javax.swing.JMenuItem();
+        JmAddmaterial = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -73,6 +78,15 @@ public class Pedimento1 extends javax.swing.JPanel {
             }
         });
         pop.add(JmImprimir);
+
+        JmAddmaterial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/add_plus_interface_icon_181584.png"))); // NOI18N
+        JmAddmaterial.setText("Añadir nuevo material");
+        JmAddmaterial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAddmaterialActionPerformed(evt);
+            }
+        });
+        pop.add(JmAddmaterial);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -160,12 +174,18 @@ public class Pedimento1 extends javax.swing.JPanel {
         if (evt.getButton() == 3) {// activar con clic derecho
             pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
+        String p = arr.get(JtDetalle.getSelectedRow()).getReferencia();
+//        if (p.equals("0")) {
+//            JmAddmaterial.setVisible(true);
+//        } else {
+//            JmAddmaterial.setVisible(false);
+//        }
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void JmImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmImprimirActionPerformed
         try {
             Map parametros = new HashMap();
-            int ped=arr.get(JtDetalle.getSelectedRow()).getId_pedimento();
+            int ped = arr.get(JtDetalle.getSelectedRow()).getId_pedimento();
             System.out.println(ped);
             parametros.put("id", ped);
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Pedimento.jasper"));
@@ -178,6 +198,20 @@ public class Pedimento1 extends javax.swing.JPanel {
             Logger.getLogger(Pedimento1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_JmImprimirActionPerformed
+
+    private void JmAddmaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAddmaterialActionPerformed
+        NuevomatPedimentoadd n = new NuevomatPedimentoadd(null, true);
+        daomateriales am = new daomateriales();
+        daoalmacenes da = new daoalmacenes();
+        daodurezas dd = new daodurezas();
+        n.cpt=c.getCpttpu();
+        n.ped = arr.get(JtDetalle.getSelectedRow());
+        n.arrmat = am.getmateriales(c.getCpttpu(), "");
+        n.arralm = da.getalmacenescpt(c.getCpttpu());
+        n.arrdur = dd.getdurezas(c.getCpttpu());
+        n.setcombos();
+        n.setVisible(true);
+    }//GEN-LAST:event_JmAddmaterialActionPerformed
 
     private void settabla() {
         daopedimentos s = new daopedimentos();
@@ -198,6 +232,7 @@ public class Pedimento1 extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem JmAddmaterial;
     private javax.swing.JMenuItem JmImprimir;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;

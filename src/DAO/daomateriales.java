@@ -14,11 +14,11 @@ import java.util.ArrayList;
  *
  * @author GATEWAY1-
  */
-public class daomateriales implements materiales{
+public class daomateriales implements materiales {
 
     @Override
     public boolean nuevomat(Connection cpt, Connection rcpt, Materiales m) {
-        sqlmaterial s =new sqlmaterial();
+        sqlmaterial s = new sqlmaterial();
         return s.Addmaterial(cpt, m);
     }
 
@@ -37,5 +37,17 @@ public class daomateriales implements materiales{
     public boolean modmaterial(Connection cpt, Connection rcpt, Materiales m) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    public boolean nuevomatmaq(Connection cpt, Materiales m) {
+        sqlmaterial s = new sqlmaterial();
+        return s.Addmaterialmaq(cpt, m);
+    }
+
+    @Override
+    public ArrayList<Materiales> getmaterialesmaq(Connection rcpt, String mat) {
+        sqlmaterial s = new sqlmaterial();
+        return s.getallMaterialsmaq(rcpt, mat);
+    }
+
 }

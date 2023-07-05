@@ -11,15 +11,40 @@ import java.sql.Connection;
  *
  * @author Michel Araujo 2022
  */
-public class Conexiones {
+public class Conexiones implements java.io.Serializable{
     Connection cpt, rcpt, cobranza;
     String empresa, empresacob, empresarcpt;
     Connection liteusuario, litecfdi, liteempresa;
     Connection cpttpu, rcpttpu, cobranzatpu,cobranzatpuB;
+    Connection cptmaq, cobranzamaq, cobranzamaqB;
     int resp;
 
     public Connection getCobranzatpuB() {
         return cobranzatpuB;
+    }
+
+    public Connection getCptmaq() {
+        return cptmaq;
+    }
+
+    public void setCptmaq(Connection cptmaq) {
+        this.cptmaq = cptmaq;
+    }
+
+    public Connection getCobranzamaq() {
+        return cobranzamaq;
+    }
+
+    public void setCobranzamaq(Connection cobranzamaq) {
+        this.cobranzamaq = cobranzamaq;
+    }
+
+    public Connection getCobranzamaqB() {
+        return cobranzamaqB;
+    }
+
+    public void setCobranzamaqB(Connection cobranzamaqB) {
+        this.cobranzamaqB = cobranzamaqB;
     }
 
     public void setCobranzatpuB(Connection cobranzatpuB) {

@@ -7,12 +7,10 @@ package Paneltpu;
 
 import DAO.daoConceptos;
 import DAO.daoDevolucion;
-import DAO.daodurezas;
 import DAO.daokardexrcpt;
 import Modelo.ConceptosES;
 import Modelo.Ddevolucion;
 import Modelo.Devolucion;
-import Modelo.Dureza;
 import Modelo.Motivosdev;
 import Modelo.Usuarios;
 import java.sql.Connection;
@@ -42,6 +40,7 @@ public class Cancelapedidos extends javax.swing.JDialog {
     ArrayList<ConceptosES> arrc = new ArrayList<>();
     ArrayList<Motivosdev> arrm = new ArrayList<>();
     ArrayList<Ddevolucion> arrd = new ArrayList<>();
+    ConceptosES ces;
 
     /**
      * Creates new form Nuevomaterial
@@ -232,7 +231,7 @@ public class Cancelapedidos extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-        if (JtObservaciones.getText().isEmpty() || JtObservaciones.getText().length()<15) {
+        if (JtObservaciones.getText().isEmpty() || JtObservaciones.getText().length() < 15) {
             JOptionPane.showMessageDialog(null, "Ingresa una descripcion del porque es la devolucion o un numero minimo de 15 caracteres");
             JtObservaciones.requestFocus();
         } else {
@@ -242,7 +241,7 @@ public class Cancelapedidos extends javax.swing.JDialog {
             daokardexrcpt dk = new daokardexrcpt();
             DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            dev.setId_concepto(arrc.get(0).getId_concepto());
+            dev.setId_concepto(ces.getId_concepto());
             dev.setId_motivo(arrm.get(JcMotivo.getSelectedIndex()).getIdmotivo());
             dev.setStock(arrm.get(JcMotivo.getSelectedIndex()).getStock());
             dev.setFecha(sdf.format(date));
@@ -256,7 +255,7 @@ public class Cancelapedidos extends javax.swing.JDialog {
             dev.setUsuario(u.getUsuario());
             dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
             ArrayList<Ddevolucion> arrdn = new ArrayList<>();
-            int renglon=1;
+            int renglon = 1;
             for (int i = 0; i < arrd.size(); i++) {
                 if (JtDetalle.getValueAt(i, 6).toString().equals("*")) {
                     Ddevolucion d = arrd.get(i);
@@ -308,18 +307,32 @@ public class Cancelapedidos extends javax.swing.JDialog {
         daoConceptos d = new daoConceptos();
         daoDevolucion dd = new daoDevolucion();
         arrm = dd.arrmotivos(cpt);
-        arrc = d.getConceptos(cpt, 10);
+//        arrc = d.getConceptos(cpt, 10);
+        ces=d.getConceptos(cpt, 10, 0);
         for (Motivosdev arrm1 : arrm) {
             model.addElement(arrm1.getDescripcion());
         }
         JcMotivo.setModel(model);
-        JlCuenta.setText(arrc.get(0).getNombre());
+        JlCuenta.setText(ces.getNombre());
     }
 
     private void llenatabla() {
         DefaultTableModel model = new DefaultTableModel();
         daoDevolucion dd = new daoDevolucion();
-        arrd = dd.arr(cpt, id_pedido);
+        String bdname="";
+        if (u.getTurno().equals("5")) {
+            bdname = "join [192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+        }
+        if (u.getTurno().equals("6")) {
+            bdname = "join [192.168.90.1\\DATOS620].RACobranzamaq.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+        }
+//        if (u.getTurno().equals("5")) {
+//            bdname = "join RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+//        }
+//        if (u.getTurno().equals("6")) {
+//            bdname = "join RACobranzamaq.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+//        }
+        arrd = dd.arr(cpt, id_pedido, bdname);
         model.setRowCount(arrd.size());
         model.addColumn("Pedido");
         model.addColumn("Material");
@@ -341,8 +354,7 @@ public class Cancelapedidos extends javax.swing.JDialog {
 
     }
 
-    private void vaciarcampos() {
-    }
+    
 
     /**
      * Formatear para que no tome en cuenta los espacios

@@ -68,7 +68,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author GATEWAY1-
  */
 public class fac2tpu extends javax.swing.JPanel {
-    
+
     public String nombre, empresa, empresarcpt, empresacob;
     public Connection sqlcfdi, sqlempresa;
     public Connection ACobranza, rcpt, cpt;
@@ -461,6 +461,7 @@ public class fac2tpu extends javax.swing.JPanel {
         });
 
         JlCliente1.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        JlCliente1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         JlCliente1.setAutoscrolls(false);
         JlCliente1.setValueIsAdjusting(true);
         JlCliente1.setVisibleRowCount(10);
@@ -691,7 +692,7 @@ public class fac2tpu extends javax.swing.JPanel {
         JcUso.setModel(uso);
         JcCliente.setModel(cliente);
     }
-    
+
     private void setcombos() {
         boolean band = false;
         boolean band1 = false;
@@ -740,7 +741,7 @@ public class fac2tpu extends javax.swing.JPanel {
         //daokardexrcpt dk = new daokardexrcpt();
         daopedimentos dk1 = new daopedimentos();
         //k0 = dk.getkardexfacsimple(rcpt, r, empresacob);
-        k1 = dk1.getpedimentosimple(cpt, empresacob,r);
+        k1 = dk1.getpedimentosimple(cpt, empresacob, r);
 //        DefaultComboBoxModel model = new DefaultComboBoxModel();
 //        int folio = 0;
 //        for (int i = 0; i < k0.size(); i++) {
@@ -814,7 +815,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 n.start();
 //                JOptionPane.showMessageDialog(null, "Espera al msj de Aceptacion de folio "+n.isAlive());
                 do {
-                    
+
                 } while (n.isAlive());
                 int rowc = JcCliente.getSelectedIndex();
                 f.setExportacion("01");
@@ -852,7 +853,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 f.setLugarexpedicion("36400");
 //                f.setAgente(k.get(row).getCli().getAgente());
                 f.setAgente(arrcliente.get(rowc).getAg().getIdagente());
-                
+
                 if (JcUsd1.isSelected()) {
                     f.setMoneda("USD");
                     f.setTipocambio(Double.parseDouble(JtTCambio1.getText()));
@@ -895,10 +896,14 @@ public class fac2tpu extends javax.swing.JPanel {
                         double tpares = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString())));
                         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
                         double descuento = Double.parseDouble(formateador.format((tpares * precio) * desc));
+                        if (k2.get(i).getReferencia().equals("0")) {
+                            df.setDescripcion(k2.get(i).getDp().getMatped());
+                        } else {
+                            df.setDescripcion(k2.get(i).getDp().getMatped() + " (PEDIMENTO: " + k2.get(i).getReferencia() + ", ADUANA: 160 MANZANILLO COLIMA," + k2.get(i).getFechapedimento() + ")");
+                        }
                         df.setRenglon(i + 1);
                         df.setProducto(k2.get(i).getDp().getId_material());
                         df.setCantidadfloat(tpares);
-                        df.setDescripcion(k2.get(i).getDp().getMatped()+" (PEDIMENTO: "+k2.get(i).getReferencia()+", ADUANA: 160 MANZANILLO COLIMA,"+k2.get(i).getFechapedimento()+")");
                         df.setCodigo(k2.get(i).getDp().getCodigosat());
                         df.setUmedida(k2.get(i).getDp().getUnidad());
                         df.setDureza(k2.get(i).getDp().getDureza());
@@ -917,7 +922,7 @@ public class fac2tpu extends javax.swing.JPanel {
                         String as1 = formateador.format(descuento);
                         df.setDescuento(Double.parseDouble(as1));
                         df.setTasaocuota(iva + "");
-                        
+
                         arrf.add(df);
                         totalpares += tpares;
                         impuestos += Double.parseDouble(as);
@@ -983,8 +988,8 @@ public class fac2tpu extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(null, "Error al realizar factura, intente capturar de nuevo");
                     vaciarcampos();
                 } else {
-                    int id =  dfac.nuevafactpu(cpt, f, ACobranza);
-                   
+                    int id = dfac.nuevafactpu(cpt, f, ACobranza);
+
                     Sellofiscal s = new Sellofiscal();
                     if (id != 0) {
                         System.out.println("Exito");
@@ -1023,7 +1028,7 @@ public class fac2tpu extends javax.swing.JPanel {
 //                        }
 //                    }
                 }
-                
+
             }
         }
     }//GEN-LAST:event_jLabel2MousePressed
@@ -1085,7 +1090,7 @@ public class fac2tpu extends javax.swing.JPanel {
             String logo = "AF.png";
             String ser;
             String report;
-            
+
             Empresas e = d.getempresarfc(sqlempresa, n);
 //             fin identificar empresa
             Map parametros = new HashMap();
@@ -1118,7 +1123,7 @@ public class fac2tpu extends javax.swing.JPanel {
             parametros.put("uso", arruso.get(JcUso.getSelectedIndex()).getDescripcion());
             parametros.put("serie", ser);
             parametros.put("regimencliente", regimen);
-            
+
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/" + report + ".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -1154,7 +1159,7 @@ public class fac2tpu extends javax.swing.JPanel {
     private void jLabel13MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MousePressed
         int row = JcCliente.getSelectedIndex();
         if (k1.isEmpty() && JtFolio1.getSelectedIndex() == -1) {
-            
+
         } else {
             FactsReltpu f = new FactsReltpu(null, true);
             daofactura df = new daofactura();
@@ -1227,7 +1232,7 @@ public class fac2tpu extends javax.swing.JPanel {
             JtTCambio1.requestFocus();
         }
     }//GEN-LAST:event_JtTCambio1ActionPerformed
-    
+
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (cargo arrcargoseleccion1 : arrcargoseleccion) {
@@ -1249,7 +1254,7 @@ public class fac2tpu extends javax.swing.JPanel {
         JlCliente1.setModel(model);
         JlCliente1.requestFocus();
     }
-    
+
     private void vaciarcampos() {
         if (!k1.isEmpty()) {
             k1.clear();
@@ -1275,7 +1280,7 @@ public class fac2tpu extends javax.swing.JPanel {
         llenalista();
         llenalistasalida();
     }
-    
+
     private void seleccionfolio(String folios) {
 //        daokardexrcpt dk = new daokardexrcpt();
         daopedimentos dk1 = new daopedimentos();
@@ -1287,7 +1292,7 @@ public class fac2tpu extends javax.swing.JPanel {
         generatabla();
 //        setAgentes();
     }
-    
+
     public final void generatabla() {//Tabla actualizable con respecto al descuento e iva
         subtotal = 0;
         impuestos = 0;
@@ -1340,7 +1345,7 @@ public class fac2tpu extends javax.swing.JPanel {
         JlTotal.setText(formateador.format(total));
         JtDetalle.setModel(model);
     }
-    
+
     private void actualizaimportes() {
         subtotal = 0;
         impuestos = 0;
@@ -1379,7 +1384,7 @@ public class fac2tpu extends javax.swing.JPanel {
 //                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
                             impuestos += ((tpares * precio) - descuento) * iva;
                         }
-                        
+
                     }
                 }
             }
@@ -1402,7 +1407,7 @@ public class fac2tpu extends javax.swing.JPanel {
             }
         }
     }
-    
+
     private void setdolar() {
         if (JcUsd1.isSelected()) {
             JlTcambio2.setVisible(true);
@@ -1413,7 +1418,7 @@ public class fac2tpu extends javax.swing.JPanel {
             JtTCambio1.setVisible(false);
         }
     }
-    
+
     private boolean verificaint(String cad) {
         boolean resp = false;
         String patt = "[0-9]+";
@@ -1424,7 +1429,7 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         return resp;
     }
-    
+
     private boolean verificafloat(String cad) {
         boolean resp = false;
         String patt = "[0-9]+||[0-9]+.[0-9]+";
@@ -1435,7 +1440,7 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         return resp;
     }
-    
+
     private boolean verificadetalle() {
         boolean resp = true;
         for (int i = 0; i < k2.size(); i++) {
@@ -1447,7 +1452,7 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         return resp;
     }
-    
+
     private boolean verificaregimen(Connection cfdi, String regimen, String uso) {
         daocfdi df = new daocfdi();
         boolean a = true;
@@ -1466,14 +1471,12 @@ public class fac2tpu extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> JcMetodo;
     private javax.swing.JCheckBox JcPublico;
     private javax.swing.JCheckBox JcTraslado;
-    private javax.swing.JCheckBox JcUsd;
     private javax.swing.JCheckBox JcUsd1;
     private javax.swing.JComboBox<String> JcUso;
     private javax.swing.JList<String> JlCliente1;
     private javax.swing.JLabel JlDesc;
     private javax.swing.JLabel JlIva;
     private javax.swing.JList<String> JlRel;
-    private javax.swing.JLabel JlTcambio;
     private javax.swing.JLabel JlTcambio1;
     private javax.swing.JLabel JlTcambio2;
     private javax.swing.JLabel JlTotal;
@@ -1487,7 +1490,6 @@ public class fac2tpu extends javax.swing.JPanel {
     private javax.swing.JTable JtDetalle;
     private javax.swing.JComboBox<String> JtFolio1;
     private javax.swing.JTextArea JtObs;
-    private javax.swing.JTextField JtTCambio;
     private javax.swing.JTextField JtTCambio1;
     private javax.swing.ButtonGroup grupo;
     private javax.swing.JLabel jLabel1;
@@ -1508,7 +1510,6 @@ public class fac2tpu extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;

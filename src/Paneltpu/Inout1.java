@@ -281,13 +281,11 @@ public class Inout1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-//        DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-//        int row =JtDetalle.getSelectedRow();
-//        int folio=arrfactura.get(row).getId_pedido();
-//        String ser=arrfactura.get(row).getSerie();
-//        double total=Double.parseDouble(formateador.format(arrfactura.get(row).getTotal()));
-//        String ped=arrfactura.get(row).getPedido();
-//        setreport(folio, "MXN", ser, total,ped);
+        int row =JtDetalle.getSelectedRow();
+        int folio=k.get(row).getId_kardex();
+        String ser=k.get(row).getSerie();
+        String name=k.get(row).getNombreproveedor();
+        setreport(folio, name, ser);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
@@ -406,29 +404,18 @@ public class Inout1 extends javax.swing.JPanel {
      * @param serie
      * @param total
      */
-    private void setreport(int folio, String moneda, String serie, double total, String pedido) {
+    private void setreport(int folio, String name, String serie) {
         try {
-            daoempresa d = new daoempresa();
-//            Identificar si es de ath o uptown
-            String n = "1";
-            String logo = "AF.png";
-            Empresas e = d.getempresarfc(sqlempresa, n);
-//             fin identificar empresa
             Map parametros = new HashMap();
-//            Clase que contiene el numero convertido a caracter
-            convertirNumeros cnum = new convertirNumeros();
-            DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-            String numeros = formateador.format(total);
-            String letratotal = cnum.Convertir(numeros, true, moneda);
 //            Agregar parametros al reporte
-            parametros.put("id", folio);
-            parametros.put("totalletra", letratotal);
+            parametros.put("idk", folio);
             parametros.put("serie", serie);
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Pedidos.jasper"));
+            parametros.put("nombre", name);
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/indexkardex.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Pedido " + pedido);
+            ver.setTitle("Pedido " + folio);
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);

@@ -15,6 +15,7 @@ import Paneltpu.Clientetpu1;
 import Paneltpu.Clientetpu2;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -31,6 +32,10 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     Usuarios u;
     Conexiones con;
     ArrayList<Cliente> arr = new ArrayList<>();
+    int clic = 0;
+    int clic2 = 0;
+    int clic3 = 0;
+    String serie = "A";
 
     /**
      * Creates new form Clientes
@@ -67,6 +72,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         JlCliente = new javax.swing.JList<>();
         jSeparator1 = new javax.swing.JSeparator();
+        JlSerie = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         Tabbed = new javax.swing.JTabbedPane();
         jSeparator2 = new javax.swing.JSeparator();
@@ -169,6 +175,18 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
 
         jSeparator1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        JlSerie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/sticker_120054A.png"))); // NOI18N
+        JlSerie.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JlSerieMousePressed(evt);
+            }
+        });
+        JlSerie.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                JlSerieKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -183,11 +201,14 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JlSerie)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -199,9 +220,11 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
                         .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(JlSerie)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -246,8 +269,9 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        name = c1.JtNombre.getText();
-        JtBuscar.setText(name);
+        Cliente client= new Cliente();
+        client.setNombre(c1.JtNombre.getText().toUpperCase());
+        client.setRfc(c1.JtRfc.getText().toUpperCase());
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void JtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtBuscarActionPerformed
@@ -291,6 +315,36 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         arr.get(row).getCvecliente();
     }//GEN-LAST:event_jLabel4MousePressed
 
+    private void JlSerieMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlSerieMousePressed
+        if (evt.getButton() == 1) {
+            clic++;
+        }
+        if (evt.getButton() == 3) {
+            clic3++;
+        }
+        if (evt.getButton() == 2) {
+            clic2++;
+            String combinacion = clic + "" + clic2 + "" + clic3;
+            System.out.println(combinacion);
+            if (combinacion.equals("211")) {
+                if (serie.equals("A")) {
+                    serie = "B";
+                    JlSerie.setIcon(new ImageIcon(getClass().getResource("/Recursos/sticker_120054B.png")));// carga de logo
+                } else {
+                    serie = "A";
+                    JlSerie.setIcon(new ImageIcon(getClass().getResource("/Recursos/sticker_120054A.png")));// carga de logo
+                }
+                clic = 0;
+                clic2 = 0;
+                clic3 = 0;
+            }
+        }
+    }//GEN-LAST:event_JlSerieMousePressed
+
+    private void JlSerieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JlSerieKeyPressed
+
+    }//GEN-LAST:event_JlSerieKeyPressed
+
     public void setcampos() {
         int row = JlCliente.getSelectedIndex();
         c1.c = arr.get(row);
@@ -316,6 +370,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> JlCliente;
+    private javax.swing.JLabel JlSerie;
     public javax.swing.JTextField JtBuscar;
     private javax.swing.JTabbedPane Tabbed;
     private javax.swing.JLabel jLabel1;

@@ -61,7 +61,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
 
     public String nombre, empresa, empresarcpt, empresacob;
     public Connection sqlcfdi, sqlempresa;
-    public Connection ACobranza, rcpt, cpt,cobB;
+    public Connection ACobranza, rcpt, cpt, cobB;
     Serverylite slite = new Serverylite();
     Serverprod prod = new Serverprod();
     public ArrayList<Formadepago> arrfpago = new ArrayList<>();
@@ -479,14 +479,19 @@ public class fac2tpu1rem extends javax.swing.JPanel {
         if (!k2.isEmpty()) {
             boolean a = verificafloat(JtDescuento.getText());
             boolean a1 = verificadetalle();
+            boolean a2 = checkstock();
+
             if (!a) {
                 JOptionPane.showMessageDialog(null, "Error, solo colocar numeros enteros en el descuento");
             }
             if (!a1) {
                 JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
             }
+            if (!a2) {
+                JOptionPane.showMessageDialog(null, "Error, La cantidad no puede ser mayor a lo que hay en stock o la cantidad es cero");
+            }
             System.out.println(a + " - " + a1);
-            if (!a && !a1) {
+            if (!a && !a1 && !a2) {
                 JtDescuento.requestFocus();
             } else {
                 factura f = new factura();
@@ -499,16 +504,14 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 daofactura dfac = new daofactura();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
                 DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-                Nocolisiontpu n = new Nocolisiontpu();
                 f.setFolio(dfac.getmaxfoliotpu(cpt, "REM"));//Obtiene y setea el foliomaximo de *documentos
-                n.setConnecxiones(cpt, f.getFolio(), "REM");
-                n.start();
-                do {
-
-                } while (n.isAlive());
                 int rowc = JcCliente.getSelectedIndex();
-                f.setFolio(n.getfolio());
-                f.setPedido("TPU "+mes+"-"+n.getfolio());
+//                f.setFolio(n.getfolio());
+                if (u.getTurno().equals("5")) {
+                    f.setPedido("TPU " + mes + "-" + f.getFolio());
+                } else {
+                    f.setPedido("MAQ " + mes + "-" + f.getFolio());
+                }
                 daokardexrcpt dk = new daokardexrcpt();
                 f.setFoliokardex(dk.maxkardexsincuenta(cpt));// folio del kardex
                 f.setClaveusuario(u.getUsuario());
@@ -582,12 +585,12 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 f.setSubtotal(formatdecimal(subtotal));
                 f.setTotal(formatdecimal(total));
                 if (arrf.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Error al realizar factura, intente capturar de nuevo");
+                    JOptionPane.showMessageDialog(null, "Error al realizar remision, intente capturar de nuevo","Error",JOptionPane.ERROR_MESSAGE);
                     vaciarcampos();
                 } else {
                     int id = dfac.nuevaremtpu(cpt, f, cobB);
                     if (id != 0) {
-                        setreport(id, f.getRegimen(), f.getMoneda(), "B",f.getPedido());
+//                        setreport(id, f.getRegimen(), f.getMoneda(), "B", f.getPedido());
                         JOptionPane.showMessageDialog(null, "Proceso terminado ");
                         vaciarcampos();
                         JtCliente.requestFocus();
@@ -669,6 +672,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
 //            Identificar si es de ath o uptown
             String n = "1";
             String logo = "AF.png";
+            String dir = (u.getTurno().equals("5")) ? "Reportestpu" : "ReportesMaq";
             Empresas e = d.getempresarfc(sqlempresa, n);
 //             fin identificar empresa
             Map parametros = new HashMap();
@@ -687,11 +691,11 @@ public class fac2tpu1rem extends javax.swing.JPanel {
 //            parametros.put("lugar", e.getCp());
             parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
             parametros.put("serie", serie);
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Pedidos.jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/" + dir + "/Pedidos.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Pedido "+pedido);
+            ver.setTitle("Pedido " + pedido);
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
@@ -865,6 +869,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                         double tpares = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         if (tpares > k2.get(i).getDp().getCantrestante()) {
                             JOptionPane.showMessageDialog(null, "Error, El valor introducido en cantidad no puede ser mayor a la cantidad restante del material");
+                            JtDetalle.setValueAt("", i, 7);
                         } else {
                             double desc = Double.parseDouble(JtDescuento.getText()) / 100;
                             double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
@@ -901,6 +906,33 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 JlTotal.setText(formateador.format(total));
             }
         }
+    }
+
+    private boolean checkstock() {
+        boolean resp = true;
+        for (int i = 0; i < k2.size(); i++) {
+            String act = JtDetalle.getValueAt(i, 7).toString();// Se obtiene el valor del activo
+            if (!verificafloat(JtDetalle.getValueAt(i, 3).toString())) {// que no se pase algo que no sea un numero
+                JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
+                JtDetalle.setValueAt("0", i, 3);
+                resp = false;
+                break;
+            } else {
+                if (act.equals("*")) {// tomara en cuanta solo los que estan activos
+                    double tpares = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
+                    if (tpares > k2.get(i).getDp().getCantrestante()) {
+//                        JOptionPane.showMessageDialog(null, "Error, El valor introducido en cantidad no puede ser mayor a la cantidad restante del material");
+                        JtDetalle.setValueAt("", i, 7);
+                        resp = false;
+                    }
+                    if (tpares == 0) {
+                        JtDetalle.setValueAt("", i, 7);
+                        resp = false;
+                    }
+                }
+            }
+        }
+        return resp;
     }
 
     private void setdolar() {

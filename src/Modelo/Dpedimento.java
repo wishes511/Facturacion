@@ -10,9 +10,17 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Dpedimento implements java.io.Serializable{
-    private int id_dpedimento, id_material, id_almacen;
+    private int id_dpedimento, id_material, id_almacen, id_pedimento;
     private double cantidad,precio,costo, importe,impuesto,cantrestante;
     private String matped, dureza, unidad, codigosat, codigo;
+
+    public int getId_pedimento() {
+        return id_pedimento;
+    }
+
+    public void setId_pedimento(int id_pedimento) {
+        this.id_pedimento = id_pedimento;
+    }
 
     public String getCodigosat() {
         return codigosat;

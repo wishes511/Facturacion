@@ -399,7 +399,7 @@ public class sqlkardex {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select folio,k.Cl_Prv,c.Nombre40,c.RFC,c.CP,c.fax,c.calle,c.colonia,ci.Descripcion as ciudad,\n"
-                    + "e.descripcion as estado,p.Descripcion as pais,npedido,serie,totalpares,pventa,renglon,\n"
+                    + "e.descripcion as estado,p.Descripcion as pais,npedido,serie,totalpares,pventa,pcosto,renglon,\n"
                     + "prod.producto,estilo,prod.codigo,comb.Combinacion, m.Descripcion as material,\n"
                     + "  col.Descripcion as color,cor.Descripcion as corrida, agente1, plazo,l.Marca as marca,\n"
                     + " prod.linea, k.almacen, k.stockpedidos, prod.corrida as cor,\n"
@@ -457,7 +457,7 @@ public class sqlkardex {
                 k.setVenta(rs.getFloat("pventa"));
                 k.setRenglon(rs.getInt("renglon"));
                 k.setTotalpares(rs.getInt("totalpares"));
-                k.setVenta(rs.getFloat("pventa"));
+                k.setCosto(rs.getFloat("pcosto"));
                 k.setStock(rs.getString("stockpedidos"));
                 k.setAlmacen(rs.getInt("almacen"));
                 k.setC1(rs.getInt("Cantidad1"));
@@ -561,7 +561,7 @@ public class sqlkardex {
                             + "join Materiales m on k.id_material=m.id_material\n"
                             + "left join pedido ped on k.id_kardex=ped.id_kardex "
                             + "join Pedimentos pedimento on k.id_pedimento=pedimento.id_pedimento\n"
-                            + "where (p.id_cliente like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and c.cuenta=60\n"
+                            + "where (p.id_cliente like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and (c.cuenta=60 or c.cuenta =70)\n"
                             + "order by k.fecha desc";
                 } else {
                     sql = "select k.id_kardex,k.id_cliente,id_prov,k.serie,p.nombre as n,k.fecha,c.cuenta,subcuenta,c.descripcion as concepto,"
@@ -572,7 +572,7 @@ public class sqlkardex {
                             + "join Materiales m on k.id_material=m.id_material\n"
                             + "left join pedido ped on k.id_kardex=ped.id_kardex "
                             + "join Pedimentos pedimento on k.id_pedimento=pedimento.id_pedimento\n"
-                            + "where (p.id_cliente like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and c.cuenta=01\n"
+                            + "where (p.id_cliente like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and (c.cuenta=01 or c.cuenta=10 or c.cuenta=20)\n"
                             + "order by k.fecha desc";
                 }
             } else {
@@ -585,7 +585,7 @@ public class sqlkardex {
                             + "join Materiales m on k.id_material=m.id_material\n"
                             + "left join pedido ped on k.id_kardex=ped.id_kardex "
                             + "join Pedimentos pedimento on k.id_pedimento=pedimento.id_pedimento\n"
-                            + "where (p.id_cliente like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and c.cuenta=60\n"
+                            + "where (p.id_cliente like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and (c.cuenta=60 or c.cuenta =70)\n"
                             + "order by k.fecha desc";
                 } else {
                     sql = "select k.id_kardex,k.id_cliente,id_prov,k.serie,p.nombre as n,k.fecha,cuenta,subcuenta,c.descripcion as concepto,"
@@ -596,7 +596,7 @@ public class sqlkardex {
                             + "join Materiales m on k.id_material=m.id_material\n"
                             + "left join pedido ped on k.id_kardex=ped.id_kardex\n"
                             + "join Pedimentos pedimento on k.id_pedimento=pedimento.id_pedimento\n"
-                            + "where (p.id_proveedor like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and c.cuenta=01\n"
+                            + "where (p.id_proveedor like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and (c.cuenta=01 or c.cuenta=10 or c.cuenta=20)\n"
                             + "order by k.fecha desc";
                 }
             }

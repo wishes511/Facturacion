@@ -13,13 +13,21 @@ import java.util.ArrayList;
  */
 public class Kardexrcpt implements java.io.Serializable{
     int folio,prv,totalpares,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14,renglon,consignatorio,divisa,vale,agente,
-            almacen;
+            almacen,id_prod;
     float costo, venta, importe, tipocambio;
     String fecha, docref, cuenta,subcuenta,stock,status,obs,statusimpresion,pedido,ocompra,factura,serie,usuario,registro, marca,
             uso,fp;
     ArrayList<Producto> arr= new ArrayList<>();
     Cliente cli;
     Producto p;
+
+    public int getId_prod() {
+        return id_prod;
+    }
+
+    public void setId_prod(int id_prod) {
+        this.id_prod = id_prod;
+    }
 
     public String getUso() {
         return uso;

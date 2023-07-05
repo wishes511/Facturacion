@@ -196,6 +196,8 @@ public interface Facturas {
     
     public ArrayList<factura> getdocstpu(Connection cpt, String folio, String serie);
     
+    public ArrayList<factura> getdocspagosremi(Connection con, String folio);
+    
     public ArrayList<factura> getdocvspago(Connection cpt, String folio);
     
     public ArrayList<factura> getdocvspagoall(Connection cpt, int id);
@@ -211,4 +213,6 @@ public interface Facturas {
     public boolean updateclientefacv2(Connection con, Cliente c, int id_documento);
     
     public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie);
+    
+    public ArrayList<cargo> getfactrem(Connection cobB, String var, String ncob);
 }

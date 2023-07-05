@@ -54,7 +54,16 @@ public class sqlconceptos {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select id_concepto,cuenta,subcuenta,descripcion from Conceptos where cuenta=" + cuenta + " order by cuenta");
+            String cuentas;
+            if (cuenta == 60) {
+                cuentas = "cuenta=60";
+            } else {
+                cuentas = "cuenta=1  or cuenta=10";
+            }
+//            st = con.prepareStatement("select id_concepto,cuenta,subcuenta,descripcion from Conceptos where cuenta=" + cuenta + " order by cuenta");
+            String sql = "select id_concepto,cuenta,subcuenta,descripcion from Conceptos where " + cuentas + " order by cuenta";
+            System.out.println(sql);
+            st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 ConceptosES c = new ConceptosES();

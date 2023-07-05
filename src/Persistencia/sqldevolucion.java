@@ -102,7 +102,7 @@ public class sqldevolucion {
      * @param id
      * @return
      */
-    public ArrayList<Ddevolucion> getpedidowithpedido(Connection c, int id) {
+    public ArrayList<Ddevolucion> getpedidowithpedido(Connection c, int id,String bdname) {
         ArrayList<Ddevolucion> arr = new ArrayList<>();
         try {
             PreparedStatement st;
@@ -112,8 +112,9 @@ public class sqldevolucion {
                     + "join Dpedido dp on dp.id_pedido=p.id_pedido\n"
                     + "join Materiales m on dp.id_material=m.id_material\n"
                     + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
-                    + "join [192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
+//                    + "join [192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
 //                    + "join RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
+                    + ""+bdname+"\n"
                     + "where serie='B' and p.id_pedido=" + id;
             System.out.println("dev ped " + sql);
             st = c.prepareStatement(sql);

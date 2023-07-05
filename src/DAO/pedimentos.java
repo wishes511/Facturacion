@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Modelo.Dpedimento;
 import Modelo.pedimento;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public interface pedimentos {
     public boolean nuevopedimento(Connection cpt, Connection rcpt, pedimento ped);
 
     public boolean borrarped(Connection cpt, Connection rcpt, pedimento ped);
+    
+    public boolean newmatpedimento(Connection cpt, Dpedimento ped);
     
     public ArrayList<pedimento> getpedimentosimple(Connection cpt, String cob, String cliente);
     

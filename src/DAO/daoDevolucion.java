@@ -30,9 +30,9 @@ public class daoDevolucion implements Devoluciones {
     }
 
     @Override
-    public ArrayList<Ddevolucion> arr(Connection c, int id_pedido) {
+    public ArrayList<Ddevolucion> arr(Connection c, int id_pedido, String bdname) {
         sqldevolucion s = new sqldevolucion();
-        return s.getpedidowithpedido(c, id_pedido);
+        return s.getpedidowithpedido(c, id_pedido, bdname);
     }
 
     @Override

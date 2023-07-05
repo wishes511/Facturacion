@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Modelo.Dpedimento;
 import Modelo.pedimento;
 import Persistencia.sqlpedimentos;
 import java.sql.Connection;
@@ -43,6 +44,12 @@ public class daopedimentos implements pedimentos {
     public ArrayList<pedimento> getpedimentoaadv(Connection cpt, String referencias) {
         sqlpedimentos s = new sqlpedimentos();
         return s.getpedimentoadv(cpt, referencias);
+    }
+
+    @Override
+    public boolean newmatpedimento(Connection cpt, Dpedimento ped) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.newmatpedimento(cpt, ped);
     }
 
 }

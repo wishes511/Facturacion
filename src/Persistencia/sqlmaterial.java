@@ -40,12 +40,12 @@ public class sqlmaterial {
 
     /**
      * Obtener todos los materiales
-     * @param con
-     * conexion
+     *
+     * @param con conexion
      * @param arr
-     * @return 
+     * @return
      */
-    public ArrayList<Materiales> getallMateriales(Connection con,ArrayList<Materiales> arr) {
+    public ArrayList<Materiales> getallMateriales(Connection con, ArrayList<Materiales> arr) {
         try {
             PreparedStatement st;
             ResultSet rs;
@@ -65,6 +65,7 @@ public class sqlmaterial {
         return arr;
     }
 //TPU
+
     public ArrayList<Materiales> getallMaterials(Connection con, String mat) {
         ArrayList<Materiales> arr = new ArrayList<>();
         try {
@@ -90,18 +91,18 @@ public class sqlmaterial {
         }
         return arr;
     }
-    
+
     public boolean Addmaterial(Connection con, Materiales m) {
         PreparedStatement st = null;
         try {
             con.setAutoCommit(false);
-            String mat=m.getDescripcion();
-            double precio=m.getPrecio();
-            String unidad=m.getUnidad();
-            String codigosat=m.getCodigosat();
-            int idfam=m.getId_familia();
-            String mon=m.getMoneda();
-            String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia,moneda) values('"+mat+"',"+precio+",'1','"+unidad+"','"+codigosat+"',"+idfam+",'"+mon+"')";
+            String mat = m.getDescripcion();
+            double precio = m.getPrecio();
+            String unidad = m.getUnidad();
+            String codigosat = m.getCodigosat();
+            int idfam = m.getId_familia();
+            String mon = m.getMoneda();
+            String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia,moneda) values('" + mat + "'," + precio + ",'1','" + unidad + "','" + codigosat + "'," + idfam + ",'" + mon + "')";
             System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
@@ -112,5 +113,62 @@ public class sqlmaterial {
         }
         return true;
     }
-    
+
+    public boolean Addmaterialmaq(Connection con, Materiales m) {
+        PreparedStatement st = null;
+        try {
+            con.setAutoCommit(false);
+            String mat = m.getDescripcion();
+            double precio = m.getPrecio();
+            String unidad = m.getUnidad();
+            String codigosat = m.getCodigosat();
+            int idfam = m.getId_familia();
+            String mon = m.getMoneda();
+            String nserie = m.getNoserie();
+            String i1 = m.getImag1();
+            String i2 = m.getImag2();
+            String i3 = m.getImag3();
+            String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia,moneda,noserie,imag1,imag2,imag3)"
+                    + " values('" + mat + "'," + precio + ",'1','" + unidad + "','" + codigosat + "'," + idfam + ",'" + mon + "','" + nserie + "','" + i1 + "','" + i2 + "','" + i3 + "')";
+            System.out.println(sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+            con.commit();
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(sqlmaterial.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return true;
+    }
+
+    public ArrayList<Materiales> getallMaterialsmaq(Connection con, String mat) {
+        ArrayList<Materiales> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select id_material,m.descripcion as modelo,precio,unidad,noserie,moneda,f.descripcion as marca,m.estatus\n"
+                    + "from materiales m\n"
+                    + "join familias f on m.id_familia=f.id_familia\n"
+                    + "where m.descripcion like '%"+mat+"%' order by m.descripcion");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Materiales m = new Materiales();
+                m.setId_material(rs.getInt("id_material"));
+                m.setDescripcion(rs.getString("modelo"));
+                m.setPrecio(rs.getDouble("precio"));
+                m.setUnidad(rs.getString("unidad"));
+                m.setNoserie(rs.getString("noserie"));
+                m.setMoneda(rs.getString("moneda"));
+                m.setMarca(rs.getString("marca"));
+                m.setEstatus(rs.getString("estatus"));
+                arr.add(m);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
 }

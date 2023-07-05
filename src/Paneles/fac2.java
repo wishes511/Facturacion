@@ -825,7 +825,7 @@ public class fac2 extends javax.swing.JPanel {
 //                if (!JcPublico.isSelected()) {// verifica 
 //                    iva = 0.16;
 //                }
-                
+
                 int totalpares = 0;// Se usa para la tabla facturas
                 impuestos = 0;
                 descuentos = 0;
@@ -838,6 +838,7 @@ public class fac2 extends javax.swing.JPanel {
                         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
                         double descuento = Double.parseDouble(formateador.format((tpares * precio) * desc));
                         String estprice = JtDetalle.getValueAt(i, 8).toString().toUpperCase();
+                        df.setCosto(k.get(i).getCosto());
                         df.setRenglon(k.get(i).getRenglon());
                         df.setProducto(k.get(i).getP().getProducto());
                         df.setCantidad(tpares);
@@ -1040,11 +1041,11 @@ public class fac2 extends javax.swing.JPanel {
      *
      */
     private void setreport(int folio, String regimen, String moneda, String serie) {
-        String conformidad=(!moneda.equals("MXN"))?"De conformidad con el Art. 20 del C.F.F., informamos que "
-                    + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
-                    + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
-                    + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
-                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)":" ";
+        String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
+                + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
+                + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
+                + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
+                + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
         try {
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown

@@ -533,4 +533,16 @@ public class daofactura implements Facturas {
         return s.searchPagncrtofac(c, iddoc, serie);
     }
 
+    @Override
+    public ArrayList<cargo> getfactrem(Connection cobB, String var, String ncob) {
+        sqlfactura s = new sqlfactura();
+        return s.getcargosrem(cobB, var, ncob);
+    }
+
+    @Override
+    public ArrayList<factura> getdocspagosremi(Connection con, String folio) {
+        sqlfactura s = new sqlfactura();
+        return s.getdocspagosremi(con, folio);
+    }
+
 }

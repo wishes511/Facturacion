@@ -91,6 +91,7 @@ public class Inout2 extends javax.swing.JPanel {
         jRadioButton1.setSelected(true);
         grupo.add(jRadioButton1);
         grupo.add(jRadioButton2);
+        
     }
 
     /**
@@ -435,15 +436,13 @@ public class Inout2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtFolio1ActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        if (!k2.isEmpty()) {
-
+        if (!k2.isEmpty() && !JtReferencia.getText().isEmpty()) {
             boolean a1 = verificadetalle();
             if (!a1) {
                 JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
             }
             System.out.println(" - " + a1);
             if (!a1) {
-
             } else {
                 ArrayList<KardexCmp> arrk = new ArrayList<>();
 //                Kardexrcpt  kar = new kardexCmp();
@@ -463,7 +462,7 @@ public class Inout2 extends javax.swing.JPanel {
                         double cant = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString())));
                         int cue=Integer.parseInt(arrcuentas.get(JcConceptos.getSelectedIndex()).getCuenta());
                         double stock=0;
-                        if(cue==1){
+                        if(cue==1 || cue==10){
                             stock=k2.get(i).getDp().getCantrestante()+cant;
                         }else{
                             stock=k2.get(i).getDp().getCantrestante()-cant;
@@ -497,6 +496,8 @@ public class Inout2 extends javax.swing.JPanel {
                 }
 
             }
+        }else{
+            JOptionPane.showMessageDialog(null, "El campo de referencia no puede ir vacio o no se ha seleccionado");
         }
     }//GEN-LAST:event_jLabel2MousePressed
 
@@ -771,7 +772,7 @@ public class Inout2 extends javax.swing.JPanel {
                 } else {
                     if (act.equals("*")) {// tomara en cuanta solo los que estan activos
                         double tpares = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
-                        if (tpares > k2.get(i).getDp().getCantrestante()) {
+                        if (tpares > k2.get(i).getDp().getCantrestante() && jRadioButton2.isSelected()) {
                             JtDetalle.setValueAt("", i, 7);
                             JOptionPane.showMessageDialog(null, "Error, El valor introducido en cantidad no puede ser mayor a la cantidad restante del material");
                         } else {
