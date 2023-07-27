@@ -247,16 +247,18 @@ public class Respaldos extends javax.swing.JInternalFrame implements Runnable {
         Calendar fecha = Calendar.getInstance();
         int year = fecha.get(Calendar.YEAR);
         int mes = fecha.get(Calendar.MONTH) + 1;
-        Servidorsql s = new Servidorsql();
+//        obtiene el nombre del mes de acuerdo a su numero del mes
         String mes1 = formateames(mes);
+//        Obtiene los ultimos 2 digitos del año
         String year1 = formateayear(String.valueOf(year));
         for (int i = 0; i < arr.size(); i++) {
+//            Ejecuta la instruccion de respaldo de acuerdo a la bd, mes y año
             resp.execresp(server, arr.get(i), mes1, year1);
             String ruta = arr.get(i).getRutarespaldo();
             String bd = arr.get(i).getBd();
+//            String para mostrar en la pantalla
             String resproc = ruta + "res" + bd + "" + mes1 + year1 + "tmp.bak";
             allres+=resproc+"\n";
-            
             JtEstado.setText(allres);
         }
         JOptionPane.showMessageDialog(null, "Respaldo completo");

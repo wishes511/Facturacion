@@ -521,7 +521,8 @@ public class daofactura implements Facturas {
     }
 
     /**
-     *Busca una nota de credito o pago de acuerdo al id de la factura
+     * Busca una nota de credito o pago de acuerdo al id de la factura
+     *
      * @param c
      * @param iddoc
      * @param serie
@@ -543,6 +544,12 @@ public class daofactura implements Facturas {
     public ArrayList<factura> getdocspagosremi(Connection con, String folio) {
         sqlfactura s = new sqlfactura();
         return s.getdocspagosremi(con, folio);
+    }
+
+    @Override
+    public int nuevafactpuATH(Connection cpt, factura f, Connection cob, Connection cpttpu, Connection rcpt) {
+        sqlfactura s = new sqlfactura();
+        return s.insertfacturatpuATH(cpt, f, cob,cpttpu, rcpt);
     }
 
 }

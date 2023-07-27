@@ -29,11 +29,12 @@ import javax.swing.table.DefaultTableModel;
  * @author GATEWAY1-
  */
 public class Empresarfc extends javax.swing.JInternalFrame {
-private JFileChooser filechooser;
+
+    private JFileChooser filechooser;
 
     Connection serverlite;
-    ArrayList<Empresas> arr= new ArrayList<>();
-    
+    ArrayList<Empresas> arr = new ArrayList<>();
+
     /**
      * Creates new form Respaldos
      */
@@ -41,7 +42,7 @@ private JFileChooser filechooser;
         try {
             initComponents();
             Serverylite l = new Serverylite();
-            serverlite=l.getconexionC();
+            serverlite = l.getconexionC();
             setempresas();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Empresarfc.class.getName()).log(Level.SEVERE, null, ex);
@@ -51,7 +52,6 @@ private JFileChooser filechooser;
             Logger.getLogger(Empresarfc.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,6 +66,7 @@ private JFileChooser filechooser;
         JmCert = new javax.swing.JMenuItem();
         JmKey = new javax.swing.JMenuItem();
         JmSalida = new javax.swing.JMenuItem();
+        JmCp = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         JtEmpresa = new javax.swing.JTable();
 
@@ -92,6 +93,14 @@ private JFileChooser filechooser;
             }
         });
         Menu.add(JmSalida);
+
+        JmCp.setText("Actualizar codigo postal");
+        JmCp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmCpActionPerformed(evt);
+            }
+        });
+        Menu.add(JmCp);
 
         setClosable(true);
         setIconifiable(true);
@@ -155,7 +164,7 @@ private JFileChooser filechooser;
     }//GEN-LAST:event_formInternalFrameClosing
 
     private void JtEmpresaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtEmpresaMousePressed
-       if (evt.getButton() == 3) {
+        if (evt.getButton() == 3) {
             Menu.show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_JtEmpresaMousePressed
@@ -171,24 +180,49 @@ private JFileChooser filechooser;
     private void JmSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSalidaActionPerformed
         actualizadatos("salidaxml");
     }//GEN-LAST:event_JmSalidaActionPerformed
-    
-    private void actualizadatos(String columna){
-        filechooser=new JFileChooser();
+
+    private void JmCpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCpActionPerformed
+//        actualizadatos("cp");
+        actualizastring("cp");
+    }//GEN-LAST:event_JmCpActionPerformed
+
+    /**
+     * Funcion para actualizar alguna de las columnas
+     *
+     * @param columna
+     */
+    private void actualizadatos(String columna) {
+        filechooser = new JFileChooser();
         filechooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         int returnval = filechooser.showOpenDialog(this);
         if (returnval == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
             daoempresa de = new daoempresa();
-            int id=Integer.parseInt(arr.get(JtEmpresa.getSelectedRow()).getIp());
-            de.actualizadir(serverlite, columna,file.getAbsolutePath() , id);
+            int id = Integer.parseInt(arr.get(JtEmpresa.getSelectedRow()).getIp());
+            de.actualizadir(serverlite, columna, file.getAbsolutePath(), id);
             setempresas();
         }
     }
-    
-    private void setempresas(){
+
+    private void actualizastring(String columna) {
+        String dato = JOptionPane.showInputDialog(null, "Introduce nuevo dato");
+        if (dato == null || dato.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "El valor esta vacio, intentelo de nuevo");
+        } else {
+            daoempresa de = new daoempresa();
+            int id = Integer.parseInt(arr.get(JtEmpresa.getSelectedRow()).getIp());
+            de.actualizadir(serverlite, columna, dato, id);
+            JOptionPane.showMessageDialog(null, "Exito al modificar "+columna);
+            setempresas();
+        }
+
+    }
+
+    private void setempresas() {
         DefaultTableModel model = new DefaultTableModel();
         daoempresa d = new daoempresa();
-        arr=d.getallempresa(serverlite);
+//        Se buscan todos lo registros acerca de la empresa
+        arr = d.getallempresa(serverlite);
         model.addColumn("Nombre");
         model.addColumn("Rfc");
         model.addColumn("Regimen");
@@ -198,7 +232,7 @@ private JFileChooser filechooser;
         model.addColumn("Pass");
         model.addColumn("Xml guardado");
         model.setNumRows(arr.size());
-        for(int i=0;i<arr.size();i++){
+        for (int i = 0; i < arr.size(); i++) {
             model.setValueAt(arr.get(i).getNombre(), i, 0);
             model.setValueAt(arr.get(i).getRfc(), i, 1);
             model.setValueAt(arr.get(i).getRegimen(), i, 2);
@@ -210,10 +244,11 @@ private JFileChooser filechooser;
         }
         JtEmpresa.setModel(model);
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem JmCert;
+    private javax.swing.JMenuItem JmCp;
     private javax.swing.JMenuItem JmKey;
     private javax.swing.JMenuItem JmSalida;
     private javax.swing.JTable JtEmpresa;

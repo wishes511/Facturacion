@@ -22,7 +22,8 @@ join [192.168.90.1\DATOS620].RACobranzamaq.dbo.cargo c on c.referencia=p.pedido 
 join [192.168.90.1\DATOS620].RACobranzamaq.dbo.agente a on c.id_agente=a.id_agente
 where serie= $P{serie} and id_pedido=$P{id}
 
-/*
+/*Cambiar de acuerdo si es prueba o produccion
+
 join [192.168.90.1\DATOS620].RACobranzamaq.dbo.cargo c on c.referencia=p.pedido collate SQL_Latin1_General_CP1_CI_AS
 join [192.168.90.1\DATOS620].RACobranzamaq.dbo.agente a on c.id_agente=a.id_agente
 

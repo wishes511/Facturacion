@@ -12,6 +12,8 @@ import Modelo.Procserie;
 import Modelo.Usuarios;
 import Paneles.pago1;
 import Paneltpu.Kardexprod;
+import Paneltpu.Repauxcliente;
+import Paneltpu.Repedocuenta;
 import Paneltpu.Ventasserie;
 import Tpu.Materialestpu;
 import Server.ServerProccpt;
@@ -22,6 +24,7 @@ import Tpu.Devolucionestpu;
 import Tpu.Durezastpu;
 import Tpu.EntradasSalidas;
 import Tpu.FacturacionTpu;
+import Tpu.FacturacionTpuAth;
 import Tpu.Familiastpu;
 import Tpu.Notascrtpu;
 import Tpu.Pagostpu;
@@ -98,16 +101,16 @@ public final class Principal extends javax.swing.JFrame {
         PopMenu.add(JmVentas);
         PopMenu.add(JmTpu);
         PopMenu.add(JmMaq);
-
+//        Menu para el despliegue una ves que se ha cerrado la aplicacion
         popup();
+//        Todos los menus y botones se ocultan para su despues proceso
         setinicio();
         grupo.add(JrEmpresa);
         grupo.add(JrEmpresa1);
-//        setconexionesglobal();// Cuidado!!! Bases de datos de produccion
-
+//        Conexion a la bd de Sqlite
         conexiones();
+//        Conexiones solo para el modo de pruebas
         setconexionprueba();
-//        actualizaempresa();
         //setconexiones();
         u.setAth("");
         u.setUsuario("");
@@ -115,7 +118,7 @@ public final class Principal extends javax.swing.JFrame {
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
-            u.setTurno("6");
+            u.setTurno("0");
             modoadmin();
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();
@@ -167,6 +170,9 @@ public final class Principal extends javax.swing.JFrame {
         JmDureza = new javax.swing.JMenuItem();
         JmFamilia = new javax.swing.JMenuItem();
         Jmreportes = new javax.swing.JMenu();
+        JmRepcob = new javax.swing.JMenu();
+        JmEdocuenta = new javax.swing.JMenuItem();
+        JmAuxcliente = new javax.swing.JMenuItem();
         JmKardexprod = new javax.swing.JMenuItem();
         JmVentaserie = new javax.swing.JMenuItem();
         JmCobranzatpu = new javax.swing.JMenu();
@@ -174,6 +180,7 @@ public final class Principal extends javax.swing.JFrame {
         JmPagostpu = new javax.swing.JMenuItem();
         JmPagostpu2 = new javax.swing.JMenuItem();
         JtFacturaciontpu = new javax.swing.JMenuItem();
+        JtFacturaciontpu1 = new javax.swing.JMenuItem();
         JmRemision = new javax.swing.JMenuItem();
         JmPedimento = new javax.swing.JMenuItem();
         JmEntradasS = new javax.swing.JMenuItem();
@@ -448,6 +455,27 @@ public final class Principal extends javax.swing.JFrame {
         Jmreportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/books_21813.png"))); // NOI18N
         Jmreportes.setText("Reportes");
 
+        JmRepcob.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/exchange-dollar_icon-icons.com_53141.png"))); // NOI18N
+        JmRepcob.setText("Reportes Cobranza");
+
+        JmEdocuenta.setText("Reporte Estado de cuenta");
+        JmEdocuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmEdocuentaActionPerformed(evt);
+            }
+        });
+        JmRepcob.add(JmEdocuenta);
+
+        JmAuxcliente.setText("Reporte Auxiliar de clientes");
+        JmAuxcliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAuxclienteActionPerformed(evt);
+            }
+        });
+        JmRepcob.add(JmAuxcliente);
+
+        Jmreportes.add(JmRepcob);
+
         JmKardexprod.setText("Kardex x producto");
         JmKardexprod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -506,6 +534,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmTpu.add(JtFacturaciontpu);
+
+        JtFacturaciontpu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirP0.png"))); // NOI18N
+        JtFacturaciontpu1.setText("Facturacion pedimento 0");
+        JtFacturaciontpu1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtFacturaciontpu1ActionPerformed(evt);
+            }
+        });
+        JmTpu.add(JtFacturaciontpu1);
 
         JmRemision.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirR.png"))); // NOI18N
         JmRemision.setText("Pedidos");
@@ -1459,6 +1496,29 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmPagostpu3ActionPerformed
 
+    private void JmEdocuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEdocuentaActionPerformed
+        Repedocuenta n = new Repedocuenta(null, true);
+        n.u = conexion;
+        n.setVisible(true);
+    }//GEN-LAST:event_JmEdocuentaActionPerformed
+
+    private void JmAuxclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAuxclienteActionPerformed
+        Repauxcliente n = new Repauxcliente(null, true);
+        n.u = conexion;
+        n.setVisible(true);
+    }//GEN-LAST:event_JmAuxclienteActionPerformed
+
+    private void JtFacturaciontpu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFacturaciontpu1ActionPerformed
+        try {
+            FacturacionTpuAth p = new FacturacionTpuAth(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JtFacturaciontpu1ActionPerformed
+
 //    Primera version para veriicar el usuario
     private void verificausuario() {
         jp.setVisible(true);
@@ -1527,6 +1587,8 @@ public final class Principal extends javax.swing.JFrame {
             try {
                 Serverylite s = new Serverylite();
                 liteusuario = s.getconexionusuarios();
+//                Es igual administrador pero con datos ya establecidos, 
+//                usado mas para rapidez y evitar la consulta a la bd
                 if (a.equals("0605")) {
                     u.setAth("1");
                     u.setUptown("1");
@@ -1548,11 +1610,11 @@ public final class Principal extends javax.swing.JFrame {
                     if (!u.getUsuario().equals("")) {
 //                        checkempresa();
                         actualizaempresa();
+//                        Si es administracion usaria tpu y maq
                         if (u.getTipo_usuario().equals("1")) {
                             setTpucon();
                             setTpumaq();
                         }
-
                     }
 
                 }
@@ -1921,6 +1983,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane JdPanel;
     private javax.swing.JLabel JlSerie;
     private javax.swing.JLabel JlUsuario;
+    private javax.swing.JMenuItem JmAuxcliente;
     private javax.swing.JMenu JmAvances;
     private javax.swing.JMenuItem JmAvancesPt;
     private javax.swing.JMenuItem JmCES;
@@ -1936,6 +1999,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmDevoluciones;
     private javax.swing.JMenuItem JmDevoluciones1;
     private javax.swing.JMenuItem JmDureza;
+    private javax.swing.JMenuItem JmEdocuenta;
     private javax.swing.JMenuItem JmEmpresas;
     private javax.swing.JMenuItem JmEntradasS;
     private javax.swing.JMenuItem JmEntradasS1;
@@ -1965,6 +2029,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmProveedor1;
     private javax.swing.JMenuItem JmRemision;
     private javax.swing.JMenuItem JmRemision1;
+    private javax.swing.JMenu JmRepcob;
     private javax.swing.JMenu JmReportes;
     private javax.swing.JMenuItem JmRespaldos;
     private javax.swing.JMenuItem JmSalidas;
@@ -1980,6 +2045,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JRadioButton JrEmpresa;
     private javax.swing.JRadioButton JrEmpresa1;
     private javax.swing.JMenuItem JtFacturaciontpu;
+    private javax.swing.JMenuItem JtFacturaciontpu1;
     private javax.swing.JPopupMenu PopMenu;
     private javax.swing.ButtonGroup grupo;
     private javax.swing.JLabel jLabel1;

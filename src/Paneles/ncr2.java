@@ -679,7 +679,6 @@ public class ncr2 extends javax.swing.JPanel {
             cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
         }
         JcCuenta.setModel(cuentas);
-
     }
 
     private void JtClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtClienteMousePressed
@@ -687,7 +686,6 @@ public class ncr2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteMousePressed
 
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
-
         String r = JtCliente.getText();
         daofactura df = new daofactura();
         arrcargo = df.getfactstoncr(ACobranza, r, empresa);// cpt a usar
@@ -697,10 +695,9 @@ public class ncr2 extends javax.swing.JPanel {
             JtCliente.requestFocus();
         } else {
             JlNombre.setText(arrcargo.get(0).getNombre());
+//            Carga y despliega la informacion de los combobox
             cargacombos();
-//            cargacargos();
         }
-
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void JcMetodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcMetodoActionPerformed
@@ -719,7 +716,7 @@ public class ncr2 extends javax.swing.JPanel {
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         boolean band = true;
-        boolean band1= checkunidad();
+        boolean band1 = checkunidad();
         for (int i = 0; i < model.getRowCount(); i++) {
             String col2 = JtDetalle.getValueAt(i, 1).toString();
             if (col2.equals("")) {
@@ -731,7 +728,6 @@ public class ncr2 extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(null, "Error, Alguna de las claves de producto o unidad esta vacia o erronea, verificalo");
         }
-
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
@@ -769,7 +765,7 @@ public class ncr2 extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "No puedes usar este tipo de relacion para agregar renglones, cambialo e intentalo de nuevo");
             JtRelacion.requestFocus();
         } else {
-            String[] rowt = {"", "", "", "",""};
+            String[] rowt = {"", "", "", "", ""};
             model.addRow(rowt);
             JtDetalle.setModel(model);
         }
@@ -871,22 +867,21 @@ public class ncr2 extends javax.swing.JPanel {
     }
 
     private void setfactura() {
+//        Formatea los decimales version anterior de igual manera se usa en algunas caracteristicas
         DecimalFormat formateador = new DecimalFormat("####.##");
-
+//        Si no hay nada en los cargos de seleccion regresa al campo original
         if (arrcargoseleccion.isEmpty()) {
             JtCliente.requestFocus();
         } else {
             double totalrev = 0;
             //Se obtiene el total de las facturas que anter se capturaron
             for (int i = 0; i < arrcargoseleccion.size(); i++) {
-//                totalrev += Double.parseDouble(formateador.format(arrcargoseleccion.get(i).getDescuento()));
                 totalrev += formatdecimal(arrcargoseleccion.get(i).getDescuento());
             }
-
-            System.out.println(total + " " + totalrev);
-            System.out.println(total + " " + formateador.format(totalrev));
+//            System.out.println(total + " " + totalrev);
+//            System.out.println(total + " " + formateador.format(totalrev));
 //            if (totalrev != total) {
-            System.out.println(formatdecimal(total) + " ** " + formatdecimal(totalrev));
+//            System.out.println(formatdecimal(total) + " ** " + formatdecimal(totalrev));
             if (formatdecimal(total) != formatdecimal(totalrev)) {
                 JOptionPane.showMessageDialog(null, "El total de las lineas debe de ser igual al seleccionado en las facturas");
                 JtDetalle.requestFocus();
@@ -974,6 +969,8 @@ public class ncr2 extends javax.swing.JPanel {
                 //Mandar un string con los folios fiscales
 
                 ArrayList<String> arruuid = new ArrayList<>();
+//                Funcion que obtiene y almacena los folios y facturas en un String 
+//                Ademas de agregar en un Array Los folios fiscal de cada factura afectada
                 for (int i = 0; i < arrcargoseleccion.size(); i++) {
                     if (i == 0) {
                         folios = arrcargoseleccion.get(i).getFoliofiscal();
@@ -985,7 +982,7 @@ public class ncr2 extends javax.swing.JPanel {
                     arruuid.add(arrcargoseleccion.get(i).getFoliofiscal());
                 }
 
-                System.out.println("cargo seleccion " + arrcargoseleccion.size());
+//                System.out.println("cargo seleccion " + arrcargoseleccion.size());
                 f.setRefncredito(facturas);
                 f.setObservaciones(JtObs.getText().toUpperCase() + " " + facturas);
                 f.setFoliofiscalorig(folios);
@@ -1007,7 +1004,6 @@ public class ncr2 extends javax.swing.JPanel {
                     String umedida = "";
                     double impuesto;
                     double pre = 0;
-
                     if (rel.equals("03")) {//numero de renglones tambien para detalle docs
                         pre = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         unidad = Double.parseDouble(formateador.format(pre));
@@ -1015,10 +1011,8 @@ public class ncr2 extends javax.swing.JPanel {
                         precio = Double.parseDouble(formateador.format((pre * pares) * 0.16 + (pre * pares)));
                         descripcion = JtDetalle.getValueAt(i, 0).toString();
                         codigosat = JtDetalle.getValueAt(i, 1).toString();
-//                        umedida = "PR";
                         umedida = JtDetalle.getValueAt(i, 4).toString().toUpperCase();
                         arrayc = getcargosfacs();
-
                     } else {
                         //Detalle solo para 1 renglon que es la relacion 01 y 07
 //                        precio = Float.parseFloat(formateador.format(arrcargoseleccion.get(i).getDescuento() / 1.16));
@@ -1187,6 +1181,7 @@ public class ncr2 extends javax.swing.JPanel {
             String n = (empresa.equals("UptownCPT")) ? "2" : "1";
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
+            String lugar = (empresa.equals("UptownCPT")) ? e.getCp() : "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter
@@ -1197,7 +1192,7 @@ public class ncr2 extends javax.swing.JPanel {
             parametros.put("nombre", e.getNombre());
             parametros.put("rfc", e.getRfc());
             parametros.put("regimen", e.getRegimen());
-            parametros.put("lugar", e.getCp());
+            parametros.put("lugar", lugar);
             parametros.put("comprobante", e.getNumcertificado());
             parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
             parametros.put("metodo", arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
@@ -1257,7 +1252,7 @@ public class ncr2 extends javax.swing.JPanel {
                 for (int i = 0; i < rows; i++) {
                     //Verifica de que sea un numero y no cualquier cosa
                     if ((verificafloat(JtDetalle.getValueAt(i, 2).toString()) || verificaint(JtDetalle.getValueAt(i, 2).toString())
-                            || verificaflotante(JtDetalle.getValueAt(i, 2).toString()) )&& !JtDetalle.getValueAt(i, 4).toString().isEmpty()) {
+                            || verificaflotante(JtDetalle.getValueAt(i, 2).toString())) && !JtDetalle.getValueAt(i, 4).toString().isEmpty()) {
                         double precio = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         int can = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
 //                        subtotal += Double.parseDouble(formateador.format((precio) * can));
@@ -1320,10 +1315,10 @@ public class ncr2 extends javax.swing.JPanel {
     private boolean checkunidad() {
         boolean band = true;
         int t = model.getRowCount();
-        
+
         for (int i = 0; i < t; i++) {
-            if(JtDetalle.getValueAt(i, 4).toString().isEmpty()){
-                band=false;
+            if (JtDetalle.getValueAt(i, 4).toString().isEmpty()) {
+                band = false;
                 break;
             }
         }

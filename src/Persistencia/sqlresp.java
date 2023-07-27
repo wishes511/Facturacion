@@ -26,12 +26,10 @@ public class sqlresp {
     public boolean ejecutarresp(Connection con, Servidorsql s, String mes, String year) {// solo server
         PreparedStatement st = null;
         try {
-
             con.setAutoCommit(false);
             String sql = "BACKUP DATABASE ["+s.getBd()+"]\n"
                     + "TO  DISK = N'"+s.getRutarespaldo()+"res"+s.getBd()+""+mes+""+year+"tmp.bak'\n"
                     + "WITH CHECKSUM;";
-//            System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
             con.commit();

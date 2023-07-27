@@ -795,7 +795,7 @@ public class fac2 extends javax.swing.JPanel {
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
-                f.setLugarexpedicion("36400");
+                f.setLugarexpedicion("36350");
 //                f.setAgente(k.get(row).getCli().getAgente());
                 f.setAgente(arragente.get(JcAgente.getSelectedIndex()).getIdagente());
                 f.setPlazo(k.get(row).getCli().getPlazo());
@@ -834,7 +834,8 @@ public class fac2 extends javax.swing.JPanel {
                     Dfactura df = new Dfactura();
                     if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
                         double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
-                        int tpares = k.get(i).getTotalpares();
+//                        int tpares = k.get(i).getTotalpares();
+                        int tpares = Integer.parseInt(JtDetalle.getValueAt(i, 2).toString());
                         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
                         double descuento = Double.parseDouble(formateador.format((tpares * precio) * desc));
                         String estprice = JtDetalle.getValueAt(i, 8).toString().toUpperCase();
@@ -1051,10 +1052,12 @@ public class fac2 extends javax.swing.JPanel {
 //            Identificar si es de ath o uptown
             String n = (empresa.equals("UptownCPT")) ? "2" : "1";
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
+
             String ser;
             String report;
 
             Empresas e = d.getempresarfc(sqlempresa, n);
+            String lugar = (empresa.equals("UptownCPT")) ? e.getCp() : "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter
@@ -1079,7 +1082,7 @@ public class fac2 extends javax.swing.JPanel {
             parametros.put("nombre", e.getNombre());
             parametros.put("rfc", e.getRfc());
             parametros.put("regimen", e.getRegimen());
-            parametros.put("lugar", e.getCp());
+            parametros.put("lugar", lugar);
             parametros.put("comprobante", e.getNumcertificado());
             parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
             parametros.put("metodo", arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
@@ -1301,6 +1304,7 @@ public class fac2 extends javax.swing.JPanel {
         subtotal = 0;
         impuestos = 0;
         descuentos = 0;
+        total = 0;
         double iva = 0.16;
         boolean resp = true;
 //        if (!JcPublico.isSelected()) {// verifica 
@@ -1317,7 +1321,8 @@ public class fac2 extends javax.swing.JPanel {
                     break;
                 } else {
                     if (act.equals("*")) {// tomara en cuanta solo los que estan activos
-                        int tpares = k.get(i).getTotalpares();
+//                        int tpares = k.get(i).getTotalpares();
+                        int tpares = Integer.parseInt(JtDetalle.getValueAt(i, 2).toString());
                         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
                         double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
                         double descuento = (tpares * precio) * desc;

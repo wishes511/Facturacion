@@ -383,7 +383,7 @@ public class fac1tpu extends javax.swing.JPanel {
         String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
         String fac = String.valueOf(arrfacturaxml.get(0).getFolio());
         Sellofiscal s = t.timbrar("FAC_" + fac, "", sqlempresa, e);
-        dfac.Updatesellofiscal(cpt, s, id);
+        dfac.Updatesellofiscaltpu(cpt, s, id);
         JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
         Buscanotas();
     }//GEN-LAST:event_JbXmlActionPerformed
@@ -671,6 +671,7 @@ public class fac1tpu extends javax.swing.JPanel {
             String uso = arrfactura.get(row).getUsocfdi();
             String regimen = arrfactura.get(row).getRegimen();
             Empresas e = d.getempresarfc(sqlempresa, n);
+            String lugar="BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO "+e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter
@@ -686,7 +687,7 @@ public class fac1tpu extends javax.swing.JPanel {
             parametros.put("nombre", e.getNombre());
             parametros.put("rfc", e.getRfc());
             parametros.put("regimen", e.getRegimen());
-            parametros.put("lugar", e.getCp());
+            parametros.put("lugar", lugar);
             parametros.put("comprobante", e.getNumcertificado());
             parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
             parametros.put("metodo", metodop);

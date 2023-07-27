@@ -27,12 +27,19 @@ public class sqlclientes {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select * from clientes \n"
+//            String sql="select * from clientes \n"
+//                    + "where ISNULL(nombre40,'')!=''\n"
+//                    + "order by nombre40";
+            String sql = "select numcliente,nombre40,c.rfc,calle,colonia,c.cp,fax,agente1,plazo,CveCanal\n"
+                    + "from clientes c\n"
+                    + "join Agentes a on c.Agente1=a.CveAgente\n"
                     + "where ISNULL(nombre40,'')!=''\n"
-                    + "order by nombre40");
+                    + "order by nombre40";
+            st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Cliente c = new Cliente();
+                Agentes a = new Agentes();
                 c.setCvecliente(rs.getInt("numcliente"));
                 c.setNombre(rs.getString("Nombre40"));
                 c.setRfc(rs.getString("rfc"));
@@ -41,6 +48,9 @@ public class sqlclientes {
                 c.setCp(rs.getString("cp"));
                 c.setRegimen(rs.getString("fax"));
                 c.setAgente(rs.getInt("agente1"));
+                c.setPlazo(rs.getInt("Plazo"));
+                a.setIdcanal(rs.getInt("cvecanal"));
+                c.setAg(a);
                 arr.add(c);
             }
             rs.close();
@@ -56,7 +66,7 @@ public class sqlclientes {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select id_cliente,c.nombre as cliente,rfc,cp,calle,usocfdi,regimen,c.id_agente as agente,a.canal from cliente c\n"
+            String sql = "select id_cliente,c.nombre as cliente,rfc,cp,calle,usocfdi,regimen,c.id_agente as agente,a.canal,plazo from cliente c\n"
                     + "join Agente a on  c.id_agente=a.id_agente\n"
                     + "where c.estatus='1'\n"
                     + "order by c.nombre";
@@ -75,6 +85,7 @@ public class sqlclientes {
                 c.setRegimen(rs.getString("regimen"));
                 ag.setIdagente(rs.getInt("agente"));
                 ag.setIdcanal(rs.getInt("canal"));
+                c.setPlazo(rs.getInt("plazo"));
                 c.setAg(ag);
                 arr.add(c);
             }

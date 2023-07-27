@@ -786,7 +786,7 @@ public class fac2E extends javax.swing.JPanel {
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
-                f.setLugarexpedicion("36400");
+                f.setLugarexpedicion("36350");
                 f.setAgente(arrcliente.get(row).getAgente());
                 f.setPlazo(arrcliente.get(row).getPlazo());
                 f.setMarca("O");
@@ -1017,6 +1017,7 @@ public class fac2E extends javax.swing.JPanel {
             String n = (empresa.equals("UptownCPT")) ? "2" : "1";
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
+            String lugar=(empresa.equals("UptownCPT")) ? e.getCp() : "BLVD LAS TORRES 516  DEL VALLE  SAN FRANCISCO DEL RINCON  GUANAJUATO "+e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter
@@ -1031,7 +1032,7 @@ public class fac2E extends javax.swing.JPanel {
             parametros.put("nombre", e.getNombre());
             parametros.put("rfc", e.getRfc());
             parametros.put("regimen", e.getRegimen());
-            parametros.put("lugar", e.getCp());
+            parametros.put("lugar", lugar);
             parametros.put("comprobante", e.getNumcertificado());
             parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
             parametros.put("metodo", arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());

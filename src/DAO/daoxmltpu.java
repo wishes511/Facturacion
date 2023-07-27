@@ -72,7 +72,7 @@ public class daoxmltpu {
             x.setTotal(BigDecimal.valueOf(Double.parseDouble(newt)).setScale(2));               // Total
             x.setMetodoPago(f.getMetodopago());                         // MEtodo pago
             x.setDescripcionP(f.getDescmetodop());
-//            x.setLugarExpedidcion("36400");                             // CP emisor
+//            x.setLugarExpedidcion(f.getLugarexpedicion());                             // CP emisor
 //Cliente
             x.setReceptor(f.getNombre());                               // Razon social re
 //            x.setReceptor("COPPEL");

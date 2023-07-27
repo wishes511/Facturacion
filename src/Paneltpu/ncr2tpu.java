@@ -1213,6 +1213,7 @@ public class ncr2tpu extends javax.swing.JPanel {
             String n = "1";
             String logo = "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
+            String lugar="BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO "+e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter
@@ -1223,7 +1224,7 @@ public class ncr2tpu extends javax.swing.JPanel {
             parametros.put("nombre", e.getNombre());
             parametros.put("rfc", e.getRfc());
             parametros.put("regimen", e.getRegimen());
-            parametros.put("lugar", e.getCp());
+            parametros.put("lugar", lugar);
             parametros.put("comprobante", e.getNumcertificado());
             parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
             parametros.put("metodo", arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());

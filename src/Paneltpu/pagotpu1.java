@@ -398,6 +398,7 @@ public class pagotpu1 extends javax.swing.JPanel {
             String logo = "AF.png";
 //            Obtiene los datos del emisor que en este caso en ath
             Empresas e = d.getempresarfc(sqlempresa, n);
+            String lugar="BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO "+e.getCp();
             Map parametros = new HashMap();
             convertnum conv = new convertnum();
             int folio = arrfactura.get(JtDetalle.getSelectedRow()).getFolio();
@@ -406,7 +407,7 @@ public class pagotpu1 extends javax.swing.JPanel {
             parametros.put("nombre", e.getNombre());
             parametros.put("rfc", e.getRfc());
             parametros.put("regimen", e.getRegimen());
-            parametros.put("lugar", e.getCp());
+            parametros.put("lugar", lugar);
             parametros.put("comprobante", e.getNumcertificado());
             parametros.put("logo", "C:\\af\\bin\\" + logo);
             parametros.put("metodo", getnmetodo(arrfactura.get(JtDetalle.getSelectedRow()).getMetodopago()));

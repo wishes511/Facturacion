@@ -850,7 +850,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
-                f.setLugarexpedicion("36400");
+                f.setLugarexpedicion("36350");
 //                f.setAgente(k.get(row).getCli().getAgente());
                 f.setAgente(arrcliente.get(rowc).getAg().getIdagente());
 
@@ -1092,6 +1092,7 @@ public class fac2tpu extends javax.swing.JPanel {
             String report;
 
             Empresas e = d.getempresarfc(sqlempresa, n);
+            String lugar = "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter
@@ -1116,7 +1117,7 @@ public class fac2tpu extends javax.swing.JPanel {
             parametros.put("nombre", e.getNombre());
             parametros.put("rfc", e.getRfc());
             parametros.put("regimen", e.getRegimen());
-            parametros.put("lugar", e.getCp());
+            parametros.put("lugar", lugar);
             parametros.put("comprobante", e.getNumcertificado());
             parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
             parametros.put("metodo", arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
@@ -1246,6 +1247,12 @@ public class fac2tpu extends javax.swing.JPanel {
         DefaultListModel<String> model = new DefaultListModel<>();
         int folio = 0;
         for (int i = 0; i < k1.size(); i++) {
+            if (k1.get(i).getReferencia().equals("0")) {
+                k1.remove(i);
+                break;
+            }
+        }
+        for (int i = 0; i < k1.size(); i++) {
             if (folio != k1.get(i).getId_pedimento()) {
                 model.addElement(k1.get(i).getReferencia() + " - " + k1.get(i).getNprov());
             }
@@ -1315,6 +1322,7 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         if (!k2.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
             model.setRowCount(k2.size());
+
             for (int i = 0; i < k2.size(); i++) {
                 double tpares = k2.get(i).getDp().getCantrestante();
                 double desc = Double.parseDouble(JtDescuento.getText()) / 100;

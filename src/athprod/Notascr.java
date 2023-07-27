@@ -132,6 +132,7 @@ public class Notascr extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setResizable(true);
         setTitle("Notas de credito");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/exchange-dollar_icon-icons.com_53141.png"))); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 

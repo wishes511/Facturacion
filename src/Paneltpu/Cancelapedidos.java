@@ -316,6 +316,9 @@ public class Cancelapedidos extends javax.swing.JDialog {
         JlCuenta.setText(ces.getNombre());
     }
 
+    /**
+     * Busca los pedidos que esten activos
+     */
     private void llenatabla() {
         DefaultTableModel model = new DefaultTableModel();
         daoDevolucion dd = new daoDevolucion();

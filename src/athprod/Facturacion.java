@@ -181,9 +181,8 @@ public class Facturacion extends javax.swing.JInternalFrame {
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
         setTitle("Facturacion");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtir.png"))); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 

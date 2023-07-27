@@ -5,11 +5,13 @@
  */
 package Modelo;
 
+import java.lang.NullPointerException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -34,15 +36,42 @@ public class Setaddenda {
     String archivo;
     factura f;
 
-     /**
-      * 
-      * @param na 
-      * parametro que contiene todo lo necesario para crear la addenda
-      */
+    /**
+     *
+     * @param na parametro que contiene todo lo necesario para crear la addenda
+     */
     public Setaddenda(NAddenda na) {
-        this.na=na;
-        this.archivo=na.getArchivo();
-        this.f=na.getF();
+        this.na = na;
+        this.archivo = na.getArchivo();
+        this.f = na.getF();
+    }
+
+    /**
+     * Borra el nodo de la adenda
+     */
+    public void deladenda() {
+        try {
+            Document doc;
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder;
+            builder = dbFactory.newDocumentBuilder();
+            doc = builder.parse(archivo);
+            doc.getDocumentElement().normalize();
+            Node ar = doc.getElementsByTagName("cfdi:Addenda").item(0);
+            doc.getDocumentElement().removeChild(ar);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = null;
+            transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(archivo));
+            transformer.transform(source, result);
+            JOptionPane.showMessageDialog(null, "Completo!: El documento ya no tiene adenda","Eliminacion de addenda",JOptionPane.CANCEL_OPTION);
+        } catch (SAXException | IOException | ParserConfigurationException | TransformerException ex) {
+            Logger.getLogger(Setaddenda.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ocurrio un error al cargar documento");
+        } catch (NullPointerException ex) {
+            JOptionPane.showMessageDialog(null, "El documento ya no tiene adenda");
+        }
     }
 
     /**
@@ -70,19 +99,19 @@ public class Setaddenda {
             requestpayment.setAttribute("type", "SimpleInvoiceType");
             ad.appendChild(requestpayment);
             //Nodos extra dentro de requestfor payment
-            requestpayment.appendChild(getRequestforpaymentidentification(doc, "FAC"+f.getFolio()));
+            requestpayment.appendChild(getRequestforpaymentidentification(doc, "FAC" + f.getFolio()));
             requestpayment.appendChild(getOrderIdentification(doc));
             requestpayment.appendChild(getSeller(doc));
-            requestpayment.appendChild(getShipto(doc, na.getDc().getId_coppel()+"", na.getDc().getDestino()));
+            requestpayment.appendChild(getShipto(doc, na.getDc().getId_coppel() + "", na.getDc().getDestino()));
             requestpayment.appendChild(getcurrency(doc));
             requestpayment.appendChild(getTotallotes(doc, na.getCajas()));
-            for(int i=0;i<na.getArrad().size();i++){
+            for (int i = 0; i < na.getArrad().size(); i++) {
                 requestpayment.appendChild(getlineItem(doc, i));
             }
-            requestpayment.appendChild(getTotalamouunt(doc, f.getSubtotal()-f.getDescuento()));
-            requestpayment.appendChild(getTotalallowance(doc,f.getDescuento()));
-            requestpayment.appendChild(getBaseamount(doc, f.getSubtotal()-f.getDescuento()));
-            requestpayment.appendChild(getTax(doc,f.getImpuestos()));
+            requestpayment.appendChild(getTotalamouunt(doc, f.getSubtotal() - f.getDescuento()));
+            requestpayment.appendChild(getTotalallowance(doc, f.getDescuento()));
+            requestpayment.appendChild(getBaseamount(doc, f.getSubtotal() - f.getDescuento()));
+            requestpayment.appendChild(getTax(doc, f.getImpuestos()));
             requestpayment.appendChild(getPayableamount(doc, f.getTotal()));
             requestpayment.appendChild(getCadenaO(doc, f.getCadenaorig()));
             ar.appendChild(ad);
@@ -167,10 +196,8 @@ public class Setaddenda {
      * Nodo ShipTo que contiene nombre, direcion y numero dee bodega
      *
      * @param doc
-     * @param nbodega 
-     * nombre de la bodega
-     * @param bodega 
-     * numero de bodega
+     * @param nbodega nombre de la bodega
+     * @param bodega numero de bodega
      * @return
      */
     private Element getShipto(Document doc, String nbodega, String bodega) {
@@ -232,19 +259,19 @@ public class Setaddenda {
      * @return
      */
     private Element getlineItem(Document doc, int ren) {
-        Formateodedatos fd= new Formateodedatos();
+        Formateodedatos fd = new Formateodedatos();
         Element item = doc.createElement("lineItem");
         item.setAttribute("type", "SimpleInvoiceLineItemType");
-        item.setAttribute("number", (ren+1)+"");
+        item.setAttribute("number", (ren + 1) + "");
         Element tradeitem = doc.createElement("alternateTradeItemIdentification");
         tradeitem.setAttribute("type", "BUYER_ASSIGNED");
         tradeitem.setTextContent(na.getArrcod().get(ren));
         Element invq = doc.createElement("invoicedQuantity");
         invq.setAttribute("unitOfMeasure", "PCE");
-        invq.setTextContent(na.getArrad().get(ren).getCantidad()+".00");
+        invq.setTextContent(na.getArrad().get(ren).getCantidad() + ".00");
         Element adq = doc.createElement("aditionalQuantity");
         adq.setAttribute("QuantityType", "NUM_CONSUMER_UNITS");
-        adq.setTextContent(na.getArrad().get(ren).getCantidad()+"");
+        adq.setTextContent(na.getArrad().get(ren).getCantidad() + "");
 //        tradeitemdescripcion
         Element tradeitemdesc = doc.createElement("tradeItemDescriptionInformation");
         Element ltext = doc.createElement("longText");
@@ -256,18 +283,18 @@ public class Setaddenda {
         Element codigo = doc.createElement("codigo");
         codigo.setTextContent(na.getArrcod().get(ren));
         Element talla = doc.createElement("talla");
-        talla.setTextContent(na.getArrad().get(ren).getPunto()+"");
+        talla.setTextContent(na.getArrad().get(ren).getPunto() + "");
         codigotalla.appendChild(codigo);
         codigotalla.appendChild(talla);
 //       gross
         Element gross = doc.createElement("grossPrice");
         Element amount = doc.createElement("Amount");
-        amount.setTextContent(na.getArrad().get(ren).getPrecio()+"");
+        amount.setTextContent(na.getArrad().get(ren).getPrecio() + "");
         gross.appendChild(amount);
 //        netPrice
         Element netprice = doc.createElement("netPrice");
         Element amountp = doc.createElement("Amount");
-        amountp.setTextContent(na.getArrad().get(ren).getPrecio()+"");
+        amountp.setTextContent(na.getArrad().get(ren).getPrecio() + "");
         netprice.appendChild(amountp);
 //        pallet informacion
         Element pallet = doc.createElement("palletInformation");
@@ -303,11 +330,11 @@ public class Setaddenda {
         Element totalline = doc.createElement("totalLineAmount");
         Element grossamount = doc.createElement("grossAmount");
         Element amo = doc.createElement("Amount");
-        amo.setTextContent(fd.formatdecimal(na.getArrad().get(ren).getCantidad()*na.getArrad().get(ren).getPrecio())+"");
+        amo.setTextContent(fd.formatdecimal(na.getArrad().get(ren).getCantidad() * na.getArrad().get(ren).getPrecio()) + "");
         grossamount.appendChild(amo);
         Element netamount = doc.createElement("netAmount");
         Element amo1 = doc.createElement("Amount");
-        amo1.setTextContent(fd.formatdecimal(na.getArrad().get(ren).getCantidad()*na.getArrad().get(ren).getPrecio())+"");
+        amo1.setTextContent(fd.formatdecimal(na.getArrad().get(ren).getCantidad() * na.getArrad().get(ren).getPrecio()) + "");
         netamount.appendChild(amo1);
         totalline.appendChild(grossamount);
         totalline.appendChild(netamount);
@@ -336,7 +363,7 @@ public class Setaddenda {
     private Element getTotalamouunt(Document doc, double monto) {
         Element Totalamount = doc.createElement("totalAmount");
         Element Amount = doc.createElement("Amount");
-        Amount.setTextContent(monto+"");
+        Amount.setTextContent(monto + "");
         Totalamount.appendChild(Amount);
         return Totalamount;
     }
@@ -353,7 +380,7 @@ public class Setaddenda {
         Element sp = doc.createElement("specialServicesType");
         sp.setTextContent("TD");
         Element Amount = doc.createElement("Amount");
-        Amount.setTextContent(d+"");
+        Amount.setTextContent(d + "");
         Totalallowance.appendChild(sp);
         Totalallowance.appendChild(Amount);
         return Totalallowance;
@@ -368,7 +395,7 @@ public class Setaddenda {
     private Element getBaseamount(Document doc, double monto) {
         Element baseamount = doc.createElement("baseAmount");
         Element Amount = doc.createElement("Amount");
-        Amount.setTextContent(monto+"");
+        Amount.setTextContent(monto + "");
         baseamount.appendChild(Amount);
         return baseamount;
     }
@@ -385,7 +412,7 @@ public class Setaddenda {
         Element taxpercentage = doc.createElement("taxPercentage");
         taxpercentage.setTextContent("16.00");
         Element taxamount = doc.createElement("taxAmount");
-        taxamount.setTextContent(impuestos+"");
+        taxamount.setTextContent(impuestos + "");
         Element taxcategory = doc.createElement("taxCategory");
         taxcategory.setTextContent("TRANSFERIDO");
         tax.appendChild(taxpercentage);
@@ -395,28 +422,28 @@ public class Setaddenda {
     }
 
     /**
-     * 
+     *
      * @param doc
      * @param total
-     * @return 
+     * @return
      */
     private Element getPayableamount(Document doc, double total) {
         Element payamount = doc.createElement("payableAmount");
         Element Amount = doc.createElement("Amount");
-        Amount.setTextContent(total+"");
+        Amount.setTextContent(total + "");
         payamount.appendChild(Amount);
         return payamount;
     }
-    
+
     /**
-     * 
+     *
      * @param doc
      * @param cadeena
-     * @return 
+     * @return
      */
-    private Element getCadenaO(Document doc, String cadenas){
-        Element cadenao= doc.createElement("cadenaOriginal");
-        Element cadena=doc.createElement("Cadena");
+    private Element getCadenaO(Document doc, String cadenas) {
+        Element cadenao = doc.createElement("cadenaOriginal");
+        Element cadena = doc.createElement("Cadena");
         cadena.setTextContent(cadenas);
         cadenao.appendChild(cadena);
         return cadenao;

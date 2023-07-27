@@ -20,6 +20,7 @@ import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Estados;
 import Modelo.Formadepago;
+import Modelo.NAddenda;
 import Modelo.Nocolision;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
@@ -122,6 +123,7 @@ public class fac1 extends javax.swing.JPanel {
         Pop = new javax.swing.JPopupMenu();
         JmPedfac = new javax.swing.JMenuItem();
         JmNombre = new javax.swing.JMenuItem();
+        JmBorraadenda = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -150,6 +152,15 @@ public class fac1 extends javax.swing.JPanel {
             }
         });
         Pop.add(JmNombre);
+
+        JmBorraadenda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/eraser_icon-icons.com_60679.png"))); // NOI18N
+        JmBorraadenda.setText("Borra adenda");
+        JmBorraadenda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmBorraadendaActionPerformed(evt);
+            }
+        });
+        Pop.add(JmBorraadenda);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -410,12 +421,12 @@ public class fac1 extends javax.swing.JPanel {
             JmNombre.setVisible(false);
 //            JbCancelar.setEnabled(true);
         }
-        if (arrfactura.get(row).getNombre().equals("COPPEL") && tim.equals("T")) {
-            JbAddenda.setEnabled(true);
-        } else {
-            JbAddenda.setEnabled(false);
-        }
-//        JbAddenda.setEnabled(true);
+//        if (arrfactura.get(row).getNombre().equals("COPPEL") && tim.equals("T")) {
+//            JbAddenda.setEnabled(true);
+//        } else {
+//            JbAddenda.setEnabled(false);
+//        }
+        JbAddenda.setEnabled(true);
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void JbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelarActionPerformed
@@ -522,16 +533,29 @@ public class fac1 extends javax.swing.JPanel {
         setmod();
     }//GEN-LAST:event_JmNombreActionPerformed
 
+    private void JmBorraadendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmBorraadendaActionPerformed
+        if (!arrfactura.isEmpty()) {
+            String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
+            int row = JtDetalle.getSelectedRow();
+            String archivo = getempresa(sqlempresa, e) + "\\FAC_" + arrfactura.get(row).getFolio() + ".xml";
+//            System.out.println("arch "+archivo);
+            NAddenda na = new NAddenda();
+            na.setArchivo(archivo);
+            Setaddenda adenda = new Setaddenda(na);
+            adenda.deladenda();
+        }
+    }//GEN-LAST:event_JmBorraadendaActionPerformed
+
     private void setmod() {
         int row = JtDetalle.getSelectedRow();
         daofactura df = new daofactura();
-        daoClientes dc= new daoClientes();
-        Cliente c=dc.getCliente(ACobranza, arrfactura.get(row).getIdcliente());
+        daoClientes dc = new daoClientes();
+        Cliente c = dc.getCliente(ACobranza, arrfactura.get(row).getIdcliente());
         if (df.updateclientefacv2(cpt, c, arrfactura.get(row).getId())) {
             JOptionPane.showMessageDialog(null, "Modificacion completa  ");
             Buscanotas();
-        }else{
-        JOptionPane.showMessageDialog(null, "No se pudo modificar, avisa a sistemas");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo modificar, avisa a sistemas");
         }
     }
 
@@ -613,6 +637,7 @@ public class fac1 extends javax.swing.JPanel {
             String n = (empresa.equals("UptownCPT")) ? "2" : "1";
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
+            String lugar = (empresa.equals("UptownCPT")) ? e.getCp() : "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
             Map parametros = new HashMap();
             convertnum conv = new convertnum();
             convertirNumeros cnum = new convertirNumeros();
@@ -626,7 +651,7 @@ public class fac1 extends javax.swing.JPanel {
             parametros.put("nombre", e.getNombre());
             parametros.put("rfc", e.getRfc());
             parametros.put("regimen", e.getRegimen());
-            parametros.put("lugar", e.getCp());
+            parametros.put("lugar", lugar);
             parametros.put("comprobante", e.getNumcertificado());
             parametros.put("logo", "C:\\af\\bin\\" + logo);
             parametros.put("metodo", getnmetodo(arrfactura.get(JtDetalle.getSelectedRow()).getMetodopago()));
@@ -723,6 +748,7 @@ public class fac1 extends javax.swing.JPanel {
     private javax.swing.JButton JbAddenda;
     private javax.swing.JButton JbCancelar;
     private javax.swing.JButton JbXml;
+    private javax.swing.JMenuItem JmBorraadenda;
     private javax.swing.JMenuItem JmNombre;
     private javax.swing.JMenuItem JmPedfac;
     public javax.swing.JTextField JtCliente;

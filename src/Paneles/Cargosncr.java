@@ -229,17 +229,18 @@ public class Cargosncr extends javax.swing.JDialog {
             JtCargo.setValueAt("", JtCargo.getSelectedRow(), 7);
             for (int i = 0; i < arrcargoseleccion.size(); i++) {// busca el elemento deacuerdo a la seleccion
                 String ref = arrcargo.get(row).getReferencia();
+//                Busca la referencia para poderla remover de la lista
                 if (arrcargoseleccion.get(i).getReferencia().equals(ref)) {
                     arrcargoseleccion.remove(i);// Remueve el elemento de la lista
                     i = arrcargoseleccion.size();
                 }
             }
         }
-        System.out.println("---------");
-        for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-            System.out.println(arrcargoseleccion1.getReferencia());
-        }
-        System.out.println("---------");
+//        System.out.println("---------");
+//        for (cargo arrcargoseleccion1 : arrcargoseleccion) {
+//            System.out.println(arrcargoseleccion1.getReferencia());
+//        }
+//        System.out.println("---------");
     }//GEN-LAST:event_JtCargoMousePressed
 
     private void desplieguecargos() {
@@ -267,8 +268,13 @@ public class Cargosncr extends javax.swing.JDialog {
         JtCargo.setModel(model);
     }
 
+    /**
+     * 
+     * @throws ParseException 
+     */
     private void setearfacs() throws ParseException {
         boolean reset = true;
+//        Si el arreglo de la seleccion esta vacio no se hará nada
         if (!arrcargoseleccion.isEmpty()) {
             //Verificar renglon por renglon el dato del descuento y asignarselo al arreglo
             for (int i = 0; i < arrcargoseleccion.size(); i++) {
@@ -298,6 +304,7 @@ public class Cargosncr extends javax.swing.JDialog {
                             reset = false;
                             break;
                         } else {
+//                            modificar la cantidad que viene por defecto en el objeto por la introducida
                             modarrDesc(i, desc);
                         }
                     }
@@ -315,6 +322,11 @@ public class Cargosncr extends javax.swing.JDialog {
         }
     }
 
+    /**
+     * Almacena en un nuevo cargo para modificarlo y volverlo a seter, modificar un cargo del Arraylist
+     * @param i
+     * @param desc 
+     */
     private void modarrDesc(int i, String desc) {
         cargo car = arrcargoseleccion.get(i);// almacena el cargo en un objeto para modificar valores
         car.setDescuento(Double.parseDouble(desc));

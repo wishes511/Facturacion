@@ -94,7 +94,7 @@ public class generarXML40ncr {
         } catch (DatatypeConfigurationException ex) {
             Logger.getLogger(generarXML40ncr.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+//        Crear documento y nodo base
         ObjectFactory of = new ObjectFactory();
         Comprobante xml = of.createComprobante();
 

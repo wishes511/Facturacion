@@ -375,6 +375,32 @@
             <Property name="text" type="java.lang.String" value="Reportes"/>
           </Properties>
           <SubComponents>
+            <Menu class="javax.swing.JMenu" name="JmRepcob">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/exchange-dollar_icon-icons.com_53141.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Reportes Cobranza"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="JmEdocuenta">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Reporte Estado de cuenta"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmEdocuentaActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="JmAuxcliente">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Reporte Auxiliar de clientes"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmAuxclienteActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="JmKardexprod">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Kardex x producto"/>
@@ -445,6 +471,17 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JtFacturaciontpuActionPerformed"/>
+          </Events>
+        </MenuItem>
+        <MenuItem class="javax.swing.JMenuItem" name="JtFacturaciontpu1">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/Recursos/surtirP0.png"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Facturacion pedimento 0"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JtFacturaciontpu1ActionPerformed"/>
           </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="JmRemision">

@@ -281,7 +281,7 @@ public class ncr1 extends javax.swing.JPanel {
         f.setUsocfdi(arrfacturaxml.get(0).getUsocfdi());
         condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
         f.setCondicion(condicion);
-        f.setLugarexpedicion("36400");
+        f.setLugarexpedicion("36350");
         f.setTiporelacion(arrfacturaxml.get(0).getTiporelacion());
         f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
         double iva = arrfacturaxml.get(0).getIva();
@@ -340,13 +340,14 @@ public class ncr1 extends javax.swing.JPanel {
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
 
             Empresas e = d.getempresarfc(sqlempresa, n);
+            String lugar=(empresa.equals("UptownCPT")) ? e.getCp() : "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO "+e.getCp();
             Map parametros = new HashMap();
             convertnum conv = new convertnum();
             int folio = arrfactura.get(JtDetalle.getSelectedRow()).getFolio();
             parametros.put("folio", folio);
             parametros.put("totalletra", conv.controlconversion(arrfactura.get(JtDetalle.getSelectedRow()).getTotal()).toUpperCase());
             parametros.put("nombre", e.getNombre());
-            parametros.put("rfc", e.getRfc());
+            parametros.put("rfc", lugar);
             parametros.put("regimen", e.getRegimen());
             parametros.put("lugar", e.getCp());
             parametros.put("comprobante", e.getNumcertificado());

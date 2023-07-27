@@ -30,9 +30,6 @@ public class daoxmlncr {
 
     public void generarfac(factura f, Connection con, Connection empresa) {// solo genera xml
         try {
-//            daoClientes dc = new daoClientes();
-//            daofactura df = new daofactura();
-//            factura f = df.getfac(rcpt, "47140");
             xmlDAO x = new xmlDAO();
             ArrayList<xmlDAO> arr = new ArrayList<>();
 //            Cliente c = dc.getCliente(cobranza, f.getIdcliente());// Busca
@@ -46,7 +43,6 @@ public class daoxmlncr {
             if (f.getImpuestos() != 0) {
                 tas = "16";
             }
-
             for (int i = 0; i < arrmetodo.size(); i++) {//asignar descripcion del metodo de pago
                 if (f.getMetodopago().equals(arrmetodo.get(i).getMetodopago())) {
                     descmetodo = arrmetodo.get(i).getDescripcion();

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a088cfe-daee-43d8-8318-6a18ef1bc796">
 	<property name="ireport.zoom" value="2.143588810000009"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="172"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="folio" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
@@ -252,14 +252,14 @@
 				<textFieldExpression><![CDATA[$P{regimen}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="123" y="41" width="74" height="11" uuid="27766a81-c073-4368-bf35-c1376fc1aa36"/>
+				<reportElement x="124" y="35" width="74" height="11" uuid="27766a81-c073-4368-bf35-c1376fc1aa36"/>
 				<textElement>
 					<font size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Lugar de Expedición:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="198" y="41" width="108" height="11" uuid="9f0d93bc-a912-4b3a-8e09-449e34bd7037"/>
+				<reportElement x="198" y="35" width="258" height="20" uuid="9f0d93bc-a912-4b3a-8e09-449e34bd7037"/>
 				<textElement verticalAlignment="Top">
 					<font size="7"/>
 				</textElement>
