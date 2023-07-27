@@ -9,17 +9,19 @@
 	<parameter name="f2" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="cliente" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select c.id_cliente,cli.nombre,id_cargo
+		<![CDATA[select c.id_cliente,cli.nombre
 from cargo c
 join cliente cli on c.id_cliente=cli.id_cliente
-where  c.estatus='1' and c.fecha<$P{f2}
-group by c.id_cliente,cli.nombre,id_cargo
+where  c.estatus='1' and c.fecha<$P{f2} and c.id_cliente like '%$P!{cliente}%'
+group by c.id_cliente,cli.nombre
 order by cli.nombre]]>
 	</queryString>
 	<field name="id_cliente" class="java.lang.Integer"/>
 	<field name="nombre" class="java.lang.String"/>
-	<field name="id_cargo" class="java.lang.Integer"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

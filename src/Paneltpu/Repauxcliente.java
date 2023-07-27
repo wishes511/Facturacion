@@ -215,21 +215,23 @@ public class Repauxcliente extends javax.swing.JDialog {
         java.util.Date date = new Date();
         String f1 = sdf.format(Fecha.getDate());
         String f2 = sdf.format(Fecha1.getDate());
-        setreport(f1, f2);
+        String cliente = JtNombre.getText();
+        setreport(f1, f2, cliente);
     }//GEN-LAST:event_jLabel1MousePressed
 
-    private void setreport(String f1, String f2) {
+    private void setreport(String f1, String f2, String n) {
         try {
             Map parametros = new HashMap();
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
+            parametros.put("cliente", n);
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/IndexrepAuxclientes.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, u.getCobranzatpu());
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             this.dispose();
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Kardex Producto");
+            ver.setTitle("Aux clientes");
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
