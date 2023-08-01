@@ -567,6 +567,7 @@ public class fac1 extends javax.swing.JPanel {
             System.out.println(archivo);
             daoAddenda dadenda = new daoAddenda();
             ArrayList<Corridaaddenda> arrcorend = dadenda.getCoraddenda(liteusuario);
+//            Se obtienen los productos para generar en automatico la addenda
             ArrayList<Addenda> arradenda = dadenda.getAddenda(cpt, arrfactura.get(row), arrcorend);
             ArrayList<Destinoscoppel> arrdestinos = dadenda.getDestinos(rcpt);
             facAddenda faddenda = new facAddenda(null, true);
@@ -579,7 +580,6 @@ public class fac1 extends javax.swing.JPanel {
             faddenda.cpt = cpt;
             faddenda.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
             faddenda.setVisible(true);
-
         }
     }
 

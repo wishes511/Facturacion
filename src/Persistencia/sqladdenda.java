@@ -175,6 +175,7 @@ public class sqladdenda {
                 if (band == 0) {
                     for (int i = 0; i < adenda.size(); i++) {
                         int corrida = rs.getInt("corrida");
+//                        Busca la corrida y guarda el indice y el punto inicial multiplicado por 10 para tener 3 digitos
                         if (corrida == adenda.get(i).getCorrida()) {
                             index = i;
                             break;
@@ -184,6 +185,8 @@ public class sqladdenda {
                     punto = rs.getInt("puntoinicial") * 10;
                     band++;
                 }
+//                Como ej corrida 94, se esta diciendo que i=20 y el limite es 31 que son los indicees de posicion
+//                Ademas de que col contiene la el indice de la columna inicial
                 for (int i = adenda.get(index).getIndexi(); i < adenda.get(index).getIndexf(); i++) {
                     int columna = rs.getInt("c" + col);
                     if (columna != 0) {
@@ -204,10 +207,10 @@ public class sqladdenda {
                         arr.add(a);
                     }
                     col++;
+//                    Al punto se le ira sumando 5 ya que hay puntos medios entre el limite inferior y superior
                     punto += 5;
                 }
                 band = 0;
-
             }
             rs.close();
             st.close();

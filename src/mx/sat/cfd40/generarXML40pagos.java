@@ -105,17 +105,6 @@ public class generarXML40pagos {
         //Identificar y asignar si es un egreso o ingreso
         xml.setTipoDeComprobante(CTipoDeComprobante.P);
 
-//        switch (encabezado.getMetodoPago()) {
-//            case "PUE":
-//                xml.setMetodoPago(CMetodoPago.PUE);
-//                break;
-//            case "PPD":
-//                xml.setMetodoPago(CMetodoPago.PPD);
-//                break;
-//            case "PIP":
-//                xml.setMetodoPago(CMetodoPago.PIP);
-//                break;
-//        }
         xml.setLugarExpedicion(lugar);
 
         //Datos del emisor
@@ -133,10 +122,7 @@ public class generarXML40pagos {
         File cer = new File(urlCER);
         File key = new File(urlKEY);
 
-        //Datos del Complemento
-        
-//        xml.setComplemento(createcomplemento(of, encabezado,fecha));
-        
+        //Datos del Complemento        
         xml.setComplemento(createcomplemento(of, encabezado,fechapago));
 
         //Agregar certificado y no. de certificado al comprobante por medio del archivo .cer del contribuyente

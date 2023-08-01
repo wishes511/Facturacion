@@ -1003,19 +1003,25 @@ public class sqlfactura {
             st = con.prepareStatement(sql);
             st.executeUpdate();
 
-            sql = "select max(id_documento) as doc from documento";
+            String fechav = "";
+            sql = "select top(1)max(id_documento) as doc,SUBSTRING(convert(varchar,fecha+"+plazo+" ),0,20) as fechav \n"
+                    + "from documento\n"
+                    + "group by fecha,id_documento\n"
+                    + "order by id_documento desc";
+            System.out.println("max doc " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 docu = rs.getInt("doc");
+                fechav = rs.getString("fechav");
             }
 
             //Fin obtener ultimo documento
             //Insertar en cargos
             double saldoproce = total * tipoc;
             double saldomx = BigDecimal.valueOf(saldoproce).setScale(2, RoundingMode.HALF_UP).doubleValue();
-            sql = "insert into cargo(id_agente,id_concepto,id_cliente,referencia,fecha,importe,saldo,SIM,saldomx,turno,comision,plazo,parcialidad,estatus) "
-                    + "values(" + agente + ",1," + idcliente + ",'" + fol + "','" + fecha + "'," + total + "," + total + "," + total + "," + saldomx + "," + turno + ",0," + plazo + ",0,'1')";
+            sql = "insert into cargo(id_agente,id_concepto,id_cliente,referencia,fecha,importe,saldo,SIM,saldomx,turno,comision,plazo,parcialidad,estatus,fechavencimiento) "
+                    + "values(" + agente + ",1," + idcliente + ",'" + fol + "','" + fecha + "'," + total + "," + total + "," + total + "," + saldomx + "," + turno + ",0," + plazo + ",0,'1','" + fechav + "')";
             System.out.println("cargos " + sql);
             st = cobranza.prepareStatement(sql);
             st.executeUpdate();
