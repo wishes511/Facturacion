@@ -79,7 +79,7 @@ public class Testsqlquerys {
 
     /**
      * Actualiza las fechas de vencimiento ya que anterior mente no se
-     * especifico esta cuestion
+     * especifico esta cuestion el plazo lo lleva el agente por default de igual manera el cargo
      */
     public void actualizavencimientos() {
         Connection cob = null;
@@ -90,8 +90,8 @@ public class Testsqlquerys {
             Formateodedatos f = new Formateodedatos();
             
             Serverprod s = new Serverprod();
-            cob = s.getconexionTPU("ACobranzaTpu");
-//          cob=s.getconexionserver8("ACobranzaTpu");
+//            cob = s.getconexionTPU("ACobranzaTpu");
+          cob=s.getconexionserver8("ACobranzaTpu");
             cob.setAutoCommit(false);
             String sql = "select id_cargo,a.plazo,dateadd(day,convert(INT,a.plazo),fecha) as fechav\n"
                     + "from cargo c\n"

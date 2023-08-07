@@ -19,6 +19,7 @@ group by k.id_material,dureza,m.descripcion]]>
 	<field name="id_material" class="java.lang.Integer"/>
 	<field name="dureza" class="java.lang.String"/>
 	<field name="descripcion" class="java.lang.String"/>
+	<variable name="tcant" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -69,7 +70,7 @@ group by k.id_material,dureza,m.descripcion]]>
 		<band height="7" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="55" splitType="Stretch">
+		<band height="51" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="159" height="20" uuid="3aadb4f4-5179-4016-9725-145c4f565304"/>
 				<textElement>
@@ -85,49 +86,49 @@ group by k.id_material,dureza,m.descripcion]]>
 				<textFieldExpression><![CDATA[$F{dureza}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="25" width="53" height="15" uuid="8d0889fa-3b89-492a-a171-c42f9309a5fe"/>
+				<reportElement x="0" y="25" width="41" height="15" uuid="8d0889fa-3b89-492a-a171-c42f9309a5fe"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Kardex]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="53" y="25" width="127" height="15" uuid="1c456b14-737c-4228-bc4f-420f343f7200"/>
+				<reportElement x="41" y="25" width="106" height="15" uuid="1c456b14-737c-4228-bc4f-420f343f7200"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[descripcion cuenta]]></text>
+				<text><![CDATA[Descripcion cuenta]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="180" y="25" width="20" height="15" uuid="2ecb6bb5-6a13-46bf-a032-2bea62e7882c"/>
+				<reportElement x="147" y="25" width="20" height="15" uuid="2ecb6bb5-6a13-46bf-a032-2bea62e7882c"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[C]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="200" y="25" width="20" height="15" uuid="5bd20c91-6a77-4144-a3b4-8e442cf9013b"/>
+				<reportElement x="167" y="25" width="20" height="15" uuid="5bd20c91-6a77-4144-a3b4-8e442cf9013b"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="220" y="25" width="60" height="15" uuid="bafeeb58-a8f6-40a7-9fb4-147f4632f23a"/>
+				<reportElement x="187" y="25" width="60" height="15" uuid="bafeeb58-a8f6-40a7-9fb4-147f4632f23a"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="280" y="25" width="100" height="15" uuid="0a4d20b0-8fbe-46bc-8040-6f351cac4ac8"/>
+				<reportElement x="247" y="25" width="100" height="15" uuid="0a4d20b0-8fbe-46bc-8040-6f351cac4ac8"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Pedimento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="427" y="25" width="65" height="15" uuid="2076faaf-6b85-443c-803d-84ae8981daf7"/>
+				<reportElement x="446" y="25" width="46" height="15" uuid="2076faaf-6b85-443c-803d-84ae8981daf7"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -140,8 +141,29 @@ group by k.id_material,dureza,m.descripcion]]>
 				</textElement>
 				<text><![CDATA[Referencia]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="347" y="25" width="43" height="15" uuid="37c7105f-c2c3-44ca-8622-cba3bb324186"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cant]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="25" width="28" height="15" uuid="b6b61825-7ca7-47c0-891f-8c5231a22100"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[E]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="418" y="25" width="28" height="15" uuid="5e226fcb-1355-4def-aa94-11f65f0a921e"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S]]></text>
+			</staticText>
 			<subreport>
-				<reportElement x="0" y="44" width="555" height="6" uuid="a3cef21f-8cad-48c6-8d52-1c74739af088"/>
+				<reportElement x="0" y="42" width="572" height="5" uuid="dbab29c1-8071-4eca-8e78-88b56291f778"/>
 				<subreportParameter name="f1">
 					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -155,19 +177,29 @@ group by k.id_material,dureza,m.descripcion]]>
 					<subreportParameterExpression><![CDATA[$F{dureza}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["C:\\af\\prod\\Reportesrep\\Kardexproddet.jasper"]]></subreportExpression>
+				<returnValue subreportVariable="total" toVariable="tcant"/>
+				<subreportExpression><![CDATA["C:\\af\\prod\\Reportesrep\\Kardexproddet_1.jasper"]]></subreportExpression>
 			</subreport>
+		</band>
+		<band height="17">
+			<textField pattern="#,##0.00">
+				<reportElement x="347" y="0" width="43" height="13" uuid="aedcc810-0b87-439d-806e-0d7a342b0ca5"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{tcant}]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement x="380" y="25" width="47" height="15" uuid="37c7105f-c2c3-44ca-8622-cba3bb324186"/>
+				<reportElement x="284" y="0" width="63" height="15" uuid="de9d96a8-0c31-4343-925c-d7579b291c24"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Cantidad]]></text>
+				<text><![CDATA[Total]]></text>
 			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="4" splitType="Stretch"/>
+		<band height="24" splitType="Stretch"/>
 	</columnFooter>
 	<pageFooter>
 		<band height="36" splitType="Stretch">

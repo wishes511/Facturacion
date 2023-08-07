@@ -480,7 +480,6 @@ public class fac2tpu1rem extends javax.swing.JPanel {
             boolean a = verificafloat(JtDescuento.getText());
             boolean a1 = verificadetalle();
             boolean a2 = checkstock();
-
             if (!a) {
                 JOptionPane.showMessageDialog(null, "Error, solo colocar numeros enteros en el descuento");
             }
@@ -531,6 +530,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 f.setCp(arrcliente.get(rowc).getCp());
                 f.setObservaciones(JtObs.getText().toUpperCase());
                 f.setLugarexpedicion("36400");
+                f.setPlazo(arrcliente.get(rowc).getPlazo());
 //                f.setAgente(k.get(row).getCli().getAgente());
                 f.setAgente(arrcliente.get(rowc).getAg().getIdagente());
                 if (JcUsd1.isSelected()) {

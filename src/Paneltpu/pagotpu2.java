@@ -671,7 +671,6 @@ public class pagotpu2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteMousePressed
 
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
-
         String r = JtCliente.getText();
         daofactura df = new daofactura();
         arrcargo = df.getfactsoncrtpu(cpt, r, empresa);// cpt a usar
@@ -696,9 +695,7 @@ public class pagotpu2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JcFormaActionPerformed
 
     private void JcUsoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsoActionPerformed
-        String regimen = arrcargo.get(0).getRegimen();
-        String uso = arruso.get(JcUso.getSelectedIndex()).getusocfdi();
-        verificaregimen(sqlcfdi, regimen, uso);
+
     }//GEN-LAST:event_JcUsoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
@@ -1136,12 +1133,6 @@ public class pagotpu2 extends javax.swing.JPanel {
             JtCliente.requestFocus();// regresa al campo inicial del cliente
         }
         JtDetalle.setModel(model);
-        if (!arrcargo.isEmpty()) {
-            String regimen = arrcargo.get(0).getRegimen();
-            String uso = arruso.get(JcUso.getSelectedIndex()).getusocfdi();
-            verificaregimen(sqlcfdi, regimen, uso);
-        }
-
     }
 
     private double getnewcantidades6(double a, String tipo) {

@@ -10,7 +10,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select id_cargo,referencia,cu.cuenta,cu.subcuenta,cu.descripcion,convert(date,c.fecha) as fecha,c.id_cliente,cli.nombre,saldo as saldousd,saldomx
+		<![CDATA[select id_cargo,referencia,cu.cuenta,cu.subcuenta,cu.descripcion,convert(date,c.fecha) as fecha,c.id_cliente,cli.nombre,saldo as saldousd,saldomx,importe
 from cargo c
 join cliente cli on c.id_cliente=cli.id_cliente
 join Catcuenta cu on c.id_concepto=cu.id_concepto
@@ -27,6 +27,7 @@ order by cli.nombre]]>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="saldousd" class="java.lang.Double"/>
 	<field name="saldomx" class="java.lang.Double"/>
+	<field name="importe" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -68,14 +69,14 @@ order by cli.nombre]]>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="354" y="0" width="100" height="12" uuid="0a618c7b-7ddb-4c23-8753-d4353fa5d742"/>
+				<reportElement x="424" y="0" width="70" height="12" uuid="0a618c7b-7ddb-4c23-8753-d4353fa5d742"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{saldousd}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="454" y="0" width="92" height="12" uuid="546f7aad-d316-47e0-8ca1-da5f19c45d7f"/>
+				<reportElement x="494" y="0" width="70" height="12" uuid="546f7aad-d316-47e0-8ca1-da5f19c45d7f"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
@@ -95,6 +96,13 @@ order by cli.nombre]]>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\detrepAuxclientesabono.jasper"]]></subreportExpression>
 			</subreport>
+			<textField>
+				<reportElement x="354" y="0" width="70" height="12" uuid="deee6f9b-bc9d-460f-9054-1148b0a795de"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

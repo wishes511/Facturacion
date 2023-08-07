@@ -127,7 +127,7 @@ public class sqlfactura {
             ResultSet rs;
             String sql = "select distinct k.folio,k.pcosto,k.pventa,k.fmovimiento,factura,producto\n"
                     + "from kardex k\n"
-                    + "where serie='A' and FMovimiento between '30/05/2023' and '30/06/2023' and StatusSalida!='C' and isnull(factura,'')!=''\n"
+                    + "where serie='A' and FMovimiento between '01/01/2023' and '31/01/2023' and StatusSalida!='C' and isnull(factura,'')!=''\n"
                     + "order by fmovimiento";
             System.out.println("busca folio " + sql);
             st = con.prepareStatement(sql);
@@ -1004,7 +1004,7 @@ public class sqlfactura {
             st.executeUpdate();
 
             String fechav = "";
-            sql = "select top(1)max(id_documento) as doc,SUBSTRING(convert(varchar,fecha+"+plazo+" ),0,20) as fechav \n"
+            sql = "select top(1)max(id_documento) as doc,SUBSTRING(convert(varchar,fecha+" + plazo + " ),0,20) as fechav \n"
                     + "from documento\n"
                     + "group by fecha,id_documento\n"
                     + "order by id_documento desc";
@@ -1350,6 +1350,7 @@ public class sqlfactura {
             String turno = f.getTurno();
             String obs = f.getObservaciones();
             int conceptos = f.getConceptos();
+            int plazo = f.getPlazo();
             //cliente
             int idcliente = f.getIdcliente();
 //            
@@ -1373,16 +1374,21 @@ public class sqlfactura {
             System.out.println("pedido " + sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
-
-            sql = "select max(id_pedido) as pedido from pedido";
+            String fechav = fecha;
+//            sql = "select max(id_pedido) as pedido from pedido";
+            sql = "select top(1)max(id_pedido) as pedido,SUBSTRING(convert(varchar,fecha+"+plazo+" ),0,20) as fechav\n"
+                    + "from pedido\n"
+                    + "group by fecha,id_pedido\n"
+                    + "order by id_pedido desc";
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 pedido = rs.getInt("pedido");
+                fechav=rs.getString("fechav");
             }
 
-            sql = "insert into cargo(id_agente,id_concepto,id_cliente,referencia,fecha,importe,saldo,SIM,saldomx,turno,comision,parcialidad,estatus) "
-                    + "values(" + agente + ",1," + idcliente + ",'" + ped + "','" + fecha + "'," + total + "," + total + "," + total + "," + total + "," + turno + ",0,0,'1')";
+            sql = "insert into cargo(id_agente,id_concepto,id_cliente,referencia,fecha,importe,saldo,SIM,saldomx,turno,comision,plazo,parcialidad,estatus,fechavencimiento) "
+                    + "values(" + agente + ",1," + idcliente + ",'" + ped + "','" + fecha + "'," + total + "," + total + "," + total + "," + total + "," + turno + ",0,0,"+plazo+",'1','"+fechav+"')";
             System.out.println("cargos " + sql);
             st = cobranza.prepareStatement(sql);
             st.executeUpdate();

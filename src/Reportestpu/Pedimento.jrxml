@@ -56,6 +56,11 @@ where id_pedimento=$P{id}]]>
 				</textElement>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="449" y="0" width="123" height="13" uuid="e291a423-96f0-46ae-8e03-c9768bac4d0f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>

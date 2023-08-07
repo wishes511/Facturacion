@@ -12,6 +12,7 @@ import Modelo.Procserie;
 import Modelo.Usuarios;
 import Paneles.pago1;
 import Paneltpu.Kardexprod;
+import Paneltpu.RepSaldosV;
 import Paneltpu.Repauxcliente;
 import Paneltpu.Repedocuenta;
 import Paneltpu.Ventasserie;
@@ -118,7 +119,7 @@ public final class Principal extends javax.swing.JFrame {
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
-            u.setTurno("0");
+            u.setTurno("5");
             modoadmin();
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();
@@ -173,6 +174,7 @@ public final class Principal extends javax.swing.JFrame {
         JmRepcob = new javax.swing.JMenu();
         JmEdocuenta = new javax.swing.JMenuItem();
         JmAuxcliente = new javax.swing.JMenuItem();
+        JmSaldosvencidos = new javax.swing.JMenuItem();
         JmKardexprod = new javax.swing.JMenuItem();
         JmVentaserie = new javax.swing.JMenuItem();
         JmCobranzatpu = new javax.swing.JMenu();
@@ -473,6 +475,14 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmRepcob.add(JmAuxcliente);
+
+        JmSaldosvencidos.setText("Reporte Saldos Vencidos x Vencer");
+        JmSaldosvencidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmSaldosvencidosActionPerformed(evt);
+            }
+        });
+        JmRepcob.add(JmSaldosvencidos);
 
         Jmreportes.add(JmRepcob);
 
@@ -1519,6 +1529,12 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JtFacturaciontpu1ActionPerformed
 
+    private void JmSaldosvencidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSaldosvencidosActionPerformed
+        RepSaldosV n = new RepSaldosV(null, true);
+        n.u = conexion;
+        n.setVisible(true);
+    }//GEN-LAST:event_JmSaldosvencidosActionPerformed
+
 //    Primera version para veriicar el usuario
     private void verificausuario() {
         jp.setVisible(true);
@@ -2032,6 +2048,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu JmRepcob;
     private javax.swing.JMenu JmReportes;
     private javax.swing.JMenuItem JmRespaldos;
+    private javax.swing.JMenuItem JmSaldosvencidos;
     private javax.swing.JMenuItem JmSalidas;
     private javax.swing.JMenuItem JmSesion;
     private javax.swing.JMenu JmTpu;

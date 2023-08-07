@@ -81,14 +81,19 @@ order by cli.nombre]]>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="354" y="0" width="100" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
+				<reportElement x="424" y="0" width="70" height="13" uuid="d92406e3-1b52-44bd-bc6b-7105ffe9cd46"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Saldo Usd]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="454" y="0" width="92" height="13" uuid="d59cd489-aed7-4149-b572-068d064ffe96"/>
+				<reportElement x="492" y="0" width="70" height="13" uuid="d59cd489-aed7-4149-b572-068d064ffe96"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Saldo Mxn]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="354" y="0" width="70" height="13" uuid="6cebfacf-9afe-4872-93a7-6cd48dda9954"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Importe]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

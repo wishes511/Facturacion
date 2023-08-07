@@ -461,7 +461,7 @@ public class Inout2 extends javax.swing.JPanel {
                         double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
                         double cant = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString())));
                         int cue=Integer.parseInt(arrcuentas.get(JcConceptos.getSelectedIndex()).getCuenta());
-                        double stock=0;
+                        double stock;
                         if(cue==1 || cue==10){
                             stock=k2.get(i).getDp().getCantrestante()+cant;
                         }else{

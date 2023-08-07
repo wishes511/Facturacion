@@ -72,14 +72,14 @@ order by cli.nombre]]>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="354" y="0" width="100" height="12" uuid="161ea049-7cc3-430f-931a-433983ba6016"/>
+				<reportElement x="424" y="0" width="70" height="12" uuid="161ea049-7cc3-430f-931a-433983ba6016"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="454" y="-2" width="92" height="14" uuid="1babd938-909b-4a43-9f16-2f56c9e9bfb5"/>
+				<reportElement x="494" y="0" width="70" height="12" uuid="1babd938-909b-4a43-9f16-2f56c9e9bfb5"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
