@@ -608,6 +608,7 @@ public class fac2 extends javax.swing.JPanel {
         DefaultComboBoxModel metodo = new DefaultComboBoxModel();
         DefaultComboBoxModel forma = new DefaultComboBoxModel();
         DefaultComboBoxModel uso = new DefaultComboBoxModel();
+//        Se recorre el array para añadirlo al modelo
         for (Formadepago arrfpago1 : arrfpago) {
             forma.addElement(arrfpago1.getFormapago() + " - " + arrfpago1.getConcepto());
         }
@@ -617,6 +618,7 @@ public class fac2 extends javax.swing.JPanel {
         for (usocfdi arruso1 : arruso) {
             uso.addElement(arruso1.getusocfdi() + " - " + arruso1.getDescripcion());
         }
+//        Se asigna el modelo al combobox
         JcForma.setModel(forma);
         JcMetodo.setModel(metodo);
         JcUso.setModel(uso);
@@ -684,16 +686,7 @@ public class fac2 extends javax.swing.JPanel {
         String r = JtCliente.getText();
         daokardexrcpt dk = new daokardexrcpt();
         k0 = dk.getkardexfacsimple(rcpt, r, empresacob);
-//        DefaultComboBoxModel model = new DefaultComboBoxModel();
-//        int folio = 0;
-//        for (int i = 0; i < k0.size(); i++) {
-//            if (folio != k0.get(i).getFolio()) {
-//                model.addElement(k0.get(i).getFolio() + " - " + k0.get(i).getCli().getNombre());
-//            }
-//            folio = k0.get(i).getFolio();
-//        }
-//        JtFolio1.setModel(model);
-//        JtFolio1.requestFocus();
+
         llenalistasalida();
         cargacombos();
     }//GEN-LAST:event_JtClienteActionPerformed

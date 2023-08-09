@@ -800,7 +800,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 daofactura dfac = new daofactura();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
-                DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
+                Formateodedatos fd = new Formateodedatos();
                 if (JcPublico.isSelected()) {//Setear impuestos
                     f.setIva(0);
                     f.setImpuestos(0);
@@ -892,10 +892,10 @@ public class fac2tpu extends javax.swing.JPanel {
                 for (int i = 0; i < k2.size(); i++) {
                     Dfactura df = new Dfactura();
                     if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
-                        double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
-                        double tpares = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString())));
+                        double precio = fd.formatdecimal(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString()));
+                        double tpares = fd.formatdecimal(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()));
                         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
-                        double descuento = Double.parseDouble(formateador.format((tpares * precio) * desc));
+                        double descuento = fd.formatdecimal((tpares * precio) * desc);
                         if (k2.get(i).getReferencia().equals("0")) {
                             df.setDescripcion(k2.get(i).getDp().getMatped());
                         } else {
@@ -910,16 +910,16 @@ public class fac2tpu extends javax.swing.JPanel {
                         df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
                         df.setId_pedimento(k2.get(i).getId_pedimento());
                         df.setDescumedida("");
-                        df.setPrecio(Double.parseDouble(formateador.format(precio)));
-                        df.setBase(Double.parseDouble(formateador.format(precio * tpares)));
+                        df.setPrecio(fd.formatdecimal(desc));
+                        df.setBase(fd.formatdecimal(precio * tpares));
                         df.setImpuesto("002");
                         df.setTipofactor("Tasa");
 //                        Este en especial por cuestion de centavos
-                        String as = formateador.format(((tpares * precio) - descuento) * iva);
+                        String as = String.valueOf(fd.formatdecimal((tpares * precio) - descuento) * iva);
                         df.setImporta(Double.parseDouble(as));
 //                        df.setImporta(Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva)));
 //                        df.setDescuento(Double.parseDouble(formateador.format(descuento)));
-                        String as1 = formateador.format(descuento);
+                        String as1 = String.valueOf(fd.formatdecimal(descuento));
                         df.setDescuento(Double.parseDouble(as1));
                         df.setTasaocuota(iva + "");
 
@@ -941,7 +941,6 @@ public class fac2tpu extends javax.swing.JPanel {
                 ArrayList<Poliza> arrpoliza = dfac.getasientoscontable(ACobranza);
                 ArrayList<Poliza> arrpolizas = new ArrayList<>();
                 int conta = 0;
-                Formateodedatos fd = new Formateodedatos();
 //                Polizas
                 for (int i = 0; i < arrpoliza.size(); i++) {
                     String c = arrpoliza.get(i).getCuentalarga();

@@ -14,6 +14,7 @@ import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daokardexrcpt;
 import DAO.daoxmlE;
+import DAO.daoxmltpu;
 import Modelo.Addenda;
 import Modelo.Ciudades;
 import Modelo.ConceptosES;
@@ -283,7 +284,7 @@ public class fac1tpu extends javax.swing.JPanel {
     private void JbXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbXmlActionPerformed
         daofactura dfac = new daofactura();
         int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-        arrfacturaxml = dfac.getdocxml(cpt, id + "", "FAC", empresacob);
+        arrfacturaxml = dfac.getdocxmltpu(cpt, id + "", "FAC");
 
         factura f = new factura();
         String condicion;
@@ -353,7 +354,7 @@ public class fac1tpu extends javax.swing.JPanel {
         f.setUsocfdi(arrfacturaxml.get(0).getUsocfdi());
         condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
         f.setCondicion(condicion);
-        f.setLugarexpedicion("36400");
+        f.setLugarexpedicion("36650");
         f.setTiporelacion("");
         f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
         double iva = arrfacturaxml.get(0).getIva();
@@ -376,13 +377,11 @@ public class fac1tpu extends javax.swing.JPanel {
         }
         f.setArr(arrf);
         //Se utiliza el generar factura especial por los decimales
-        daoxmlE dx = new daoxmlE();
+        daoxmltpu dx = new daoxmltpu();
+        Sellofiscal s;
         dx.generarfac(f, cpt, sqlempresa);
-
-        timbrarXML t = new timbrarXML();
-        String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
-        String fac = String.valueOf(arrfacturaxml.get(0).getFolio());
-        Sellofiscal s = t.timbrar("FAC_" + fac, "", sqlempresa, e);
+        timbrarXML tim = new timbrarXML();
+        s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
         dfac.Updatesellofiscaltpu(cpt, s, id);
         JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
         Buscanotas();
@@ -537,29 +536,29 @@ public class fac1tpu extends javax.swing.JPanel {
 //                if (arrd.isEmpty() || arrdevpedimento.isEmpty()) {
 //                    JOptionPane.showMessageDialog(null, "Error al cancelar, contacta a sistemas");
 //                } else {
-                    daoConceptos dc = new daoConceptos();
-                    java.util.Date date = new Date();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                    ConceptosES cuentacancel = dc.getConceptos(cpt, 70, 20);
-                    ConceptosES cuentadevstock = dc.getConceptos(cpt, 20, 1);
-                    dev.setCuenta1(cuentacancel.getId_concepto());
-                    dev.setCuenta2(cuentadevstock.getId_concepto());
-                    dev.setFecha(sdf.format(date));
-                    dev.setId_pedido(arrd.get(0).getId_pedido());
-                    dev.setNombre(arrfactura.get(row).getNombre());
-                    dev.setId_cliente(arrfactura.get(row).getIdcliente());
-                    dev.setSerie("A");
-                    dev.setId_cargoenc(arrd.get(0).getId_cargo());
-                    dev.setId_dev(arrd.get(0).getId_devolucion());
-                    dev.setUsuario(u.getUsuario());
+                daoConceptos dc = new daoConceptos();
+                java.util.Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                ConceptosES cuentacancel = dc.getConceptos(cpt, 70, 20);
+                ConceptosES cuentadevstock = dc.getConceptos(cpt, 20, 1);
+                dev.setCuenta1(cuentacancel.getId_concepto());
+                dev.setCuenta2(cuentadevstock.getId_concepto());
+                dev.setFecha(sdf.format(date));
+                dev.setId_pedido(arrd.get(0).getId_pedido());
+                dev.setNombre(arrfactura.get(row).getNombre());
+                dev.setId_cliente(arrfactura.get(row).getIdcliente());
+                dev.setSerie("A");
+                dev.setId_cargoenc(arrd.get(0).getId_cargo());
+                dev.setId_dev(arrd.get(0).getId_devolucion());
+                dev.setUsuario(u.getUsuario());
 //                    dev.setId_kardex(dk.maxkardexsincuenta(cpt));
 //                    dev.setId_kardexnuevo(dev.getId_kardex() + 1);
-                    dev.setArr(arrd);
-                    if (d.nuevacancelacion(cpt, ACobranza, dev, arrdevpedimento)) {
-                        JOptionPane.showMessageDialog(null, "Proceso completo");
-                        Buscanotas();
-                        JtCliente.requestFocus();
-                    }
+                dev.setArr(arrd);
+                if (d.nuevacancelacion(cpt, ACobranza, dev, arrdevpedimento)) {
+                    JOptionPane.showMessageDialog(null, "Proceso completo");
+                    Buscanotas();
+                    JtCliente.requestFocus();
+                }
 //                }
             }
         }
@@ -671,7 +670,7 @@ public class fac1tpu extends javax.swing.JPanel {
             String uso = arrfactura.get(row).getUsocfdi();
             String regimen = arrfactura.get(row).getRegimen();
             Empresas e = d.getempresarfc(sqlempresa, n);
-            String lugar="BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO "+e.getCp();
+            String lugar = "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter

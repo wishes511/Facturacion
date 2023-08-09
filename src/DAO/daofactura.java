@@ -552,4 +552,10 @@ public class daofactura implements Facturas {
         return s.insertfacturatpuATH(cpt, f, cob,cpttpu, rcpt);
     }
 
+    @Override
+    public ArrayList<factura> getdocxmltpu(Connection cpt, String fol, String serie) {
+                sqlfactura f = new sqlfactura();
+        return f.getdocsxmltpu(cpt, fol, serie);
+    }
+
 }

@@ -107,6 +107,11 @@ public class Formateodedatos {
         return respfinal + "" + entero + "" + decimal;
     }
 
+    /**
+     * Formatea las cantidades a 2 digitos y revisa si se redondea o se trunca. * por revisar mas a fondo
+     * @param cant
+     * @return 
+     */
     public double formatdecimal(double cant) {
         int dato = 0;
         int punto = 0;
