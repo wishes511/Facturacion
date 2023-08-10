@@ -663,6 +663,7 @@ public class fac2 extends javax.swing.JPanel {
             ag.addElement(agent.getNombre());
         }
         JcAgente.setModel(ag);
+//        Se busca el agente con toda la lista para su seleccion
         for (int i = 0; i < arragente.size(); i++) {
             if (k.get(0).getCli().getAgente() == arragente.get(i).getIdagente()) {
                 JcAgente.setSelectedIndex(i);
@@ -685,6 +686,7 @@ public class fac2 extends javax.swing.JPanel {
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
         String r = JtCliente.getText();
         daokardexrcpt dk = new daokardexrcpt();
+//        Arraylist que traera solo ls salidas disponibles
         k0 = dk.getkardexfacsimple(rcpt, r, empresacob);
 
         llenalistasalida();
@@ -1129,11 +1131,6 @@ public class fac2 extends javax.swing.JPanel {
             f.setVisible(true);
             arrcargoseleccion = f.arrcargoseleccion;
             if (!arrcargoseleccion.isEmpty()) {
-//            DefaultListModel<String> model = new DefaultListModel<>();
-//            for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-//                model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
-//            }
-//            JlRel.setModel(model);
                 llenalista();
                 relacion = "07";
             }
@@ -1155,9 +1152,12 @@ public class fac2 extends javax.swing.JPanel {
     private void JlCliente1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlCliente1MousePressed
         int ind[] = JlCliente1.getSelectedIndices();
         String folios = "";
+//        esta pequeña funcion sirve para elegir mas de una salida usando un string para englobar 
         if (ind.length == 1) {
+//            Solamente pasa por aqui una ves ya que es el inicio del string
             folios = "folio =" + k0.get(JlCliente1.getSelectedIndex()).getFolio();
         } else {
+//            Despues equiladria a n+, ya que si solo es una seleccion  entrara
             for (int i = 0; i < ind.length; i++) {
                 System.out.println(ind[i]);
                 if (i == 0) {
@@ -1168,7 +1168,6 @@ public class fac2 extends javax.swing.JPanel {
             }
         }
         seleccionfolio(folios);
-
     }//GEN-LAST:event_JlCliente1MousePressed
 
     private void JlCliente1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_JlCliente1ValueChanged
@@ -1233,6 +1232,7 @@ public class fac2 extends javax.swing.JPanel {
         daokardexrcpt dk = new daokardexrcpt();
 //        String r = k0.get(JtFolio1.getSelectedIndex()).getFolio() + "";
 //        k = dk.getkardexfac(rcpt, r, empresacob);// nueva carga de datos
+//        Nueva carga de datos 2.0, se utiliza para obtener n folios de la consulta
         k = dk.getkardexfacMulti(rcpt, empresacob, folios);
 //        System.out.println(k.size());
         generatabla();

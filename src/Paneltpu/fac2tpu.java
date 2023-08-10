@@ -888,6 +888,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 int totalpares = 0;// Se usa para la tabla facturas
                 impuestos = 0;
                 descuentos = 0;
+                subtotal=0;
 //                Detallado de productos selecionados
                 for (int i = 0; i < k2.size(); i++) {
                     Dfactura df = new Dfactura();
@@ -910,7 +911,7 @@ public class fac2tpu extends javax.swing.JPanel {
                         df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
                         df.setId_pedimento(k2.get(i).getId_pedimento());
                         df.setDescumedida("");
-                        df.setPrecio(fd.formatdecimal(desc));
+                        df.setPrecio(fd.formatdecimal(precio));
                         df.setBase(fd.formatdecimal(precio * tpares));
                         df.setImpuesto("002");
                         df.setTipofactor("Tasa");
@@ -925,6 +926,7 @@ public class fac2tpu extends javax.swing.JPanel {
 
                         arrf.add(df);
                         totalpares += tpares;
+                        subtotal+=df.getBase();
                         impuestos += Double.parseDouble(as);
                         descuentos += Double.parseDouble(as1);
                     }
