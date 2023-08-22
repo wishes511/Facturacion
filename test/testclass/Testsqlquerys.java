@@ -31,8 +31,8 @@ public class Testsqlquerys {
 //        try {
         Testsqlquerys t = new Testsqlquerys();
 //            t.verificadevs("A", 19);
-//        t.modificacaostodfactura();
-        t.actualizavencimientos();
+        t.modificacaostodfactura();
+//        t.actualizavencimientos();
 //        } catch (ClassNotFoundException ex) {
 //            Logger.getLogger(Testsqlquerys.class.getName()).log(Level.SEVERE, null, ex);
 //        } catch (IOException ex) {

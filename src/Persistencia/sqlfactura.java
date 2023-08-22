@@ -127,7 +127,7 @@ public class sqlfactura {
             ResultSet rs;
             String sql = "select distinct k.folio,k.pcosto,k.pventa,k.fmovimiento,factura,producto\n"
                     + "from kardex k\n"
-                    + "where serie='A' and FMovimiento between '01/01/2023' and '31/01/2023' and StatusSalida!='C' and isnull(factura,'')!=''\n"
+                    + "where serie='A' and FMovimiento between '01/02/2023' and '28/02/2023' and StatusSalida!='C' and isnull(factura,'')!=''\n"
                     + "order by fmovimiento";
             System.out.println("busca folio " + sql);
             st = con.prepareStatement(sql);
@@ -777,7 +777,7 @@ public class sqlfactura {
             st = cobranza.prepareStatement(sql);
             st.executeUpdate();
             //Fin insertar cargos
-//            Inserta en detallado de documentos
+//            Inserta en detallado de documentos y Dfacturas
             int i = 1;
             for (Dfactura arr : f.getArr()) {//
                 int doc = resp;

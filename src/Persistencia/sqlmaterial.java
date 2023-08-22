@@ -102,16 +102,22 @@ public class sqlmaterial {
             String codigosat = m.getCodigosat();
             int idfam = m.getId_familia();
             String mon = m.getMoneda();
-            String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia,moneda) values('" + mat + "'," + precio + ",'1','" + unidad + "','" + codigosat + "'," + idfam + ",'" + mon + "')";
-            System.out.println(sql);
+            String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia,moneda) "
+                    + "values('" + mat + "'," + precio + ",'1','" + unidad + "','" + codigosat + "'," + idfam + ",'" + mon + "')";
+//            System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
             con.commit();
             return true;
         } catch (Exception ex) {
-            Logger.getLogger(sqlmaterial.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                con.rollback();
+                Logger.getLogger(sqlmaterial.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlmaterial.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
         }
-        return true;
     }
 
     public boolean Addmaterialmaq(Connection con, Materiales m) {
@@ -149,7 +155,7 @@ public class sqlmaterial {
             st = con.prepareStatement("select id_material,m.descripcion as modelo,precio,unidad,noserie,moneda,f.descripcion as marca,m.estatus\n"
                     + "from materiales m\n"
                     + "join familias f on m.id_familia=f.id_familia\n"
-                    + "where m.descripcion like '%"+mat+"%' order by m.descripcion");
+                    + "where m.descripcion like '%" + mat + "%' order by m.descripcion");
             rs = st.executeQuery();
             while (rs.next()) {
                 Materiales m = new Materiales();

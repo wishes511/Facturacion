@@ -292,7 +292,8 @@ public class Inout1 extends javax.swing.JPanel {
         int row = JtDetalle.getSelectedRow();
         String ped= k.get(row).getPedido();
         if (k.get(row).getStatus().equals("1")) {
-            if (cuenta == 60 && serie.equals("B") && ped.equals("")) {
+//            Tomar en cuenta solo algunas cuentas y no todas, entradas y salidas
+            if ((cuenta == 60 || cuenta==1||cuenta==10) && serie.equals("B") && ped.equals("")) {
                 JbCancelar.setVisible(true);
             }else{
                 JbCancelar.setVisible(false);
@@ -425,6 +426,7 @@ public class Inout1 extends javax.swing.JPanel {
 //  Importante ya que es donde se usara la base de datos con clientes fiscales o internos
     private void Buscanotas() {
         String cob = (serie.equals("B")) ? "[192.168.90.1\\DATOS620].RACobranzaTpu" : "ACobranzaTpu";
+//        String cob = (serie.equals("B")) ? "RACobranzaTpu" : "ACobranzaTpu";
         String tipo = String.valueOf(cuenta);
         String var = JtCliente.getText();
         daokardexrcpt dk = new daokardexrcpt();

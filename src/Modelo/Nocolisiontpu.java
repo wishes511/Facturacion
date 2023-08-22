@@ -62,6 +62,5 @@ public class Nocolisiontpu extends Thread {
             JOptionPane.showMessageDialog(null, "colision -" + ex);
             ex.getMessage();
         }
-
     }
 }

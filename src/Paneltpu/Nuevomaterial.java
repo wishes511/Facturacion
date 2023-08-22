@@ -285,17 +285,18 @@ public class Nuevomaterial extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void setcombos() {
-
         DefaultComboBoxModel unidad = new DefaultComboBoxModel();
         DefaultComboBoxModel fami = new DefaultComboBoxModel();
         daocfdi d = new daocfdi();
         daofamilias df = new daofamilias();
+//        Se obtienen el catalogo de unidades desde sqlite
         arrunidad = d.getunidades(litecfdi);
+//        Se obtiene el catalogo de las familias
         arrfam = df.getallfamilia(cpt, "");
+//        Se agrega cada uno de los elementos de las listas a los combobx
         for (Unidades arrunidad1 : arrunidad) {
             unidad.addElement(arrunidad1.getClave() + " - " + arrunidad1.getDescripcion());
         }
-
         for (Familia fam : arrfam) {
             fami.addElement(fam.getDescripcion());
         }
@@ -327,7 +328,7 @@ public class Nuevomaterial extends javax.swing.JDialog {
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
 
-        if (!verificafloat(JtPrecio.getText())) {
+        if (!verificafloat(JtPrecio.getText()) && JtMaterial.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ingrese un numero valido");
             JtPrecio.setText("");
             JtPrecio.requestFocus();

@@ -749,6 +749,7 @@ public class fac2 extends javax.swing.JPanel {
                 f.setIva(16);
                 Nocolision n = new Nocolision();
                 f.setFolio(dfac.getmaxfolio(rcpt, "FAC"));//Obtiene y setea el foliomaximo de *documentos
+//                asigna valor al los objetos necesarios para realizar el proceso de no colision entre varias peticiones
                 n.setConnecxiones(rcpt, f.getFolio());
                 n.start();
 //                JOptionPane.showMessageDialog(null, "Espera al msj de Aceptacion de folio "+n.isAlive());
