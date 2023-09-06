@@ -3258,6 +3258,54 @@ public class sqlfactura {
         return arr;
     }
 
+        public ArrayList<cargo> getfoliotopagotpu(Connection con, String nombre, String bd) {//cargos para ncr solo cobranza
+        ArrayList<cargo> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select distinct id_cargo,id_concepto,c.referencia,c.fecha,importe,\n"
+                    + "saldo,cli.nombre,sim,c.plazo, c.id_cliente,\n"
+                    + " c.referencia as ref, d.FolioFiscal,c.id_agente,d.RFC,cli.cp,cli.regimen,saldomx\n"
+                    + "from ACobranzaTpu.dbo.cargo c\n"
+                    + "join ACobranzaTpu.dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
+                    + "join Documento d on c.referencia =d.folio\n"
+                    + "where (c.id_cliente = " + nombre + " ) and c.referencia NOT Like '%NCR%' and saldo!=0 and d.Serie='fac' "
+                    + "and d.estatus='1' and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' and metodopago!='PUE' order by c.fecha";
+            System.out.println("get clientencr " + sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            int ren = 0;
+            while (rs.next()) {
+                cargo c = new cargo();
+                c.setId_cargo(rs.getInt("id_cargo"));
+                c.setCuenta(rs.getInt("id_concepto"));
+                c.setReferencia(rs.getString("referencia"));
+                c.setFecha(rs.getString("fecha"));
+                c.setImporte(rs.getDouble("importe"));
+                c.setSaldo(rs.getDouble("saldo"));
+                c.setSim(rs.getDouble("sim"));
+                c.setNombre(rs.getString("nombre"));
+                c.setCliente(rs.getInt("id_cliente"));
+                c.setPlazo(rs.getInt("plazo"));
+                c.setRef(rs.getString("ref"));
+                c.setFoliofiscal(rs.getString("foliofiscal"));
+                c.setAgente(rs.getInt("id_agente"));
+                c.setRfc(rs.getString("rfc"));
+                c.setCp(rs.getString("cp"));
+                c.setRegimen(rs.getString("regimen"));
+                c.setSaldomx(rs.getDouble("saldomx"));
+                c.setRenglon(ren);
+                arr.add(c);
+                ren++;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+    
     /**
      *
      * @param con conexion cpt

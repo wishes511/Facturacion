@@ -7,6 +7,8 @@ package Modelo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -108,9 +110,11 @@ public class Formateodedatos {
     }
 
     /**
-     * Formatea las cantidades a 2 digitos y revisa si se redondea o se trunca. * por revisar mas a fondo
+     * Formatea las cantidades a 2 digitos y revisa si se redondea o se trunca.
+     * * por revisar mas a fondo
+     *
      * @param cant
-     * @return 
+     * @return
      */
     public double formatdecimal(double cant) {
         int dato = 0;
@@ -142,16 +146,32 @@ public class Formateodedatos {
         }
         return resp;
     }
-    
-    public String formatclientedigito(String cliente){
-        String resp="";
-        if(cliente.length()!=4){
-            for(int i=cliente.length();i<4;i++){
-                resp+="0";
+
+    public String formatclientedigito(String cliente) {
+        String resp = "";
+        if (cliente.length() != 4) {
+            for (int i = cliente.length(); i < 4; i++) {
+                resp += "0";
             }
         }
-        resp=resp+cliente;
+        resp = resp + cliente;
         System.out.println(resp);
+        return resp;
+    }
+
+    /**
+     * Verifica que en la variable solo haya numero enteros del 0 al 9
+     * @param cad
+     * @return 
+     */
+    public boolean verificaint(String cad) {
+        boolean resp = false;
+        String patt = "[0-9]+";
+        Pattern pat = Pattern.compile(patt);
+        Matcher match = pat.matcher(cad);
+        if (match.matches()) {
+            resp = true;
+        }
         return resp;
     }
 

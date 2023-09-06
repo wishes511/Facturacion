@@ -39,6 +39,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
     ArrayList<cargo> arrcargo = new ArrayList<>();
     ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
     public String relacion;
+    public String pago="";
 
     /**
      * Creates new form Paresremision

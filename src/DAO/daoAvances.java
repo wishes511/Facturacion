@@ -6,6 +6,7 @@
 package DAO;
 
 import Modelo.Avance;
+import Modelo.metadep;
 import Persistencia.sqlavances;
 import Server.Serverylite;
 import java.sql.Connection;
@@ -74,6 +75,26 @@ public class daoAvances implements Avances {
     public void vaciabd(Connection av) {
         sqlavances s = new sqlavances();
         s.Vaciabd(av);
+    }
+
+    @Override
+    public ArrayList<metadep> arrdepp(Connection c) {
+        sqlavances sa = new sqlavances();
+        return sa.getallavance(c);
+    }
+
+    /**
+     * Cambios en col, de ahora en adelante se utilizara para mandar la multiplicacion de hrs x los par
+     * @param c
+     * @param hrs
+     * @param columna
+     * @param nombre
+     * @return 
+     */
+    @Override
+    public boolean actualizahrs(Connection c, int hrs, String columna, String nombre) {
+        sqlavances sa = new sqlavances();
+        return sa.updateprshr(c, hrs, columna, nombre);
     }
 
 }

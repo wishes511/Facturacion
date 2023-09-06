@@ -673,7 +673,8 @@ public class pagotpu2 extends javax.swing.JPanel {
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
         String r = JtCliente.getText();
         daofactura df = new daofactura();
-        arrcargo = df.getfactsoncrtpu(cpt, r, empresa);// cpt a usar
+//        arrcargo = df.getfactsoncrtpu(cpt, r, empresa);// cpt a usar
+        arrcargo=df.getfactopagotpu(cpt, r, empresa);
         if (arrcargo.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
             JtCliente.setText("");

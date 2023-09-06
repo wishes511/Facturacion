@@ -6,6 +6,7 @@
 package Persistencia;
 
 import Modelo.Avance;
+import Modelo.metadep;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,7 +49,8 @@ public class sqlavances {
     }
 
     /**
-     *Vacia la bd de avances de sqlite
+     * Vacia la bd de avances de sqlite
+     *
      * @param a
      */
     public void Vaciabd(Connection a) {
@@ -187,6 +189,56 @@ public class sqlavances {
                 lite.rollback();
                 Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
 
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public ArrayList<metadep> getallavance(Connection c) {
+        ArrayList<metadep> arr = new ArrayList<>();
+        try {
+            ResultSet rs;
+            PreparedStatement st;
+            String sql = "select  * from metaxdep order by nombre";
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                metadep m = new metadep();
+                m.setNombre(rs.getString("Nombre"));
+                m.setCantxhr(rs.getInt("cantxhr"));
+                m.setCantxdia(rs.getInt("cantxdia"));
+                arr.add(m);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    /**
+     * Cambios en col, de ahora en adelante se utilizara para mandar la multiplicacion de hrs x los pares
+     * @param c
+     * @param prs
+     * @param col
+     * @param nombre
+     * @return 
+     */
+    public boolean updateprshr(Connection c, int prs, String col, String nombre) {
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement st;
+            String sql = "update metaxdep set cantxhr=" + prs + ", cantxdia="+col+" where nombre='" + nombre + "'";
+            System.out.println("actualiza prs avance "+sql);
+            st=c.prepareStatement(sql);
+            st.executeUpdate();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex1);
             }

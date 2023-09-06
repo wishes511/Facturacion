@@ -100,6 +100,8 @@ public interface Facturas {
     public ArrayList<cargo> getfactstoncr(Connection c, String r, String bd);
     
     public ArrayList<cargo> getfactsoncrtpu(Connection c, String r, String bd);
+    
+    public ArrayList<cargo> getfactopagotpu(Connection c, String r, String bd);
 
     /**
      *

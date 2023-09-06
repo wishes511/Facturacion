@@ -6,6 +6,7 @@
 package DAO;
 
 import Modelo.Avance;
+import Modelo.metadep;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -26,5 +27,17 @@ public interface Avances {
     public boolean setrowsav(Connection av,Connection liteav,String rcpt, String cob, String f1, String f2);
     
     public void vaciabd(Connection av);
+    
+    public ArrayList<metadep> arrdepp(Connection c);
+    
+    /**
+     * Actualiza las hrs de acuerdo a la columna ingresada
+     * @param c
+     * @param hrs
+     * @param columna
+     * @param nombre
+     * @return 
+     */
+    public boolean actualizahrs(Connection c, int hrs, String columna, String nombre);
     
 }
