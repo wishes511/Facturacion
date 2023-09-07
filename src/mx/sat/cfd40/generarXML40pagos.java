@@ -234,7 +234,7 @@ public class generarXML40pagos {
         for (int i = 0; i < f.getArrpagos().size(); i++) {// prueba con 1 elemento random
             Comprobante.Complemento.Pagos.Pago.DoctoRelacionado doc = of.createComprobanteComplementoPagosPagoDocs();
             doc.setFolio(f.getArrpagos().get(i).getRef());
-            doc.setSerie("PAG");
+            doc.setSerie("FAC");
             doc.setIdDocumento(f.getArrpagos().get(i).getUuid());
             doc.setObjetoImpDR("02");
             doc.setMonedaDR(CMoneda.MXN);

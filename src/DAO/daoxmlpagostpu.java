@@ -50,7 +50,8 @@ public class daoxmlpagostpu {
             x.setDescripcionP(descmetodo);      // metodo descripcion
 //            x.setDescuento(BigDecimal.valueOf(0));
             x.setSubT(BigDecimal.valueOf(0));             // Subtotal siempre '0'
-            x.setMoneda(f.getMoneda());                                 // Moneda
+            x.setMoneda(f.getMoneda());  
+            x.setTipoC(BigDecimal.valueOf(f.getTipocambio()));// Moneda
             x.setTotal(BigDecimal.valueOf(0));               // Total siempre '0'
             x.setMetodoPago(f.getMetodopago());                         // MEtodo pago
             x.setDescripcionP(f.getDescmetodop());

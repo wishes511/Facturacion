@@ -658,7 +658,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 //        JtRelacion.setModel(relacion);
         // Cuentas
         daofactura d = new daofactura();
-        arrcuentas = d.getalcuentastpu(ACobranza, "60");
+        arrcuentas = d.getalcuentastpu(ACobranza, "50");
         for (ConceptosES arruso1 : arrcuentas) {
             cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
         }
@@ -754,7 +754,11 @@ public class pagotpu2 extends javax.swing.JPanel {
         if (!verificafloat(JtTCambio.getText().toUpperCase())) {
             JOptionPane.showMessageDialog(null, "Error, Introduce un valor valido en el tipo de cambio");
             JtTCambio.requestFocus();
+        }else{
+            JtFecha.requestFocus();
+            JtFecha.requestFocusInWindow();
         }
+        
     }//GEN-LAST:event_JtTCambioActionPerformed
 
     private void setdolar() {
@@ -837,7 +841,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 //                } while (n.isAlive());
                 if (JcUsd.isSelected()) {
                     f.setMoneda("USD");
-                    f.setTipocambio(Float.parseFloat(JtTCambio.getText()));
+                    f.setTipocambio(Double.parseDouble(JtTCambio.getText()));
                 } else {
                     f.setMoneda("MXN");
                     f.setTipocambio(1);
@@ -847,8 +851,8 @@ public class pagotpu2 extends javax.swing.JPanel {
 //                f.setBaseiva16(getnewcantidades(total / 1.16, "importe"));
 //                f.setTotalpago16(total);
                 f.setImpiva16(impuestos);// Nodo totales
-                f.setBaseiva16(subtotal);
-                f.setTotalpago16(total);
+                f.setBaseiva16(formatdecimal(subtotal));
+                f.setTotalpago16(formatdecimal(total));
 //                Fin nodo totales
                 f.setExportacion("01");
                 f.setTiporelacion("");
@@ -897,7 +901,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                     d.setCodigo("84111506");
                     d.setUmedida("ACT");
                     d.setPrecio(0);
-                    d.setMoneda("MXN");
+                    d.setMoneda(f.getMoneda());
                     d.setMonto(total);
                     d.setRfcctaemisora("AB");
                     d.setCtaemisora("12");
@@ -1091,6 +1095,7 @@ public class pagotpu2 extends javax.swing.JPanel {
         JtCliente.setText("");
         JlNombre.setText("");
         JtObs.setText(nombre);
+        JcUsd.setSelected(false);
         llenalistafac();
         actualizaimportes();
         cargacombos();
