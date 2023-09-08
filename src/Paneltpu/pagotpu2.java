@@ -674,7 +674,7 @@ public class pagotpu2 extends javax.swing.JPanel {
         String r = JtCliente.getText();
         daofactura df = new daofactura();
 //        arrcargo = df.getfactsoncrtpu(cpt, r, empresa);// cpt a usar
-        arrcargo=df.getfactopagotpu(cpt, r, empresa);
+        arrcargo = df.getfactopagotpu(cpt, r, empresa);
         if (arrcargo.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
             JtCliente.setText("");
@@ -754,11 +754,11 @@ public class pagotpu2 extends javax.swing.JPanel {
         if (!verificafloat(JtTCambio.getText().toUpperCase())) {
             JOptionPane.showMessageDialog(null, "Error, Introduce un valor valido en el tipo de cambio");
             JtTCambio.requestFocus();
-        }else{
+        } else {
             JtFecha.requestFocus();
             JtFecha.requestFocusInWindow();
         }
-        
+
     }//GEN-LAST:event_JtTCambioActionPerformed
 
     private void setdolar() {
@@ -892,6 +892,9 @@ public class pagotpu2 extends javax.swing.JPanel {
                 ArrayList<Detpagos> arrdetpago = new ArrayList<>();
                 ArrayList<Dfactura> arrdet = new ArrayList<>();
                 ArrayList<Detpagos> arrdetpago17 = new ArrayList<>();
+                String metodo = "";
+                boolean flagmetodo = false;
+                boolean ispue = false;
                 //Detallado del pago
                 for (int i = 0; i < arrcargoseleccion.size(); i++) {
                     Detpagos d = new Detpagos();
@@ -913,12 +916,24 @@ public class pagotpu2 extends javax.swing.JPanel {
                     d.setMetodopago("PUE");
                     d.setParcialidad(arrcargoseleccion.get(i).getParcialidad());
                     d.setIdcargo(arrcargoseleccion.get(i).getId_cargo());
+                    if (i == 0) {
+                        metodo = arrcargoseleccion.get(i).getMetodopago();
+                        flagmetodo = metodo.equals(arrcargoseleccion.get(i).getMetodopago());
+                        ispue = arrcargoseleccion.get(i).getMetodopago().equals("PUE");
+                    } else {
+                        flagmetodo = metodo.equals(arrcargoseleccion.get(i).getMetodopago());
+                        ispue = arrcargoseleccion.get(i).getMetodopago().equals("PUE");
+                        if (flagmetodo == false) {
+                            i = arrcargoseleccion.size();
+                            break;
+                        }
 
+                    }
                     double sa;
-                    double pa; 
+                    double pa;
                     double sal;
                     sa = (f.getMoneda().equals("MXN")) ? arrcargoseleccion.get(i).getSaldomx() : arrcargoseleccion.get(i).getSaldo();
-                    d.setSaldo(sa-arrcargoseleccion.get(i).getDescuento());
+                    d.setSaldo(sa - arrcargoseleccion.get(i).getDescuento());
                     pa = arrcargoseleccion.get(i).getDescuento();
                     sal = sa - pa;
                     d.setImportesaldoant(getcant16(sa));
@@ -943,26 +958,47 @@ public class pagotpu2 extends javax.swing.JPanel {
                 f.setRefncredito(facturas);
                 f.setObservaciones(JtObs.getText().toUpperCase());
                 f.setFoliofiscalorig(folios);
-                int verifica = dfac.getbuscafoliotpu(cpt, "PAG", f.getFolio() + "");
-                if (verifica != 0) {
-                    JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
+                if (!flagmetodo) {
+                    JOptionPane.showMessageDialog(null, "Error!,- No puedes seleccionar una factura PUE y PPD en un mismo pago");
                 } else {
+                    int verifica = dfac.getbuscafoliotpu(cpt, "PAG", f.getFolio() + "");
+//                    Verifica si usar el metodo pue y usar operaciones de Solo hacer abono y no complemento
+                    if (ispue) {
+                        if (verifica != 0) {
+                            JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
+                        } else {
+                            int id = dfac.insertpagotpu(cpt, ACobranza, f);
+                            if (id != 0) {
+                                JOptionPane.showMessageDialog(null, "Pago realizado con exito");
+                                System.out.println("Exito");
+                                vaciarcampos();
+                                JtCliente.requestFocus();
+                            }
+                        }
+                    } else {
+                        if (verifica != 0) {
+                            JOptionPane.showMessageDialog(null, "Error!,- El folio ya se encuentra en uso, contacta a sistemas ");
+                        } else {
 //                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
-                    int id = dfac.insertpagotpu(cpt, ACobranza, f);
-                    if (id != 0) {
-                        System.out.println("Exito");
-                        daoxmlpagostpu dx = new daoxmlpagostpu();
-                        f.setId(id);
-                        dx.generarfac(f, cpt, sqlempresa);
-                        timbrarXML tim = new timbrarXML();
-                        Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
-                        dfac.Updatesellofiscalpagotpu(cpt, s, id);
-                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
-                        JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
-                        vaciarcampos();
-                        JtCliente.requestFocus();
+                            int id = dfac.insertpagotpu(cpt, ACobranza, f);
+                            if (id != 0) {
+                                System.out.println("Exito");
+                                daoxmlpagostpu dx = new daoxmlpagostpu();
+                                f.setId(id);
+                                dx.generarfac(f, cpt, sqlempresa);
+                                timbrarXML tim = new timbrarXML();
+                                Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
+                                dfac.Updatesellofiscalpagotpu(cpt, s, id);
+                                setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
+                                JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
+                                vaciarcampos();
+                                JtCliente.requestFocus();
+                            }
+                        }
                     }
+
                 }
+
             }
 
         }
@@ -1048,7 +1084,7 @@ public class pagotpu2 extends javax.swing.JPanel {
             String n = "1";
             String logo = "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
-            String lugar="BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO "+e.getCp();
+            String lugar = "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter

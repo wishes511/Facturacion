@@ -256,6 +256,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
         model.addColumn("");
         model.addColumn("Saldo mx");
         model.addColumn("Parcialidad");
+        model.addColumn("Metodo de pago");
         model.setNumRows(arrcargo.size());
         //Carga las facturas registyradas en cargos
         for (int i = 0; i < arrcargo.size(); i++) {
@@ -269,6 +270,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
             model.setValueAt("", i, 7);
             model.setValueAt(arrcargo.get(i).getSaldomx(), i, 8);
             model.setValueAt("1", i, 9);
+            model.setValueAt(arrcargo.get(i).getMetodopago(), i, 10);
         }
         JtCargo.setModel(model);
     }
@@ -283,6 +285,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
                 String desc = JtCargo.getValueAt(renglon, 4).toString();
                 String saldomx = JtCargo.getValueAt(renglon, 8).toString();
                 String parci = JtCargo.getValueAt(renglon, 9).toString();
+                
                 if (verificaciones(desc)) {
 //                  Verifica el tipo de relacion sea 03 por que es descuento
 //                  Verifica el tipo de relacion sea 01,07 por que es descuento 15/02/2023

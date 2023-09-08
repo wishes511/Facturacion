@@ -622,7 +622,7 @@ public class sqlfactura {
                     + "from documento d\n"
                     + "join ACobranzaTpu.dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
                     + "join ddocumento dd on dd.Id_Documento=d.Id_documento\n"
-                    + "where d.id_documento="+folio+" and serie='"+serie+"'\n"
+                    + "where d.id_documento=" + folio + " and serie='" + serie + "'\n"
                     + "order by d.id_documento desc";
             System.out.println("xml " + sql);
             st = con.prepareStatement(sql);
@@ -2555,12 +2555,12 @@ public class sqlfactura {
                         + "monto,rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,uuid,foliorel,moneda,metodopago,"
                         + "noparcialidad,importesdoant,importepagado,impsaldoinsoluto) "
                         + "values(" + resp + "," + cant + ",'" + de + " " + fo + "','" + co + "','" + umed + "',0,'" + fp + "','" + mon + "'," + mo + ",'','','','','"
-                        + uuid + "','" + fol + "','" + moneda + "','" + metodo + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
+                        + uuid + "','" + fo + "','" + moneda + "','" + metodo + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
                 System.out.println("d pagos " + sql);
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
                 String saldo;
-                if (moneda.equals("MXN")) {
+                if (mon.equals("MXN")) {
                     sql = "update cargo set saldomx=" + formateador.format(sald) + " where id_cargo=" + idcargo;
                     saldo = "saldo";
                 } else {
@@ -3258,19 +3258,19 @@ public class sqlfactura {
         return arr;
     }
 
-        public ArrayList<cargo> getfoliotopagotpu(Connection con, String nombre, String bd) {//cargos para ncr solo cobranza
+    public ArrayList<cargo> getfoliotopagotpu(Connection con, String nombre, String bd) {//cargos para ncr solo cobranza
         ArrayList<cargo> arr = new ArrayList<>();
         try {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select distinct id_cargo,id_concepto,c.referencia,c.fecha,importe,\n"
                     + "saldo,cli.nombre,sim,c.plazo, c.id_cliente,\n"
-                    + " c.referencia as ref, d.FolioFiscal,c.id_agente,d.RFC,cli.cp,cli.regimen,saldomx\n"
+                    + " c.referencia as ref, d.FolioFiscal,c.id_agente,d.RFC,cli.cp,cli.regimen,saldomx,metodopago\n"
                     + "from ACobranzaTpu.dbo.cargo c\n"
                     + "join ACobranzaTpu.dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
                     + "join Documento d on c.referencia =d.folio\n"
                     + "where (c.id_cliente = " + nombre + " ) and c.referencia NOT Like '%NCR%' and saldo!=0 and d.Serie='fac' "
-                    + "and d.estatus='1' and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' and metodopago!='PUE' order by c.fecha";
+                    + "and d.estatus='1' and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' order by c.fecha";
             System.out.println("get clientencr " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
@@ -3295,6 +3295,7 @@ public class sqlfactura {
                 c.setRegimen(rs.getString("regimen"));
                 c.setSaldomx(rs.getDouble("saldomx"));
                 c.setRenglon(ren);
+                c.setMetodopago(rs.getString("metodopago"));
                 arr.add(c);
                 ren++;
             }
@@ -3305,7 +3306,7 @@ public class sqlfactura {
         }
         return arr;
     }
-    
+
     /**
      *
      * @param con conexion cpt

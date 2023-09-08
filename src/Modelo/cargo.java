@@ -10,9 +10,17 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class cargo {
-    int cuenta,subcuenta,plazo,cliente,cantidad,agente,renglon,id_concepto, id_cargo,parcialidad;
-    String nombre, referencia, fecha, fechav, ref, foliofiscal, sumafolios,rfc,calle,
-            colonia,municipio, estado,pais,cp, regimen, descnota;
+    private int cuenta,subcuenta,plazo,cliente,cantidad,agente,renglon,id_concepto, id_cargo,parcialidad;
+    private String nombre, referencia, fecha, fechav, ref, foliofiscal, sumafolios,rfc,calle,
+            colonia,municipio, estado,pais,cp, regimen, descnota,metodopago;
+
+    public String getMetodopago() {
+        return metodopago;
+    }
+
+    public void setMetodopago(String metodopago) {
+        this.metodopago = metodopago;
+    }
 
     public int getParcialidad() {
         return parcialidad;

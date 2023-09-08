@@ -564,4 +564,10 @@ public class daofactura implements Facturas {
         return s.getfoliotopagotpu(c, r, bd);
     }
 
+    @Override
+    public int insertpagotpuPUE(Connection cpt, Connection cob, factura f) {
+        sqlfactura s = new sqlfactura();
+        return s.insertpagostpu(cpt, f, cob);
+    }
+
 }

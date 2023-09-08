@@ -212,6 +212,8 @@ public interface Facturas {
     
     public int insertpagotpu(Connection cpt, Connection cob, factura f);
     
+    public int insertpagotpuPUE(Connection cpt, Connection cob, factura f);
+    
     public ArrayList<factura> getfactwithserie(Connection rcpt, String ncobranza, String serie);
     
     public ArrayList<Dfactura> getfactwithseriedetallado(Connection rcpt, String factura, int año);
