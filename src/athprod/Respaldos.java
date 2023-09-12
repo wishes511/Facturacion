@@ -10,6 +10,7 @@ import Modelo.Servidorsql;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
@@ -174,7 +175,7 @@ public class Respaldos extends javax.swing.JInternalFrame implements Runnable {
         JlAd.setVisible(true);
         jButton1.setVisible(false);
         Thread t = new Thread(this);
-            t.start();
+        t.start();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private String formateames(int m) {
@@ -229,7 +230,7 @@ public class Respaldos extends javax.swing.JInternalFrame implements Runnable {
         }
         return y;
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JlAd;
@@ -244,23 +245,30 @@ public class Respaldos extends javax.swing.JInternalFrame implements Runnable {
 
     @Override
     public void run() {
-        Calendar fecha = Calendar.getInstance();
-        int year = fecha.get(Calendar.YEAR);
-        int mes = fecha.get(Calendar.MONTH) + 1;
+        try {
+            Calendar fecha = Calendar.getInstance();
+            int year = fecha.get(Calendar.YEAR);
+            int mes = fecha.get(Calendar.MONTH) + 1;
 //        obtiene el nombre del mes de acuerdo a su numero del mes
-        String mes1 = formateames(mes);
+            String mes1 = formateames(mes);
 //        Obtiene los ultimos 2 digitos del año
-        String year1 = formateayear(String.valueOf(year));
-        for (int i = 0; i < arr.size(); i++) {
+            String year1 = formateayear(String.valueOf(year));
+            for (int i = 0; i < arr.size(); i++) {
 //            Ejecuta la instruccion de respaldo de acuerdo a la bd, mes y año
-            resp.execresp(server, arr.get(i), mes1, year1);
-            String ruta = arr.get(i).getRutarespaldo();
-            String bd = arr.get(i).getBd();
+                resp.execresp(server, arr.get(i), mes1, year1);
+                String ruta = arr.get(i).getRutarespaldo();
+                String bd = arr.get(i).getBd();
 //            String para mostrar en la pantalla
-            String resproc = ruta + "res" + bd + "" + mes1 + year1 + "tmp.bak";
-            allres+=resproc+"\n";
-            JtEstado.setText(allres);
+                String resproc = ruta + "res" + bd + "" + mes1 + year1 + "tmp.bak";
+                allres += resproc + "\n";
+                JtEstado.setText(allres);
+            }
+            JOptionPane.showMessageDialog(null, "Respaldo completo");
+            server.close();
+            serverlite.close();
+            jButton1.setEnabled(false);
+        } catch (SQLException ex) {
+            Logger.getLogger(Respaldos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        JOptionPane.showMessageDialog(null, "Respaldo completo");
     }
 }

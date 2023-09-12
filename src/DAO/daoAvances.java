@@ -7,6 +7,7 @@ package DAO;
 
 import Modelo.Avance;
 import Modelo.metadep;
+import Modelo.pantalla;
 import Persistencia.sqlavances;
 import Server.Serverylite;
 import java.sql.Connection;
@@ -95,6 +96,24 @@ public class daoAvances implements Avances {
     public boolean actualizahrs(Connection c, int hrs, String columna, String nombre) {
         sqlavances sa = new sqlavances();
         return sa.updateprshr(c, hrs, columna, nombre);
+    }
+
+    @Override
+    public ArrayList<pantalla> getpantallas(Connection c) {
+        sqlavances a = new sqlavances();
+        return a.getpantalals(c);
+    }
+
+    @Override
+    public boolean nuevaspantallas(Connection c, pantalla p) {
+        sqlavances a = new sqlavances();
+        return a.nuevaspantallas(c, p);
+    }
+
+    @Override
+    public int getmaxpantalla(Connection c) {
+        sqlavances a = new sqlavances();
+        return a.getmaxpantalla(c);
     }
 
 }

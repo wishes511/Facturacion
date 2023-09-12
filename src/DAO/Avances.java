@@ -7,6 +7,7 @@ package DAO;
 
 import Modelo.Avance;
 import Modelo.metadep;
+import Modelo.pantalla;
 import java.sql.Connection;
 import java.util.ArrayList;
 
@@ -39,5 +40,11 @@ public interface Avances {
      * @return 
      */
     public boolean actualizahrs(Connection c, int hrs, String columna, String nombre);
+    
+    public ArrayList<pantalla> getpantallas(Connection c);
+    
+    public boolean nuevaspantallas(Connection c, pantalla p);
+    
+    public int getmaxpantalla(Connection c);
     
 }

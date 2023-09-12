@@ -7,6 +7,7 @@ package Persistencia;
 
 import Modelo.Avance;
 import Modelo.metadep;
+import Modelo.pantalla;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -218,20 +219,104 @@ public class sqlavances {
     }
 
     /**
-     * Cambios en col, de ahora en adelante se utilizara para mandar la multiplicacion de hrs x los pares
+     * Cambios en col, de ahora en adelante se utilizara para mandar la
+     * multiplicacion de hrs x los pares
+     *
      * @param c
      * @param prs
      * @param col
      * @param nombre
-     * @return 
+     * @return
      */
     public boolean updateprshr(Connection c, int prs, String col, String nombre) {
         try {
             c.setAutoCommit(false);
             PreparedStatement st;
-            String sql = "update metaxdep set cantxhr=" + prs + ", cantxdia="+col+" where nombre='" + nombre + "'";
-            System.out.println("actualiza prs avance "+sql);
-            st=c.prepareStatement(sql);
+            String sql = "update metaxdep set cantxhr=" + prs + ", cantxdia=" + col + " where nombre='" + nombre + "'";
+            System.out.println("actualiza prs avance " + sql);
+            st = c.prepareStatement(sql);
+            st.executeUpdate();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public ArrayList<pantalla> getpantalals(Connection c) {
+        ArrayList<pantalla> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select * from pantallas";
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                pantalla p = new pantalla();
+                p.setPantalla(rs.getInt("pantalla"));
+                p.setNombre(rs.getString("nombre"));
+                p.setCorte(rs.getString("corte"));
+                p.setPrecorte(rs.getString("precorte"));
+                p.setPespunte(rs.getString("pespunte"));
+                p.setDeshebrado(rs.getString("deshebrado"));
+                p.setOjillado(rs.getString("ojillado"));
+                p.setInspeccion(rs.getString("inspeccion"));
+                p.setPreacabado(rs.getString("preacabado"));
+                p.setMontado(rs.getString("montado"));
+                p.setMontado2(rs.getString("montado2"));
+                p.setPt(rs.getString("pt"));
+                arr.add(p);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public int getmaxpantalla(Connection c) {
+        int resp = 0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select max(pantalla) as pantalla from pantallas";
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                resp = rs.getInt("pantalla");
+            }
+            resp++;
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
+    public boolean nuevaspantallas(Connection c, pantalla p) {
+        try {
+            PreparedStatement st;
+            c.setAutoCommit(false);
+            int pant = p.getPantalla();
+            String n = p.getNombre();
+            String cor = p.getCorte();
+            String prec = p.getPrecorte();
+            String pes = p.getPespunte();
+            String des = p.getDeshebrado();
+            String oji = p.getOjillado();
+            String prea = p.getPreacabado();
+            String ins = p.getInspeccion();
+            String m = p.getMontado();
+            String pt = p.getPt();
+            String m2 = p.getMontado2();
+            String sql = "insert into pantallas "
+                    + "values(" + pant + ",'" + n + "','" + cor + "','" + prec + "','" + pes + "','" 
+                    + des + "','" + oji + "','" + prea + "','" + ins + "','" + m + "','" + pt + "','" + m2 + "')";
+            st = c.prepareStatement(sql);
             st.executeUpdate();
             c.commit();
             return true;
