@@ -29,6 +29,7 @@ import Tpu.EntradasSalidas;
 import Tpu.FacturacionTpu;
 import Tpu.FacturacionTpuAth;
 import Tpu.Familiastpu;
+import Tpu.Inventarios;
 import Tpu.Notascrtpu;
 import Tpu.Pagostpu;
 import Tpu.Pagostpurem;
@@ -185,6 +186,7 @@ public final class Principal extends javax.swing.JFrame {
         JmNotascrtpu = new javax.swing.JMenuItem();
         JmPagostpu = new javax.swing.JMenuItem();
         JmPagostpu2 = new javax.swing.JMenuItem();
+        JmInventarios = new javax.swing.JMenuItem();
         JtFacturaciontpu = new javax.swing.JMenuItem();
         JtFacturaciontpu1 = new javax.swing.JMenuItem();
         JmRemision = new javax.swing.JMenuItem();
@@ -557,6 +559,15 @@ public final class Principal extends javax.swing.JFrame {
         JmCobranzatpu.add(JmPagostpu2);
 
         JmTpu.add(JmCobranzatpu);
+
+        JmInventarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_inventory_maintenance_product_box_boxes_2326.png"))); // NOI18N
+        JmInventarios.setText("Inventarios");
+        JmInventarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmInventariosActionPerformed(evt);
+            }
+        });
+        JmTpu.add(JmInventarios);
 
         JtFacturaciontpu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtir.png"))); // NOI18N
         JtFacturaciontpu.setText("Facturacion");
@@ -1587,6 +1598,18 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmPantallahrs1ActionPerformed
 
+    private void JmInventariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmInventariosActionPerformed
+        try {
+            Inventarios p = new Inventarios(conexion, u);
+            p.getfecha();
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmInventariosActionPerformed
+
 //    Primera version para veriicar el usuario
     private void verificausuario() {
         jp.setVisible(true);
@@ -1775,6 +1798,7 @@ public final class Principal extends javax.swing.JFrame {
                 setTpucon();
                 setconexionesglobal();//provicional
                 conexion.setLitecfdi(litecfdi);
+                conexion.setLiteusuario(liteusuario);
                 conexion.setEmpresa(empresa);
                 conexion.setCpt(concpt);
                 conexion.setRcpt(conrcpt);
@@ -2077,6 +2101,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmFamilia;
     private javax.swing.JMenuItem JmFamilia1;
     private javax.swing.JMenuItem JmFicha;
+    private javax.swing.JMenuItem JmInventarios;
     private javax.swing.JMenuItem JmKardexprod;
     private javax.swing.JMenu JmMaq;
     private javax.swing.JMenuItem JmMaterial;

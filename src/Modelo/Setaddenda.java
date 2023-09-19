@@ -305,7 +305,7 @@ public class Setaddenda {
         Element metod = doc.createElement("methodOfPayment");
         metod.setTextContent("PAID_BY_BUYER");
         Element prepac = doc.createElement("prepactCant");
-        prepac.setTextContent("10");
+        prepac.setTextContent(""+na.getCantidad());
         transport.appendChild(metod);
         transport.appendChild(prepac);
         pallet.appendChild(desc);

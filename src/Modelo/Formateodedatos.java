@@ -161,8 +161,9 @@ public class Formateodedatos {
 
     /**
      * Verifica que en la variable solo haya numero enteros del 0 al 9
+     *
      * @param cad
-     * @return 
+     * @return
      */
     public boolean verificaint(String cad) {
         boolean resp = false;
@@ -173,6 +174,70 @@ public class Formateodedatos {
             resp = true;
         }
         return resp;
+    }
+
+    public boolean verificafloat(String cad) {
+        boolean resp = false;
+        String patt = "[0-9]+||[0-9]+.[0-9]+";
+        Pattern pat = Pattern.compile(patt);
+        Matcher match = pat.matcher(cad);
+        if (match.matches()) {
+            resp = true;
+        }
+        return resp;
+    }
+    
+        public String formateamesrespaldo(int m) {
+        String mes = "";
+        switch (m) {
+            case 1:
+                mes = "Ene";
+                break;
+            case 2:
+                mes = "Feb";
+                break;
+            case 3:
+                mes = "Mar";
+                break;
+            case 4:
+                mes = "Abr";
+                break;
+            case 5:
+                mes = "May";
+                break;
+            case 6:
+                mes = "Jun";
+                break;
+            case 7:
+                mes = "Jul";
+                break;
+            case 8:
+                mes = "Ago";
+                break;
+            case 9:
+                mes = "Sep";
+                break;
+            case 10:
+                mes = "Oct";
+                break;
+            case 11:
+                mes = "Nov";
+                break;
+            case 12:
+                mes = "Dic";
+                break;
+            default:
+                break;
+        }
+        return mes;
+    }
+
+    public String formateayearrespaldo(String year) {
+        String y = "";
+        for (int i = 2; i < 4; i++) {
+            y += year.charAt(i);
+        }
+        return y;
     }
 
 }

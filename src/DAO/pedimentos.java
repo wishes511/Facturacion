@@ -27,4 +27,6 @@ public interface pedimentos {
     public ArrayList<pedimento> getpedimentosimple(Connection cpt, String cob, String cliente);
     
     public ArrayList<pedimento> getpedimentoaadv(Connection cpt, String referencias);
+    
+    public ArrayList<pedimento> getpedimentoinv(Connection cpt);
 }

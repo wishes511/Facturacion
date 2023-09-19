@@ -17,6 +17,13 @@ import java.util.ArrayList;
  */
 public class daopedimentos implements pedimentos {
 
+    /**
+     * Obtiene todos los pedimentos
+     *
+     * @param c
+     * @param ped
+     * @return
+     */
     @Override
     public ArrayList<pedimento> getallpedimento(Connection c, String ped) {
         sqlpedimentos s = new sqlpedimentos();
@@ -40,6 +47,13 @@ public class daopedimentos implements pedimentos {
         return s.getpedimentosimple(cpt, cob, cliente);
     }
 
+    /**
+     * Obtiene el detallado de pedimento usando al referencia del pedimento
+     *
+     * @param cpt
+     * @param referencias
+     * @return
+     */
     @Override
     public ArrayList<pedimento> getpedimentoaadv(Connection cpt, String referencias) {
         sqlpedimentos s = new sqlpedimentos();
@@ -50,6 +64,18 @@ public class daopedimentos implements pedimentos {
     public boolean newmatpedimento(Connection cpt, Dpedimento ped) {
         sqlpedimentos s = new sqlpedimentos();
         return s.newmatpedimento(cpt, ped);
+    }
+
+    /**
+     * Datos con el detalle del pedimento para uso de inventario
+     *
+     * @param cpt
+     * @return
+     */
+    @Override
+    public ArrayList<pedimento> getpedimentoinv(Connection cpt) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.getpedimentoinv(cpt);
     }
 
 }

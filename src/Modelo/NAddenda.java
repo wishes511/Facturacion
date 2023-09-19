@@ -11,14 +11,24 @@ import java.util.ArrayList;
  *
  * @author GATEWAY1-
  */
-public class NAddenda implements java.io.Serializable{
+public class NAddenda implements java.io.Serializable {
+
     private factura f;
     private ArrayList<Addenda> arrad;
     private int cajas;
+    private int cantidad;
     private ArrayList<String> arrcod;
     private Destinoscoppel dc;
     private String archivo;
     private String prov;
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
 
     public String getProv() {
         return prov;

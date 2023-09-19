@@ -20,7 +20,7 @@
 	</parameter>
 	<queryString>
 		<![CDATA[select k.id_kardex,c.descripcion,k.cantidad,cuenta,subcuenta,convert(date,k.fecha) as fecha,p.referencia,isnull(ped.pedido,'') as pedido,
-isnull(k.referencia,'') as ref,k.id_material,k.dureza,p.id_pedimento
+isnull(k.referencia,'') as ref,k.id_material,k.dureza,p.id_pedimento,(select cantinv from DPedimentos where id_material=$P{idmat} and dureza=$P{dureza} and id_pedimento=$P{idpedimento}) as inv
 from kardex k
 join Conceptos c on k.id_concepto=c.id_concepto
 join materiales mat on k.id_material=mat.id_material
@@ -41,15 +41,22 @@ order by k.id_pedimento,k.fecha]]>
 	<field name="id_material" class="java.lang.Integer"/>
 	<field name="dureza" class="java.lang.String"/>
 	<field name="id_pedimento" class="java.lang.Integer"/>
+	<field name="inv" class="java.lang.Double"/>
 	<variable name="tcant" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[( $F{cuenta}.equals( 60 )||$F{cuenta}.equals( 70 ) ? -$F{cantidad} : $F{cantidad} )]]></variableExpression>
-		<initialValueExpression><![CDATA[]]></initialValueExpression>
+		<initialValueExpression><![CDATA[$F{inv}]]></initialValueExpression>
 	</variable>
 	<variable name="In" class="java.lang.Double">
 		<variableExpression><![CDATA[( $F{cuenta}.equals( 60 )||$F{cuenta}.equals( 70 ) ? 0 : $F{cantidad} )]]></variableExpression>
 	</variable>
 	<variable name="Out" class="java.lang.Double">
 		<variableExpression><![CDATA[( $F{cuenta}.equals( 60 )||$F{cuenta}.equals( 70 ) ? $F{cantidad} : 0 )]]></variableExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.Double">
+		<variableExpression><![CDATA[$V{tcant}.sum( $F{inv}, $V{tcant} )]]></variableExpression>
+	</variable>
+	<variable name="invi" class="java.lang.Double">
+		<variableExpression><![CDATA[$F{inv}]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
@@ -113,13 +120,6 @@ order by k.id_pedimento,k.fecha]]>
 				<textFieldExpression><![CDATA[$F{ref}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="347" y="0" width="43" height="11" uuid="e83828d5-ab80-4426-ac88-4fd1196c3880"/>
-				<textElement textAlignment="Center">
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{tcant}]]></textFieldExpression>
-			</textField>
-			<textField pattern="#,##0.00">
 				<reportElement x="390" y="0" width="28" height="11" uuid="050c0e45-7418-4c06-a39c-7cf70030f82a"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
@@ -132,6 +132,13 @@ order by k.id_pedimento,k.fecha]]>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{Out}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="347" y="0" width="43" height="11" uuid="41fa98ed-425d-4a49-88c8-c6e956c93615"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{variable1}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
