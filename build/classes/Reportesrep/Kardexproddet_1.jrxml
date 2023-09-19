@@ -68,7 +68,7 @@ group by k.id_pedimento,p.referencia]]>
 		</band>
 		<band height="15">
 			<textField pattern="#,##0.00">
-				<reportElement x="345" y="0" width="43" height="12" uuid="ba7db9a5-29bd-4730-b892-013518ecea71"/>
+				<reportElement x="403" y="0" width="43" height="12" uuid="ba7db9a5-29bd-4730-b892-013518ecea71"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>

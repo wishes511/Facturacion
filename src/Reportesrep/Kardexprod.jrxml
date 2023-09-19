@@ -142,21 +142,21 @@ group by k.id_material,dureza,m.descripcion]]>
 				<text><![CDATA[Referencia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="347" y="25" width="43" height="15" uuid="37c7105f-c2c3-44ca-8622-cba3bb324186"/>
+				<reportElement x="403" y="25" width="43" height="15" uuid="37c7105f-c2c3-44ca-8622-cba3bb324186"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cant]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="390" y="25" width="28" height="15" uuid="b6b61825-7ca7-47c0-891f-8c5231a22100"/>
+				<reportElement x="347" y="25" width="28" height="15" uuid="b6b61825-7ca7-47c0-891f-8c5231a22100"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[E]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="418" y="25" width="28" height="15" uuid="5e226fcb-1355-4def-aa94-11f65f0a921e"/>
+				<reportElement x="375" y="25" width="28" height="15" uuid="5e226fcb-1355-4def-aa94-11f65f0a921e"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -181,22 +181,7 @@ group by k.id_material,dureza,m.descripcion]]>
 				<subreportExpression><![CDATA["C:\\af\\prod\\Reportesrep\\Kardexproddet_1.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="17">
-			<textField pattern="#,##0.00">
-				<reportElement x="347" y="0" width="43" height="13" uuid="aedcc810-0b87-439d-806e-0d7a342b0ca5"/>
-				<textElement textAlignment="Center">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{tcant}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="284" y="0" width="63" height="15" uuid="de9d96a8-0c31-4343-925c-d7579b291c24"/>
-				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Total]]></text>
-			</staticText>
-		</band>
+		<band height="17"/>
 	</detail>
 	<columnFooter>
 		<band height="24" splitType="Stretch"/>

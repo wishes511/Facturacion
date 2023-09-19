@@ -61,6 +61,24 @@ order by k.id_pedimento,k.fecha]]>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
+	<pageHeader>
+		<band height="13">
+			<textField>
+				<reportElement x="403" y="0" width="43" height="11" uuid="a164c285-d2ac-48f2-b742-6d37daff0a48"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="303" y="0" width="100" height="11" uuid="242fc8b1-7a5e-4efe-83c3-506f6fe3b138"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Inventario Inicial]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
 	<detail>
 		<band height="13" splitType="Stretch">
 			<textField>
@@ -120,21 +138,21 @@ order by k.id_pedimento,k.fecha]]>
 				<textFieldExpression><![CDATA[$F{ref}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="390" y="0" width="28" height="11" uuid="050c0e45-7418-4c06-a39c-7cf70030f82a"/>
+				<reportElement x="347" y="0" width="28" height="11" uuid="050c0e45-7418-4c06-a39c-7cf70030f82a"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{In}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="418" y="0" width="28" height="11" uuid="9967bf1b-2881-4914-b4bd-943c665bbd60"/>
+				<reportElement x="375" y="0" width="28" height="11" uuid="9967bf1b-2881-4914-b4bd-943c665bbd60"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{Out}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="347" y="0" width="43" height="11" uuid="41fa98ed-425d-4a49-88c8-c6e956c93615"/>
+				<reportElement x="403" y="0" width="43" height="11" uuid="41fa98ed-425d-4a49-88c8-c6e956c93615"/>
 				<textElement textAlignment="Center">
 					<font size="7"/>
 				</textElement>
