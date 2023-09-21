@@ -5,6 +5,7 @@
  */
 package athprod;
 
+import Avances.Avancesprod;
 import Avances.Pantallas;
 import DAO.daoPrincipal;
 import Maq.Materialesmaq;
@@ -154,6 +155,7 @@ public final class Principal extends javax.swing.JFrame {
         JmPantallahrs1 = new javax.swing.JMenuItem();
         JmReportes = new javax.swing.JMenu();
         JmAvancesPt = new javax.swing.JMenuItem();
+        JmAvancesprod = new javax.swing.JMenuItem();
         PopMenu = new javax.swing.JPopupMenu();
         JmCobranza = new javax.swing.JMenu();
         JmClientes = new javax.swing.JMenuItem();
@@ -312,7 +314,7 @@ public final class Principal extends javax.swing.JFrame {
         JmReportes.setText("Reportes");
 
         JmAvancesPt.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        JmAvancesPt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/ForkliftTruck_Loaded_Black_icon-icons.com_54893.png"))); // NOI18N
+        JmAvancesPt.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/documenttextregular_106258.png"))); // NOI18N
         JmAvancesPt.setText("Reporte avances pt");
         JmAvancesPt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -320,6 +322,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmReportes.add(JmAvancesPt);
+
+        JmAvancesprod.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564180-finance-financial-report_81493.png"))); // NOI18N
+        JmAvancesprod.setText("Reporte de avances de produccion");
+        JmAvancesprod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAvancesprodActionPerformed(evt);
+            }
+        });
+        JmReportes.add(JmAvancesprod);
 
         JmAvances.add(JmReportes);
 
@@ -1199,6 +1210,9 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JrEmpresaActionPerformed
 
     private void JrEmpresa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JrEmpresa1ActionPerformed
+        if (logint == 0) {
+            interfazlogin();
+        }
         actualizaempresa();
     }//GEN-LAST:event_JrEmpresa1ActionPerformed
 
@@ -1619,6 +1633,11 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmInventariosActionPerformed
 
+    private void JmAvancesprodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAvancesprodActionPerformed
+        Avancesprod f = new Avancesprod(null, true);
+        f.setVisible(true);
+    }//GEN-LAST:event_JmAvancesprodActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -1812,6 +1831,7 @@ public final class Principal extends javax.swing.JFrame {
     private void actualizaempresa() {
         boolean band = checkempresa();
         if (!u.getUsuario().equals("")) {
+            logint=1;
             if (u.getTurno().equals("5")) {
                 setTpucon();
                 setconexionesglobal();//provicional
@@ -2097,6 +2117,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmAuxcliente;
     private javax.swing.JMenu JmAvances;
     private javax.swing.JMenuItem JmAvancesPt;
+    private javax.swing.JMenuItem JmAvancesprod;
     private javax.swing.JMenuItem JmCES;
     private javax.swing.JMenuItem JmCatalogoprod;
     private javax.swing.JMenuItem JmCerrar;

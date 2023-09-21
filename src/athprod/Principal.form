@@ -152,12 +152,23 @@
                       <Font name="Calibri" size="15" style="0"/>
                     </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                      <Image iconType="3" name="/Recursos/ForkliftTruck_Loaded_Black_icon-icons.com_54893.png"/>
+                      <Image iconType="3" name="/Recursos/documenttextregular_106258.png"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value="Reporte avances pt"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmAvancesPtActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="JmAvancesprod">
+                  <Properties>
+                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                      <Image iconType="3" name="/Recursos/1486564180-finance-financial-report_81493.png"/>
+                    </Property>
+                    <Property name="text" type="java.lang.String" value="Reporte de avances de produccion"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmAvancesprodActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>
