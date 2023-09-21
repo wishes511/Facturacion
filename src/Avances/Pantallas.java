@@ -46,8 +46,8 @@ public class Pantallas extends javax.swing.JInternalFrame {
         try {
             initComponents();
             Serverprod s = new Serverprod();
-            c = s.getconexionTPU("Avances");
-//            c = s.getconexionserver8("Avances");
+//            c = s.getconexionTPU("Avances");
+            c = s.getconexionserver8("Avances");
             setempresas();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Pantallas.class.getName()).log(Level.SEVERE, null, ex);

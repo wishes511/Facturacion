@@ -82,6 +82,7 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
             Serverylite l = new Serverylite();
             litecfdi = l.getconexioncfdi();
             liteempresa = l.getconexionC();
+            System.out.println("cerrada "+cobranza.isClosed());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(FacturacionTpu.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

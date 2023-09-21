@@ -924,10 +924,13 @@ public class sqlfactura {
 
     public int insertfacturatpu(Connection con, factura f, Connection cobranza) {//Rcpt y cpt
         PreparedStatement st = null;
+
         ResultSet rs;
         int pedido = 0;
         int docu = 0;
         try {
+            System.out.println("cerrada " + con.isClosed() + " " + con.isReadOnly() + " " + con);
+            System.out.println("cerrada " + cobranza.isClosed() + " " + cobranza.isReadOnly() + " " + cobranza);
             con.setAutoCommit(false);
             cobranza.setAutoCommit(false);
             String sql;
@@ -3941,6 +3944,87 @@ public class sqlfactura {
             Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
+    }
+
+    public ArrayList<factura> getcancelapago(Connection c, int idpago) {
+        ArrayList<factura> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select id_doctopago,folio,moneda,tipocambio,c.id_cargo,id_abono,d.folio,a.referenciac,a.pago,a.importe,c.saldo,c.saldomx\n"
+                    + "from doctospagotpu d\n"
+                    + "join ACobranzaTpu.dbo.abono a on d.folio=a.referenciac\n"
+                    + "join ACobranzaTpu.dbo.cargo c on a.id_cargo=c.id_cargo\n"
+                    + "where serie='PAG' and a.referencia like '%PAG%' and id_doctopago=" + idpago;
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                factura f = new factura();
+                f.setFoliopago(idpago);
+                f.setMoneda(rs.getString("moneda"));
+                f.setTipocambio(rs.getDouble("tipocambio"));
+                f.setIdcargo(rs.getInt("id_cargo"));
+                f.setIdabono(rs.getInt("id_abono"));
+                f.setReferencia(rs.getString("referenciac"));
+                f.setPago(rs.getDouble("pago"));
+                f.setImporte(rs.getDouble("importe"));
+                f.setSaldo(rs.getDouble("saldo"));
+                f.setSaldomx(rs.getDouble("saldomx"));
+                arr.add(f);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+    
+    public boolean execcancelPago(Connection c, Connection cob, ArrayList<factura> arr){
+        try {
+            PreparedStatement st;
+            c.setAutoCommit(false);
+            cob.setAutoCommit(false);
+            String sql;
+            Formateodedatos form= new Formateodedatos();
+            for (factura arr1 : arr) {
+                sql="update doctospagotpu set estatus='0' where id_doctopago="+arr1.getFoliopago();
+                System.out.println("cancel docto "+sql);
+                st=c.prepareStatement(sql);
+                st.executeUpdate();
+                
+                sql="update abono set estatus='0' where id_abono="+arr1.getIdabono();
+                System.out.println("cancel abono "+sql);
+                st=cob.prepareStatement(sql);
+                st.executeUpdate();
+                String saldo;
+                double nsaldo;
+                double total;
+                if(arr1.getMoneda().equals("MXN")){
+                    saldo="saldomx";
+                    total=arr1.getSaldomx()+arr1.getPago();
+                    nsaldo=form.formatdecimal(total);
+                }else{
+                    saldo="saldo";
+                    total=arr1.getSaldo()+arr1.getPago();
+                    nsaldo=form.formatdecimal(total);
+                }
+                sql="update cargo set "+saldo+"="+nsaldo+" where id_cargo="+arr1.getIdcargo();
+                System.out.println("cancel cargo "+sql);
+                st=cob.prepareStatement(sql);
+                st.executeUpdate();
+            }
+            c.commit();
+            cob.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                cob.commit();
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
     }
     //metodos externos
 }

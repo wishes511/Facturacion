@@ -28,7 +28,8 @@ public class factura implements java.io.Serializable{
     String codigo, descripcion, umedida,impuestodet,tipofac, exportacion;
     double monto, impiva16, baseiva16,totalpago16,total, subtotal, impuestos, Descuento,
             baseimpuesto,cantidadfloat, preciodetalle,basedetalle,descuentodetalle,importedetalle,
-            iva, is, montoiva, montoisr, tipocambio, montofoliofiscalorig,impiva17, baseiva17,totalpago17;
+            iva, is, montoiva, montoisr, tipocambio, montofoliofiscalorig,impiva17, baseiva17,totalpago17,
+            saldo,saldomx,pago,importe;
     float  montopago;
     Cliente c;
     ArrayList<Dfactura> arr = new ArrayList<>();
@@ -37,6 +38,38 @@ public class factura implements java.io.Serializable{
     ArrayList<Detpagos> arrpagos = new ArrayList<>();
     ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
      ArrayList<Poliza> arrpolizas = new ArrayList<>();
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public double getSaldomx() {
+        return saldomx;
+    }
+
+    public void setSaldomx(double saldomx) {
+        this.saldomx = saldomx;
+    }
+
+    public double getPago() {
+        return pago;
+    }
+
+    public void setPago(double pago) {
+        this.pago = pago;
+    }
+
+    public double getImporte() {
+        return importe;
+    }
+
+    public void setImporte(double importe) {
+        this.importe = importe;
+    }
 
     public int getYear() {
         return year;

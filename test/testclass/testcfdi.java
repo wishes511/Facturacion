@@ -14,7 +14,6 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mx.sat.cfd40.generarXML40;
 import mx.sat.cfd40.xmlDAO;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
@@ -85,7 +84,6 @@ public class testcfdi {
             x.setImpuesto("002");
             BigDecimal d= new BigDecimal("0.160000");//tomando en cuenta los 6 decimales
             x.setTasaCuota(d);
-            generarXML40 xml = new generarXML40();
 //            xml.crearComprobante(x, arr);
         } catch (Exception ex) {
             Logger.getLogger(testcfdi.class.getName()).log(Level.SEVERE, null, ex);

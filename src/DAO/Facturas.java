@@ -223,4 +223,8 @@ public interface Facturas {
     public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie);
     
     public ArrayList<cargo> getfactrem(Connection cobB, String var, String ncob);
+    
+    public ArrayList<factura> getregspcancelpagotpu(Connection c, int id);
+    
+    public boolean execcancelacionPago(Connection c, Connection cob, ArrayList<factura> arr);
 }

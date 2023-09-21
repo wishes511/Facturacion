@@ -570,4 +570,29 @@ public class daofactura implements Facturas {
         return s.insertpagostpu(cpt, f, cob);
     }
 
+    /**
+     * Obtiene registros del pago de acuerdo al id del documento de pago
+     * @param c
+     * @param id
+     * @return 
+     */
+    @Override
+    public ArrayList<factura> getregspcancelpagotpu(Connection c, int id) {
+        sqlfactura s = new sqlfactura();
+        return s.getcancelapago(c, id);
+    }
+
+    /**
+     * Ejecuta modificacion de registros para cancelacion de un pago en tpu
+     * @param c
+     * @param cob
+     * @param arr
+     * @return 
+     */
+    @Override
+    public boolean execcancelacionPago(Connection c, Connection cob, ArrayList<factura> arr) {
+        sqlfactura s = new sqlfactura();
+        return s.execcancelPago(c, cob, arr);
+    }
+
 }

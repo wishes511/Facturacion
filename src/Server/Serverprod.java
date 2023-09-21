@@ -50,7 +50,7 @@ public class Serverprod {
 
     public Connection getconexionserver8(String bd) throws ClassNotFoundException, IOException, SQLException {
         Class.forName(drive);
-        Connection connect8;
+        Connection connect8=null;
         connect8 = DriverManager.getConnection(URL8 + bd, "sa", "Prok2001");
         System.out.println("Conectado a server 8" + bd);
         return connect8;

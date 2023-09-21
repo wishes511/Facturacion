@@ -81,6 +81,7 @@ public final class Principal extends javax.swing.JFrame {
     JPasswordField jp = new JPasswordField();
     String empresa;
     int cont = 0;
+    int logint = 0;
     String admin = "0";
     String prod = "1";
     Usuarios u = new Usuarios();
@@ -1190,7 +1191,11 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmPagosActionPerformed
 
     private void JrEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JrEmpresaActionPerformed
+        if (logint == 0) {
+            interfazlogin();
+        }
         actualizaempresa();
+
     }//GEN-LAST:event_JrEmpresaActionPerformed
 
     private void JrEmpresa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JrEmpresa1ActionPerformed
@@ -1198,12 +1203,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JrEmpresa1ActionPerformed
 
     private void JmSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSesionActionPerformed
-        if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
-            verificausuariolite();
-        } else {
-            JOptionPane.showMessageDialog(null, "Selecciona la empresa a usar!");
-            JrEmpresa.requestFocus();
-        }
+        interfazlogin();
     }//GEN-LAST:event_JmSesionActionPerformed
 
     private void JlUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlUsuarioMousePressed
@@ -1297,11 +1297,15 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JtFacturaciontpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFacturaciontpuActionPerformed
         try {
+            System.out.println("cerrada " + conexion.getCobranzatpu());
+            System.out.println("cerrada " + conexion.getCpttpu().isClosed());
             FacturacionTpu p = new FacturacionTpu(conexion, u);
             this.JdPanel.add(p);
             p.setMaximum(true);
             p.show();
         } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_JtFacturaciontpuActionPerformed
@@ -1502,6 +1506,11 @@ public final class Principal extends javax.swing.JFrame {
             conexion.setCobranzatpu(tpucob);
             conexion.setCobranzatpuB(tpucobB);
             System.out.println("cambio a tpu");
+        } else {
+            conexion.setCpttpu(tpu);
+            conexion.setCobranzatpu(tpucob);
+            conexion.setCobranzatpuB(tpucobB);
+            System.out.println("cambio a tpu");
         }
     }//GEN-LAST:event_JmTpuMenuSelected
 
@@ -1609,6 +1618,15 @@ public final class Principal extends javax.swing.JFrame {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_JmInventariosActionPerformed
+
+    private void interfazlogin() {
+        if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
+            verificausuariolite();
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecciona la empresa a usar!");
+            JrEmpresa.requestFocus();
+        }
+    }
 
 //    Primera version para veriicar el usuario
     private void verificausuario() {

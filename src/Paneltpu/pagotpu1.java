@@ -106,7 +106,7 @@ public class pagotpu1 extends javax.swing.JPanel {
         jLabel1 = new javax.swing.JLabel();
 
         JtCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
-        JtCancelar.setText("Cancelar NCR");
+        JtCancelar.setText("Cancelar Pago");
         JtCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JtCancelarActionPerformed(evt);
@@ -346,7 +346,6 @@ public class pagotpu1 extends javax.swing.JPanel {
         }
         int row = JtDetalle.getSelectedRow();
         int e = arrfactura.get(row).getEstatus();
-        String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
         if (e == 1) {
             JtCancelar.setEnabled(true);
         } else {
@@ -354,32 +353,23 @@ public class pagotpu1 extends javax.swing.JPanel {
         }        // TODO add your handling code here:
     }//GEN-LAST:event_JtDetalleMousePressed
 
-    
+
     private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
         int input = JOptionPane.showConfirmDialog(null, "Estas seguro que quieres cancelar?, "
                 + "\n Recuerda que posteriormente debes cancelarla en el SAT", "Selecciona una opcion", JOptionPane.YES_NO_CANCEL_OPTION);
         if (input == 0) {
 //            Obtiene los registros por si las facturas relacionadas tienen algun pago
             int folio = arrfactura.get(JtDetalle.getSelectedRow()).getId();
+            System.out.println("folio "+folio);
             daofactura df = new daofactura();
-            ArrayList<factura> arr = df.getdocvspago(cpt, folio + "");
-            String fol = "";
-//            Si obtiene registros manda error
+            ArrayList<factura> arr = df.getregspcancelpagotpu(cpt, folio);
             if (!arr.isEmpty()) {
-                for (int i = 0; i < arr.size(); i++) { // solo guarda las 
-                    fol = arr.get(i).getFolio() + " ";
-                }
-                JOptionPane.showMessageDialog(null, "No puedes cancelar una NCR si tienes un pago hecho con las facturas: \n" + fol);
-            } else {// Si no Si efectua la cancelacion de la NCR
-                int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-                arr = df.getdocvspagoall(cpt, id);
-                if (df.Cancelancr(cpt, ACobranza, arr)) {
-                    JOptionPane.showMessageDialog(null, "Exito al cancelar NCR, recuerda que solo se cancela en el sistema y no en el SAT");
+                if (df.execcancelacionPago(cpt, ACobranza, arr)) {
+                    JOptionPane.showMessageDialog(null, "Proceso terminado \n ");
                     Buscanotas();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al cancelar NCR, contacta a sistemas");
                 }
             }
+
         }
 
     }//GEN-LAST:event_JtCancelarActionPerformed
@@ -398,7 +388,7 @@ public class pagotpu1 extends javax.swing.JPanel {
             String logo = "AF.png";
 //            Obtiene los datos del emisor que en este caso en ath
             Empresas e = d.getempresarfc(sqlempresa, n);
-            String lugar="BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO "+e.getCp();
+            String lugar = "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
             Map parametros = new HashMap();
             convertnum conv = new convertnum();
             int folio = arrfactura.get(JtDetalle.getSelectedRow()).getFolio();
@@ -448,9 +438,11 @@ public class pagotpu1 extends javax.swing.JPanel {
         return r;
     }
 // Obtiene todas las notas de acuerdo a lo que se introduzca en el campo
+
     private void Buscanotas() {
         daofactura df = new daofactura();
-        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "NCR");
+//        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "FAC");
+        arrfactura = df.getdocpagostpu(cpt, JtCliente.getText(), "PAG");
         generatabla();
     }
 
