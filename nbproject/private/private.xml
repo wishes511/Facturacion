@@ -3,9 +3,6 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneltpu/Ventasserie.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Reportesrep/Kardexprod.jrxml</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/Inventarios.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/Facturas.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/factura.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoempresa.java</file>
@@ -16,24 +13,14 @@
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Principal.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlkardex.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daokardexrcpt.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoInventarios.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoPrincipal.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneltpu/Nuevacapturainv.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Formateodedatos.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/ncr1.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Tpu/Inventarios.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlcatcfdi.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlempresa.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Reportesrep/Kardexproddet_1.jrxml</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoxmlncr.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daocfdi.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/mx/sat/cfd40/generarXML40.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneltpu/RepSaldosV.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneltpu/Inout2.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlinventarios.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Server/Serverprod.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Inventario.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daopedimentos.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Dfactura.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoxml.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlfactura.java</file>
@@ -42,11 +29,9 @@
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/kardexrcpt.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Notascr.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/mx/sat/cfd40/timbrarXML.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneltpu/Inout1.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Reportesrep/Kardexproddet.jrxml</file>
+            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/fac2.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/Cargosncr.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoxmlE.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlpedimentos.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Cliente.java</file>
         </group>
     </open-files>

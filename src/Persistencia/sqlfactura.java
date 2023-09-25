@@ -841,7 +841,8 @@ public class sqlfactura {
 //             Fin detallado de documento
 //              Status de kardex y dpedidos
             for (Dfactura arr : f.getArr()) {
-                sql = "update Kardex set statusimpresion='I', factura='" + fol + "' where folio=" + arr.getFoliokardex() + " and cuenta>49 and renglon=" + arr.getRenglon();
+                double precio = arr.getPrecio();
+                sql = "update Kardex set statusimpresion='I', factura='" + fol + "', pventa=" + precio + " where folio=" + arr.getFoliokardex() + " and cuenta>49 and renglon=" + arr.getRenglon();
                 System.out.println("kardex " + sql + " \n");
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
@@ -852,7 +853,8 @@ public class sqlfactura {
             }
             //Actualizar status del detallado de pedido
             for (Dfactura arr : f.getArr()) {
-                sql = "update dpedidos set estatus='30' where pedido='" + f.getPedido() + "' and renglon=" + arr.getRenglon();
+                double precio = arr.getPrecio();
+                sql = "update dpedidos set estatus='30' , precioventa=" + precio + " where pedido='" + f.getPedido() + "' and renglon=" + arr.getRenglon();
                 System.out.println("dpedidos " + sql + " \n");
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
@@ -860,6 +862,15 @@ public class sqlfactura {
                 st = rcpt.prepareStatement(sql);
                 st.executeUpdate();
                 System.out.println("rcpt dpedidos " + sql);
+
+                sql = "update pedidos set cveagente=" + agente + " where pedido='" + f.getPedido() + "'";
+                System.out.println("pedidos " + sql + " \n");
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+                // Solo rcpt
+                st = rcpt.prepareStatement(sql);
+                st.executeUpdate();
+                System.out.println("rcpt pedidos " + sql);
             }
 //            Fin detallado documento
 //          Insercion de polizas
@@ -3977,39 +3988,39 @@ public class sqlfactura {
         }
         return arr;
     }
-    
-    public boolean execcancelPago(Connection c, Connection cob, ArrayList<factura> arr){
+
+    public boolean execcancelPago(Connection c, Connection cob, ArrayList<factura> arr) {
         try {
             PreparedStatement st;
             c.setAutoCommit(false);
             cob.setAutoCommit(false);
             String sql;
-            Formateodedatos form= new Formateodedatos();
+            Formateodedatos form = new Formateodedatos();
             for (factura arr1 : arr) {
-                sql="update doctospagotpu set estatus='0' where id_doctopago="+arr1.getFoliopago();
-                System.out.println("cancel docto "+sql);
-                st=c.prepareStatement(sql);
+                sql = "update doctospagotpu set estatus='0' where id_doctopago=" + arr1.getFoliopago();
+                System.out.println("cancel docto " + sql);
+                st = c.prepareStatement(sql);
                 st.executeUpdate();
-                
-                sql="update abono set estatus='0' where id_abono="+arr1.getIdabono();
-                System.out.println("cancel abono "+sql);
-                st=cob.prepareStatement(sql);
+
+                sql = "update abono set estatus='0' where id_abono=" + arr1.getIdabono();
+                System.out.println("cancel abono " + sql);
+                st = cob.prepareStatement(sql);
                 st.executeUpdate();
                 String saldo;
                 double nsaldo;
                 double total;
-                if(arr1.getMoneda().equals("MXN")){
-                    saldo="saldomx";
-                    total=arr1.getSaldomx()+arr1.getPago();
-                    nsaldo=form.formatdecimal(total);
-                }else{
-                    saldo="saldo";
-                    total=arr1.getSaldo()+arr1.getPago();
-                    nsaldo=form.formatdecimal(total);
+                if (arr1.getMoneda().equals("MXN")) {
+                    saldo = "saldomx";
+                    total = arr1.getSaldomx() + arr1.getPago();
+                    nsaldo = form.formatdecimal(total);
+                } else {
+                    saldo = "saldo";
+                    total = arr1.getSaldo() + arr1.getPago();
+                    nsaldo = form.formatdecimal(total);
                 }
-                sql="update cargo set "+saldo+"="+nsaldo+" where id_cargo="+arr1.getIdcargo();
-                System.out.println("cancel cargo "+sql);
-                st=cob.prepareStatement(sql);
+                sql = "update cargo set " + saldo + "=" + nsaldo + " where id_cargo=" + arr1.getIdcargo();
+                System.out.println("cancel cargo " + sql);
+                st = cob.prepareStatement(sql);
                 st.executeUpdate();
             }
             c.commit();

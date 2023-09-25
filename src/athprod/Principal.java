@@ -124,7 +124,7 @@ public final class Principal extends javax.swing.JFrame {
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
-            u.setTurno("5");
+            u.setTurno("0");
             modoadmin();
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();
