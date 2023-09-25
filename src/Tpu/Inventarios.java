@@ -18,6 +18,7 @@ import Modelo.Usuarios;
 import Modelo.pedimento;
 import Paneltpu.Nuevacapturainv;
 import Paneltpu.Nuevadurez;
+import Paneltpu.VerInventarios;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
@@ -86,6 +87,8 @@ public class Inventarios extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         JlRespalldo = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jLabel4 = new javax.swing.JLabel();
 
         JmBaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
         JmBaja.setText("Eliminar pedimento");
@@ -174,15 +177,25 @@ public class Inventarios extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/books_21813.png"))); // NOI18N
+        jLabel4.setToolTipText("Reporte de inventarios anteriores");
+        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel4MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1244, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1244, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(JlFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -191,8 +204,10 @@ public class Inventarios extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(JlRespalldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
+                        .addComponent(jLabel4)
                         .addGap(18, 18, 18)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel1)))
                 .addContainerGap())
         );
@@ -207,9 +222,12 @@ public class Inventarios extends javax.swing.JInternalFrame {
                         .addComponent(JlFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JlRespalldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
+                    .addComponent(JlRespalldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -288,6 +306,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
             ver.setVisible(true);
 //            Exportacion al archivo pdf
         } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "No se puede desplegar reporte para captura de inv."+ex.getMessage(), "Error en reporte", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(Inventarios.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel2MousePressed
@@ -301,7 +320,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
             String botones[] = {"Aceptar", ""
                 + ""
                 + "Cancelar"};
-            int opcion = JOptionPane.showOptionDialog(this, "Estas seguro de generar cierre?, recuerda que ya no hay cambios despues del proceso.", "ATHLETIC",
+            int opcion = JOptionPane.showOptionDialog(this, "Estas seguro de generar cierre?, recuerda que ya no hay cambios despues del proceso.", "TPU",
                     0, 0, null, botones, this);
             if (opcion == JOptionPane.YES_OPTION) {
                 generarcierre();
@@ -313,6 +332,19 @@ public class Inventarios extends javax.swing.JInternalFrame {
     private void JlRespalldoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlRespalldoMousePressed
         // TODO add your handling code here:
     }//GEN-LAST:event_JlRespalldoMousePressed
+
+    private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
+        VerInventarios v = new VerInventarios(null,true);
+        v.cpt=cpt;
+        if(v.setcombo()){
+            JOptionPane.showMessageDialog(null, "No se ha hecho ningun inventario, por lo tanto no puedes imprimir algun reporte",
+                    "No hay Inventarios", JOptionPane.ERROR_MESSAGE);
+        }else{
+            v.llenacombo();
+            v.setVisible(true);
+        }
+        
+    }//GEN-LAST:event_jLabel4MousePressed
 
     private void generarcierre() {
         daoInventarios di = new daoInventarios();
@@ -365,8 +397,10 @@ public class Inventarios extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu pop;
     // End of variables declaration//GEN-END:variables
 }

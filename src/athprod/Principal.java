@@ -45,6 +45,8 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -124,7 +126,7 @@ public final class Principal extends javax.swing.JFrame {
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
-            u.setTurno("0");
+            u.setTurno("5");
             modoadmin();
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();
@@ -1704,9 +1706,35 @@ public final class Principal extends javax.swing.JFrame {
 
     private void verificausuariolite() {
         jp.setVisible(true);
+        jp.addMouseListener(new MouseListener(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                jp.setText("");
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                
+            }
+        });
+        JOptionPane.showMessageDialog(null, jp,"Iniciar Sesion ",JOptionPane.QUESTION_MESSAGE);
+        jp.setFocusable(true);
         jp.requestFocus();
-        jp.isFocusable();
-        JOptionPane.showMessageDialog(null, jp);
         String a = jp.getText();
         if (a.equals("")) {
             JOptionPane.showMessageDialog(null, "El campo no debe ir vacio");

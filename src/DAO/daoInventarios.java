@@ -29,9 +29,18 @@ public class daoInventarios implements Inventarios {
         return s.getallinventarios(c);
     }
 
+    /**
+     * Obtiene los registros y despliega reporte de inventarios anteriores
+     *
+     * @param c
+     * @param mes
+     * @param year
+     * @return
+     */
     @Override
     public ArrayList<Inventario> getinventarios(Connection c, int mes, int year) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        sqlinventarios s = new sqlinventarios();
+        return s.getInventarioPasado(c, mes, year);
     }
 
     /**
@@ -73,7 +82,8 @@ public class daoInventarios implements Inventarios {
     }
 
     /**
-     *Reliza el procedimiento para hacer cierre de mes
+     * Reliza el procedimiento para hacer cierre de mes
+     *
      * @param c
      * @param lite
      * @param arr
@@ -86,13 +96,15 @@ public class daoInventarios implements Inventarios {
         sqlinventarios s = new sqlinventarios();
         return s.nuevocierre(c, lite, arr, mes, year);
     }
-/**
- * Ejecuta el respaldo de la bd de tpu y quizas tambien de su cbranza
- * @param c
- * @param mes
- * @param year
- * @return 
- */
+
+    /**
+     * Ejecuta el respaldo de la bd de tpu y quizas tambien de su cbranza
+     *
+     * @param c
+     * @param mes
+     * @param year
+     * @return
+     */
     @Override
     public boolean ejecutarespcierre(Connection c, int mes, int year) {
         sqlinventarios s = new sqlinventarios();

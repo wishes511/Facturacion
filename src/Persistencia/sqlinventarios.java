@@ -145,7 +145,7 @@ public class sqlinventarios {
                 System.out.println("inserta r inv " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
-                sql = "update dpedimentos set cantinv=" + cant+ " where id_dpedimento="+dped;
+                sql = "update dpedimentos set cantinv=" + cant + " where id_dpedimento=" + dped;
                 System.out.println("actializa inv x reg " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
@@ -162,10 +162,10 @@ public class sqlinventarios {
             st = c.prepareStatement(sql);
             st.executeUpdate();
 
-//            sql="delete from inventariado";
-//            System.out.println("deelete inv usuario "+sql);
-//            st=lite.prepareStatement(sql);
-//            st.executeUpdate();
+            sql = "delete from inventariado";
+            System.out.println("deelete inv usuario " + sql);
+            st = lite.prepareStatement(sql);
+            st.executeUpdate();
             c.commit();
             lite.commit();
             return true;
@@ -208,5 +208,27 @@ public class sqlinventarios {
             }
             return false;
         }
+    }
+
+    public ArrayList<Inventario> getInventarioPasado(Connection c, int mes, int year) {
+        ArrayList<Inventario> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select mes,years\n"
+                    + "from inventariado\n"
+                    + "group by mes,years";
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Inventario i = new Inventario();
+                i.setMes(rs.getInt("mes"));
+                i.setYears(rs.getInt("years"));
+                arr.add(i);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlinventarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
     }
 }
