@@ -364,7 +364,7 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
             f.setLugarexpedicion("36400");
             f.setAgente(arrcliente.get(rowc).getAgente());
             f.setTiporelacion("");
-            f.setEmpresa("1");
+            f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
             f.setMetodopago("");
             f.setPedido("");
             f.setTiposerie("TRANSPORTE");
