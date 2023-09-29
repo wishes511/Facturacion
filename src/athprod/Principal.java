@@ -34,10 +34,12 @@ import Tpu.Inventarios;
 import Tpu.Notascrtpu;
 import Tpu.Pagostpu;
 import Tpu.Pagostpurem;
+import Tpu.Pantavance;
 import Tpu.Pedimento;
 import Tpu.Proveedorestpu;
 import Tpu.Remisiontpu;
 import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.MenuItem;
 import java.awt.SystemTray;
@@ -123,10 +125,12 @@ public final class Principal extends javax.swing.JFrame {
         u.setAth("");
         u.setUsuario("");
         if (prod.equals("0")) {
+            logint = 1;
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
-            u.setTurno("5");
+            u.setTurno("0");
+            u.setTipo_usuario("1");
             modoadmin();
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();
@@ -148,6 +152,7 @@ public final class Principal extends javax.swing.JFrame {
         JmRespaldos = new javax.swing.JMenuItem();
         JmCES = new javax.swing.JMenuItem();
         JmEmpresas = new javax.swing.JMenuItem();
+        JmRespaldos1 = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JSeparator();
         JmProd = new javax.swing.JMenu();
         JmCatalogoprod = new javax.swing.JMenuItem();
@@ -220,6 +225,7 @@ public final class Principal extends javax.swing.JFrame {
         JrEmpresa1 = new javax.swing.JRadioButton();
         JlUsuario = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        JlEmpresa = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         JdPanel = new javax.swing.JDesktopPane();
 
@@ -269,6 +275,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmConf.add(JmEmpresas);
+
+        JmRespaldos1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Data_settings_theapplication_3364.png"))); // NOI18N
+        JmRespaldos1.setText("Respaldos BD");
+        JmRespaldos1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmRespaldos1ActionPerformed(evt);
+            }
+        });
+        JmConf.add(JmRespaldos1);
 
         JmProd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/42498factory_99134.png"))); // NOI18N
         JmProd.setText("Produccion");
@@ -861,6 +876,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
 
+        JlEmpresa.setFont(new java.awt.Font("Corbel", 1, 14)); // NOI18N
+        JlEmpresa.setForeground(new java.awt.Color(255, 255, 255));
+        JlEmpresa.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        JlEmpresa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JlEmpresaMousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -871,7 +895,10 @@ public final class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JlUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(JlEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(247, 247, 247)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(2, 2, 2)
                 .addComponent(JlSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -884,7 +911,9 @@ public final class Principal extends javax.swing.JFrame {
                             .addComponent(JlSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(JlUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JlEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)))
@@ -1204,23 +1233,35 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmPagosActionPerformed
 
     private void JrEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JrEmpresaActionPerformed
-        if (logint == 0) {
-            interfazlogin();
-        }
-        actualizaempresa();
+        eleccionempresa();
 
     }//GEN-LAST:event_JrEmpresaActionPerformed
 
     private void JrEmpresa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JrEmpresa1ActionPerformed
-        if (logint == 0) {
-            interfazlogin();
-        }
-        actualizaempresa();
+        eleccionempresa();
     }//GEN-LAST:event_JrEmpresa1ActionPerformed
 
     private void JmSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSesionActionPerformed
         interfazlogin();
     }//GEN-LAST:event_JmSesionActionPerformed
+
+    private void eleccionempresa() {
+        if (logint == 0) {
+            interfazlogin();
+        }
+        if (!u.getUsuario().equals("Michel")) {
+            actualizaempresa();
+        }
+//        Desabilitar opciones y mandar indicacion de que empresa se esta utilizando
+        if(JrEmpresa.isSelected()){
+            JrEmpresa1.setEnabled(false);
+            JrEmpresa1.setForeground(Color.red);
+        }else{
+            JrEmpresa.setEnabled(false);
+            JrEmpresa.setForeground(Color.red);
+        }
+        //JlEmpresa.setText((JrEmpresa.isSelected()) ? "Athletic" : "Uptown");
+    }
 
     private void JlUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlUsuarioMousePressed
         // TODO add your handling code here:
@@ -1637,8 +1678,25 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmAvancesprodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAvancesprodActionPerformed
         Avancesprod f = new Avancesprod(null, true);
+        f.sqliteuser = conexion.getLiteusuario();
         f.setVisible(true);
+        f.cerraravances();
     }//GEN-LAST:event_JmAvancesprodActionPerformed
+
+    private void JmRespaldos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmRespaldos1ActionPerformed
+        try {//Abrir app de respaldos
+            Pantavance f = new Pantavance();
+            this.JdPanel.add(f);
+//            f.setMaximum(true);
+            f.show();
+        } catch (Exception ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmRespaldos1ActionPerformed
+
+    private void JlEmpresaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlEmpresaMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JlEmpresaMousePressed
 
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
@@ -1706,10 +1764,10 @@ public final class Principal extends javax.swing.JFrame {
 
     private void verificausuariolite() {
         jp.setVisible(true);
-        jp.addMouseListener(new MouseListener(){
+        jp.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
+
             }
 
             @Override
@@ -1719,20 +1777,20 @@ public final class Principal extends javax.swing.JFrame {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                
+
             }
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                
+
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                
+
             }
         });
-        JOptionPane.showMessageDialog(null, jp,"Iniciar Sesion ",JOptionPane.QUESTION_MESSAGE);
+        JOptionPane.showMessageDialog(null, jp, "Iniciar Sesion ", JOptionPane.QUESTION_MESSAGE);
         jp.setFocusable(true);
         jp.requestFocus();
         String a = jp.getText();
@@ -1746,16 +1804,18 @@ public final class Principal extends javax.swing.JFrame {
 //                Es igual administrador pero con datos ya establecidos, 
 //                usado mas para rapidez y evitar la consulta a la bd
                 if (a.equals("0605")) {
-                    u.setAth("1");
-                    u.setUptown("1");
                     JlUsuario.setText("Michel Admin");
-                    u.setUsuario("");
+                    u.setUsuario("Michel");
+
                     u.setGrado("2");
                     u.setTurno("0");
                     u.setTipo_usuario("1");
+                    u.setAth("1");
+                    u.setUptown("1");
                     modoadmin();
                     JmSesion.setEnabled(false);
                     jLabel1.requestFocus();
+                    conexion.setLiteusuario(liteusuario);
 //                    actualizaempresa();
                     actualizaadmin();
                     setTpucon();
@@ -1786,57 +1846,61 @@ public final class Principal extends javax.swing.JFrame {
 
     private boolean checkempresa() {
         boolean band = true;
-        if (!u.getAth().equals("")) {
-            if (JrEmpresa.isSelected()) {
-                if (!u.getAth().equals("1")) {
-                    band = false;
+        if (u.getTipo_usuario().equals("1") || prod.equals("0")) {
+            actualizaadmin();
+        } else {
+            if (!u.getAth().equals("")) {
+                if (JrEmpresa.isSelected()) {
+                    if (!u.getAth().equals("1")) {
+                        band = false;
+                    }
                 }
-            }
-            if (JrEmpresa1.isSelected()) {
-                if (!u.getUptown().equals("1")) {
-                    band = false;
+                if (JrEmpresa1.isSelected()) {
+                    if (!u.getUptown().equals("1")) {
+                        band = false;
+                    }
                 }
-            }
-            if (band) {
-                if (u.getVentas().equals("1")) {
-                    JmVentas.setVisible(true);
-                }
-                if (u.getCobranza().equals("1")) {
-                    JmCobranza.setVisible(true);
-                }
-                if (u.getTipo_usuario().equals("1")) {
+                if (band) {
+                    if (u.getVentas().equals("1")) {
+                        JmVentas.setVisible(true);
+                    }
+                    if (u.getCobranza().equals("1")) {
+                        JmCobranza.setVisible(true);
+                    }
+                    if (u.getTipo_usuario().equals("1")) {
 //                    JmConf.setVisible(true);
-                    modoadmin();
-                }
+                        modoadmin();
+                    }
 
-                if (u.getProduccion().equals("1")) {
-                    JmProd.setVisible(true);
-                }
-                if (u.getAvances().equals("1")) {
-                    JmAvances.setVisible(true);
-                    JmFicha.setVisible(false);
-                }
-                if (u.getTurno().equals("5")) {
-                    JmVentas.setVisible(false);
-                    JmFacturacion.setVisible(false);
-                    JmVerfacts.setVisible(false);
-                    JmModcaja.setVisible(false);
-                    JmSalidas.setVisible(false);
-                    JmTpu.setVisible(true);
-                    JmTpu.setEnabled(true);
-                }
+                    if (u.getProduccion().equals("1")) {
+                        JmProd.setVisible(true);
+                    }
+                    if (u.getAvances().equals("1")) {
+                        JmAvances.setVisible(true);
+                        JmFicha.setVisible(false);
+                    }
+                    if (u.getTurno().equals("5")) {
+                        JmVentas.setVisible(false);
+                        JmFacturacion.setVisible(false);
+                        JmVerfacts.setVisible(false);
+                        JmModcaja.setVisible(false);
+                        JmSalidas.setVisible(false);
+                        JmTpu.setVisible(true);
+                        JmTpu.setEnabled(true);
+                    }
 //                Interfaces y operaciones de maquinaria
-                if (u.getTurno().equals("6")) {
-                    JmMaq.setVisible(true);
-                    JmMaq.setEnabled(true);
-                }
+                    if (u.getTurno().equals("6")) {
+                        JmMaq.setVisible(true);
+                        JmMaq.setEnabled(true);
+                    }
 
-                JmOut.setVisible(true);
-                JmSesion.setEnabled(false);
-                JlUsuario.setText(u.getNombre() + " " + u.getUsuario());
-            } else {
-                JOptionPane.showMessageDialog(null, "No puedes usar esta empresa, intentalo de nuevo");
-                jp.setText("");
+                    JmOut.setVisible(true);
+                    JmSesion.setEnabled(false);
+                    JlUsuario.setText(u.getNombre() + " " + u.getUsuario());
+                } else {
+                    JOptionPane.showMessageDialog(null, "No puedes usar esta empresa, intentalo de nuevo");
+                    jp.setText("");
+                }
             }
         }
 
@@ -1859,7 +1923,7 @@ public final class Principal extends javax.swing.JFrame {
     private void actualizaempresa() {
         boolean band = checkempresa();
         if (!u.getUsuario().equals("")) {
-            logint=1;
+            logint = 1;
             if (u.getTurno().equals("5")) {
                 setTpucon();
                 setconexionesglobal();//provicional
@@ -2140,6 +2204,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu Catalogos;
     private javax.swing.JMenu Catalogos1;
     private javax.swing.JDesktopPane JdPanel;
+    private javax.swing.JLabel JlEmpresa;
     private javax.swing.JLabel JlSerie;
     private javax.swing.JLabel JlUsuario;
     private javax.swing.JMenuItem JmAuxcliente;
@@ -2195,6 +2260,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu JmRepcob;
     private javax.swing.JMenu JmReportes;
     private javax.swing.JMenuItem JmRespaldos;
+    private javax.swing.JMenuItem JmRespaldos1;
     private javax.swing.JMenuItem JmSaldosvencidos;
     private javax.swing.JMenuItem JmSalidas;
     private javax.swing.JMenuItem JmSesion;

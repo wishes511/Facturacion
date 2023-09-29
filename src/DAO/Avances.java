@@ -6,10 +6,15 @@
 package DAO;
 
 import Modelo.Avance;
+import Modelo.Colsdepartamentos;
+import Modelo.Davance;
 import Modelo.metadep;
 import Modelo.pantalla;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,33 +23,50 @@ import java.util.ArrayList;
 public interface Avances {
 
     public Connection getconAvance();
-    
+
     public boolean NuevoAvance(Connection a, Avance av);
 
     public ArrayList<Avance> getavances(Connection a);
-    
+
     public Connection getconAvance8();
-    
-    public boolean setrowsav(Connection av,Connection liteav,String rcpt, String cob, String f1, String f2);
-    
+
+    public boolean setrowsav(Connection av, Connection liteav, String rcpt, String cob, String f1, String f2);
+
     public void vaciabd(Connection av);
-    
+
     public ArrayList<metadep> arrdepp(Connection c);
-    
+
     /**
      * Actualiza las hrs de acuerdo a la columna ingresada
+     *
      * @param c
      * @param hrs
      * @param columna
      * @param nombre
-     * @return 
+     * @return
      */
     public boolean actualizahrs(Connection c, int hrs, String columna, String nombre);
-    
+
     public ArrayList<pantalla> getpantallas(Connection c);
-    
+
     public boolean nuevaspantallas(Connection c, pantalla p);
-    
+
     public int getmaxpantalla(Connection c);
+
+    public ArrayList<Colsdepartamentos> getcolsdepa(Connection c, String f1, String f2);
+
+    public boolean insertaregistrosAvances_sem(Connection c, ArrayList<Colsdepartamentos> arr);
+
+    public ArrayList<Colsdepartamentos> getarrmes(Connection c, String f1, String f2, String nfecha, String nmaq, String dep);
+
+    public boolean inserttarregsmes(Connection c, ArrayList<Davance> arr);
+
+    public boolean deleteregmes(Connection c, String col);
     
+    public Davance getregsDia(Connection c, String f2, String nmaq, String nfecha, String dep);
+    
+    public boolean insertarregsDia(Connection c, ArrayList<Davance> arr);
+    
+    public ArrayList<Colsdepartamentos> getcoldepartamentos(Connection c); 
+
 }

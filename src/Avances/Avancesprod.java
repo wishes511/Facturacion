@@ -5,9 +5,12 @@
  */
 package Avances;
 
+import DAO.daoAvances;
 import DAO.daodurezas;
 import DAO.daoempresa;
+import Modelo.Colsdepartamentos;
 import Modelo.Conexiones;
+import Modelo.Davance;
 import Modelo.Dureza;
 import Modelo.Empresas;
 import Modelo.Usuarios;
@@ -20,6 +23,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +46,7 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class Avancesprod extends javax.swing.JDialog {
 
-    public Connection c;
+    public Connection c, sqliteuser;
 
     /**
      * Creates new form Nuevomaterial
@@ -51,9 +55,13 @@ public class Avancesprod extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        grupop.add(jRadioButton1);
-        grupop.add(jRadioButton2);
-        jRadioButton1.setSelected(true);
+        grupop.add(JrCondensado);
+        grupop.add(JrDetallado);
+        bgrupo2.add(JrDia);
+        bgrupo2.add(JrSemana);
+        bgrupo2.add(JrMes);
+        JrDia.setSelected(true);
+        JrCondensado.setSelected(true);
     }
 
     /**
@@ -66,6 +74,7 @@ public class Avancesprod extends javax.swing.JDialog {
     private void initComponents() {
 
         grupop = new javax.swing.ButtonGroup();
+        bgrupo2 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -74,8 +83,13 @@ public class Avancesprod extends javax.swing.JDialog {
         Fecha = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         Fecha1 = new com.toedter.calendar.JDateChooser();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        jPanel2 = new javax.swing.JPanel();
+        JrSemana = new javax.swing.JRadioButton();
+        JrDia = new javax.swing.JRadioButton();
+        JrMes = new javax.swing.JRadioButton();
+        jPanel3 = new javax.swing.JPanel();
+        JrDetallado = new javax.swing.JRadioButton();
+        JrCondensado = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -108,13 +122,86 @@ public class Avancesprod extends javax.swing.JDialog {
         jLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel7.setText("Fecha inicial");
 
-        jRadioButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jRadioButton1.setText("Condensado");
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jRadioButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jRadioButton2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jRadioButton2.setText("Detallado");
+        JrSemana.setBackground(new java.awt.Color(255, 255, 255));
+        JrSemana.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        JrSemana.setText("Semanal");
+        JrSemana.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JrSemanaMousePressed(evt);
+            }
+        });
+
+        JrDia.setBackground(new java.awt.Color(255, 255, 255));
+        JrDia.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        JrDia.setText("Dia");
+        JrDia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JrDiaMousePressed(evt);
+            }
+        });
+
+        JrMes.setBackground(new java.awt.Color(255, 255, 255));
+        JrMes.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        JrMes.setText("Mensual");
+        JrMes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JrMesMousePressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(JrDia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JrSemana, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JrMes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(JrDia)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JrSemana)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JrMes)
+                .addContainerGap(10, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        JrDetallado.setBackground(new java.awt.Color(255, 255, 255));
+        JrDetallado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        JrDetallado.setText("Detallado");
+
+        JrCondensado.setBackground(new java.awt.Color(255, 255, 255));
+        JrCondensado.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        JrCondensado.setText("Condensado");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(JrCondensado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(JrDetallado, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JrCondensado)
+                .addGap(18, 18, 18)
+                .addComponent(JrDetallado)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -124,32 +211,28 @@ public class Avancesprod extends javax.swing.JDialog {
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(227, 227, 227)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(73, 73, 73)
-                        .addComponent(jLabel6)))
+                        .addComponent(jLabel6))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Fecha1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(Fecha1, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addGap(19, 19, 19)))
                 .addGap(47, 47, 47))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(227, 227, 227)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(200, 200, 200)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jRadioButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jRadioButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,11 +248,11 @@ public class Avancesprod extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Fecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34)
-                .addComponent(jRadioButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jRadioButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addComponent(jLabel1)
                 .addGap(38, 38, 38))
         );
@@ -199,13 +282,43 @@ public class Avancesprod extends javax.swing.JDialog {
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Serverprod s = new Serverprod();
+//            obtiene la conexion a la bd de avances
             c = s.getconexionserver8("Avances");
-            java.util.Date date = new Date();
+            daoAvances d = new daoAvances();
             String f1 = sdf.format(Fecha.getDate());
             String f2 = sdf.format(Fecha1.getDate());
-            setreport(f1, f2);
+//            Se hace seleccion al tipo de operacion
+//            Esta opcion es para el reporte semanal
+            if (JrSemana.isSelected()) {
+//                Se obtienen los registros de acuerdo a la semana seleccionada
+                ArrayList<Colsdepartamentos> arr = d.getcolsdepa(c, f1, f2);
+                if (!arr.isEmpty()) {
+//                    Insertar en bd
+                    if (d.insertaregistrosAvances_sem(sqliteuser, arr)) {
+//                        Despliegue de reporte y eliminacion de registros
+                        setreport(f1, f2);
+                        d.deleteregmes(sqliteuser, "Avances_semanal");
+                    }
+                }
+//            Opcion para reporte de mes    
+            } else if (JrMes.isSelected()) {
+//                Proceso para obtener insertar, desplegar y eliminar registros de sqlite
+                setmensual(f1, f2);
+                setreport(f1, f2);
+                d.deleteregmes(sqliteuser, "Avances_mensual");
+//                Ultima opcion que es la del reporte de dia
+            } else {
+                ArrayList<Colsdepartamentos> arr = d.getcoldepartamentos(c);
+                ArrayList<Davance> arra = new ArrayList<>();
+                for (Colsdepartamentos arr1 : arr) {
+                    arra.add(d.getregsDia(c, f2, arr1.getNmaq(), arr1.getNfecha(), arr1.getDepartamento()));
+                }
+                d.insertarregsDia(sqliteuser, arra);
+                setreport(f1, f2);
+                d.deleteregmes(sqliteuser, "Avances_Diario");
+            }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Avancesprod.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -215,15 +328,95 @@ public class Avancesprod extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jLabel1MousePressed
 
+    private void JrSemanaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JrSemanaMousePressed
+        settipo_nodia();
+    }//GEN-LAST:event_JrSemanaMousePressed
+
+    private void JrMesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JrMesMousePressed
+        settipo_nodia();
+    }//GEN-LAST:event_JrMesMousePressed
+
+    private void JrDiaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JrDiaMousePressed
+        settipodia();
+    }//GEN-LAST:event_JrDiaMousePressed
+
+    private void settipodia() {
+        JrCondensado.setEnabled(true);
+        JrDetallado.setEnabled(true);
+    }
+
+    private void settipo_nodia() {
+        JrCondensado.setEnabled(false);
+        JrDetallado.setEnabled(false);
+    }
+
+    /**
+     * funcion para poder desplegar en reporte
+     *
+     * @param f1
+     * @param f2
+     */
+    private void setmensual(String f1, String f2) {
+        daoAvances d = new daoAvances();
+        ArrayList<Davance> arr = new ArrayList<>();
+//        Se obtiene el los registros de cada uno de los departamentos para cada fecha
+        ArrayList<Colsdepartamentos> arrcor = d.getarrmes(c, f1, f2, "fechacor", "cormaq", "corte");
+        ArrayList<Colsdepartamentos> arrprecor = d.getarrmes(c, f1, f2, "fechaprecor", "precormaq", "precorte");
+        ArrayList<Colsdepartamentos> arrpes = d.getarrmes(c, f1, f2, "fechapes", "pesmaq", "pespunte");
+        ArrayList<Colsdepartamentos> arrdes = d.getarrmes(c, f1, f2, "fechades", "desmaq", "deshebrado");
+        ArrayList<Colsdepartamentos> arroji = d.getarrmes(c, f1, f2, "fechacor", "ojimaq", "ojillado");
+        ArrayList<Colsdepartamentos> arrins = d.getarrmes(c, f1, f2, "fechainsp", "inspmaq", "inspeccion");
+        ArrayList<Colsdepartamentos> arrprea = d.getarrmes(c, f1, f2, "fechaprea", "preamaq", "preacabado");
+        ArrayList<Colsdepartamentos> arrmont = d.getarrmes(c, f1, f2, "fechacor", "montmaq", "montado");
+        ArrayList<Colsdepartamentos> arrpt = d.getarrmes(c, f1, f2, "fechapt", "ptmaq", "prodt");
+//        Se utiliza el array de corte como base para el ciclo
+        for (int i = 0; i < arrcor.size(); i++) {
+            Davance av = new Davance();
+//            Obtiene la fecha de acuerdo y siempre y cuando haya mas de 1 registro en el array
+            String fecha = (arrcor.size() > 0) ? arrcor.get(i).getFecha() : "";
+            String fprecor = (arrprecor.size() > 0) ? arrprecor.get(i).getFecha() : "";
+            String fpes = (arrpes.size() > 0) ? arrpes.get(i).getFecha() : "";
+            String fdes = (arrdes.size() > 0) ? arrdes.get(i).getFecha() : "";
+            String foji = (arroji.size() > 0) ? arroji.get(i).getFecha() : "";
+            String fins = (arrins.size() > 0) ? arrins.get(i).getFecha() : "";
+            String fprea = (arrprea.size() > 0) ? arrprea.get(i).getFecha() : "";
+            String fmont = (arrmont.size() > 0) ? arrmont.get(i).getFecha() : "";
+            String fpt = (arrpt.size() > 0) ? arrpt.get(i).getFecha() : "";
+//            Se asigna el valor de los pares si la fecha concuenrda con la de corte y el array es mayor a 0
+            av.setCor((arr.size() > 0) ? arrcor.get(i).getPares() : 0);
+            av.setPrecor((fecha.equals(fprecor) && arrprecor.size() > 0) ? arrprecor.get(i).getPares() : 0);
+            av.setPes((fecha.equals(fpes) && arrpes.size() > 0) ? arrpes.get(i).getPares() : 0);
+            av.setDes((fecha.equals(fdes) && arrdes.size() > 0) ? arrdes.get(i).getPares() : 0);
+            av.setOji((fecha.equals(foji) && arroji.size() > 0) ? arroji.get(i).getPares() : 0);
+            av.setInsp((fecha.equals(fins) && arrins.size() > 0) ? arrins.get(i).getPares() : 0);
+            av.setPrea((fecha.equals(fprea) && arrprea.size() > 0) ? arrprea.get(i).getPares() : 0);
+            av.setMont((fecha.equals(fmont) && arrmont.size() > 0) ? arrmont.get(i).getPares() : 0);
+            av.setPt((fecha.equals(fpt) && arrpt.size() > 0) ? arrpt.get(i).getPares() : 0);
+            av.setFecha(fecha);
+            arr.add(av);
+        }
+//        Se inserta en la bd de Sqlite para su posterior despliegue
+        d.inserttarregsmes(sqliteuser, arr);
+    }
+
     private void setreport(String f1, String f2) {
-            String repname=(jRadioButton1.isSelected())?"avancespares":"avancespares_det";
+        String repname;
+        Connection con;
+        if (JrDia.isSelected()) {
+            repname = (JrCondensado.isSelected()) ? "avancespares" : "avancespares_det";
+            con = c;
+        } else {
+            repname = (JrSemana.isSelected()) ? "Avancessemanal" : "Avances_Mes";
+            con = sqliteuser;
+        }
+        System.out.println(repname);
         try {
             Map parametros = new HashMap();
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/ReportesAvances/"+repname+".jasper"));
-            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, c);
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/ReportesAvances/" + repname + ".jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, con);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             this.dispose();
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -263,6 +456,15 @@ public class Avancesprod extends javax.swing.JDialog {
             resp = true;
         }
         return resp;
+    }
+
+    public void cerraravances() {
+        try {
+            System.out.println("cerrar avances");
+            c.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Avancesprod.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -341,6 +543,12 @@ public class Avancesprod extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser Fecha;
     private com.toedter.calendar.JDateChooser Fecha1;
+    private javax.swing.JRadioButton JrCondensado;
+    private javax.swing.JRadioButton JrDetallado;
+    private javax.swing.JRadioButton JrDia;
+    private javax.swing.JRadioButton JrMes;
+    private javax.swing.JRadioButton JrSemana;
+    private javax.swing.ButtonGroup bgrupo2;
     private javax.swing.ButtonGroup grupop;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -348,7 +556,7 @@ public class Avancesprod extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

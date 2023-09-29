@@ -6,6 +6,8 @@
 package Persistencia;
 
 import Modelo.Avance;
+import Modelo.Colsdepartamentos;
+import Modelo.Davance;
 import Modelo.metadep;
 import Modelo.pantalla;
 import java.sql.Connection;
@@ -314,7 +316,7 @@ public class sqlavances {
             String pt = p.getPt();
             String m2 = p.getMontado2();
             String sql = "insert into pantallas "
-                    + "values(" + pant + ",'" + n + "','" + cor + "','" + prec + "','" + pes + "','" 
+                    + "values(" + pant + ",'" + n + "','" + cor + "','" + prec + "','" + pes + "','"
                     + des + "','" + oji + "','" + prea + "','" + ins + "','" + m + "','" + pt + "','" + m2 + "')";
             st = c.prepareStatement(sql);
             st.executeUpdate();
@@ -330,4 +332,299 @@ public class sqlavances {
             return false;
         }
     }
+
+    public ArrayList<Colsdepartamentos> getColsdepartamentos(Connection c){
+        ArrayList<Colsdepartamentos> arr= new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select * from colsdepartamentos";
+            st=c.prepareStatement(sql);
+            rs=st.executeQuery();
+            while(rs.next()){
+                Colsdepartamentos col= new Colsdepartamentos();
+                col.setDepartamento(rs.getString("departamento"));
+                col.setNombre(rs.getString("nombre"));
+                col.setNfecha(rs.getString("nfecha"));
+                col.setNmaq(rs.getString("nmaq"));
+                arr.add(col);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+    
+    /**
+     * Se obtiene los registros de el contexto de los campos de la bd y en base
+     * a esos registros se asignaran valores a cada uno de los departamentos
+     * encontrados, inicialmente se tenia pensado usar 2 metodos independientes
+     * pero al final se desicion solo en uno.
+     *
+     * @param c
+     * @param f1
+     * @param f2
+     * @return
+     */
+    public ArrayList<Colsdepartamentos> getColsdepas(Connection c, String f1, String f2) {
+        ArrayList<Colsdepartamentos> arr = new ArrayList<>();
+        ArrayList<Colsdepartamentos> arrf = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select * from colsdepartamentos";
+            System.out.println("colddepas " + sql);
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Colsdepartamentos cd = new Colsdepartamentos();
+                cd.setNombredep(rs.getString("nombre"));
+                cd.setDepartamento(rs.getString("departamento"));
+                cd.setNfecha(rs.getString("nfecha"));
+                cd.setNmaq(rs.getString("nmaq"));
+                arr.add(cd);
+            }
+            for (Colsdepartamentos arr1 : arr) {
+                String nfecha = arr1.getNfecha();
+                String nmaq = arr1.getNmaq();
+                String depa = arr1.getNombredep();
+                sql = "select datepart(dw,convert(date," + nfecha + ")) as dia,\n"
+                        + "ndia=case when datepart(dw,convert(date," + nfecha + "))=1 then 'Lunes' else case when datepart(dw,convert(date," + nfecha + "))=2 then 'Martes' \n"
+                        + "else case when datepart(dw,convert(date," + nfecha + "))=3 then 'Miercoles' else case when datepart(dw,convert(date," + nfecha + "))=4 then 'Jueves' \n"
+                        + "else case when datepart(dw,convert(date," + nfecha + "))=5 then 'Viernes' else '' end end end end end,\n"
+                        + "pares=case when datepart(dw,convert(date," + nfecha + "))=1 then sum(npares) else case when datepart(dw,convert(date," + nfecha + "))=2 then sum(npares) \n"
+                        + "else case when datepart(dw,convert(date," + nfecha + "))=3 then sum(npares) else case when datepart(dw,convert(date," + nfecha + "))=4 then sum(npares) \n"
+                        + "else case when datepart(dw,convert(date," + nfecha + "))=5 then sum(npares) else 0 end end end end end\n"
+                        + "from programa p\n"
+                        + "join avance a on p.id_prog=a.id_prog\n"
+                        + "where convert(date," + nfecha + ") between '" + f1 + "' and '" + f2 + "' and " + nmaq + "='PL'\n"
+                        + "group by convert(date," + nfecha + ")\n"
+                        + "order by datepart(dw,convert(date," + nfecha + "))";
+                System.out.println("Avances sem " + sql);
+                st = c.prepareStatement(sql);
+                rs = st.executeQuery();
+                while (rs.next()) {
+                    Colsdepartamentos cd = new Colsdepartamentos();
+                    cd.setDia(rs.getInt("dia"));
+                    cd.setNdia(rs.getString("ndia"));
+                    cd.setPares(rs.getInt("pares"));
+                    cd.setNombre(depa);
+                    arrf.add(cd);
+                }
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arrf;
+    }
+
+    public boolean insertaregsinavansemana(Connection c, ArrayList<Colsdepartamentos> arr) {
+        PreparedStatement st;
+        try {
+            c.setAutoCommit(false);
+            for (Colsdepartamentos arr1 : arr) {
+                String sql = "insert into Avances_semanal(nombre,dia,ndia,pares) "
+                        + "values('" + arr1.getNombre() + "'," + arr1.getDia() + ",'" + arr1.getNdia() + "'," + arr1.getPares() + ")";
+                System.out.println("insert avance sem " + sql);
+                st = c.prepareStatement(sql);
+                st.executeUpdate();
+            }
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+//    public boolean deleterowsAvansem(Connection c) {
+//        try {
+//            PreparedStatement st;
+//            c.setAutoCommit(false);
+//            String sql = "delete from Avances_semanal";
+//            st = c.prepareStatement(sql);
+//            st.executeUpdate();
+//            c.commit();
+//            return true;
+//        } catch (SQLException ex) {
+//            try {
+//                c.rollback();
+//                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (SQLException ex1) {
+//                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex1);
+//            }
+//            return false;
+//        }
+//    }
+
+    public ArrayList<Colsdepartamentos> getarrayavancemes(Connection c, String f1, String f2, String nfecha, String nmaq, String dep) {
+        ArrayList<Colsdepartamentos> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select convert(date," + nfecha + ") as fecha,datepart(dw,convert(date," + nfecha + ")) as dia,\n"
+                    + "pares=case when " + dep + "!=0  then sum(npares) else 0 end\n"
+                    + "from programa p\n"
+                    + "join avance a on p.id_prog=a.id_prog\n"
+                    + "where convert(date," + nfecha + ") between '" + f1 + "' and '" + f2 + "' and " + nmaq + "='PL'\n"
+                    + "group by convert(date," + nfecha + ")," + dep + "\n"
+                    + "order by convert(date," + nfecha + ")";
+            System.out.println("avancexdepa " + sql);
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Colsdepartamentos cd = new Colsdepartamentos();
+                cd.setNombre(dep);
+                cd.setDia(rs.getInt("dia"));
+                cd.setFecha(rs.getString("fecha"));
+                cd.setPares(rs.getInt("pares"));
+                arr.add(cd);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public boolean insertarregsMes(Connection c, ArrayList<Davance> arr) {
+        try {
+            PreparedStatement st;
+            c.setAutoCommit(false);
+            String sql;
+            for (Davance arr1 : arr) {
+                String f = arr1.getFecha();
+                int cor = arr1.getCor();
+                int pre = arr1.getPrecor();
+                int pes = arr1.getPes();
+                int des = arr1.getDes();
+                int oji = arr1.getOji();
+                int ins = arr1.getInsp();
+                int prea = arr1.getPrea();
+                int mont = arr1.getMont();
+                int pt = arr1.getPt();
+                sql = "insert into Avances_mensual(fecha,corte,precor,pes,des,oji,ins,prea,mont,pt) "
+                        + "values('" + f + "'," + cor + "," + pre + "," + pes + "," + des + "," + oji + "," + ins + "," + prea + "," + mont + "," + pt + ")";
+                System.out.println("Avanmensual " + sql);
+                st = c.prepareStatement(sql);
+                st.executeUpdate();
+            }
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public boolean deleteregsMes(Connection c, String col) {
+        try {
+            PreparedStatement st;
+            c.setAutoCommit(false);
+            String sql;
+            sql = "delete from "+col;
+            System.out.println("Avantabla " + sql);
+            st = c.prepareStatement(sql);
+            st.executeUpdate();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public Davance getregsDia(Connection c, String f2, String nmaq, String nfecha, String dep) {
+        Davance da = new Davance();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select sum(npares) as total,\n"
+                    + "(select sum(npares)\n"
+                    + "from programa p\n"
+                    + "join avance a on p.id_prog=a.id_prog\n"
+                    + "where convert(date," + nfecha + ") between '" + f2 + "' and '" + f2 + "' and " + nmaq + "='PL' and " + dep + "!=0\n"
+                    + "and (a.lote<=30000 or a.lote >=35900) ) as reportado,\n"
+                    + "(select sum(npares)\n"
+                    + "from programa p\n"
+                    + "join avance a on p.id_prog=a.id_prog\n"
+                    + "where convert(date," + nfecha + ") between '" + f2 + "' and '" + f2 + "' and " + nmaq + "='PL' and " + dep + "!=0\n"
+                    + "and (a.lote>=30000 and a.lote <=35900) ) as muestras,\n"
+                    + "(select sum(npares) from programa p\n"
+                    + "join avance a on p.id_prog=a.id_prog\n"
+                    + "where convert(date," + nfecha + ") between convert(date,dateadd(day,-DATEPART(dw,'" + f2 + "'),'" + f2 + "')) \n"
+                    + "and '" + f2 + "' and " + nmaq + "='PL' and " + dep + "!=0) as acumulado,\n"
+                    + "(select (sum(npares)/DATEPART(dw,'" + f2 + "'))*5 from programa p\n"
+                    + "join avance a on p.id_prog=a.id_prog \n"
+                    + "where convert(date," + nfecha + ") between '" + f2 + "' and '" + f2 + "' and " + nmaq + "='PL' and " + dep + "!=0) as proyeccion\n"
+                    + "from programa p\n"
+                    + "join avance a on p.id_prog=a.id_prog\n"
+                    + "where convert(date," + nfecha + ") between '" + f2 + "' and '" + f2 + "' and " + nmaq + "='PL' and " + dep + "!=0";
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                da.setDepa(dep);
+                da.setReportado(rs.getInt("reportado"));
+                da.setMuestras(rs.getInt("muestras"));
+                da.setTotal(rs.getInt("total"));
+                da.setAcumulado(da.getTotal() - rs.getInt("acumulado"));
+                da.setProyeccion(rs.getInt("proyeccion"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return da;
+    }
+
+    public boolean insertarregsDia(Connection c, ArrayList<Davance> arr) {
+        try {
+            PreparedStatement st;
+            c.setAutoCommit(false);
+            String sql;
+            for (Davance arr1 : arr) {
+                String n = arr1.getDepa();
+                int repor = arr1.getReportado();
+                int mues = arr1.getMuestras();
+                int t = arr1.getTotal();
+                int acum = arr1.getAcumulado();
+                int proy = arr1.getProyeccion();
+                sql = "insert into Avances_Diario(nombre,reportado,muestras,Total,Acuumlado,Proyeccion) "
+                        + "values('" + n + "'," + repor + "," + mues + "," + t + "," + acum + "," + proy + ")";
+                System.out.println("Avadiario " + sql);
+                st = c.prepareStatement(sql);
+                st.executeUpdate();
+            }
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlavances.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+    
+    
+
 }

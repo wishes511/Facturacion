@@ -6,6 +6,8 @@
 package DAO;
 
 import Modelo.Avance;
+import Modelo.Colsdepartamentos;
+import Modelo.Davance;
 import Modelo.metadep;
 import Modelo.pantalla;
 import Persistencia.sqlavances;
@@ -70,7 +72,8 @@ public class daoAvances implements Avances {
 
     /**
      * Vacia la tabla de los avances en sqlite
-     * @param av 
+     *
+     * @param av
      */
     @Override
     public void vaciabd(Connection av) {
@@ -85,12 +88,14 @@ public class daoAvances implements Avances {
     }
 
     /**
-     * Cambios en col, de ahora en adelante se utilizara para mandar la multiplicacion de hrs x los par
+     * Cambios en col, de ahora en adelante se utilizara para mandar la
+     * multiplicacion de hrs x los par
+     *
      * @param c
      * @param hrs
      * @param columna
      * @param nombre
-     * @return 
+     * @return
      */
     @Override
     public boolean actualizahrs(Connection c, int hrs, String columna, String nombre) {
@@ -114,6 +119,112 @@ public class daoAvances implements Avances {
     public int getmaxpantalla(Connection c) {
         sqlavances a = new sqlavances();
         return a.getmaxpantalla(c);
+    }
+
+    /**
+     * Obtienes los registros de los parametros de la tabla de acuerdo al
+     * departamento de tabla Avances del 6.8
+     *
+     * @param c
+     * @param f1
+     * @param f2
+     * @return
+     */
+    @Override
+    public ArrayList<Colsdepartamentos> getcolsdepa(Connection c, String f1, String f2) {
+        sqlavances a = new sqlavances();
+        return a.getColsdepas(c, f1, f2);
+    }
+
+    /**
+     * Inserta registro en la bd de SQLITE para de ahi proceder con el reporte
+     *
+     * @param c
+     * @param arr
+     * @return
+     */
+    @Override
+    public boolean insertaregistrosAvances_sem(Connection c, ArrayList<Colsdepartamentos> arr) {
+        sqlavances a = new sqlavances();
+        return a.insertaregsinavansemana(c, arr);
+    }
+
+/**
+ * Obtiene y organiza los registros para el reporte de avances de produccion por mes
+ * @param c
+ * @param f1
+ * @param f2
+ * @param nfecha
+ * @param nmaq
+ * @param dep
+ * @return 
+ */
+    @Override
+    public ArrayList<Colsdepartamentos> getarrmes(Connection c, String f1, String f2, String nfecha, String nmaq, String dep) {
+        sqlavances a = new sqlavances();
+        return a.getarrayavancemes(c, f1, f2,nfecha, nmaq, dep);
+    }
+
+    /**
+     * Insertar registros en bd SQLITE para su posterior d3espliegue
+     * @param c
+     * @param arr
+     * @return 
+     */
+    @Override
+    public boolean inserttarregsmes(Connection c, ArrayList<Davance> arr) {
+        sqlavances a = new sqlavances();
+        return a.insertarregsMes(c, arr);
+    }
+
+    /**
+     * Eliminacion de registros de la misma bd SQLITE con seleccion de tabla como parametro
+     * @param c
+     * @param col
+     * @return 
+     */
+    @Override
+    public boolean deleteregmes(Connection c, String col) {
+        sqlavances a = new sqlavances();
+        return a.deleteregsMes(c, col);
+    }
+
+    /**
+     * Obtiene los registros por departamento x dia desde avances del 6.8
+     * @param c
+     * @param f2
+     * @param nmaq
+     * @param nfecha
+     * @param dep
+     * @return 
+     */
+    @Override
+    public Davance getregsDia(Connection c, String f2, String nmaq, String nfecha, String dep) {
+        sqlavances a = new sqlavances();
+        return a.getregsDia(c, f2, nmaq, nfecha, dep);
+    }
+
+    /**
+     * Inserta registros en la bd de sqlite respecto a avances x dia
+     * @param c
+     * @param arr
+     * @return 
+     */
+    @Override
+    public boolean insertarregsDia(Connection c, ArrayList<Davance> arr) {
+        sqlavances a = new sqlavances();
+        return a.insertarregsDia(c, arr);
+    }
+
+    /**
+     * Obtiene el nombre de las columnas de los avances usando conexion del 6.8
+     * @param c
+     * @return 
+     */
+    @Override
+    public ArrayList<Colsdepartamentos> getcoldepartamentos(Connection c) {
+        sqlavances a = new sqlavances();
+        return a.getColsdepartamentos(c);
     }
 
 }
