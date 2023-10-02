@@ -139,7 +139,7 @@ order by id_avance]]>
 					<subreportParameterExpression><![CDATA[$F{nombre}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA["C:\\Users\\GATEWAY1-\\Documents\\NetBeansProjects\\Athprod\\src\\ReportesAvances\\Avancessemanal_det.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA["C:\\af\\Avances\\Reportes\\Avancessemanal_det.jasper"]]></subreportExpression>
 			</subreport>
 			<staticText>
 				<reportElement x="266" y="0" width="100" height="20" forecolor="#FFFFFF" uuid="9db014a1-b792-4dcb-bfe1-88fe280f5a17"/>

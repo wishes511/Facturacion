@@ -50,6 +50,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.PropertyVetoException;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -1234,7 +1235,6 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JrEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JrEmpresaActionPerformed
         eleccionempresa();
-
     }//GEN-LAST:event_JrEmpresaActionPerformed
 
     private void JrEmpresa1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JrEmpresa1ActionPerformed
@@ -1264,7 +1264,13 @@ public final class Principal extends javax.swing.JFrame {
     }
 
     private void JlUsuarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlUsuarioMousePressed
-        // TODO add your handling code here:
+        //Abre la aplicacion de entradas y salidas
+        File a = new File("x:\\af\\DG.jpg");
+        File b = new File("c:\\af\\DG.jpg");
+        System.out.println(a.exists()+" "+b.exists());
+        
+        //System.out.println(process.getOutputStream().toString());
+        
     }//GEN-LAST:event_JlUsuarioMousePressed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed

@@ -400,7 +400,7 @@ public class sqlavances {
                         + "where convert(date," + nfecha + ") between '" + f1 + "' and '" + f2 + "' and " + nmaq + "='PL'\n"
                         + "group by convert(date," + nfecha + ")\n"
                         + "order by datepart(dw,convert(date," + nfecha + "))";
-                System.out.println("Avances sem " + sql);
+//                System.out.println("Avances sem " + sql);
                 st = c.prepareStatement(sql);
                 rs = st.executeQuery();
                 while (rs.next()) {
@@ -427,7 +427,7 @@ public class sqlavances {
             for (Colsdepartamentos arr1 : arr) {
                 String sql = "insert into Avances_semanal(nombre,dia,ndia,pares) "
                         + "values('" + arr1.getNombre() + "'," + arr1.getDia() + ",'" + arr1.getNdia() + "'," + arr1.getPares() + ")";
-                System.out.println("insert avance sem " + sql);
+//                System.out.println("insert avance sem " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -563,7 +563,7 @@ public class sqlavances {
                     + "join avance a on p.id_prog=a.id_prog\n"
                     + "where convert(date," + nfecha + ") between '" + f2 + "' and '" + f2 + "' and " + nmaq + "='PL' and " + dep + "!=0\n"
                     + "and (a.lote<=30000 or a.lote >=35900) ) as reportado,\n"
-                    + "(select sum(npares)\n"
+                    + "(select ISNULL(sum(npares),0)\n"
                     + "from programa p\n"
                     + "join avance a on p.id_prog=a.id_prog\n"
                     + "where convert(date," + nfecha + ") between '" + f2 + "' and '" + f2 + "' and " + nmaq + "='PL' and " + dep + "!=0\n"
@@ -578,6 +578,7 @@ public class sqlavances {
                     + "from programa p\n"
                     + "join avance a on p.id_prog=a.id_prog\n"
                     + "where convert(date," + nfecha + ") between '" + f2 + "' and '" + f2 + "' and " + nmaq + "='PL' and " + dep + "!=0";
+//            System.out.println("avances dia "+sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -585,7 +586,8 @@ public class sqlavances {
                 da.setReportado(rs.getInt("reportado"));
                 da.setMuestras(rs.getInt("muestras"));
                 da.setTotal(rs.getInt("total"));
-                da.setAcumulado(da.getTotal() - rs.getInt("acumulado"));
+//                da.setAcumulado(rs.getInt("acumulado")-da.getTotal());
+                da.setAcumulado(rs.getInt("acumulado"));
                 da.setProyeccion(rs.getInt("proyeccion"));
             }
         } catch (SQLException ex) {
@@ -606,9 +608,9 @@ public class sqlavances {
                 int t = arr1.getTotal();
                 int acum = arr1.getAcumulado();
                 int proy = arr1.getProyeccion();
-                sql = "insert into Avances_Diario(nombre,reportado,muestras,Total,Acuumlado,Proyeccion) "
+                sql = "insert into Avances_Diario(nombre,reportado,muestras,Total,Acumulado,Proyeccion) "
                         + "values('" + n + "'," + repor + "," + mues + "," + t + "," + acum + "," + proy + ")";
-                System.out.println("Avadiario " + sql);
+//                System.out.println("Avadiario " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
