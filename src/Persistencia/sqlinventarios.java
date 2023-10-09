@@ -231,4 +231,27 @@ public class sqlinventarios {
         }
         return arr;
     }
+    
+    public void updatecantin_inv(Connection c, Inventario inv){
+        try {
+            PreparedStatement st;
+            c.setAutoCommit(false);
+            double cant=inv.getCantidadpedimento();
+            double dif=inv.getDiferencias();
+            int ped=inv.getId_dpedimento();
+            String ref= inv.getReferencia();
+            String sql="update inventariado set cantidadsistema="+cant+",diferencia="+dif+", referencia='"+ref+"' where id_dpedimento="+ped;
+//            System.out.println(sql);
+            st=c.prepareStatement(sql);
+            st.executeUpdate();
+            c.commit();
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlinventarios.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlinventarios.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+    }
 }

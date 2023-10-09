@@ -33,4 +33,6 @@ public interface Inventarios {
     
     public boolean ejecutarespcierre(Connection c, int mes, int year);
     
+    public void updatecantin_inv(Connection c, Inventario inv);
+    
 }

@@ -111,4 +111,15 @@ public class daoInventarios implements Inventarios {
         return s.ejecutarespcierre(c, mes, year);
     }
 
+    /**
+     * Actualiza las cantidades de stock de sistema en la tabla de inventariado de sqlite
+     * @param c
+     * @param inv 
+     */
+    @Override
+    public void updatecantin_inv(Connection c, Inventario inv) {
+        sqlinventarios s = new sqlinventarios();
+        s.updatecantin_inv(c, inv);
+    }
+
 }

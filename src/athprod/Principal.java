@@ -89,7 +89,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -1253,10 +1253,10 @@ public final class Principal extends javax.swing.JFrame {
             actualizaempresa();
         }
 //        Desabilitar opciones y mandar indicacion de que empresa se esta utilizando
-        if(JrEmpresa.isSelected()){
+        if (JrEmpresa.isSelected()) {
             JrEmpresa1.setEnabled(false);
             JrEmpresa1.setForeground(Color.red);
-        }else{
+        } else {
             JrEmpresa.setEnabled(false);
             JrEmpresa.setForeground(Color.red);
         }
@@ -1267,10 +1267,10 @@ public final class Principal extends javax.swing.JFrame {
         //Abre la aplicacion de entradas y salidas
         File a = new File("x:\\af\\DG.jpg");
         File b = new File("c:\\af\\DG.jpg");
-        System.out.println(a.exists()+" "+b.exists());
-        
+        System.out.println(a.exists() + " " + b.exists());
+
         //System.out.println(process.getOutputStream().toString());
-        
+
     }//GEN-LAST:event_JlUsuarioMousePressed
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
@@ -1831,11 +1831,17 @@ public final class Principal extends javax.swing.JFrame {
                     u = dp.getUserlite(liteusuario, a, a);
                     if (!u.getUsuario().equals("")) {
 //                        checkempresa();
-                        actualizaempresa();
+                        
 //                        Si es administracion usaria tpu y maq
                         if (u.getTipo_usuario().equals("1")) {
                             setTpucon();
                             setTpumaq();
+                            modoadmin();
+                            JmOut.setVisible(true);
+                            JmSesion.setEnabled(false);
+                            JlUsuario.setText(u.getNombre() + " " + u.getUsuario());
+                        }else{
+                            actualizaempresa();
                         }
                     }
 

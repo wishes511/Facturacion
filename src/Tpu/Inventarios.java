@@ -89,6 +89,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
         JlRespalldo = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         JmBaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Cancel_icon-icons.com_54824.png"))); // NOI18N
         JmBaja.setText("Eliminar pedimento");
@@ -186,6 +187,15 @@ public class Inventarios extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/file-expand_Pdf_icon-icons.com_68956.png"))); // NOI18N
+        jLabel5.setToolTipText("Imprimir diferencias de sistema y captura");
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel5MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -203,9 +213,11 @@ public class Inventarios extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(JlRespalldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel1)))
@@ -223,7 +235,8 @@ public class Inventarios extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(JlRespalldo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -279,6 +292,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
 
     private void JmBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmBajaActionPerformed
         daoInventarios di = new daoInventarios();
+//        Elimina el pedimento completo de la captura de inventario
         if (di.deletepedimento(liteusuario, arrinv.get(JtDetalle.getSelectedRow()).getId_pedimento())) {
             JOptionPane.showMessageDialog(null, "Eliminacion completa!");
             setrows();
@@ -296,22 +310,11 @@ public class Inventarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_JlFechaMousePressed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        try {
-            Map parametros = new HashMap();
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Pedimento_inventario.jasper"));
-            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
-            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
-            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Captura de inventario");
-            ver.setVisible(true);
-//            Exportacion al archivo pdf
-        } catch (JRException ex) {
-            JOptionPane.showMessageDialog(null, "No se puede desplegar reporte para captura de inv."+ex.getMessage(), "Error en reporte", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(Inventarios.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        setreporte("Pedimento_inventario");
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
+//        Realiza la validacion de el total de las lineas del sistema con lo capturado, ademas muestra las diferencias
         if (arr.size() != arrinv.size()) {
             JOptionPane.showMessageDialog(null, "No se puede realizar inventario debido a diferencia en captura "
                     + "de inventario y stock de sistema\nTienes " + diferencias + " diferencias y numero de "
@@ -334,32 +337,64 @@ public class Inventarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_JlRespalldoMousePressed
 
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
-        VerInventarios v = new VerInventarios(null,true);
-        v.cpt=cpt;
-        if(v.setcombo()){
+        VerInventarios v = new VerInventarios(null, true);
+        v.cpt = cpt;
+        if (v.setcombo()) {
             JOptionPane.showMessageDialog(null, "No se ha hecho ningun inventario, por lo tanto no puedes imprimir algun reporte",
                     "No hay Inventarios", JOptionPane.ERROR_MESSAGE);
-        }else{
+        } else {
             v.llenacombo();
             v.setVisible(true);
         }
-        
+
     }//GEN-LAST:event_jLabel4MousePressed
+
+    private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
+        setreporte("Invsiscap");
+    }//GEN-LAST:event_jLabel5MousePressed
+
+    /**
+     * Despliega el reporte de acuerdo a el inv. capturado y las diferencias
+     * @param reporte 
+     */
+    private void setreporte(String reporte) {
+        try {
+//            Se selecciona el tipo de conexion
+            Connection con=(reporte.equals("Invsiscap"))?liteusuario:cpt;
+            Map parametros = new HashMap();
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/" + reporte + ".jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, con);
+            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
+            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            ver.setTitle("Despliegue de inventarios");
+            ver.setVisible(true);
+//            Exportacion al archivo pdf
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "No se puede desplegar reporte " + ex.getMessage(), "Error en reporte", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(Inventarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     private void generarcierre() {
         daoInventarios di = new daoInventarios();
+//        Reliza la insercion de los registros en la tabla del inventariado,
+//        borra los registros de las tablas de sqlite, ademas de que actualiza 
+//        los registros de control de inventario
         if (di.nuevoinventario(cpt, liteusuario, arrinv, inv.getMes(), inv.getYears())) {
             JlRespalldo.setText("GENERANDO RESPALDO, PORFAVOR NO CERRAR");
+//        Realiza respaldo de la bd    
             di.ejecutarespcierre(cpt, inv.getMes(), inv.getYears());
             getfecha();
             JlRespalldo.setText("");
             JOptionPane.showMessageDialog(null, "Completo");
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Ocurrio algun error al generar el cierre de mes.");
         }
 
     }
-
+/**
+ * Obtiene el periodo actual de inventarios desde el server ya que ahi esta la informacion alojada
+ */
     public void getfecha() {
         daoControlinventarios co = new daoControlinventarios();
         inv = co.getarrinv(cpt);
@@ -374,6 +409,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
             for (int j = 0; j < arr.size(); j++) {
                 int idarr = arr.get(j).getDp().getId_dpedimento();
                 if (idinv == idarr) {
+                    daoInventarios d = new daoInventarios();
                     double cantinv = arrinv.get(i).getCantidad();
                     double cantarr = arr.get(j).getDp().getCantrestante();
                     double dif = BigDecimal.valueOf(cantarr - cantinv).setScale(2, RoundingMode.FLOOR).doubleValue();
@@ -383,6 +419,8 @@ public class Inventarios extends javax.swing.JInternalFrame {
                     invent.setDiferencias(dif);
                     diferencias += dif;
                     arrinv.set(i, invent);
+//                    Actualizar referencia y cantidad de sistema en sqlite
+                    d.updatecantin_inv(liteusuario, invent);
                     j = arr.size();
                 }
             }
@@ -398,6 +436,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
