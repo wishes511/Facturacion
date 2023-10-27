@@ -98,12 +98,23 @@ public class pago2 extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pop = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         JtDetalle = new javax.swing.JTable();
         Jlemp = new javax.swing.JLabel();
+
+        jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/file_pdf_download_icon-icons.com_68954.png"))); // NOI18N
+        jMenuItem1.setText("Imprimir pdf");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        pop.add(jMenuItem1);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -192,12 +203,18 @@ public class pago2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
-
+        if (evt.getButton() == 3) {// activar con clic derecho
+            pop.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void JtClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtClienteMousePressed
         JtCliente.setText("");
     }//GEN-LAST:event_JtClienteMousePressed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        setreport(arrfacturas.get(JtDetalle.getSelectedRow()).getFolio(),arrfacturas.get(JtDetalle.getSelectedRow()).getRegimen());
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private double formatdecimal(double cant) {
         int dato = 0;
@@ -246,6 +263,7 @@ public class pago2 extends javax.swing.JPanel {
         model.addColumn("Metodo de pago");
         model.addColumn("Estado");
         model.addColumn("Estado sat");
+        model.addColumn("Regimen Fiscal");
 
         daofactura d = new daofactura();
 //        arrabonos = d.getabonospago(cpt, JtCliente.getText(), empresacob, 15);
@@ -263,6 +281,8 @@ public class pago2 extends javax.swing.JPanel {
             model.setValueAt(arrfacturas.get(i).getMetodopago(), i, 4);
             model.setValueAt(a, i, 5);
             model.setValueAt(a1, i, 6);
+            model.setValueAt(arrfacturas.get(i).getRegimen(), i, 6);
+            
         }
         JtDetalle.setModel(model);
     }
@@ -313,7 +333,7 @@ public class pago2 extends javax.swing.JPanel {
             parametros.put("comprobante", e.getNumcertificado());
             parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
             parametros.put("metodo", "PUE");
-            parametros.put("uso", "CP01");
+            parametros.put("uso", " Pagos");
             parametros.put("serie", "PAG");
             parametros.put("regimencliente", regimen);
 
@@ -338,7 +358,9 @@ public class pago2 extends javax.swing.JPanel {
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPopupMenu pop;
     // End of variables declaration//GEN-END:variables
 }

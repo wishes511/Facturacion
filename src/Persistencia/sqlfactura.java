@@ -411,7 +411,7 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select top(400) id,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,\n"
+            String sql = "select top(200) id,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,\n"
                     + "formadepago,metododepago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal, d.usocfdi,d.regimen, d.moneda,cadenaoriginal,numcliente, ordenpago\n"
                     + "from Doctospago d\n"
                     + "join " + cob + ".dbo.Clientes c on d.idcliente=c.numcliente\n"
