@@ -459,16 +459,20 @@ public class pago1 extends javax.swing.JPanel {
             f.setArrpagos17(arrdetpago17);
             //Insertar en bd
             int id = dfac.nuevopago(cpt, f, empresacob);
-            f.setId(id);
-            daoxmlpagos dx = new daoxmlpagos();
-            dx.generarfac(f, cpt, sqlempresa);
-            timbrarXML tim = new timbrarXML();
-            Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
-            dfac.Updatesellofiscalpago(cpt, s, id);
-            setreport(f.getFolio(), f.getRegimen());
-            JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
-            limpiar();
-            JtCliente.requestFocus();
+            if (id == 0) {
+                JOptionPane.showMessageDialog(null, "Error al procesar pago, no se ha llevado a cabo ningun registro y timbrado");
+            } else {
+                f.setId(id);
+                daoxmlpagos dx = new daoxmlpagos();
+                dx.generarfac(f, cpt, sqlempresa);
+                timbrarXML tim = new timbrarXML();
+                Sellofiscal s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
+                dfac.Updatesellofiscalpago(cpt, s, id);
+                setreport(f.getFolio(), f.getRegimen());
+                JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
+                limpiar();
+                JtCliente.requestFocus();
+            }
 
         }
     }//GEN-LAST:event_jLabel2MousePressed
@@ -625,7 +629,7 @@ public class pago1 extends javax.swing.JPanel {
             String n = (empresa.equals("UptownCPT")) ? "2" : "1";
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
-            String lugar=(empresa.equals("UptownCPT")) ? e.getCp() : "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO "+e.getCp();
+            String lugar = (empresa.equals("UptownCPT")) ? e.getCp() : "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
 //            Clase que contiene el numero convertido a caracter

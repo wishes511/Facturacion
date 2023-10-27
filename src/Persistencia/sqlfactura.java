@@ -38,6 +38,22 @@ import javax.swing.JOptionPane;
  */
 public class sqlfactura {
 
+    /**
+     * Funcion que formatea el nombre del cliente por si tiene comillas simples que puedan detener el proceso
+     * @param n
+     * @return 
+     */
+   private String formatnombre(String n) {
+        String resp = "";
+        for (int i = 0; i < n.length(); i++) {
+            String aux = n.charAt(i) + "";
+            if (!aux.equals("'")) {
+                resp+=aux;
+            }
+        }
+        return resp;
+    }
+    
     private double getnewcantidades6(double a, String tipo) {
         double cant = 0;
         switch (tipo) {
@@ -343,7 +359,7 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select top(400) id,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formadepago,metododepago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal, d.usocfdi,fax, d.moneda,cadenaoriginal,c.numcliente as cli,d.descuento\n"
+            String sql = "select top(500) id,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formadepago,metododepago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal, d.usocfdi,fax, d.moneda,cadenaoriginal,c.numcliente as cli,d.descuento\n"
                     + "from documentos d\n"
                     + "join " + cob + ".dbo.Clientes c on d.idcliente=c.NumCliente\n"
                     + "where (d.idcliente like '%" + folio + "%' or d.nombre like '%" + folio + "%') and serie='" + serie + "'\n"
@@ -2345,7 +2361,7 @@ public class sqlfactura {
             System.out.println("monto " + monto);
             //cliente
             int idcliente = f.getIdcliente();
-            String nombre = f.getNombre();
+            String nombre = formatnombre(f.getNombre());
             String rfc = f.getRfc();
             String calle = f.getCalle();
             String colonia = f.getColonia();

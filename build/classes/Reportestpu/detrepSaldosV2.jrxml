@@ -28,6 +28,12 @@ where fechavencimiento<=$P{f2}  and (saldo!=0 and saldomx!=0) and c.id_agente=$P
 	<field name="saldo" class="java.lang.Double"/>
 	<field name="saldomx" class="java.lang.Double"/>
 	<field name="dias" class="java.lang.Integer"/>
+	<variable name="saldo" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
+	</variable>
+	<variable name="saldomx" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldomx}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -82,14 +88,14 @@ where fechavencimiento<=$P{f2}  and (saldo!=0 and saldomx!=0) and c.id_agente=$P
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement x="430" y="0" width="70" height="12" uuid="4905c522-1694-44da-8d2a-f4925024440e"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="#,##0.00">
 				<reportElement x="500" y="0" width="65" height="12" uuid="28455670-affc-420c-84e0-b984565d53df"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
@@ -105,4 +111,25 @@ where fechavencimiento<=$P{f2}  and (saldo!=0 and saldomx!=0) and c.id_agente=$P
 			</textField>
 		</band>
 	</detail>
+	<summary>
+		<band height="19">
+			<textField pattern="#,##0.00">
+				<reportElement x="430" y="4" width="70" height="12" uuid="32080a06-da56-478a-8a0f-7655084e0775"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{saldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="500" y="4" width="65" height="12" uuid="ae651c01-28df-4412-be41-426ab04518c9"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{saldomx}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="430" y="2" width="135" height="1" uuid="d447851e-6f56-4b33-9d53-1ca108311ed9"/>
+			</line>
+		</band>
+	</summary>
 </jasperReport>

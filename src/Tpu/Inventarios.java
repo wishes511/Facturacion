@@ -7,17 +7,13 @@ package Tpu;
 
 import DAO.daoControlinventarios;
 import DAO.daoInventarios;
-import DAO.daodurezas;
 import DAO.daopedimentos;
 import Modelo.Conexiones;
 import Modelo.Controlinventario;
-import Modelo.Dpedimento;
-import Modelo.Dureza;
 import Modelo.Inventario;
 import Modelo.Usuarios;
 import Modelo.pedimento;
 import Paneltpu.Nuevacapturainv;
-import Paneltpu.Nuevadurez;
 import Paneltpu.VerInventarios;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,18 +27,15 @@ import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
- * @author GATEWAY1-
+ * @author GATEWAY1- 25/09/2023
  */
 public class Inventarios extends javax.swing.JInternalFrame {
 
@@ -259,6 +252,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
     private void setrows() {
         daopedimentos d = new daopedimentos();
         daoInventarios di = new daoInventarios();
+//        Obtiene los registros de el stock de sistemas y los registros del inventario 
         arr = d.getpedimentoinv(cpt);
         arrinv = di.getinventariostocheck(liteusuario);
         settable();
@@ -281,7 +275,6 @@ public class Inventarios extends javax.swing.JInternalFrame {
             JtDetalle.setValueAt(arrinv.get(i).getCantidad(), i, 3);
             JtDetalle.setValueAt(arrinv.get(i).getDiferencias(), i, 4);
         }
-
     }
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
@@ -338,6 +331,8 @@ public class Inventarios extends javax.swing.JInternalFrame {
 
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
         VerInventarios v = new VerInventarios(null, true);
+//        Manda el valor de la conexion ademas verifica que haya registros anteriores para el despliegue del reporte
+//        Ahi mismo despliega una interfaz si es que hay registros
         v.cpt = cpt;
         if (v.setcombo()) {
             JOptionPane.showMessageDialog(null, "No se ha hecho ningun inventario, por lo tanto no puedes imprimir algun reporte",

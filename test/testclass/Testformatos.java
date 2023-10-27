@@ -10,19 +10,32 @@ package testclass;
  * @author GATEWAY1-
  */
 public class Testformatos {
-    public static void main(String [] args){
+
+    public static void main(String[] args) {
         Testformatos t = new Testformatos();
-        t.formatfecha("2018-10-06 17:44:24.000");
+        //t.formatfecha("2018-10-06 17:44:24.000");
+        t.formatnombre("COMERCIAL D'PORTENIS");
     }
-    
-        private String formatfecha(String fe){
-        String nfecha="";
-        for(int i=0;i<fe.length()-4;i++){
-            
-            nfecha+=(fe.charAt(i)==' ')?"T":fe.charAt(i)+"";
+
+    private String formatfecha(String fe) {
+        String nfecha = "";
+        for (int i = 0; i < fe.length() - 4; i++) {
+
+            nfecha += (fe.charAt(i) == ' ') ? "T" : fe.charAt(i) + "";
         }
-            System.out.println(nfecha);
+        System.out.println(nfecha);
         return nfecha;
     }
-        
+
+    private String formatnombre(String n) {
+        String resp = "";
+        for (int i = 0; i < n.length(); i++) {
+            String aux = n.charAt(i) + "";
+            if (!aux.equals("'")) {
+                resp+=aux;
+            }
+        }
+        return resp;
+    }
+
 }

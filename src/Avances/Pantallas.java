@@ -196,8 +196,10 @@ public class Pantallas extends javax.swing.JInternalFrame {
 
 
     private void setempresas() {
+//        Iniciar modelo de la tabla para asignacion de datos
         DefaultTableModel model = new DefaultTableModel();
         daoAvances da = new daoAvances();
+//        Obtener registros de las pantallas
         arr=da.getpantallas(c);
         model.addColumn("Pantalla");
         model.addColumn("Nombre");
@@ -211,6 +213,7 @@ public class Pantallas extends javax.swing.JInternalFrame {
         model.addColumn("Montado");
         model.addColumn("Montado2");
         model.addColumn("PT");
+//        Asignar el numero de renglos de acuerdo al tamaño del array
         model.setNumRows(arr.size());
         JtEmpresa.setModel(model);
         for (int i = 0; i < arr.size(); i++) {

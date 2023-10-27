@@ -102,7 +102,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="146" splitType="Stretch">
+		<band height="151" splitType="Stretch">
 			<rectangle>
 				<reportElement x="477" y="67" width="95" height="12" forecolor="#FFFFFF" backcolor="#DCDCDC" uuid="90dba5c2-fb74-4873-96cc-b4e9307434c4"/>
 			</rectangle>
@@ -253,25 +253,18 @@
 				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="-1" y="132" width="57" height="13" uuid="637ef3bf-af97-48fb-9944-5f825a62ec6a"/>
+				<reportElement x="-1" y="132" width="71" height="13" uuid="637ef3bf-af97-48fb-9944-5f825a62ec6a"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Uso del CFDI: ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="56" y="132" width="28" height="13" uuid="929aeb60-3de6-456b-9a36-cccda216a881"/>
+				<reportElement x="70" y="132" width="36" height="13" uuid="929aeb60-3de6-456b-9a36-cccda216a881"/>
 				<textElement>
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{usocfdi}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="84" y="132" width="172" height="13" uuid="27da089a-9632-483f-8ad9-226fdf47dd7e"/>
-				<textElement>
-					<font size="10"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{uso}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="487" y="11" width="35" height="12" uuid="45a45ada-7070-4824-b3fa-0ccebb818b82"/>
@@ -332,7 +325,41 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="3" splitType="Stretch"/>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="47" y="0" width="120" height="13" uuid="a723676e-1afb-4eeb-9188-e49e548cf6cb"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="47" height="13" uuid="2ea7f4ba-c705-489e-b606-1a2cc2466fe8"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Importe:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="232" y="0" width="51" height="13" uuid="be1927a1-ad68-4cd6-bc43-5643de628500"/>
+				<textFieldExpression><![CDATA[$F{moneda}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="185" y="0" width="47" height="13" uuid="1bb6ebc1-c72b-4a11-9b65-8aab4719c164"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Moneda]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="297" y="0" width="81" height="13" uuid="6f8706f1-d1be-4bfa-b1ed-a5343762579a"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo de cambio]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="377" y="0" width="100" height="13" uuid="5b108a1b-7331-42d6-a32d-53f03db2dc56"/>
+				<textFieldExpression><![CDATA[$F{tipocambio}]]></textFieldExpression>
+			</textField>
+		</band>
 	</pageHeader>
 	<detail>
 		<band height="14" splitType="Stretch">

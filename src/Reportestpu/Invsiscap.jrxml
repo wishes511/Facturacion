@@ -85,35 +85,35 @@
 		<band height="13" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="130" height="12" uuid="7df90e25-4bed-49c7-8ed0-32035ef66e54"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+				<textElement verticalAlignment="Top">
 					<font fontName="Calibri" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{referencia}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="130" y="0" width="178" height="12" uuid="a32fa502-b6fc-49bb-b545-094bf635eb38"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+				<textElement verticalAlignment="Top">
 					<font fontName="Calibri" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{nombremat}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="308" y="0" width="100" height="12" uuid="845bd04b-bca5-4b57-8619-cf68c3b15a5c"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Calibri" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{cantidadrestante}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="408" y="0" width="88" height="12" uuid="bacf9dd4-e433-48b3-8796-9f8b0b648650"/>
-				<textElement textAlignment="Center" verticalAlignment="Top">
+				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Calibri" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{cantidadsistema}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="496" y="0" width="59" height="12" uuid="4860bd0d-9093-4ef8-9776-f99fea227640"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[""+$F{diferencia}]]></textFieldExpression>

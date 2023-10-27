@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="bb685253-89e7-47c0-a634-7aa1a07bdf22">
-	<property name="ireport.zoom" value="1.2100000000000002"/>
+	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="f2" class="java.lang.String">
@@ -18,11 +18,13 @@ where fechavencimiento<=$P{f2}  and (saldo!=0 and saldomx!=0) and c.id_agente=$P
 	</queryString>
 	<field name="id_cliente" class="java.lang.Integer"/>
 	<field name="nombre" class="java.lang.String"/>
+	<variable name="saldo" class="java.lang.Double"/>
+	<variable name="saldomx" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="23" splitType="Stretch">
 			<textField>
 				<reportElement x="28" y="0" width="33" height="12" uuid="d7c531c3-41d5-43ce-b840-0ebaeb84ecff"/>
 				<textElement>
@@ -49,6 +51,8 @@ where fechavencimiento<=$P{f2}  and (saldo!=0 and saldomx!=0) and c.id_agente=$P
 					<subreportParameterExpression><![CDATA[$P{cliente}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<returnValue subreportVariable="saldo" toVariable="saldo"/>
+				<returnValue subreportVariable="saldomx" toVariable="saldomx"/>
 				<subreportExpression><![CDATA["C:\\af\\prod\\reportestpu\\detrepSaldosV2.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
