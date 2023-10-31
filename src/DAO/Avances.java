@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Modelo.Anuncio;
 import Modelo.Avance;
 import Modelo.Colsdepartamentos;
 import Modelo.Davance;
@@ -68,5 +69,9 @@ public interface Avances {
     public boolean insertarregsDia(Connection c, ArrayList<Davance> arr);
     
     public ArrayList<Colsdepartamentos> getcoldepartamentos(Connection c); 
+    
+    public boolean newanuncio(Connection c, Anuncio a);
+    
+    public ArrayList<Anuncio> getAnuncios(Connection c);
 
 }

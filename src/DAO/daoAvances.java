@@ -5,12 +5,14 @@
  */
 package DAO;
 
+import Modelo.Anuncio;
 import Modelo.Avance;
 import Modelo.Colsdepartamentos;
 import Modelo.Davance;
 import Modelo.metadep;
 import Modelo.pantalla;
 import Persistencia.sqlavances;
+import Persistencia.sqlpantallas;
 import Server.Serverylite;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -225,6 +227,18 @@ public class daoAvances implements Avances {
     public ArrayList<Colsdepartamentos> getcoldepartamentos(Connection c) {
         sqlavances a = new sqlavances();
         return a.getColsdepartamentos(c);
+    }
+
+    @Override
+    public boolean newanuncio(Connection c, Anuncio a) {
+        sqlpantallas s = new sqlpantallas();
+        return s.nuevoanuncio(c, a);
+    }
+
+    @Override
+    public ArrayList<Anuncio> getAnuncios(Connection c) {
+        sqlpantallas s = new sqlpantallas();
+        return s.getanuncios(c);
     }
 
 }

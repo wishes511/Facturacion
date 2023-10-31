@@ -89,7 +89,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -158,6 +158,7 @@ public final class Principal extends javax.swing.JFrame {
         JmProd = new javax.swing.JMenu();
         JmCatalogoprod = new javax.swing.JMenuItem();
         JmFicha = new javax.swing.JMenuItem();
+        JmAnuncios = new javax.swing.JMenuItem();
         JmAvances = new javax.swing.JMenu();
         JmPantallahrs = new javax.swing.JMenuItem();
         JmPantallahrs1 = new javax.swing.JMenuItem();
@@ -306,6 +307,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmProd.add(JmFicha);
+
+        JmAnuncios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564410-chat_81504.png"))); // NOI18N
+        JmAnuncios.setText("Anuncios pantallas");
+        JmAnuncios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAnunciosActionPerformed(evt);
+            }
+        });
+        JmProd.add(JmAnuncios);
 
         JmAvances.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/organizer_calendar_pen_note_6134.png"))); // NOI18N
         JmAvances.setText("Avances");
@@ -1043,7 +1053,7 @@ public final class Principal extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String a = JOptionPane.showInputDialog("Introduce contraseña");
-                admin = (a.equals("0505")) ? "1" : "0";
+                admin = (a.equals("0605")) ? "1" : "0";
                 if (admin.equals("1")) {
                     setconexiones();
                     JmRespaldos.setVisible(true);
@@ -1701,8 +1711,21 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmRespaldos1ActionPerformed
 
     private void JlEmpresaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlEmpresaMousePressed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_JlEmpresaMousePressed
+
+    private void JmAnunciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAnunciosActionPerformed
+        try {//Abrir app de respaldos
+            Anucios f = new Anucios();
+            this.JdPanel.add(f);
+            f.getconexion();
+            f.setempresas();
+            f.setMaximum(true);
+            f.show();
+        } catch (Exception ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmAnunciosActionPerformed
 
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
@@ -1831,7 +1854,7 @@ public final class Principal extends javax.swing.JFrame {
                     u = dp.getUserlite(liteusuario, a, a);
                     if (!u.getUsuario().equals("")) {
 //                        checkempresa();
-                        
+
 //                        Si es administracion usaria tpu y maq
                         if (u.getTipo_usuario().equals("1")) {
                             setTpucon();
@@ -1840,7 +1863,7 @@ public final class Principal extends javax.swing.JFrame {
                             JmOut.setVisible(true);
                             JmSesion.setEnabled(false);
                             JlUsuario.setText(u.getNombre() + " " + u.getUsuario());
-                        }else{
+                        } else {
                             actualizaempresa();
                         }
                     }
@@ -2219,6 +2242,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel JlEmpresa;
     private javax.swing.JLabel JlSerie;
     private javax.swing.JLabel JlUsuario;
+    private javax.swing.JMenuItem JmAnuncios;
     private javax.swing.JMenuItem JmAuxcliente;
     private javax.swing.JMenu JmAvances;
     private javax.swing.JMenuItem JmAvancesPt;
