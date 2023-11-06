@@ -9,6 +9,7 @@ import Modelo.Anuncio;
 import Modelo.Avance;
 import Modelo.Colsdepartamentos;
 import Modelo.Davance;
+import Modelo.Falla;
 import Modelo.metadep;
 import Modelo.pantalla;
 import Persistencia.sqlavances;
@@ -239,6 +240,37 @@ public class daoAvances implements Avances {
     public ArrayList<Anuncio> getAnuncios(Connection c) {
         sqlpantallas s = new sqlpantallas();
         return s.getanuncios(c);
+    }
+
+    @Override
+    public boolean newfalla(Connection c, Falla f) {
+        sqlpantallas s = new sqlpantallas();
+        return s.nuevafalla(c, f);
+    }
+
+    @Override
+    public ArrayList<Falla> getFallas(Connection c) {
+        sqlpantallas s = new sqlpantallas();
+        return s.getfallas(c);
+    }
+
+    @Override
+    public void setborrado(Connection c, int id, String tipo, String tabla) {
+        sqlpantallas s = new sqlpantallas();
+        s.setborrado(c, id, tipo, tabla);
+    }
+
+    /**
+     * Actualiza a auna fecha acual y poderla utilizar al instante
+     * @param c
+     * @param id
+     * @param tabla
+     * @param fecha 
+     */
+    @Override
+    public void setactualizar(Connection c, int id, String tabla, String fecha) {
+        sqlpantallas s = new sqlpantallas();
+        s.setactualizar(c, id, tabla, fecha);
     }
 
 }

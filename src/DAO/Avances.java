@@ -9,6 +9,7 @@ import Modelo.Anuncio;
 import Modelo.Avance;
 import Modelo.Colsdepartamentos;
 import Modelo.Davance;
+import Modelo.Falla;
 import Modelo.metadep;
 import Modelo.pantalla;
 import java.sql.Connection;
@@ -73,5 +74,13 @@ public interface Avances {
     public boolean newanuncio(Connection c, Anuncio a);
     
     public ArrayList<Anuncio> getAnuncios(Connection c);
+    
+    public boolean newfalla(Connection c, Falla f);
+    
+    public ArrayList<Falla> getFallas(Connection c);
+    
+    public void setborrado(Connection c, int id, String tipo, String tabla);
+    
+    public void setactualizar(Connection c, int id, String tabla, String fecha);
 
 }

@@ -12,8 +12,16 @@ package Modelo;
 public class Falla implements java.io.Serializable{
     private int falla,pantalla;
     private String fecha,nombrefalla, usuario,observaciones,estatus,
-            imagen1,imagen2,imagen3,imagen4,imagen5,imagen6;
+            imagen1,imagen2,imagen3,imagen4,imagen5,imagen6, nombrepant;
     private String descimag1,descimag2,descimag3,descimag4,descimag5,descimag6;
+
+    public String getNombrepant() {
+        return nombrepant;
+    }
+
+    public void setNombrepant(String nombrepant) {
+        this.nombrepant = nombrepant;
+    }
 
     public String getDescimag1() {
         return descimag1;

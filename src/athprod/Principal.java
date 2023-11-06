@@ -89,7 +89,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "0";
+    String prod = "1";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -159,6 +159,7 @@ public final class Principal extends javax.swing.JFrame {
         JmCatalogoprod = new javax.swing.JMenuItem();
         JmFicha = new javax.swing.JMenuItem();
         JmAnuncios = new javax.swing.JMenuItem();
+        JmFallas = new javax.swing.JMenuItem();
         JmAvances = new javax.swing.JMenu();
         JmPantallahrs = new javax.swing.JMenuItem();
         JmPantallahrs1 = new javax.swing.JMenuItem();
@@ -316,6 +317,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmProd.add(JmAnuncios);
+
+        JmFallas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/propagation_calculator_calc_6110.png"))); // NOI18N
+        JmFallas.setText("Fallas de produccion");
+        JmFallas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmFallasActionPerformed(evt);
+            }
+        });
+        JmProd.add(JmFallas);
 
         JmAvances.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/organizer_calendar_pen_note_6134.png"))); // NOI18N
         JmAvances.setText("Avances");
@@ -1727,6 +1737,20 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmAnunciosActionPerformed
 
+    private void JmFallasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFallasActionPerformed
+        try {//Abrir app de respaldos
+            Fallasprod f = new Fallasprod();
+            this.JdPanel.add(f);
+            f.usuario=u.getUsuario();
+            f.getconexion();
+            f.setempresas();
+            f.setMaximum(true);
+            f.show();
+        } catch (Exception ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmFallasActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -1867,7 +1891,6 @@ public final class Principal extends javax.swing.JFrame {
                             actualizaempresa();
                         }
                     }
-
                 }
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -1909,6 +1932,7 @@ public final class Principal extends javax.swing.JFrame {
 
                     if (u.getProduccion().equals("1")) {
                         JmProd.setVisible(true);
+                        //JmAnuncios.setVisible(false);
                     }
                     if (u.getAvances().equals("1")) {
                         JmAvances.setVisible(true);
@@ -1927,6 +1951,19 @@ public final class Principal extends javax.swing.JFrame {
                     if (u.getTurno().equals("6")) {
                         JmMaq.setVisible(true);
                         JmMaq.setEnabled(true);
+                    }
+                    if(u.getRh().equals("1")){
+                        JmVentas.setVisible(false);
+                        JmFacturacion.setVisible(false);
+                        JmVerfacts.setVisible(false);
+                        JmModcaja.setVisible(false);
+                        JmSalidas.setVisible(false);
+                        JmTpu.setVisible(false);
+                        JmProd.setVisible(true);
+                        JmCatalogoprod.setVisible(false);
+                        JmFicha.setVisible(false);
+                        JmFallas.setVisible(false);
+                        JmAvances.setVisible(false);
                     }
 
                     JmOut.setVisible(true);
@@ -2266,6 +2303,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmEntradasS1;
     private javax.swing.JMenuItem JmFacturacion;
     private javax.swing.JMenuItem JmFacturacionE;
+    private javax.swing.JMenuItem JmFallas;
     private javax.swing.JMenuItem JmFamilia;
     private javax.swing.JMenuItem JmFamilia1;
     private javax.swing.JMenuItem JmFicha;

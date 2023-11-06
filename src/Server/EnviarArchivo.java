@@ -28,7 +28,8 @@ public class EnviarArchivo {
          
             // Creamos la direccion IP de la maquina que recibira el archivo
             //InetAddress direccion = InetAddress.getByName( "192.168.133.80" );
-            InetAddress direccion = InetAddress.getByName( "192.168.6.75" );
+            //InetAddress direccion = InetAddress.getByName( "192.168.6.75" );
+            InetAddress direccion = InetAddress.getByName( "192.168.6.8" );
          
             // Creamos el Socket con la direccion y elpuerto de comunicacion
             Socket socket = new Socket( direccion, puerto );

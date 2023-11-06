@@ -218,10 +218,8 @@ public class Nuevoanuncio extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     *
+     * Rellena el combo con la info recien obtenida
      */
-
-
     public void llenacombo() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         sqlpantallas s = new sqlpantallas();
@@ -233,7 +231,7 @@ public class Nuevoanuncio extends javax.swing.JDialog {
     }
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        
+        dispose();
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
@@ -266,30 +264,28 @@ public class Nuevoanuncio extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel3MousePressed
 
     private void nuevoasunto() {
-        if (archivo != null) {
-            daoAvances d = new daoAvances();
-            java.util.Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Anuncio a = new Anuncio();
-            a.setFecha(sdf.format(date));
-            a.setPantalla(arr.get(JcPantalla.getSelectedIndex()).getPantalla());
-            a.setCuerpo(JtNombre.getText().toUpperCase());
-            a.setImagen("anuncios/" + archivo.getName());
-            if (d.newanuncio(avances, a)) {
-                try {
+        Anuncio a = new Anuncio();
+        a.setImagen((archivo != null) ? "anuncios/" + archivo.getName() : "anuncios/blank.png");
+        daoAvances d = new daoAvances();
+        java.util.Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        a.setFecha(sdf.format(date));
+        a.setPantalla(arr.get(JcPantalla.getSelectedIndex()).getPantalla());
+        a.setCuerpo(JtNombre.getText().toUpperCase());
+        if (d.newanuncio(avances, a)) {
+            try {
+                if ((archivo != null)) {
                     EnviarArchivo e1 = new EnviarArchivo(archivo.getCanonicalPath(), 5000);
                     e1.enviarArchivo();
-                    JOptionPane.showMessageDialog(null, "Exito al publicar un nuevo anuncio");
-                    dispose();
-                } catch (IOException ex) {
-                    Logger.getLogger(Nuevoanuncio.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "No se pudo agregar el nuevo anuncio, intentelo de nuevo");
-                JtNombre.requestFocus();
+                JOptionPane.showMessageDialog(null, "Exito al publicar un nuevo anuncio");
+                dispose();
+            } catch (IOException ex) {
+                Logger.getLogger(Nuevoanuncio.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            JOptionPane.showMessageDialog(null, "No se pudo agregar el nuevo anuncio, seleccione una imagen antes de continuar");
+            JOptionPane.showMessageDialog(null, "No se pudo agregar el nuevo anuncio, intentelo de nuevo");
+            JtNombre.requestFocus();
         }
 
     }

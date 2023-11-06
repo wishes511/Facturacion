@@ -272,7 +272,7 @@ public class sqlpantallas {
             String sql = "select a.pantalla,anuncio,cuerpo,fecha,imagen,estatus,nombre\n"
                     + "from anuncios a\n"
                     + "join pantallas p on a.pantalla=p.pantalla\n"
-                    + "order by anuncio desc";
+                    + "order by fecha desc";
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -283,11 +283,128 @@ public class sqlpantallas {
                 a.setImagen(rs.getString("imagen"));
                 a.setFecha(rs.getString("fecha"));
                 a.setNombrepant(rs.getString("nombre"));
+                a.setEstatus(rs.getString("estatus"));
                 arr.add(a);
             }
         } catch (SQLException ex) {
             Logger.getLogger(sqlpantallas.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
+    }
+
+    public boolean nuevafalla(Connection c, Falla f) {
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement st;
+            int pant = f.getPantalla();
+            String fecha = f.getFecha();
+            String user = f.getUsuario();
+            String obs = f.getObservaciones();
+            String i1 = f.getImagen1();
+            String i2 = f.getImagen2();
+            String i3 = f.getImagen3();
+            String i4 = f.getImagen4();
+            String i5 = f.getImagen5();
+            String i6 = f.getImagen6();
+            String d1 = f.getDescimag1();
+            String d2 = f.getDescimag2();
+            String d3 = f.getDescimag3();
+            String d4 = f.getDescimag4();
+            String d5 = f.getDescimag5();
+            String d6 = f.getDescimag6();
+            String sql = "insert into fallas(pantalla, fecha,nombrefalla,usuario,observaciones,estatus,"
+                    + "imagen1,imagen2,imagen3,imagen4,imagen5,imagen6,"
+                    + "descimagen1,descimagen2,descimagen3,descimagen4,descimagen5,descimagen6) "
+                    + "values(" + pant + ",'" + fecha + "','','" + user + "','" + obs + "','1'"
+                    + ",'" + i1 + "','" + i2 + "','" + i3 + "','" + i4 + "','" + i5 + "','" + i6 + "'"
+                    + ",'" + d1 + "','" + d2 + "','" + d3 + "','" + d4 + "','" + d5 + "','" + d6 + "')";
+            st = c.prepareStatement(sql);
+            System.out.println("falla " + sql);
+            st.executeUpdate();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlpantallas.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlpantallas.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public ArrayList<Falla> getfallas(Connection c) {
+        ArrayList<Falla> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select id_falla,a.pantalla,observaciones,fecha,usuario,nombre,estatus,descimagen1,"
+                    + "descimagen2,descimagen3,descimagen4,descimagen5,descimagen6\n"
+                    + "from fallas a\n"
+                    + "join pantallas p on a.pantalla=p.pantalla\n"
+                    + "order by fecha desc";
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Falla f = new Falla();
+                f.setFalla(rs.getInt("id_falla"));
+                f.setNombrepant(rs.getString("nombre"));
+                f.setObservaciones(rs.getString("observaciones"));
+                f.setFecha(rs.getString("fecha"));
+                f.setUsuario(rs.getString("usuario"));
+                f.setEstatus(rs.getString("estatus"));
+                f.setDescimag1(rs.getString("descimagen1"));
+                f.setDescimag2(rs.getString("descimagen2"));
+                f.setDescimag3(rs.getString("descimagen3"));
+                f.setDescimag4(rs.getString("descimagen4"));
+                f.setDescimag5(rs.getString("descimagen5"));
+                f.setDescimag6(rs.getString("descimagen6"));
+                arr.add(f);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlpantallas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public void setborrado(Connection c, int id, String tipo, String tabla) {
+        String tablasql = (tabla.equals("anuncio")) ? "anuncios" : "fallas";
+        String colsql = (tabla.equals("anuncio")) ? "anuncio" : "id_falla";
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement st;
+            String sql = "update " + tablasql + " set estatus ='" + tipo + "' where " + colsql + "=" + id;
+            st = c.prepareStatement(sql);
+            st.executeUpdate();
+            c.commit();
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlpantallas.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlpantallas.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+    }
+
+    public void setactualizar(Connection c, int id, String tabla, String fecha) {
+        String tablasql = (tabla.equals("anuncio")) ? "anuncios" : "fallas";
+        String colsql = (tabla.equals("anuncio")) ? "anuncio" : "id_falla";
+        try {
+            c.setAutoCommit(false);
+            PreparedStatement st;
+            String sql = "update " + tablasql + " set fecha ='" + fecha + "' where " + colsql + "=" + id;
+            st = c.prepareStatement(sql);
+            st.executeUpdate();
+            c.commit();
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlpantallas.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlpantallas.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
     }
 }

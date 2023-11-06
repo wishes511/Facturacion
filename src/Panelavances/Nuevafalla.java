@@ -6,7 +6,7 @@
 package Panelavances;
 
 import DAO.daoAvances;
-import Modelo.Anuncio;
+import Modelo.Falla;
 import Modelo.pantalla;
 import Persistencia.sqlpantallas;
 import Server.EnviarArchivo;
@@ -33,9 +33,15 @@ public class Nuevafalla extends javax.swing.JDialog {
 
     public Connection avances;
     public Connection litecfdi;
+    public String usuario;
     private JFileChooser filechooser = new JFileChooser();
     ArrayList<pantalla> arr = new ArrayList<>();
     File archivo = null;
+    File archivo2 = null;
+    File archivo3 = null;
+    File archivo4 = null;
+    File archivo5 = null;
+    File archivo6 = null;
 
     /**
      * Creates new form Nuevomaterial
@@ -77,14 +83,14 @@ public class Nuevafalla extends javax.swing.JDialog {
         JtNombre3 = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         Jlimagen2 = new javax.swing.JLabel();
-        Jlimagen3 = new javax.swing.JLabel();
+        Jlimagen5 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         JtNombre4 = new javax.swing.JTextField();
         Jlimagen4 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         JtNombre5 = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
-        Jlimagen5 = new javax.swing.JLabel();
+        Jlimagen3 = new javax.swing.JLabel();
         JtNombre6 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -217,6 +223,7 @@ public class Nuevafalla extends javax.swing.JDialog {
             }
         });
 
+        JtNombre4.setColumns(5);
         JtNombre4.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
         JtNombre4.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         JtNombre4.setBorder(null);
@@ -287,74 +294,78 @@ public class Nuevafalla extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(Jlimagen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addComponent(jLabel3))
-                            .addComponent(JtNombre, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(52, 52, 52)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(Jlimagen1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addComponent(jLabel4))
-                            .addComponent(JtNombre2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(Jlimagen2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addComponent(jLabel5))
-                            .addComponent(JtNombre3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addComponent(jLabel6)
-                        .addGap(266, 266, 266)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(JcPantalla, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(Jlimagen5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addComponent(jLabel12))
-                            .addComponent(JtNombre6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(52, 52, 52)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(Jlimagen4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addComponent(jLabel11))
-                            .addComponent(JtNombre5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(Jlimagen3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addComponent(jLabel10))
-                            .addComponent(JtNombre4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(318, 318, 318)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(20, 20, 20)
-                    .addComponent(JtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(337, Short.MAX_VALUE)))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(Jlimagen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(70, 70, 70)
+                                        .addComponent(jLabel3))
+                                    .addComponent(JtNombre, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(52, 52, 52)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(Jlimagen1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(70, 70, 70)
+                                        .addComponent(jLabel4))
+                                    .addComponent(JtNombre2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(Jlimagen2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(70, 70, 70)
+                                        .addComponent(jLabel5))
+                                    .addComponent(JtNombre3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(8, 8, 8)
+                                        .addComponent(jLabel6)
+                                        .addGap(266, 266, 266))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(JtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(JcPantalla, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(Jlimagen3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(70, 70, 70)
+                                        .addComponent(jLabel12))
+                                    .addComponent(JtNombre6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(52, 52, 52)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(Jlimagen4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(70, 70, 70)
+                                        .addComponent(jLabel11))
+                                    .addComponent(JtNombre5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(Jlimagen5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(70, 70, 70)
+                                        .addComponent(jLabel10))
+                                    .addComponent(JtNombre4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -367,7 +378,9 @@ public class Nuevafalla extends javax.swing.JDialog {
                     .addComponent(jLabel6)
                     .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(JcPantalla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JcPantalla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -399,7 +412,7 @@ public class Nuevafalla extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Jlimagen5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(Jlimagen3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(JtNombre5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -411,15 +424,10 @@ public class Nuevafalla extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Jlimagen3, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(Jlimagen5, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(32, 32, 32)
                 .addComponent(jLabel1)
                 .addContainerGap(40, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(91, 91, 91)
-                    .addComponent(JtNombre1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(336, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -462,27 +470,42 @@ public class Nuevafalla extends javax.swing.JDialog {
         for (pantalla arr1 : arr) {
             model.addElement(arr1.getNombre());
         }
+        JtNombre1.requestFocus();
     }
 
     private void cerrar() {
-        try {
-            avances.close();
-            dispose();
-        } catch (SQLException ex) {
-            Logger.getLogger(Nuevafalla.class.getName()).log(Level.SEVERE, null, ex);
+        dispose();
+    }
+
+    /**
+     * Funcion repetitiva para los 6 botones que seleccionan una imagen
+     *
+     * @return
+     */
+    private File getimgen() {
+        File a = null;
+        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        filechooser.addChoosableFileFilter(new FileNameExtensionFilter("Images(jpg,png,bmp,gif)", "jpg", "png", "bmp", "gif"));
+        filechooser.setAcceptAllFileFilterUsed(true);
+        int returnval = filechooser.showOpenDialog(this);
+        if (returnval == JFileChooser.APPROVE_OPTION) {
+            a = filechooser.getSelectedFile();
         }
+        return a;
     }
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        cerrar();
+        dispose();
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-        nuevoasunto();
+        if (validacampos()) {
+            nuevoasunto();
+        }
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void JtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNombreActionPerformed
-        JcPantalla.requestFocus();
+        JtNombre2.requestFocus();
     }//GEN-LAST:event_JtNombreActionPerformed
 
     private void JtNombreMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtNombreMousePressed
@@ -490,20 +513,8 @@ public class Nuevafalla extends javax.swing.JDialog {
     }//GEN-LAST:event_JtNombreMousePressed
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
-        filechooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        filechooser.addChoosableFileFilter(new FileNameExtensionFilter("Images(jpg,png,bmp,gif)", "jpg", "png", "bmp", "gif"));
-        filechooser.setAcceptAllFileFilterUsed(true);
-        int returnval = filechooser.showOpenDialog(this);
-        if (returnval == JFileChooser.APPROVE_OPTION) {
-            archivo = filechooser.getSelectedFile();
-            Jlimagen.setText(archivo.getAbsolutePath());
-            //System.out.println(file.getAbsolutePath());
-            //EnviarArchivo e1 = new EnviarArchivo(file.getCanonicalPath(),5000);
-            //EnviarArchivo e = new EnviarArchivo(file.getCanonicalPath(),440);
-            //e1.enviarArchivo();
-            //e.enviarArchivo();
-//                ruta.setText(file.getAbsolutePath());
-        }
+        archivo = getimgen();
+        Jlimagen.setText(archivo.getName());
     }//GEN-LAST:event_jLabel3MousePressed
 
     private void JtNombre1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtNombre1MousePressed
@@ -511,7 +522,7 @@ public class Nuevafalla extends javax.swing.JDialog {
     }//GEN-LAST:event_JtNombre1MousePressed
 
     private void JtNombre1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNombre1ActionPerformed
-        // TODO add your handling code here:
+        JtNombre.requestFocus();
     }//GEN-LAST:event_JtNombre1ActionPerformed
 
     private void JtNombre2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtNombre2MousePressed
@@ -519,11 +530,12 @@ public class Nuevafalla extends javax.swing.JDialog {
     }//GEN-LAST:event_JtNombre2MousePressed
 
     private void JtNombre2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNombre2ActionPerformed
-        // TODO add your handling code here:
+        JtNombre3.requestFocus();
     }//GEN-LAST:event_JtNombre2ActionPerformed
 
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
-        // TODO add your handling code here:
+        archivo2 = getimgen();
+        Jlimagen1.setText(archivo2.getName());
     }//GEN-LAST:event_jLabel4MousePressed
 
     private void JtNombre3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtNombre3MousePressed
@@ -531,15 +543,17 @@ public class Nuevafalla extends javax.swing.JDialog {
     }//GEN-LAST:event_JtNombre3MousePressed
 
     private void JtNombre3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNombre3ActionPerformed
-        // TODO add your handling code here:
+        JtNombre6.requestFocus();
     }//GEN-LAST:event_JtNombre3ActionPerformed
 
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
-        // TODO add your handling code here:
+        archivo3 = getimgen();
+        Jlimagen2.setText(archivo3.getName());
     }//GEN-LAST:event_jLabel5MousePressed
 
     private void jLabel10MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MousePressed
-        // TODO add your handling code here:
+        archivo6 = getimgen();
+        Jlimagen5.setText(archivo6.getName());
     }//GEN-LAST:event_jLabel10MousePressed
 
     private void JtNombre4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtNombre4MousePressed
@@ -547,11 +561,12 @@ public class Nuevafalla extends javax.swing.JDialog {
     }//GEN-LAST:event_JtNombre4MousePressed
 
     private void JtNombre4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNombre4ActionPerformed
-        // TODO add your handling code here:
+        validacampos();
     }//GEN-LAST:event_JtNombre4ActionPerformed
 
     private void jLabel11MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MousePressed
-        // TODO add your handling code here:
+        archivo5 = getimgen();
+        Jlimagen4.setText(archivo5.getName());
     }//GEN-LAST:event_jLabel11MousePressed
 
     private void JtNombre5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtNombre5MousePressed
@@ -559,11 +574,12 @@ public class Nuevafalla extends javax.swing.JDialog {
     }//GEN-LAST:event_JtNombre5MousePressed
 
     private void JtNombre5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNombre5ActionPerformed
-        // TODO add your handling code here:
+        JtNombre4.requestFocus();
     }//GEN-LAST:event_JtNombre5ActionPerformed
 
     private void jLabel12MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MousePressed
-        // TODO add your handling code here:
+        archivo4 = getimgen();
+        Jlimagen3.setText(archivo4.getName());
     }//GEN-LAST:event_jLabel12MousePressed
 
     private void JtNombre6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtNombre6MousePressed
@@ -571,36 +587,125 @@ public class Nuevafalla extends javax.swing.JDialog {
     }//GEN-LAST:event_JtNombre6MousePressed
 
     private void JtNombre6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNombre6ActionPerformed
-        // TODO add your handling code here:
+        JtNombre5.requestFocus();
     }//GEN-LAST:event_JtNombre6ActionPerformed
+
+    private boolean validacampos() {
+        boolean flag = true;
+        if (JtNombre.getText().length() > 28 || JtNombre2.getText().length() > 28 || JtNombre2.getText().length() > 28
+                || JtNombre3.getText().length() > 28 || JtNombre4.getText().length() > 28 || JtNombre5.getText().length() > 28) {
+            JtNombre.requestFocus();
+            JOptionPane.showMessageDialog(null, "EL texto de los campos no puede sobrepasar 28 caracteres");
+            flag = false;
+        }
+        return flag;
+    }
 
     private void nuevoasunto() {
         if (archivo != null) {
             daoAvances d = new daoAvances();
             java.util.Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            Anuncio a = new Anuncio();
-            a.setFecha(sdf.format(date));
-            a.setPantalla(arr.get(JcPantalla.getSelectedIndex()).getPantalla());
-            a.setCuerpo(JtNombre.getText().toUpperCase());
-            a.setImagen("anuncios/" + archivo.getName());
-            if (d.newanuncio(avances, a)) {
-                try {
-                    EnviarArchivo e1 = new EnviarArchivo(archivo.getCanonicalPath(), 5000);
-                    e1.enviarArchivo();
-                    JOptionPane.showMessageDialog(null, "Exito al publicar un nuevo anuncio");
-                    cerrar();
-                } catch (IOException ex) {
-                    Logger.getLogger(Nuevafalla.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            Falla f = new Falla();
+            f.setPantalla(arr.get(JcPantalla.getSelectedIndex()).getPantalla());
+            f.setFecha(sdf.format(date));
+            f.setObservaciones(JtNombre1.getText().toUpperCase());
+            f.setImagen1("fallas/" + archivo.getName());
+            f.setDescimag1(JtNombre.getText().toUpperCase());
+            f.setUsuario(usuario);
+            f = validafalla(f);
+//            Inserta una nueva falla, y si todo esta bien envia los archivos al servidor
+            if (d.newfalla(avances, f)) {
+                validenviarchivo();
+                JOptionPane.showMessageDialog(null, "Exito al publicar un nueva falla");
+                cerrar();
             } else {
-                JOptionPane.showMessageDialog(null, "No se pudo agregar el nuevo anuncio, intentelo de nuevo");
+                JOptionPane.showMessageDialog(null, "No se pudo agregar el nueva falla, intentelo de nuevo");
                 JtNombre.requestFocus();
             }
         } else {
-            JOptionPane.showMessageDialog(null, "No se pudo agregar el nuevo anuncio, seleccione una imagen antes de continuar");
+            JOptionPane.showMessageDialog(null, "No se pudo agregar la nueva falla, seleccione una imagen antes de continuar");
         }
 
+    }
+
+    /**
+     * Verifica que no haya nada nulos en las imagenes y no mostrarse en la
+     * pantalla ell archivo llamado blank es para
+     *
+     * @param a
+     * @return
+     */
+    private Falla validafalla(Falla a) {
+        if (archivo2 != null) {
+            a.setImagen2("fallas/" + archivo2.getName());
+            a.setDescimag2(JtNombre2.getText().toUpperCase());
+        } else {
+            a.setImagen2("fallas/blank.png");
+            a.setDescimag2("");
+        }
+        if (archivo3 != null) {
+            a.setImagen3("fallas/" + archivo3.getName());
+            a.setDescimag3(JtNombre3.getText().toUpperCase());
+        } else {
+            a.setImagen3("fallas/blank.png");
+            a.setDescimag3("");
+        }
+        if (archivo4 != null) {
+            a.setImagen4("fallas/" + archivo4.getName());
+            a.setDescimag4(JtNombre6.getText().toUpperCase());
+        } else {
+            a.setImagen4("fallas/blank.png");
+            a.setDescimag4("");
+        }
+        if (archivo5 != null) {
+            a.setImagen5("fallas/" + archivo5.getName());
+            a.setDescimag5(JtNombre5.getText().toUpperCase());
+        } else {
+            a.setImagen5("fallas/blank.png");
+            a.setDescimag5("");
+        }
+        if (archivo6 != null) {
+            a.setImagen6("fallas/" + archivo6.getName());
+            a.setDescimag6(JtNombre4.getText().toUpperCase());
+        } else {
+            a.setImagen6("fallas/blank.png");
+            a.setDescimag6("");
+        }
+        return a;
+    }
+
+    /**
+     * Envia los archivos hacia el servidor solamente los que hayan sido
+     * seleccionados
+     */
+    private void validenviarchivo() {
+        try {
+            EnviarArchivo e1 = new EnviarArchivo(archivo.getCanonicalPath(), 5001);
+            e1.enviarArchivo();
+            if (archivo2 != null) {
+                EnviarArchivo e2 = new EnviarArchivo(archivo2.getCanonicalPath(), 5001);
+                e2.enviarArchivo();
+            }
+            if (archivo3 != null) {
+                EnviarArchivo e3 = new EnviarArchivo(archivo3.getCanonicalPath(), 5001);
+                e3.enviarArchivo();
+            }
+            if (archivo4 != null) {
+                EnviarArchivo e4 = new EnviarArchivo(archivo4.getCanonicalPath(), 5001);
+                e4.enviarArchivo();
+            }
+            if (archivo5 != null) {
+                EnviarArchivo e5 = new EnviarArchivo(archivo5.getCanonicalPath(), 5001);
+                e5.enviarArchivo();
+            }
+            if (archivo6 != null) {
+                EnviarArchivo e6 = new EnviarArchivo(archivo6.getCanonicalPath(), 5001);
+                e6.enviarArchivo();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Nuevafalla.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void vaciarcampos() {
