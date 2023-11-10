@@ -63,13 +63,6 @@ order by k.id_pedimento,k.fecha]]>
 	</background>
 	<pageHeader>
 		<band height="13">
-			<textField>
-				<reportElement x="403" y="0" width="43" height="11" uuid="a164c285-d2ac-48f2-b742-6d37daff0a48"/>
-				<textElement textAlignment="Center">
-					<font size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{inv}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="303" y="0" width="100" height="11" uuid="242fc8b1-7a5e-4efe-83c3-506f6fe3b138"/>
 				<textElement textAlignment="Center">
@@ -77,6 +70,13 @@ order by k.id_pedimento,k.fecha]]>
 				</textElement>
 				<text><![CDATA[Inventario Inicial]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="403" y="0" width="43" height="13" uuid="25120f2a-c492-4262-a6fa-fc4ff1440787"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<detail>

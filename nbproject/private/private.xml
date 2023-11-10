@@ -8,38 +8,27 @@
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoempresa.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/ncr2.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daofactura.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Anuncio.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Log.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Empresas.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Principal.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlkardex.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daokardexrcpt.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoPrincipal.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Panelavances/Nuevoanuncio.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Anucios.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/ncr1.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlcatcfdi.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlempresa.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/Avances.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoxmlncr.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Fallasprod.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daocfdi.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Panelavances/Nuevafalla.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Hrsavances.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoAvances.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Falla.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Server/Serverprod.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlpantallas.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Server/EnviarArchivo.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Dfactura.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoxml.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Persistencia/sqlfactura.java</file>
-            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/Catcfdi.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Kardexrcpt.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/kardexrcpt.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Notascr.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/mx/sat/cfd40/timbrarXML.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Paneles/Cargosncr.java</file>
+            <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/athprod/Reporteavancept.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/DAO/daoxmlE.java</file>
             <file>file:/C:/Users/GATEWAY1-/Documents/NetBeansProjects/Athprod/src/Modelo/Cliente.java</file>
         </group>

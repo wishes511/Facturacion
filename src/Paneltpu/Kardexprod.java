@@ -50,7 +50,9 @@ public class Kardexprod extends javax.swing.JDialog {
         initComponents();
         JtNombre.requestFocus();
         setLocationRelativeTo(null);
-
+        boton1.setSelected(true);
+        grupo.add(boton1);
+        grupo.add(boton2);
     }
 
     /**
@@ -62,6 +64,7 @@ public class Kardexprod extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        grupo = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         JtNombre = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -72,6 +75,9 @@ public class Kardexprod extends javax.swing.JDialog {
         Fecha = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         Fecha1 = new com.toedter.calendar.JDateChooser();
+        jPanel2 = new javax.swing.JPanel();
+        boton1 = new javax.swing.JRadioButton();
+        boton2 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -121,14 +127,49 @@ public class Kardexprod extends javax.swing.JDialog {
         jLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel7.setText("Fecha inicial");
 
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        boton1.setBackground(new java.awt.Color(255, 255, 255));
+        boton1.setText("Materiall");
+        boton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boton1ActionPerformed(evt);
+            }
+        });
+
+        boton2.setBackground(new java.awt.Color(255, 255, 255));
+        boton2.setText("Pedimento");
+        boton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(84, 84, 84)
+                .addComponent(boton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(boton2)
+                .addGap(96, 96, 96))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(25, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(boton1)
+                    .addComponent(boton2))
+                .addGap(23, 23, 23))
+        );
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -145,15 +186,25 @@ public class Kardexprod extends javax.swing.JDialog {
                         .addGap(19, 19, 19)))
                 .addGap(47, 47, 47))
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addGap(163, 163, 163)
-                            .addComponent(JtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(227, 227, 227)
-                        .addComponent(jLabel1)))
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(163, 163, 163)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -163,18 +214,20 @@ public class Kardexprod extends javax.swing.JDialog {
                     .addComponent(jLabel2)
                     .addComponent(jLabel8))
                 .addGap(34, 34, 34)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Fecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(JtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addGap(13, 13, 13)
                 .addComponent(jLabel1)
                 .addGap(38, 38, 38))
         );
@@ -211,20 +264,29 @@ public class Kardexprod extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            java.util.Date date = new Date();
-            String f1 = sdf.format(Fecha.getDate());
-            String f2 = sdf.format(Fecha1.getDate());
-            setreport(f1,f2);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        java.util.Date date = new Date();
+        String f1 = sdf.format(Fecha.getDate());
+        String f2 = sdf.format(Fecha1.getDate());
+        setreport(f1, f2);
     }//GEN-LAST:event_jLabel1MousePressed
 
-        private void setreport(String f1, String f2) {
+    private void boton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_boton1ActionPerformed
+
+    private void boton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_boton2ActionPerformed
+
+    private void setreport(String f1, String f2) {
+        String rep=(boton1.isSelected())?"Kardexprod":"KardexPedimento";
         try {
             Map parametros = new HashMap();
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportesrep/Kardexprod.jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportesrep/"+rep+".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, u.getCpttpu());
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             this.dispose();
@@ -235,7 +297,7 @@ public class Kardexprod extends javax.swing.JDialog {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void vaciarcampos() {
         JtNombre.setText("");
         JtNombre.requestFocus();
@@ -330,12 +392,16 @@ public class Kardexprod extends javax.swing.JDialog {
     private com.toedter.calendar.JDateChooser Fecha;
     private com.toedter.calendar.JDateChooser Fecha1;
     public javax.swing.JTextField JtNombre;
+    private javax.swing.JRadioButton boton1;
+    private javax.swing.JRadioButton boton2;
+    private javax.swing.ButtonGroup grupo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }
