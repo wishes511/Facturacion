@@ -5,8 +5,6 @@
  */
 package Tpu;
 
-import athprod.*;
-import DAO.daoClientes;
 import DAO.daocfdi;
 import Modelo.Cliente;
 import Modelo.Conexiones;
@@ -14,9 +12,7 @@ import Modelo.Formadepago;
 import Modelo.Usuarios;
 import Modelo.metodopago;
 import Modelo.usocfdi;
-import Paneles.fac1;
 import Paneltpu.fac1tpu;
-import Paneltpu.fac2tpu;
 import Paneltpu.fac3tpu;
 import Server.Serverylite;
 import java.io.IOException;

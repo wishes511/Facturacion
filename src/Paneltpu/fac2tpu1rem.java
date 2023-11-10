@@ -18,7 +18,6 @@ import Modelo.ConceptosES;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
-import Modelo.Nocolisiontpu;
 import Modelo.Usuarios;
 import Modelo.convertirNumeros;
 import Modelo.factura;
@@ -489,7 +488,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
             if (!a2) {
                 JOptionPane.showMessageDialog(null, "Error, La cantidad no puede ser mayor a lo que hay en stock o la cantidad es cero");
             }
-            System.out.println(a + " - " + a1);
+//            System.out.println(a + " - " + a1);
             if (!a && !a1 && !a2) {
                 JtDescuento.requestFocus();
             } else {
@@ -729,7 +728,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
             folios = "referencia ='" + k1.get(JlCliente1.getSelectedIndex()).getReferencia() + "'";
         } else {
             for (int i = 0; i < ind.length; i++) {
-                System.out.println(ind[i]);
+//                System.out.println(ind[i]);
                 if (i == 0) {
                     folios = "referencia ='" + k1.get(i).getReferencia() + "'";
                 } else {

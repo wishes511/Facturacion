@@ -284,11 +284,11 @@ public class sqlcatcfdi {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select * from Claveprods where clave='" + clave + "'";
-//            System.out.println(sql);
+////            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getString("descripcion"));
+//                System.out.println(rs.getString("descripcion"));
                 resp = true;
             }
             rs.close();
@@ -312,11 +312,11 @@ public class sqlcatcfdi {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select * from Unidad where claveunidad='" + clave + "'";
-//            System.out.println(sql);
+////            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
-                System.out.println(rs.getString("unidad"));
+//                System.out.println(rs.getString("unidad"));
                 resp = true;
             }
             rs.close();
@@ -340,11 +340,11 @@ public class sqlcatcfdi {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select * from Unidad where claveunidad='" + clave + "'";
-//            System.out.println(sql);
+////            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
-//                System.out.println(rs.getString("unidad"));
+////                System.out.println(rs.getString("unidad"));
                 resp = rs.getString("unidad");
             }
             rs.close();
@@ -369,7 +369,7 @@ public class sqlcatcfdi {
             ResultSet rs;
             String sql = "select usocfdi from regimenxuso\n"
                     + "where usocfdi='" + uso + "' and regimen like '%" + regimen + "%'";
-//            System.out.println(sql);
+////            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -394,7 +394,7 @@ public class sqlcatcfdi {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select * from Unidad order by unidad";
-//            System.out.println(sql);
+////            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -422,7 +422,7 @@ public class sqlcatcfdi {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select * from Claveprods order by clave";
-//            System.out.println(sql);
+////            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -453,7 +453,7 @@ public class sqlcatcfdi {
             String sql = "select clave,descripcion from Claveprods\n"
                     + "where clave like '%" + n + "%' or descripcion like '%" + n + "%'\n"
                     + "order by clave ";
-//            System.out.println(sql);
+////            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {

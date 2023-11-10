@@ -5,9 +5,6 @@
  */
 package Paneltpu;
 
-import DAO.daocfdi;
-import DAO.daofactura;
-import DAO.daomateriales;
 import Modelo.Almacen;
 import Modelo.Claveprov;
 import Modelo.Dureza;

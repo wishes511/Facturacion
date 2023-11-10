@@ -5,8 +5,6 @@
  */
 package Persistencia;
 
-
-import Modelo.Agentes;
 import Modelo.Almacen;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

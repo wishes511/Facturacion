@@ -33,7 +33,7 @@ public class sqlavances {
             String fecha = av.getFecha();
             String punto = av.getPunto();
             String sql = "insert into lotespt(lotes,fecha,punto,pares,estatus) values(" + lote + ",'" + fecha + "','" + punto + "'," + pares + ",'1')";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = a.prepareStatement(sql);
             st.executeUpdate();
             a.commit();
@@ -61,7 +61,7 @@ public class sqlavances {
             PreparedStatement st;
             a.setAutoCommit(false);
             String sql = "delete from Avancespt";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = a.prepareStatement(sql);
             st.executeUpdate();
             a.commit();
@@ -100,7 +100,7 @@ public class sqlavances {
                     + "join " + rcpt + ".dbo.corridas cor on p.corridacpt=cor.Corrida\n"
                     + "where l.fecha between '" + f1 + "' and '" + f2 + "' and years=year(l.fecha)\n"
                     + "group by lotes,p.pedido, nombre40,corridacpt,cor.PuntoInicial, cor.PuntoFinal,p.npares";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = av.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -114,7 +114,7 @@ public class sqlavances {
                 sql = "select distinct convert(date,fecha) as fecha, lotes\n"
                         + "from lotespt\n"
                         + "where lotes=" + lote + " and fecha between '" + f1 + "' and '" + f2 + "'";
-//                System.out.println(sql);
+////                System.out.println(sql);
                 st1 = av.prepareStatement(sql);
                 rs1 = st1.executeQuery();
                 while (rs1.next()) {
@@ -125,7 +125,7 @@ public class sqlavances {
                             + "where lotes=" + lote + " and convert(date,fecha)='" + fecha + "'\n"
                             + "group by punto\n"
                             + "order by punto";
-//                    System.out.println(sql);
+////                    System.out.println(sql);
                     st2 = av.prepareStatement(sql);
                     rs2 = st2.executeQuery();
 
@@ -178,11 +178,11 @@ public class sqlavances {
                     }
                     sql = "insert into Avancespt(lote,fecha,pedido,cliente,parinicial,parcap,c1,p1,c2,p2,c3,p3,c4,p4,c5,p5,c6,p6,c7,p7,c8,p8,c9,p9,c10,p10,c11,p11,c12,p12)"
                             + " values(" + lote + ",'" + fecha + "','" + pedido + "','" + cliente + "'," + parin + "," + npar + "," + sqlpar + ")";
-//                    System.out.println(sql);
+////                    System.out.println(sql);
                     s = lite.prepareStatement(sql);
                     s.executeUpdate();
                     lite.commit();
-//                    System.out.println(sqlpar);
+////                    System.out.println(sqlpar);
                     arrav.clear();
                 }
             }
@@ -235,7 +235,7 @@ public class sqlavances {
             c.setAutoCommit(false);
             PreparedStatement st;
             String sql = "update metaxdep set cantxhr=" + prs + ", cantxdia=" + col + " where nombre='" + nombre + "'";
-            System.out.println("actualiza prs avance " + sql);
+//            System.out.println("actualiza prs avance " + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
             c.commit();
@@ -373,7 +373,7 @@ public class sqlavances {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select * from colsdepartamentos";
-            System.out.println("colddepas " + sql);
+//            System.out.println("colddepas " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -400,7 +400,7 @@ public class sqlavances {
                         + "where convert(date," + nfecha + ") between '" + f1 + "' and '" + f2 + "' and " + nmaq + "='PL'\n"
                         + "group by convert(date," + nfecha + ")\n"
                         + "order by datepart(dw,convert(date," + nfecha + "))";
-//                System.out.println("Avances sem " + sql);
+////                System.out.println("Avances sem " + sql);
                 st = c.prepareStatement(sql);
                 rs = st.executeQuery();
                 while (rs.next()) {
@@ -427,7 +427,7 @@ public class sqlavances {
             for (Colsdepartamentos arr1 : arr) {
                 String sql = "insert into Avances_semanal(nombre,dia,ndia,pares) "
                         + "values('" + arr1.getNombre() + "'," + arr1.getDia() + ",'" + arr1.getNdia() + "'," + arr1.getPares() + ")";
-//                System.out.println("insert avance sem " + sql);
+////                System.out.println("insert avance sem " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -476,7 +476,7 @@ public class sqlavances {
                     + "where convert(date," + nfecha + ") between '" + f1 + "' and '" + f2 + "' and " + nmaq + "='PL'\n"
                     + "group by convert(date," + nfecha + ")," + dep + "\n"
                     + "order by convert(date," + nfecha + ")";
-            System.out.println("avancexdepa " + sql);
+//            System.out.println("avancexdepa " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -513,7 +513,7 @@ public class sqlavances {
                 int pt = arr1.getPt();
                 sql = "insert into Avances_mensual(fecha,corte,precor,pes,des,oji,ins,prea,mont,pt) "
                         + "values('" + f + "'," + cor + "," + pre + "," + pes + "," + des + "," + oji + "," + ins + "," + prea + "," + mont + "," + pt + ")";
-                System.out.println("Avanmensual " + sql);
+//                System.out.println("Avanmensual " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -536,7 +536,7 @@ public class sqlavances {
             c.setAutoCommit(false);
             String sql;
             sql = "delete from "+col;
-            System.out.println("Avantabla " + sql);
+//            System.out.println("Avantabla " + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
             c.commit();
@@ -578,7 +578,7 @@ public class sqlavances {
                     + "from programa p\n"
                     + "join avance a on p.id_prog=a.id_prog\n"
                     + "where convert(date," + nfecha + ") between '" + f2 + "' and '" + f2 + "' and " + nmaq + "='PL' and " + dep + "!=0";
-//            System.out.println("avances dia "+sql);
+////            System.out.println("avances dia "+sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -610,7 +610,7 @@ public class sqlavances {
                 int proy = arr1.getProyeccion();
                 sql = "insert into Avances_Diario(nombre,reportado,muestras,Total,Acumulado,Proyeccion) "
                         + "values('" + n + "'," + repor + "," + mues + "," + t + "," + acum + "," + proy + ")";
-//                System.out.println("Avadiario " + sql);
+////                System.out.println("Avadiario " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }

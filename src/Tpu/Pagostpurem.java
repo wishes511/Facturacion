@@ -6,29 +6,21 @@
 package Tpu;
 
 import DAO.daocfdi;
-import DAO.daofactura;
 import Modelo.Conexiones;
 import Modelo.Formadepago;
 import Modelo.Usuarios;
-import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.relacion;
 import Modelo.usocfdi;
-import Paneltpu.pagotpu1;
-import Paneltpu.pagotpu2;
 import Paneltpu.pagotpurem1;
 import Paneltpu.pagotpurem2;
 import Server.Serverylite;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SingleSelectionModel;
-import mx.sat.cfd40.generarXML40;
-import mx.sat.cfd40.xmlDAO;
 
 /**
  *

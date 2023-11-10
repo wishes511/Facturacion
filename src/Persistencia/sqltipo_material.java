@@ -7,7 +7,6 @@ package Persistencia;
 
 import Modelo.Fichas;
 import Modelo.Tipo_material;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +26,7 @@ public class sqltipo_material {
         try {
             con.setAutoCommit(false);
             String sql = "insert into servidor() values()";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
             con.commit();

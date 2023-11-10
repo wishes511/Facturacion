@@ -7,29 +7,17 @@ package Paneles;
 
 import DAO.daofactura;
 import Modelo.Addenda;
-import Modelo.Almacen;
-import Modelo.Combinacion;
-import Modelo.Corridas;
 import Modelo.Destinoscoppel;
 import Modelo.NAddenda;
-import Modelo.Producto;
 import Modelo.Setaddenda;
-import Modelo.cargo;
 import Modelo.factura;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.sql.Connection;
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -403,7 +391,7 @@ public class facAddenda extends javax.swing.JDialog {
 
     private boolean verificaciones(String r) {
         boolean resp = false;
-        System.out.println("valida " + r);
+//        System.out.println("valida " + r);
         if (!r.equals("") && (verificafloat(r) || verificaint(r))) {
             resp = true;
         }

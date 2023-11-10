@@ -116,7 +116,7 @@ public class sqldevolucion {
 //                    + "join RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
                     + ""+bdname+"\n"
                     + "where serie='B' and p.id_pedido=" + id;
-            System.out.println("dev ped " + sql);
+//            System.out.println("dev ped " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -160,7 +160,7 @@ public class sqldevolucion {
                     + "from devoluciones d\n"
                     + "join kardex k on k.id_kardex=d.id_kardex\n"
                     + "where d.id_devolucion=" + id + " and d.estatus='1'";
-            System.out.println("dev id " + sql);
+//            System.out.println("dev id " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -195,7 +195,7 @@ public class sqldevolucion {
                     + "left join documento doc on doc.pedidos=p.id_pedido\n"
                     + "where d.serie='" + serie + "'\n"
                     + "order by id_devolucion desc";
-            System.out.println("devs " + sql);
+//            System.out.println("devs " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -233,7 +233,7 @@ public class sqldevolucion {
                     + "join Documento d on d.pedidos=p.id_pedido\n"
                     + "join ACobranzatpu.dbo.Cargo c on d.folio=c.referencia\n"
                     + "where p.serie='A' and d.serie='FAC' and id_documento=" + id;
-            System.out.println("dev ped " + sql);
+//            System.out.println("dev ped " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -276,7 +276,7 @@ public class sqldevolucion {
                     + "join ACobranzatpu.dbo.Cargo c on d.folio=c.referencia\n"
                     + "join devoluciones dev on p.id_pedido=dev.id_pedido \n"
                     + "where p.serie='" + serie + "' and d.serie='FAC' and dev.estatus='1' and id_documento=" + id;
-            System.out.println("dev ped " + sql);
+//            System.out.println("dev ped " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -319,7 +319,7 @@ public class sqldevolucion {
                     + "join " + bdcob + "\n"
                     + "join devoluciones dev on p.id_pedido=dev.id_pedido\n"
                     + "where p.serie='" + serie + "' and dev.estatus='1' and p.id_pedido=" + id;
-            System.out.println("dev ped " + sql);
+//            System.out.println("dev ped " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -360,7 +360,7 @@ public class sqldevolucion {
                     + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
                     + "join " + bdcob + "\n"
                     + "where p.serie='" + serie + "' and p.id_pedido=" + id;
-            System.out.println("sin dev ped " + sql);
+//            System.out.println("sin dev ped " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -402,7 +402,7 @@ public class sqldevolucion {
                     + "join documento doc on doc.pedidos=p.id_pedido\n"
                     + "join " + bdcob + "\n"
                     + "where p.serie='" + serie + "' and doc.id_documento=" + id;
-            System.out.println("sin dev ped " + sql);
+//            System.out.println("sin dev ped " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -454,19 +454,19 @@ public class sqldevolucion {
             String stock = d.getStock();
             sql = "insert into devoluciones(id_cliente,id_pedido,id_concepto,id_kardex,id_motivo,nombre,total,fecha,descripcion,serie,estatus) "
                     + "values(" + cliente + "," + idped + "," + cuenta + "," + kardexnuevo + "," + motivo + ",'" + nombre + "',0,'" + fecha + "','" + obs + "','" + serie + "','1')";
-            System.out.println("dev " + sql);
+//            System.out.println("dev " + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
 //            sql = "update pedido set estatus='0' where id_pedido=" + idped;
-//            System.out.println("ped dev " + sql);
+////            System.out.println("ped dev " + sql);
 //            st = c.prepareStatement(sql);
 //            st.executeUpdate();
 //            sql = "update cargo set saldo=0, saldomx=0,estatus='0' where id_cargo=" + cargo;
-//            System.out.println("cargo dev " + sql);
+////            System.out.println("cargo dev " + sql);
 //            st = cob.prepareStatement(sql);
 //            st.executeUpdate();
             sql = "select max(id_devolucion) as id from devoluciones";
-            System.out.println("ddevolucion " + sql);
+//            System.out.println("ddevolucion " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -485,13 +485,13 @@ public class sqldevolucion {
 
                 sql = "insert into ddevoluciones(id_devolucion,id_material,dureza,renglon,precio,cantidad,importe,descripcion,estatus) "
                         + "values(" + respd + "," + idmat + ",'" + dur + "'," + ren + "," + precio + "," + cant + "," + imp + ",'" + desc + "','1')";
-                System.out.println("d dev " + sql);
+//                System.out.println("d dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
 
                 if (stock.equals("1")) {
                     sql = "update dpedimentos set cantidadrestante=cantidadrestante+" + cant + " where id_dpedimento=" + dped;
-                    System.out.println("d dev " + sql);
+//                    System.out.println("d dev " + sql);
                     st = c.prepareStatement(sql);
                     st.executeUpdate();
                 }
@@ -499,7 +499,7 @@ public class sqldevolucion {
                 sql = "insert into kardex "
                         + "values(" + kardexnuevo + "," + cuenta + "," + cliente + "," + idmat + ",0,1," + idpedimento + ",'" + usuario + "','"
                         + fecha + "'," + precio + "," + precio + "," + cant + "," + ren + ",'" + serie + "','1','1','" + dur + "','')";
-                System.out.println("kar dev " + sql);
+//                System.out.println("kar dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -548,22 +548,22 @@ public class sqldevolucion {
             String serie = d.getSerie();
 
             String sql = "update cargo set estatus='0',saldo=0,saldomx=0 where id_cargo=" + idcargo;
-            System.out.println("cancel cargo" + sql);
+//            System.out.println("cancel cargo" + sql);
             st = cob.prepareStatement(sql);
             st.executeUpdate();
             sql = "update pedido set estatus='0' where id_pedido=" + idped;
-            System.out.println("cancel dped" + sql);
+//            System.out.println("cancel dped" + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
             if (!arrd.isEmpty()) {
                 sql = "update devoluciones set estatus='0' where id_devolucion=" + iddev;
-                System.out.println("cancel dev" + sql);
+//                System.out.println("cancel dev" + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
             if (serie.equals("A")) {
                 sql = "update documento set estatus='0' where id_documento=" + iddoc;
-                System.out.println("cancel doc" + sql);
+//                System.out.println("cancel doc" + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -579,12 +579,12 @@ public class sqldevolucion {
                 sql = "insert into kardex "
                         + "values(" + k1 + "," + c1 + "," + cliente + "," + idmat + ",0,1," + idpedimento + ",'" + usuario + "','"
                         + fecha + "'," + precio + "," + precio + "," + cant + "," + ren + ",'" + serie + "','1','1','" + dur + "','DEV " + iddev + "')";
-                System.out.println("kar dev " + sql);
+//                System.out.println("kar dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
                 sql = "update dpedimentos set cantidadrestante=cantidadrestante-" + cant + " "
                         + "where id_pedimento=" + idpedimento + " and id_material=" + idmat + " and dureza='" + dur + "'";
-                System.out.println("dped dev " + sql);
+//                System.out.println("dped dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
                 ren++;
@@ -603,12 +603,12 @@ public class sqldevolucion {
                 sql = "insert into kardex "
                         + "values(" + k2 + "," + c2 + "," + cliente + "," + idmat + ",0,1," + idpedimento + ",'" + usuario + "','"
                         + fecha + "'," + precio + "," + precio + "," + cant + "," + ren + ",'" + serie + "','1','1','" + dur + "','PED " + pedido + "')";
-                System.out.println("kar dev " + sql);
+//                System.out.println("kar dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
                 sql = "update dpedimentos set cantidadrestante=cantidadrestante+" + cant + " "
                         + "where id_dpedimento=" + dped;
-                System.out.println("dped dev " + sql);
+//                System.out.println("dped dev " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
                 ren++;

@@ -6,20 +6,10 @@
 package Paneltpu;
 
 import DAO.daoProveedores;
-import DAO.daocfdi;
-import DAO.daofactura;
-import DAO.daofamilias;
-import DAO.daomateriales;
-import Modelo.Claveprov;
-import Modelo.Familia;
-import Modelo.Materiales;
 import Modelo.ProveedorMPrima;
-import Modelo.Unidades;
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**

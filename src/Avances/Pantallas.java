@@ -5,28 +5,15 @@
  */
 package Avances;
 
-import athprod.*;
 import DAO.daoAvances;
-import DAO.daoempresa;
-import DAO.daoresp;
-import Modelo.Empresas;
-import Modelo.Servidorsql;
-import Modelo.metadep;
 import Modelo.pantalla;
 import Server.Serverprod;
-import Server.Serverylite;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -161,7 +148,7 @@ public class Pantallas extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         try {
-            System.out.println("cerrar avances");
+//            System.out.println("cerrar avances");
             c.close();
         } catch (SQLException ex) {
             Logger.getLogger(Pantallas.class.getName()).log(Level.SEVERE, null, ex);

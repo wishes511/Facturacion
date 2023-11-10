@@ -6,12 +6,10 @@
 package Persistencia;
 
 import Modelo.Addenda;
-import Modelo.Colores;
 import Modelo.Corridaaddenda;
 import Modelo.Destinoscoppel;
 import Modelo.Fichas;
 import Modelo.factura;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -162,7 +160,7 @@ public class sqladdenda {
                     + "where f.estatus='F' and f.factura='"+fac+"'\n"
                     + "group by f.factura, numcliente,f.pedido,dp.corrida,f.fecha,dp.estilo,dp.precio,c.puntoinicial,c.puntofinal,"
                     + "cp.descripcion,m.descripcion ,col.descripcion,p.producto";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = rcpt.prepareStatement(sql);
             rs = st.executeQuery();
             int band = 0;

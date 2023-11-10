@@ -8,17 +8,12 @@ package Paneles;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
-import DAO.daokardexrcpt;
 import DAO.daoxmlncr;
-import Modelo.Ciudades;
 import Modelo.ConceptosES;
 import Modelo.Dfactura;
 import Modelo.Empresas;
-import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.Kardexrcpt;
-import Modelo.Nocolisionncr;
-import Modelo.Paises;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
 import Modelo.cargo;
@@ -29,11 +24,9 @@ import Modelo.relacion;
 import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,7 +37,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
@@ -785,7 +777,7 @@ public class ncr2 extends javax.swing.JPanel {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         model.removeRow(JtDetalle.getSelectedRow());
-        System.out.println("Elimine linea y total de lineas " + model.getRowCount());
+//        System.out.println("Elimine linea y total de lineas " + model.getRowCount());
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -1081,7 +1073,7 @@ public class ncr2 extends javax.swing.JPanel {
                 } else {
                     int id = dfac.nuevancr(cpt, f, ACobranza, rcpt);
                     if (id != 0) {
-                        System.out.println("Exito");
+//                        System.out.println("Exito");
                         daoxmlncr dx = new daoxmlncr();
                         f.setId(id);
                         dx.generarfac(f, cpt, sqlempresa);
@@ -1268,7 +1260,7 @@ public class ncr2 extends javax.swing.JPanel {
                 }
 
                 total = subtotal + impuestos;
-                System.out.println(impuestos);
+//                System.out.println(impuestos);
                 //Solo para despliqgue de informacion
                 JlIva.setText(formateador.format(impuestos));
                 Jlsub.setText(formateador.format(subtotal));
@@ -1287,7 +1279,7 @@ public class ncr2 extends javax.swing.JPanel {
 //                    impuestos += Double.parseDouble(formateador.format((precio / 1.16) * 0.16));
                     subtotal += formatdecimal(precio / 1.16);
                     impuestos += formatdecimal((precio / 1.16) * 0.16);
-                    System.out.println("01 " + impuestos + " " + subtotal);
+//                    System.out.println("01 " + impuestos + " " + subtotal);
                 }
                 if (resp) {// Si, y solo si es un entero o decimal
                     //Variables para manejo de totales
@@ -1295,7 +1287,7 @@ public class ncr2 extends javax.swing.JPanel {
                     //impuestos =(float) ((subtotal - descuentos) * iva);
 //                    total = subtotal + impuestos;
                     total = formatdecimal(subtotal + impuestos);
-                    System.out.println(impuestos);
+//                    System.out.println(impuestos);
                     //Solo para despliqgue de informacion
                     JlIva.setText(formatdecimal(impuestos) + "");
                     Jlsub.setText(formatdecimal(subtotal) + "");

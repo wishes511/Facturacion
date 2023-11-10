@@ -6,18 +6,13 @@
 package athprod;
 
 import DAO.daoempresa;
-import DAO.daoresp;
 import Modelo.Empresas;
-import Modelo.Servidorsql;
 import Server.Serverylite;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;

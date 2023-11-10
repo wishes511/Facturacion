@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import javax.swing.JOptionPane;
 
 public class EnviarArchivo {
     
@@ -47,7 +46,7 @@ public class EnviarArchivo {
             // Strings, boolean, caracteres y la familia de enteros, etc.
             DataOutputStream dos = new DataOutputStream( socket.getOutputStream() );
          
-            System.out.println( "Enviando Archivo: "+archivo.getName() );
+//            System.out.println( "Enviando Archivo: "+archivo.getName() );
          
             // Enviamos el nombre del archivo 
             dos.writeUTF( archivo.getName() );
@@ -83,7 +82,7 @@ public class EnviarArchivo {
           catch( Exception e )
           {
             System.out.println( e.toString() );
-              System.out.println("Archvo enviado");
+//              System.out.println("Archvo enviado");
           }
          
          }

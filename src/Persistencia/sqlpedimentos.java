@@ -7,8 +7,6 @@ package Persistencia;
 
 import Modelo.Dpedimento;
 import Modelo.pedimento;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -87,7 +85,7 @@ public class sqlpedimentos {
 //            Fin insercion kardex
             sql = "insert into pedimentos(id_proveedor,referencia,fecha,total,impuestos,subtotal,totalcant,serie,estatus,fechapedimento,observaciones)"
                     + " values(" + cl + ",'" + ref + "','" + fecha + "'," + tot + "," + imp + "," + sub + "," + totalcant + ",'A','1','" + fechaped + "','" + obs + "')";
-//            System.out.println("pedimento " + sql);
+////            System.out.println("pedimento " + sql);
             st = cpt.prepareStatement(sql);
             st.executeUpdate();
 
@@ -107,13 +105,13 @@ public class sqlpedimentos {
                 int alm = p.getArr().get(i).getId_almacen();
                 sql = "insert into dpedimentos(id_material,id_pedimento,cantidad,precio,costo,importe,cantidadrestante,estatus,matpedimento,dureza,cantinv)"
                         + " values(" + mat + "," + pedimento + "," + cant + "," + precio + "," + precio + "," + importe + "," + cant + ",'1','" + matped + "','" + dureza + "',"+cant+")";
-//                System.out.println("dped " + sql);
+////                System.out.println("dped " + sql);
                 st = cpt.prepareStatement(sql);
                 st.executeUpdate();
                 sql = "insert into kardex(id_kardex,id_concepto, id_cliente,id_material,id_prov,id_almacen,id_pedimento,usuario,fecha,costo,precio,cantidad,renglon,serie,estatus,estatusprod,dureza) "
                         + "values(" + kardex + ",1,0," + mat + "," + cl + "," + alm + "," + pedimento + ",'" + u + "','" + fecha + "',"
                         + precio + "," + precio + "," + cant + "," + (i + 1) + ",'A','1','1','" + dureza + "')";
-//                System.out.println("kardex " + sql);
+////                System.out.println("kardex " + sql);
                 st = cpt.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -143,7 +141,7 @@ public class sqlpedimentos {
 //                    + "join proveedores prov on p.id_proveedor=prov.id_proveedor\n"
 //                    + "where nombre like '%"+cliente+"%' and id_pedimento in (select id_pedimento from DPedimentos where cantidadrestante>0)";
             st = cpt.prepareStatement(sql);
-            System.out.println(sql);
+////            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 pedimento p = new pedimento();
@@ -170,7 +168,7 @@ public class sqlpedimentos {
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
                     + "where (" + referencias + ")";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -210,7 +208,7 @@ public class sqlpedimentos {
             String dur = p.getDureza();
             String sql = "insert into Dpedimentos(id_material,id_pedimento,cantidad,precio,costo,importe,cantidadrestante,estatus,matpedimento,dureza) "
                     + "values (" + mat + "," + ped + "," + cant + "," + precio + "," + costo + ",0," + crestante + ",'1','" + nmaterial + "','" + dur + "')";
-            System.out.println("new mat " + sql);
+//            System.out.println("new mat " + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
             c.commit();
@@ -238,7 +236,7 @@ public class sqlpedimentos {
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
                     + "order by referencia";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {

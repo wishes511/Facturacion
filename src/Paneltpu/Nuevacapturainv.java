@@ -6,7 +6,6 @@
 package Paneltpu;
 
 import DAO.daoInventarios;
-import DAO.daofactura;
 import DAO.daopedimentos;
 import Modelo.Formateodedatos;
 import Modelo.Inventario;

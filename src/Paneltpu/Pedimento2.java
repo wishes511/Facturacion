@@ -19,7 +19,6 @@ import Modelo.ProveedorMPrima;
 import Modelo.Usuarios;
 import Modelo.pedimento;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -309,7 +308,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void JmBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmBorrarActionPerformed
-        System.out.println(JtDetalle.getSelectedRow() + " - " + arrmatseleccion);
+//        System.out.println(JtDetalle.getSelectedRow() + " - " + arrmatseleccion);
         if (!arrmatseleccion.isEmpty()) {
             int row = JtDetalle.getSelectedRow();
             arrmatseleccion.remove(row);
@@ -395,7 +394,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
         if (evt.getButton() == 2) {
             clic2++;
             String combinacion = clic + "" + clic2 + "" + clic3;
-            System.out.println(combinacion);
+//            System.out.println(combinacion);
             if (combinacion.equals("211")) {
                 if (serie.equals("A")) {
                     serie = "B";
@@ -482,7 +481,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nke) {
         if (nke.getKeyCode() == NativeKeyEvent.VK_A) {
-            System.out.println("f12");
+//            System.out.println("f12");
             String combinacion = clic + "" + clic2 + "" + clic3;
 
         }

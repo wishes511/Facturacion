@@ -12,7 +12,6 @@ import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daokardexrcpt;
 import DAO.daopedimentos;
-import DAO.daoxmlTraslado;
 import DAO.daoxmltpu;
 import Modelo.Agentes;
 import Modelo.Cliente;
@@ -20,7 +19,6 @@ import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
 import Modelo.Formateodedatos;
-import Modelo.Kardexrcpt;
 import Modelo.Nocolisiontpu;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
@@ -788,7 +786,7 @@ public class fac2tpu extends javax.swing.JPanel {
             if (!a1) {
                 JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
             }
-            System.out.println(a + " - " + a1);
+//            System.out.println(a + " - " + a1);
             if (!a && !a1) {
                 JtDescuento.requestFocus();
             } else {
@@ -993,7 +991,7 @@ public class fac2tpu extends javax.swing.JPanel {
 
                     Sellofiscal s = new Sellofiscal();
                     if (id != 0) {
-                        System.out.println("Exito");
+//                        System.out.println("Exito");
                         daoxmltpu dx = new daoxmltpu();
                         f.setId(id);
                         dx.generarfac(f, cpt, sqlempresa);
@@ -1200,7 +1198,7 @@ public class fac2tpu extends javax.swing.JPanel {
             folios = "referencia ='" + k1.get(JlCliente1.getSelectedIndex()).getReferencia() + "'";
         } else {
             for (int i = 0; i < ind.length; i++) {
-                System.out.println(ind[i]);
+//                System.out.println(ind[i]);
                 if (i == 0) {
                     folios = "referencia ='" + k1.get(ind[i]).getReferencia() + "'";
                 } else {

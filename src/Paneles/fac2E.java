@@ -8,19 +8,15 @@ package Paneles;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
-import DAO.daokardexrcpt;
 import DAO.daoxmlE;
-import Modelo.Ciudades;
 import Modelo.Cliente;
 import Modelo.Conexiones;
 import Modelo.Dfactura;
 import Modelo.Empresas;
-import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
 import Modelo.Nocolision;
-import Modelo.Paises;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
@@ -32,11 +28,9 @@ import Modelo.metodopago;
 import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,7 +41,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -717,7 +710,7 @@ public class fac2E extends javax.swing.JPanel {
             if (!a3) {
                 JOptionPane.showMessageDialog(null, "Error, Introduce un valor valido en el tipo de cambio");
             }
-            System.out.println(a + " - " + a1);
+//            System.out.println(a + " - " + a1);
             if (!a && !a1 && a2 && a3) {
                 JtDetalle.requestFocus();
             } else {
@@ -845,7 +838,7 @@ public class fac2E extends javax.swing.JPanel {
                     df.setDescuento(Double.parseDouble(as1));
 //                    df.setDescuento(Double.parseDouble(formateador.format(descuento)));
                     df.setTasaocuota(iva + "");
-                    System.out.println("detalle " + df.getBase() + " " + df.getDescuento() + " " + df.getImpuesto());
+//                    System.out.println("detalle " + df.getBase() + " " + df.getDescuento() + " " + df.getImpuesto());
                     arrf.add(df);
                     totalpares += tpares;
                     impuestos += Double.parseDouble(as);
@@ -912,7 +905,7 @@ public class fac2E extends javax.swing.JPanel {
 //                int id = dfac.nuevafac(cpt, f, ACobranza, rcpt);
                 int id = dfac.nuevafacE(cpt, f, ACobranza, rcpt);
                 if (id != 0) {
-                    System.out.println("Exito");
+//                    System.out.println("Exito");
                     daoxmlE dx = new daoxmlE();
                     f.setId(id);
                     dx.generarfac(f, cpt, sqlempresa);
@@ -937,7 +930,7 @@ public class fac2E extends javax.swing.JPanel {
         Conexiones cn = dfac.nuevafacEconex(cpt, f, ACobranza, rcpt);
         int id = cn.getResp();
         if (id != 0) {
-            System.out.println("Exito");
+//            System.out.println("Exito");
             daoxmlE dx = new daoxmlE();
             f.setId(id);
 //                    dx.generarfac(f, cpt, sqlempresa);
@@ -1079,7 +1072,7 @@ public class fac2E extends javax.swing.JPanel {
     }//GEN-LAST:event_JtTCambioActionPerformed
 
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
-        System.out.println("index " + JtFolio1.getSelectedIndex());
+//        System.out.println("index " + JtFolio1.getSelectedIndex());
         if (arrcliente.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Error, No puedes agregar lineas sin haber seleccionado un cliente");
         } else {
@@ -1105,7 +1098,7 @@ public class fac2E extends javax.swing.JPanel {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jLabel13MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MousePressed
-        System.out.println(JtFolio1.getSelectedIndex());
+//        System.out.println(JtFolio1.getSelectedIndex());
         if (arrcliente.isEmpty() && JtFolio1.getSelectedIndex() == -1) {
 
         } else {
@@ -1266,7 +1259,7 @@ public class fac2E extends javax.swing.JPanel {
                     impuestos = ((subtotal - descuentos) * iva);
                     total = subtotal - descuentos + impuestos;
 //                    total = subtotal - descuentos + impuestos;
-                    System.out.println(impuestos + " -" + subtotal + " - " + total);
+//                    System.out.println(impuestos + " -" + subtotal + " - " + total);
                     //Solo para despliqgue de informacion
                     JlIva.setText(formateador.format(impuestos));
                     Jlsub.setText(formateador.format(subtotal));
@@ -1282,7 +1275,7 @@ public class fac2E extends javax.swing.JPanel {
     }
 
     private boolean verificaint(String cad) {
-        System.out.println("int -" + cad + "-");
+//        System.out.println("int -" + cad + "-");
         boolean resp = false;
         String patt = "[0-9]+";
         Pattern pat = Pattern.compile(patt);
@@ -1294,7 +1287,7 @@ public class fac2E extends javax.swing.JPanel {
     }
 
     private boolean verificafloat(String cad) {
-//        System.out.println("float -" + cad + "-");
+////        System.out.println("float -" + cad + "-");
         boolean resp = false;
         String patt = "[0-9]+||[0-9]+.[0-9]+";
         Pattern pat = Pattern.compile(patt);

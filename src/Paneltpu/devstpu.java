@@ -8,15 +8,11 @@ package Paneltpu;
 import DAO.daoDevolucion;
 import DAO.daocfdi;
 import DAO.daoempresa;
-import DAO.daofactura;
 import Modelo.Devolucion;
 import Modelo.Empresas;
-import Modelo.Formadepago;
 import Modelo.Usuarios;
 import Modelo.convertirNumeros;
 import Modelo.factura;
-import Modelo.metodopago;
-import Modelo.usocfdi;
 import Server.Serverprod;
 import java.sql.Connection;
 import java.text.DecimalFormat;
@@ -30,7 +26,6 @@ import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
-import mx.sat.cfd40.timbrarXML;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -217,7 +212,7 @@ public class devstpu extends javax.swing.JPanel {
         if (evt.getButton() == 2) {
             clic2++;
             String combinacion = clic + "" + clic2 + "" + clic3;
-            System.out.println(combinacion);
+//            System.out.println(combinacion);
             if (combinacion.equals("211")) {
                 if (serie.equals("A")) {
                     serie = "B";

@@ -60,7 +60,6 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
-import mx.sat.cfd40.timbrarXML;
 
 /**
  *
@@ -89,7 +88,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
     Usuarios u = new Usuarios();
 
     public Principal() {
@@ -99,6 +98,7 @@ public final class Principal extends javax.swing.JFrame {
         this.setExtendedState(this.MAXIMIZED_BOTH);
         Image icon = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/Recursos/programacion.png"));
         setIconImage(icon);
+//        Cuando llegue el momento de usar siingleton
 //        Allsingleton singleton = new Allsingleton();
 //        Jlnombre.setText(Allsingleton.getUsuario().getNombre());
 //        JlSerie.setText(Allsingleton.getSerie());
@@ -1758,61 +1758,6 @@ public final class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Selecciona la empresa a usar!");
             JrEmpresa.requestFocus();
         }
-    }
-
-//    Primera version para veriicar el usuario
-    private void verificausuario() {
-        jp.setVisible(true);
-        jp.requestFocus();
-        jp.isFocusable();
-        JOptionPane.showMessageDialog(null, jp);
-        String a = jp.getText();
-        if (a.equals("")) {
-            JOptionPane.showMessageDialog(null, "El campo no debe ir vacio");
-            jp.requestFocus();
-        } else {
-            System.out.println(a);
-            u = new Usuarios();
-            if (a.equals("0605")) {
-                JlUsuario.setText("Michel Admin");
-                u.setUsuario("Michel");
-                u.setGrado("2");
-                modoadmin();
-                JmSesion.setEnabled(false);
-                jLabel1.requestFocus();
-            } else {
-                String res = "";
-                daoPrincipal dp = new daoPrincipal();
-                u = dp.getUsers(conexion.getRcpt(), "", a, "ñ");
-                if (u.getGrado().equals("2")) {
-                    JlUsuario.setText(u.getUsuario() + " Admin");
-                    modoadmin();
-                    JmSesion.setEnabled(false);
-                    JmOut.setVisible(true);
-                    res = "a";
-                }
-                if (!u.getUsuario().equals("") && !u.getGrado().equals("2")) {
-                    JmVentas.setVisible(true);
-                    JlUsuario.setText(u.getUsuario() + " Cpt facs");
-                    res = "a";
-                }
-                if (res.equals("")) {
-                    u = dp.getUsers(conexion.getCobranza(), "", a, "n");
-                    if (!u.getUsuario().equals("")) {
-                        JmCobranza.setVisible(true);
-                        JlUsuario.setText(u.getUsuario() + " Cobranza");
-                    }
-                }
-                JmOut.setVisible(true);
-                JmSesion.setEnabled(false);
-                jLabel1.requestFocus();
-                timbrarXML t = new timbrarXML();
-                if (!t.getprod()) {
-                    JOptionPane.showMessageDialog(null, "Cuidado!, no estas en modo produccion");
-                }
-            }
-        }
-
     }
 
     private void verificausuariolite() {

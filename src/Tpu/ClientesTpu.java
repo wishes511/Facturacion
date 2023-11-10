@@ -6,7 +6,6 @@
 package Tpu;
 
 import DAO.daoClientes;
-import DAO.daofactura;
 import Modelo.Cliente;
 import Modelo.Conexiones;
 import Modelo.Usuarios;

@@ -14,17 +14,13 @@ import DAO.daofactura;
 import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import DAO.daoxmlE;
-import DAO.daoxmlTraslado;
-import DAO.daoxmltpu;
 import Modelo.Agentes;
 import Modelo.Cliente;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
 import Modelo.Formateodedatos;
-import Modelo.Kardexrcpt;
 import Modelo.Nocolision;
-import Modelo.Nocolisiontpu;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
@@ -786,7 +782,7 @@ public class fac3tpu extends javax.swing.JPanel {
             if (!a1) {
                 JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
             }
-            System.out.println(a + " - " + a1);
+//            System.out.println(a + " - " + a1);
             if (!a || !a1 || !a2) {
                 JtDescuento.requestFocus();
             } else {
@@ -989,7 +985,7 @@ public class fac3tpu extends javax.swing.JPanel {
 //                    y desde ath no se podra ver la salida pero ambas estarán relacionadas
                     int id = dfac.nuevafactpuATH(cpt, f, ACobranza, cpttpu, rcpt);
                     if (id != 0) {
-                        System.out.println("Exito");
+//                        System.out.println("Exito");
 //                    La factura en ath entrará como especial y no como pares porque no afecta en stock para ese sistema
                         daoxmlE dx = new daoxmlE();
                         f.setId(id);
@@ -1014,7 +1010,7 @@ public class fac3tpu extends javax.swing.JPanel {
 //                        f.setFoliofiscalorig(s.getUuid());
 //                        id = dfac.nuevafacTraslado(cpt, rcpt, f);
 //                        if (id != 0) {
-//                            System.out.println("Exito traslado");
+////                            System.out.println("Exito traslado");
 //                            daoxmlTraslado dx = new daoxmlTraslado();
 //                            f.setId(id);
 //                            dx.generarfac(f, cpt, sqlempresa);
@@ -1279,7 +1275,7 @@ public class fac3tpu extends javax.swing.JPanel {
 //        String r = k0.get(JtFolio1.getSelectedIndex()).getFolio() + "";
 //        k = dk.getkardexfac(rcpt, r, empresacob);// nueva carga de datos
 //        k = dk.getkardexfacMulti(rcpt, empresacob, folios);
-//        System.out.println(k.size());
+////        System.out.println(k.size());
         generatabla();
 //        setAgentes();
     }
@@ -1388,8 +1384,8 @@ public class fac3tpu extends javax.swing.JPanel {
                 impuestos = (subtotal - descuentos) * iva;
                 total = impuestos + subtotal - descuentos;
 //                total = subtotal - descuentos + impuestos;
-//                System.out.println(total + " -- " + impuestos + " -- " + subtotal + " -- " + descuentos+" --"+tot);
-//                System.out.println(impuestos);
+////                System.out.println(total + " -- " + impuestos + " -- " + subtotal + " -- " + descuentos+" --"+tot);
+////                System.out.println(impuestos);
                 //Solo para despliqgue de informacion
                 JlIva.setText(formateador.format(impuestos));
                 Jlsub.setText(formateador.format(subtotal));

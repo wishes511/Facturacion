@@ -9,7 +9,6 @@ import Modelo.Cliente;
 import Modelo.KardexCmp;
 import Modelo.Kardexrcpt;
 import Modelo.Producto;
-import Modelo.Seriecpt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -106,7 +105,7 @@ public class sqlkardex {
                         + cuenta + "','" + sub + "'," + paquete + "," + prog + "," + lote + "," + totalpares + "," + costo + "," + venta + ","
                         + importe + "," + c1 + "," + c2 + "," + c3 + "," + c4 + "," + c5 + "," + c6 + "," + c7 + "," + c8 + "," + c9 + "," + c10 + "," + c11 + "," + c12 + ",0,0,'" + stock + "','"
                         + stock + "','','I','" + pedido + "'," + (i + 1) + ",'',0,0,0,'','" + serie + "','Michel','" + fecha + "')";
-                System.out.println("rcpt " + sql);
+//                System.out.println("rcpt " + sql);
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -116,7 +115,7 @@ public class sqlkardex {
                     + "values ('" + pedido + "','" + fecha + "','" + fecha + "','" + fecha + "','" + fecha + "',''," + prv + ",0,''," + agente + ",23,'P',38,0," + importes + ","
                     + tpares + ",25,'" + fecha + "','',0,'" + fecha + "','','',NULL,'NINGUNA',NULL,NULL,0,0,0,'',0," + tpares + ",0,0,'','N',NULL,NULL,NULL,'"
                     + serie + "','Michel','" + fecha + "','Michel','" + fecha + "','" + marca + "')";
-            System.out.println("pedidos " + sql);
+//            System.out.println("pedidos " + sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
 
@@ -152,7 +151,7 @@ public class sqlkardex {
                         + c5 + "," + c6 + "," + c7 + "," + c8 + "," + c9 + "," + c10 + "," + c11 + "," + c12 + ",0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,"
                         + "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0," + totalpares + "," + totalpares + ",0," + prog + ",0,0," + costo + "," + venta + ",'"
                         + stock + "',0,NULL,25,'" + fecha + "','N',NULL,NULL,NULL,NULL,NULL,'Michel',NULL)";
-                System.out.println("Dpedidos " + sql);
+//                System.out.println("Dpedidos " + sql);
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -203,11 +202,11 @@ public class sqlkardex {
                         + "usuario,fecha,costo,precio,cantidad,renglon,serie,estatus,estatusprod,dureza,referencia) "
                         + "values(" + kardex + "," + concepto + "," + cliente + "," + mat + "," + prov + "," + alm + "," + pedimento + ",'" + usuario + "','"
                         + f + "'," + precio + "," + precio + "," + cantidad + "," + ren + ",'B','1','1','" + dur + "','" + ref + "')";
-                System.out.println("kardex " + sql);
+//                System.out.println("kardex " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
                 sql = "update dpedimentos set cantidadrestante=" + crestante + " where id_dpedimento=" + dpedimento;
-                System.out.println("dpedimento " + sql);
+//                System.out.println("dpedimento " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -232,7 +231,7 @@ public class sqlkardex {
 
             sql = "insert into Kardex "
                     + "values (11,8856,115470,'2022-3-1T18:00:00',1,'1',1,1,'60','01',1,1,1,2,2.5,3.5,.5,1,0,0,0,0,0,0,0,0,0,0,0,0,0,'P','P','','I','4512323 O',1,'',0,0,0,'','B','Michel','2022-10-20T18:00:00')";
-            System.out.println("rcpt " + sql);
+//            System.out.println("rcpt " + sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
 
@@ -314,7 +313,7 @@ public class sqlkardex {
                     + "where (folio ='" + p + "' and statusimpresion='N')\n"
                     + "order by renglon";
             st = con.prepareStatement(sql);
-            System.out.println(sql);
+//            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Kardexrcpt k = new Kardexrcpt();//objeto kardex
@@ -420,7 +419,7 @@ public class sqlkardex {
                     + "where (" + folios + ") and statusimpresion='N' and k.serie='A' and ISNULL(c.Nombre40,'')!='' and statussalida!='C'\n"
                     + "order by folio desc";
             st = con.prepareStatement(sql);
-            System.out.println("folios multi" + sql);
+//            System.out.println("folios multi" + sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Kardexrcpt k = new Kardexrcpt();//objeto kardex
@@ -502,7 +501,7 @@ public class sqlkardex {
                     + "where (k.Cl_Prv like '%" + p + "%' or c.Nombre40 like '%" + p + "%' or c.Numcliente like '%" + p + "%') "
                     + "and (cuenta>49 and cuenta<100) and statusimpresion='N' and ISNULL(c.Nombre40,'')!='' and statussalida!='C'\n"
                     + "order by folio desc";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -529,7 +528,7 @@ public class sqlkardex {
             PreparedStatement st;
             ResultSet rs;
             String sql = "SELECT  max(id_kardex)as folio FROM Kardex";
-            System.out.println("MAX KARDEx "+sql);
+//            System.out.println("MAX KARDEx "+sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -607,7 +606,7 @@ public class sqlkardex {
                 }
             }
 
-            System.out.println("kardex " + sql);
+//            System.out.println("kardex " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -661,13 +660,13 @@ public class sqlkardex {
             operacion+=(cuenta==1 || cuenta==10 || cuenta==20)?"-"+cant:"+"+cant;
             String sql = "update kardex set estatus='0' where id_kardex=" + kardex + " and renglon=" + ren;
 //            String sql = "delete from kardex where id_kardex=" + kardex + " and renglon=" + ren;
-            System.out.println("del kardex " + sql);
+//            System.out.println("del kardex " + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
 //            sql = "update dpedimentos set cantidadrestante=cantidadrestante+" + cant + " where id_dpedimento=" + dped; ver anterior
 // Se utiliza la funcion cast para insertar en la bd la operacion del stock a solo con 2 decimales, por si hubiera un mayor a 2
             sql = "update dpedimentos set cantidadrestante=cast("+operacion+" as decimal(20,2)) where id_pedimento=" + dped+" and id_material="+mat+" and dureza='"+dureza+"'";
-            System.out.println("del dpedimento " + sql);
+//            System.out.println("del dpedimento " + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
             c.commit();

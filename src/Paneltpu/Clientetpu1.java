@@ -5,7 +5,6 @@
  */
 package Paneltpu;
 
-import Paneles.*;
 import DAO.daocfdi;
 import Modelo.Ciudades;
 import Modelo.Cliente;
@@ -22,8 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**

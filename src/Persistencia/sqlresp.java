@@ -8,7 +8,6 @@ package Persistencia;
 import Modelo.DetFichas;
 import Modelo.Fichas;
 import Modelo.Servidorsql;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

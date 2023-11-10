@@ -6,9 +6,6 @@
 package Persistencia;
 
 import Modelo.Empresas;
-import Modelo.Fichas;
-import Modelo.factura;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -30,7 +27,7 @@ public class sqlempresa {
             String sql = "insert into empresa(nombre,ip,dirimagenes,dirvideos,rfc,rsocial) "
                     + "values('" + e.getNombre() + "','" + e.getIp() + "','" + e.getDirimag() + "','"
                     + e.getDirvideo() + "','" + e.getRfc() + "','" + e.getRsocial() + "')";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
             con.commit();
@@ -73,7 +70,7 @@ public class sqlempresa {
             ResultSet rs;
 
             String sql ="select * from Empresasrfc where id=" + n;
-            System.out.println(sql);
+//            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -133,7 +130,7 @@ public class sqlempresa {
             con.setAutoCommit(false);
             String sql;
             sql = "update empresasrfc set "+columna+"='"+dato+"' where id="+id;
-            System.out.println("actualiza empresa" + sql);
+//            System.out.println("actualiza empresa" + sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
             con.commit();

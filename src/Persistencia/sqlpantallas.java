@@ -319,7 +319,7 @@ public class sqlpantallas {
                     + ",'" + i1 + "','" + i2 + "','" + i3 + "','" + i4 + "','" + i5 + "','" + i6 + "'"
                     + ",'" + d1 + "','" + d2 + "','" + d3 + "','" + d4 + "','" + d5 + "','" + d6 + "')";
             st = c.prepareStatement(sql);
-            System.out.println("falla " + sql);
+//            System.out.println("falla " + sql);
             st.executeUpdate();
             c.commit();
             return true;

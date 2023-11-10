@@ -6,41 +6,26 @@
 package Paneltpu;
 
 import Paneles.*;
-import DAO.daoAgentes;
 import DAO.daoClientes;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
-import DAO.daokardexrcpt;
-import DAO.daopedimentos;
 import DAO.daoxmlTraslado;
-import DAO.daoxmltpu;
 import Modelo.Agentes;
 import Modelo.Cliente;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
-import Modelo.Formateodedatos;
-import Modelo.Kardexrcpt;
-import Modelo.Nocolisiontpu;
-import Modelo.Poliza;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
-import Modelo.cargo;
-import Modelo.convertirNumeros;
-import Modelo.convertnum;
 import Modelo.factura;
 import Modelo.metodopago;
-import Modelo.pedimento;
 import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -324,7 +309,7 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
        try{
         boolean a1 = checkclaveprod();
         boolean a2 = checkunidad();
-        System.out.println(" - " + a1 + "- " + a2);
+//        System.out.println(" - " + a1 + "- " + a2);
         if (!a1 || !a2) {
             JOptionPane.showMessageDialog(null, "Error: Verifica que las claves de prod o Unidad. esten bien");
         } else {
@@ -407,7 +392,7 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
 //                    f.setFolio(nfolio);
                 int id = dfac.nuevafacTraslado(cpt, rcpt, f);
                 if (id != 0) {
-                    System.out.println("Exito traslado");
+//                    System.out.println("Exito traslado");
                     daoxmlTraslado dx = new daoxmlTraslado();
                     f.setId(id);
                     dx.generarfac(f, cpt, sqlempresa);
@@ -496,7 +481,7 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
         if (evt.getButton() == 2) {
             clic2++;
             String combinacion = clic + "" + clic2 + "" + clic3;
-            System.out.println(combinacion);
+//            System.out.println(combinacion);
             if (combinacion.equals("211")) {
                 if (serie.equals("A")) {
                     serie = "B";
@@ -527,7 +512,7 @@ public class cfditransportetpuv2 extends javax.swing.JPanel {
             folios = "factura ='" + arrfactura.get(row).getReferencia() + "'";
         } else {
             for (int i = 0; i < ind.length; i++) {
-                System.out.println(ind[i]);
+//                System.out.println(ind[i]);
                 if (i == 0) {
                     folios = "(factura ='" + arrfactura.get(ind[i]).getReferencia() + "'";
 //                    folios = "referencia ='" + k1.get(ind[i]).getReferencia() + "'";

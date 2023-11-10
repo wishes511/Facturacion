@@ -8,20 +8,16 @@ package Paneles;
 import Modelo.Almacen;
 import Modelo.Combinacion;
 import Modelo.Corridas;
-import Modelo.Producto;
 import Modelo.cargo;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -331,12 +327,12 @@ public class Cargosncr extends javax.swing.JDialog {
         cargo car = arrcargoseleccion.get(i);// almacena el cargo en un objeto para modificar valores
         car.setDescuento(Double.parseDouble(desc));
         arrcargoseleccion.set(i, car);// asigna de nuevo el cargo ya modificado
-        System.out.println("descuento " + desc);
+//        System.out.println("descuento " + desc);
     }
 
     private boolean verificaciones(String r) {
         boolean resp = false;
-        System.out.println("valida " + r);
+//        System.out.println("valida " + r);
         if (!r.equals("") && (verificafloat(r) || verificaint(r))) {
             resp = true;
         }

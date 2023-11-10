@@ -8,7 +8,6 @@ package Paneltpu;
 import DAO.daoClientes;
 import Modelo.Cliente;
 import java.sql.Connection;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**

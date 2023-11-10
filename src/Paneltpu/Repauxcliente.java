@@ -5,17 +5,9 @@
  */
 package Paneltpu;
 
-import DAO.daodurezas;
-import DAO.daoempresa;
 import Modelo.Conexiones;
-import Modelo.Dureza;
-import Modelo.Empresas;
-import Modelo.Usuarios;
-import Modelo.convertirNumeros;
-import Modelo.pedimento;
 import Paneles.fac1;
 import java.sql.Connection;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;

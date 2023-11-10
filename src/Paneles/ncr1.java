@@ -8,7 +8,6 @@ package Paneles;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
-import DAO.daoxmlE;
 import DAO.daoxmlncr;
 import Modelo.Ciudades;
 import Modelo.Dfactura;
@@ -18,17 +17,14 @@ import Modelo.Formadepago;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
 import Modelo.convertirNumeros;
-import Modelo.convertnum;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,8 +35,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -227,7 +221,7 @@ public class ncr1 extends javax.swing.JPanel {
         if (arrfacturaxml.get(0).getTotal() != sum) {
             double partedecimal = sum % 1;
             double d = 0;
-            System.out.println(partedecimal);
+//            System.out.println(partedecimal);
             if (partedecimal <= 0.50) {
                 d = BigDecimal.valueOf(sum).setScale(2, RoundingMode.HALF_UP).doubleValue();
             } else {
@@ -237,7 +231,7 @@ public class ncr1 extends javax.swing.JPanel {
         } else {
             double partedecimal = arrfacturaxml.get(0).getTotal() % 1;
             double d = 0;
-            System.out.println(partedecimal);
+//            System.out.println(partedecimal);
             if (partedecimal <= 0.50) {
                 d = BigDecimal.valueOf(arrfacturaxml.get(0).getTotal()).setScale(2, RoundingMode.HALF_UP).doubleValue();
             } else {
@@ -322,9 +316,9 @@ public class ncr1 extends javax.swing.JPanel {
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
 //        ArrayList<String> a = new ArrayList<>();
 //        a = formateauuid(a, "23D958AB-76, 3C0139A5-7E884C6597, 53998945-6842-4BAC-9895-7985A22BE2E6");
-//        System.out.println(a.size());
+////        System.out.println(a.size());
 //        for (String a1 : a) {
-//            System.out.println(a1);
+////            System.out.println(a1);
 //        }
     }//GEN-LAST:event_jLabel6MousePressed
 

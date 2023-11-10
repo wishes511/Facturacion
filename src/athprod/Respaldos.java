@@ -7,8 +7,6 @@ package athprod;
 
 import DAO.daoresp;
 import Modelo.Servidorsql;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -46,7 +44,7 @@ public class Respaldos extends javax.swing.JInternalFrame implements Runnable {
         arr = resp.getserver(serverlite);
         String r = "";
         for (int i = 0; i < arr.size(); i++) {
-            System.out.println(arr.get(i).getBd());
+//            System.out.println(arr.get(i).getBd());
             r += "\n" + arr.get(i).getBd();
         }
         JlBd.setText(r);

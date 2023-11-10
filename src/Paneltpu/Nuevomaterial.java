@@ -6,7 +6,6 @@
 package Paneltpu;
 
 import DAO.daocfdi;
-import DAO.daofactura;
 import DAO.daofamilias;
 import DAO.daomateriales;
 import Modelo.Claveprov;

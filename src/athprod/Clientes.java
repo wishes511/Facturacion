@@ -7,7 +7,6 @@ package athprod;
 
 import Paneles.Cliente1;
 import Paneles.Cliente2;
-import javax.swing.SingleSelectionModel;
 
 /**
  *

@@ -5,10 +5,7 @@
  */
 package Persistencia;
 
-import Modelo.Colores;
 import Modelo.Combinacion;
-import Modelo.Fichas;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

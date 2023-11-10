@@ -790,7 +790,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
 //                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
                 int id = dfac.insertpagotpu(cpt, ACobranza, f);
                 if (id != 0) {
-                    System.out.println("Exito");
+//                    System.out.println("Exito");
 //                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
                     JOptionPane.showMessageDialog(null, "Proceso terminado- ");
                     vaciarcampos();

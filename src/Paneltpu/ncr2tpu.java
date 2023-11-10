@@ -789,7 +789,7 @@ public class ncr2tpu extends javax.swing.JPanel {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         model.removeRow(JtDetalle.getSelectedRow());
-        System.out.println("Elimine linea y total de lineas " + model.getRowCount());
+//        System.out.println("Elimine linea y total de lineas " + model.getRowCount());
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -872,8 +872,8 @@ public class ncr2tpu extends javax.swing.JPanel {
             actualizaimportes();
             relaciones();
 //            if (!p.prod.getDesccombinacion().equals("")) {
-//                System.out.println("");
-//                System.out.println("aqui");
+////                System.out.println("");
+////                System.out.println("aqui");
 //            }
         }
 
@@ -901,10 +901,10 @@ public class ncr2tpu extends javax.swing.JPanel {
                 totalrev += formatdecimal(arrcargoseleccion.get(i).getDescuento());
             }
 
-            System.out.println(total + " " + totalrev);
-            System.out.println(total + " " + formateador.format(totalrev));
+//            System.out.println(total + " " + totalrev);
+//            System.out.println(total + " " + formateador.format(totalrev));
 //            if (totalrev != total) {
-            System.out.println(formatdecimal(total) + " ** " + formatdecimal(totalrev));
+//            System.out.println(formatdecimal(total) + " ** " + formatdecimal(totalrev));
             if (formatdecimal(total) != formatdecimal(totalrev)) {
                 JOptionPane.showMessageDialog(null, "El total de las lineas debe de ser igual al seleccionado en las facturas");
                 JtDetalle.requestFocus();
@@ -926,7 +926,7 @@ public class ncr2tpu extends javax.swing.JPanel {
 //                do {//ciclo hasta que termine la busqueda y asignacion, no es lo ideal pero es temporal y reduce colisiones
 //
 //                } while (n.isAlive());
-//                System.out.println(n.getfolio());
+////                System.out.println(n.getfolio());
 //                f.setFolio(n.getfolio());
                 if (JcUsd.isSelected()) {
                     f.setMoneda("USD");
@@ -994,7 +994,7 @@ public class ncr2tpu extends javax.swing.JPanel {
                     arruuid.add(arrcargoseleccion.get(i).getFoliofiscal());
                 }
 
-                System.out.println("cargo seleccion " + arrcargoseleccion.size());
+//                System.out.println("cargo seleccion " + arrcargoseleccion.size());
                 f.setRefncredito(facturas);
                 f.setObservaciones(JtObs.getText().toUpperCase() + ", Facturas: " + facturas);
                 f.setFoliofiscalorig(folios);
@@ -1076,7 +1076,7 @@ public class ncr2tpu extends javax.swing.JPanel {
                         impuesto = formatdecimal(impuestos);
                     }
 
-//                    System.out.println((float) precio * pares);
+////                    System.out.println((float) precio * pares);
                     df.setRenglon(i + 1);
                     df.setProducto(0);
 //                    df.setCantidad(pares);
@@ -1104,7 +1104,7 @@ public class ncr2tpu extends javax.swing.JPanel {
                 } else {
                     int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
                     if (id != 0) {
-                        System.out.println("Exito");
+//                        System.out.println("Exito");
                         daoxmlncrtpu dx = new daoxmlncrtpu();
                         f.setId(id);
                         dx.generarfac(f, cpt, sqlempresa);
@@ -1296,7 +1296,7 @@ public class ncr2tpu extends javax.swing.JPanel {
                     }
                 }
                 total = subtotal + impuestos;
-                System.out.println(impuestos);
+//                System.out.println(impuestos);
                 //Solo para despliqgue de informacion
                 JlIva.setText(formateador.format(impuestos));
                 Jlsub.setText(formateador.format(subtotal));
@@ -1315,7 +1315,7 @@ public class ncr2tpu extends javax.swing.JPanel {
 //                    impuestos += Double.parseDouble(formateador.format((precio / 1.16) * 0.16));
                     subtotal += formatdecimal(precio / 1.16);
                     impuestos += formatdecimal((precio / 1.16) * 0.16);
-                    System.out.println("01 " + impuestos + " " + subtotal);
+//                    System.out.println("01 " + impuestos + " " + subtotal);
                 }
                 if (resp) {// Si, y solo si es un entero o decimal
                     //Variables para manejo de totales
@@ -1323,7 +1323,7 @@ public class ncr2tpu extends javax.swing.JPanel {
                     //impuestos =(float) ((subtotal - descuentos) * iva);
 //                    total = subtotal + impuestos;
                     total = formatdecimal(subtotal + impuestos);
-                    System.out.println(impuestos);
+//                    System.out.println(impuestos);
                     //Solo para despliqgue de informacion
                     JlIva.setText(formatdecimal(impuestos) + "");
                     Jlsub.setText(formatdecimal(subtotal) + "");
@@ -1409,7 +1409,7 @@ public class ncr2tpu extends javax.swing.JPanel {
 //                        umedida = "PR";
 //                        double dato = Double.parseDouble(formateador.format(sumatotal + preciointerno + (precio * 0.16)));
 //                        double desc = arrcargoseleccion.get(x).getDescuento();
-//                        System.out.println("precio " + preciointerno + ", desc" + desc + ", " + dato + ", sumatotal " + sumatotal);
+////                        System.out.println("precio " + preciointerno + ", desc" + desc + ", " + dato + ", sumatotal " + sumatotal);
 //                        //Hacer operaciones con los importes y resetear si aplica la suma total
 //                        if (dato >= desc) {
 //

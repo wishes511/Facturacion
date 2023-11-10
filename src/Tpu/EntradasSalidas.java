@@ -5,37 +5,23 @@
  */
 package Tpu;
 
-import athprod.*;
 import DAO.daoClientes;
 import DAO.daocfdi;
-import DAO.daofactura;
 import Modelo.Cliente;
 import Modelo.Conexiones;
 import Modelo.Formadepago;
 import Modelo.Usuarios;
-import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
 import Paneltpu.Inout1;
 import Paneltpu.Inout2;
-import Paneltpu.fac1tpu;
-import Paneltpu.fac1tpurem;
-import Paneltpu.fac2tpu;
-import Paneltpu.fac2tpu1rem;
-import Server.Serverprod;
 import Server.Serverylite;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SingleSelectionModel;
-import mx.sat.cfd40.generarXML40;
-import mx.sat.cfd40.xmlDAO;
 
 /**
  *

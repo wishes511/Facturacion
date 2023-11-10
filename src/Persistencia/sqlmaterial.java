@@ -7,7 +7,6 @@ package Persistencia;
 
 import Modelo.Fichas;
 import Modelo.Materiales;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,7 +26,7 @@ public class sqlmaterial {
         try {
             con.setAutoCommit(false);
             String sql = "insert into servidor() values()";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
             con.commit();
@@ -104,7 +103,7 @@ public class sqlmaterial {
             String mon = m.getMoneda();
             String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia,moneda) "
                     + "values('" + mat + "'," + precio + ",'1','" + unidad + "','" + codigosat + "'," + idfam + ",'" + mon + "')";
-//            System.out.println(sql);
+////            System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
             con.commit();
@@ -136,7 +135,7 @@ public class sqlmaterial {
             String i3 = m.getImag3();
             String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia,moneda,noserie,imag1,imag2,imag3)"
                     + " values('" + mat + "'," + precio + ",'1','" + unidad + "','" + codigosat + "'," + idfam + ",'" + mon + "','" + nserie + "','" + i1 + "','" + i2 + "','" + i3 + "')";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
             con.commit();

@@ -151,7 +151,7 @@ public class Anucios extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         try {
-            System.out.println("cerrar avances");
+//            System.out.println("cerrar avances");
             c.close();
         } catch (SQLException ex) {
             Logger.getLogger(Anucios.class.getName()).log(Level.SEVERE, null, ex);
@@ -241,7 +241,7 @@ public class Anucios extends javax.swing.JInternalFrame {
     public void cerrarcon() {
         try {
             c.close();
-            System.out.println("cerrar conexion avance");
+//            System.out.println("cerrar conexion avance");
         } catch (SQLException ex) {
             Logger.getLogger(Anucios.class.getName()).log(Level.SEVERE, null, ex);
         }

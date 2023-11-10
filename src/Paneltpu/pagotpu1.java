@@ -24,11 +24,9 @@ import Modelo.metodopago;
 import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,8 +37,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -244,7 +240,7 @@ public class pagotpu1 extends javax.swing.JPanel {
         if (arrfacturaxml.get(0).getTotal() != sum) {
             double partedecimal = sum % 1;
             double d = 0;
-            System.out.println(partedecimal);
+//            System.out.println(partedecimal);
             if (partedecimal <= 0.50) {
                 d = BigDecimal.valueOf(sum).setScale(2, RoundingMode.HALF_UP).doubleValue();
             } else {
@@ -254,7 +250,7 @@ public class pagotpu1 extends javax.swing.JPanel {
         } else {
             double partedecimal = arrfacturaxml.get(0).getTotal() % 1;
             double d = 0;
-            System.out.println(partedecimal);
+//            System.out.println(partedecimal);
             if (partedecimal <= 0.50) {
                 d = BigDecimal.valueOf(arrfacturaxml.get(0).getTotal()).setScale(2, RoundingMode.HALF_UP).doubleValue();
             } else {
@@ -360,7 +356,7 @@ public class pagotpu1 extends javax.swing.JPanel {
         if (input == 0) {
 //            Obtiene los registros por si las facturas relacionadas tienen algun pago
             int folio = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-            System.out.println("folio "+folio);
+//            System.out.println("folio "+folio);
             daofactura df = new daofactura();
             ArrayList<factura> arr = df.getregspcancelpagotpu(cpt, folio);
             if (!arr.isEmpty()) {

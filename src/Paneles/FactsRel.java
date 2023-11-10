@@ -8,19 +8,15 @@ package Paneles;
 import Modelo.Almacen;
 import Modelo.Combinacion;
 import Modelo.Corridas;
-import Modelo.Producto;
 import Modelo.cargo;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -232,11 +228,11 @@ public class FactsRel extends javax.swing.JDialog {
                 }
             }
         }
-        System.out.println("---------");
+//        System.out.println("---------");
         for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-            System.out.println(arrcargoseleccion1.getReferencia());
+//            System.out.println(arrcargoseleccion1.getReferencia());
         }
-        System.out.println("---------");
+//        System.out.println("---------");
     }//GEN-LAST:event_JtCargoMousePressed
 
     private void desplieguecargos() {
@@ -280,7 +276,7 @@ public class FactsRel extends javax.swing.JDialog {
                         cargo car = arrcargoseleccion.get(i);// almacena el cargo en un objeto para modificar valores
                         car.setDescuento(Float.parseFloat(desc));
                         arrcargoseleccion.set(i, car);// asigna de nuevo el cargo ya modificado
-                        System.out.println("descuento " + desc);
+//                        System.out.println("descuento " + desc);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Alguno de los valores que introdujo no es valido");
@@ -297,7 +293,7 @@ public class FactsRel extends javax.swing.JDialog {
 
     private boolean verificaciones(String r) {
         boolean resp = false;
-        System.out.println("valida "+r);
+//        System.out.println("valida "+r);
         if (!r.equals("") && (verificafloat(r) || verificaint(r))) {
             resp = true;
         }

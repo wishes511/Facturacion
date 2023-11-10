@@ -62,7 +62,7 @@ public class sqlconceptos {
             }
 //            st = con.prepareStatement("select id_concepto,cuenta,subcuenta,descripcion from Conceptos where cuenta=" + cuenta + " order by cuenta");
             String sql = "select id_concepto,cuenta,subcuenta,descripcion from Conceptos where " + cuentas + " order by cuenta";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {

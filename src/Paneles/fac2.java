@@ -12,17 +12,13 @@ import DAO.daofactura;
 import DAO.daokardexrcpt;
 import DAO.daoxml;
 import DAO.daoxmlTraslado;
-import DAO.daoxmlncr;
 import Modelo.Agentes;
-import Modelo.Ciudades;
 import Modelo.Dfactura;
 import Modelo.Empresas;
-import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
 import Modelo.Nocolision;
-import Modelo.Paises;
 import Modelo.Poliza;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
@@ -34,11 +30,9 @@ import Modelo.metodopago;
 import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,7 +43,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -725,7 +718,7 @@ public class fac2 extends javax.swing.JPanel {
             if (!a1) {
                 JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
             }
-            System.out.println(a + " - " + a1);
+//            System.out.println(a + " - " + a1);
             if (!a && !a1) {
                 JtDescuento.requestFocus();
             } else {
@@ -944,7 +937,7 @@ public class fac2 extends javax.swing.JPanel {
                     int id = dfac.nuevafac(cpt, f, ACobranza, rcpt);
                     Sellofiscal s = new Sellofiscal();
                     if (id != 0) {
-                        System.out.println("Exito");
+//                        System.out.println("Exito");
                         daoxml dx = new daoxml();
                         f.setId(id);
                         String tot = String.valueOf(total);
@@ -968,7 +961,7 @@ public class fac2 extends javax.swing.JPanel {
                         f.setFoliofiscalorig(s.getUuid());
                         id = dfac.nuevafacTraslado(cpt, rcpt, f);
                         if (id != 0) {
-                            System.out.println("Exito traslado");
+//                            System.out.println("Exito traslado");
                             daoxmlTraslado dx = new daoxmlTraslado();
                             f.setId(id);
                             dx.generarfac(f, cpt, sqlempresa);
@@ -1160,7 +1153,7 @@ public class fac2 extends javax.swing.JPanel {
         } else {
 //            Despues equiladria a n+, ya que si solo es una seleccion  entrara
             for (int i = 0; i < ind.length; i++) {
-                System.out.println(ind[i]);
+//                System.out.println(ind[i]);
                 if (i == 0) {
                     folios = "folio =" + k0.get(ind[i]).getFolio();
                 } else {
@@ -1235,7 +1228,7 @@ public class fac2 extends javax.swing.JPanel {
 //        k = dk.getkardexfac(rcpt, r, empresacob);// nueva carga de datos
 //        Nueva carga de datos 2.0, se utiliza para obtener n folios de la consulta
         k = dk.getkardexfacMulti(rcpt, empresacob, folios);
-//        System.out.println(k.size());
+////        System.out.println(k.size());
         generatabla();
         setcombos();
         setAgentes();
@@ -1342,8 +1335,8 @@ public class fac2 extends javax.swing.JPanel {
                 impuestos = (subtotal - descuentos) * iva;
                 total = impuestos + subtotal - descuentos;
 //                total = subtotal - descuentos + impuestos;
-//                System.out.println(total + " -- " + impuestos + " -- " + subtotal + " -- " + descuentos+" --"+tot);
-//                System.out.println(impuestos);
+////                System.out.println(total + " -- " + impuestos + " -- " + subtotal + " -- " + descuentos+" --"+tot);
+////                System.out.println(impuestos);
                 //Solo para despliqgue de informacion
                 JlIva.setText(formateador.format(impuestos));
                 Jlsub.setText(formateador.format(subtotal));

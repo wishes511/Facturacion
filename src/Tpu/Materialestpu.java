@@ -10,7 +10,6 @@ import Modelo.Conexiones;
 import Modelo.Materiales;
 import Modelo.Usuarios;
 import Paneltpu.Nuevomaterial;
-import java.awt.Color;
 import java.sql.Connection;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;

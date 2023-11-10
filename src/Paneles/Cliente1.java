@@ -20,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 
 /**
@@ -598,7 +597,7 @@ private void setestados(){
             model.addElement(arrpais.get(row).getArrestados().get(i).getDescripcion());
         }
         JcMes.setModel(model);
-        System.out.println();
+//        System.out.println();
 }
 private void setciudades(){
     DefaultComboBoxModel model = new DefaultComboBoxModel();

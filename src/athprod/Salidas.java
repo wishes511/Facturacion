@@ -466,7 +466,7 @@ public class Salidas extends javax.swing.JInternalFrame {
         for (int i = 0; i < arrconceptos.size(); i++) {
             String cuenta = arrconceptos.get(i).getCuenta();
             if (cuenta.equals(JtCuenta.getText()) && cuenta.equals("60")) {
-                System.out.println("cuenta " + JtCuenta.getText());
+//                System.out.println("cuenta " + JtCuenta.getText());
                 JtSubcuenta.requestFocus();
                 break;
             }
@@ -484,7 +484,7 @@ public class Salidas extends javax.swing.JInternalFrame {
             String scuenta = arrconceptos.get(i).getSubcuenta();
             String cuenta = arrconceptos.get(i).getCuenta();
             if (scuenta.equals(JtSubcuenta.getText()) && cuenta.equals(JtCuenta.getText())) {
-                System.out.println("scuenta " + JtCuenta.getText());
+//                System.out.println("scuenta " + JtCuenta.getText());
                 JtEstilos.requestFocus();
                 JlNombrec.setText(arrconceptos.get(i).getNombre());
                 resp =true;
@@ -538,11 +538,11 @@ public class Salidas extends javax.swing.JInternalFrame {
         p.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         p.setVisible(true);
         if (!p.prod.getDesccombinacion().equals("")) {
-            System.out.println("");
+//            System.out.println("");
             arrprod.add(p.prod);
             marca=p.prod.getMarca();
             generatabla();
-            System.out.println("aqui");
+//            System.out.println("aqui");
         }
     }
 
@@ -560,7 +560,7 @@ public class Salidas extends javax.swing.JInternalFrame {
         if (minuto > 9) {
             horas += minuto;
         }
-//                System.out.println(horas);
+////                System.out.println(horas);
         horas = (horas.length() == 5) ? horas : "0" + horas;
         return horas;
     }

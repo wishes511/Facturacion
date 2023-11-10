@@ -71,7 +71,7 @@ public class sqlclientes {
                     + "where c.estatus='1'\n"
                     + "order by c.nombre";
             st = con.prepareStatement(sql);
-            System.out.println(sql);
+//            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Cliente c = new Cliente();
@@ -107,7 +107,7 @@ public class sqlclientes {
                     + "where nombre like '%" + cli + "%'\n"
                     + "order by nombre desc";
             st = cob.prepareStatement(sql);
-            System.out.println(sql);
+//            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Cliente c = new Cliente();
@@ -204,7 +204,7 @@ public class sqlclientes {
             }
             if (ag == 0) {
                 sql = "insert into Agente(id_agente,nombre,canal,comision,estatus) values(" + cli.getAgente() + ",'" + cli.getNombreagente() + "'," + cli.getCanal() + ",0,'1')";
-                System.out.println(sql);
+//                System.out.println(sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -212,7 +212,7 @@ public class sqlclientes {
                     + "values(" + cli.getCvecliente() + "," + cli.getAgente() + ",'" + cli.getNombre() + "','" + cli.getRfc() + "','"
                     + cli.getCp() + "','" + cli.getNombre() + "','" + cli.getUsocfdi() + "','" + cli.getCalle() + "','" + cli.getColonia() + "','"
                     + cli.getPais() + "','" + cli.getEstado() + "','" + cli.getRegimen() + "','1','" + cli.getCiudad() + "')";
-            System.out.println(sql);
+//            System.out.println(sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
             c.commit();
@@ -240,7 +240,7 @@ public class sqlclientes {
                     + "',telefono='" + c.getTelefono() + "'  where id_cliente=" + c.getCvecliente();
             st = cpt.prepareStatement(sql);
             int i = st.executeUpdate();
-            System.out.println("mod cliente " + i);
+//            System.out.println("mod cliente " + i);
             cpt.commit();
             st.close();
             return true;

@@ -15,14 +15,10 @@ import DAO.daopedimentos;
 import Modelo.Agentes;
 import Modelo.Cliente;
 import Modelo.ConceptosES;
-import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.KardexCmp;
-import Modelo.Kardexrcpt;
-import Modelo.Nocolisiontpu;
 import Modelo.Usuarios;
 import Modelo.convertirNumeros;
-import Modelo.factura;
 import Modelo.pedimento;
 import Server.Serverprod;
 import Server.Serverylite;
@@ -441,7 +437,7 @@ public class Inout2 extends javax.swing.JPanel {
             if (!a1) {
                 JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
             }
-            System.out.println(" - " + a1);
+//            System.out.println(" - " + a1);
             if (!a1) {
             } else {
                 ArrayList<KardexCmp> arrk = new ArrayList<>();
@@ -622,7 +618,7 @@ public class Inout2 extends javax.swing.JPanel {
             folios = "referencia ='" + k1.get(JlCliente1.getSelectedIndex()).getReferencia() + "'";
         } else {
             for (int i = 0; i < ind.length; i++) {
-                System.out.println(ind[i]);
+//                System.out.println(ind[i]);
                 if (i == 0) {
                     folios = "referencia ='" + k1.get(i).getReferencia() + "'";
                 } else {
@@ -666,7 +662,7 @@ public class Inout2 extends javax.swing.JPanel {
         arrcuentas = d.getConceptos(cpt, cuenta);
         for (ConceptosES arruso1 : arrcuentas) {
             cuentas.addElement(arruso1.getCuenta() + ", " + arruso1.getSubcuenta() + " - " + arruso1.getNombre());
-            System.out.println("concepto "+arruso1.getId_concepto());
+//            System.out.println("concepto "+arruso1.getId_concepto());
         }
         JcConceptos.setModel(cuentas);
     }
@@ -801,8 +797,8 @@ public class Inout2 extends javax.swing.JPanel {
                 impuestos = 0;
                 total = impuestos + subtotal - descuentos;
 //                total = subtotal - descuentos + impuestos;
-//                System.out.println(total + " -- " + impuestos + " -- " + subtotal + " -- " + descuentos+" --"+tot);
-//                System.out.println(impuestos);
+////                System.out.println(total + " -- " + impuestos + " -- " + subtotal + " -- " + descuentos+" --"+tot);
+////                System.out.println(impuestos);
                 //Solo para despliqgue de informacion
                 Jlsub.setText(formateador.format(subtotal));
                 JlTotal.setText(formateador.format(total));

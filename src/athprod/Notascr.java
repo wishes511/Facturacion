@@ -5,34 +5,22 @@
  */
 package athprod;
 
-import DAO.daoClientes;
 import DAO.daocfdi;
-import DAO.daofactura;
-import Modelo.Cliente;
-import Modelo.ConceptosES;
 import Modelo.Conexiones;
 import Modelo.Formadepago;
 import Modelo.Usuarios;
-import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.relacion;
 import Modelo.usocfdi;
 import Paneles.ncr1;
 import Paneles.ncr2;
-import Server.Serverprod;
 import Server.Serverylite;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SingleSelectionModel;
-import mx.sat.cfd40.generarXML40;
-import mx.sat.cfd40.xmlDAO;
 
 /**
  *

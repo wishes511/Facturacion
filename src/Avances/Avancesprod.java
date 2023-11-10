@@ -6,32 +6,21 @@
 package Avances;
 
 import DAO.daoAvances;
-import DAO.daodurezas;
-import DAO.daoempresa;
 import Modelo.Colsdepartamentos;
-import Modelo.Conexiones;
 import Modelo.Davance;
-import Modelo.Dureza;
-import Modelo.Empresas;
-import Modelo.Usuarios;
-import Modelo.convertirNumeros;
-import Modelo.pedimento;
 import Paneles.fac1;
 import Server.Serverprod;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -416,7 +405,7 @@ public class Avancesprod extends javax.swing.JDialog {
             repname = (JrSemana.isSelected()) ? "Avancessemanal" : "Avances_Mes";
             con = sqliteuser;
         }
-        System.out.println(repname);
+//        System.out.println(repname);
         try {
             Map parametros = new HashMap();
 //            Agregar parametros al reporte
@@ -467,7 +456,7 @@ public class Avancesprod extends javax.swing.JDialog {
 
     public void cerraravances() {
         try {
-            System.out.println("cerrar avances");
+//            System.out.println("cerrar avances");
             c.close();
         } catch (SQLException ex) {
             Logger.getLogger(Avancesprod.class.getName()).log(Level.SEVERE, null, ex);

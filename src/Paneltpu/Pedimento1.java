@@ -11,10 +11,7 @@ import DAO.daomateriales;
 import DAO.daopedimentos;
 import Modelo.Conexiones;
 import Modelo.Usuarios;
-import Modelo.convertirNumeros;
-import Modelo.convertnum;
 import Modelo.pedimento;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -186,7 +183,7 @@ public class Pedimento1 extends javax.swing.JPanel {
         try {
             Map parametros = new HashMap();
             int ped = arr.get(JtDetalle.getSelectedRow()).getId_pedimento();
-            System.out.println(ped);
+//            System.out.println(ped);
             parametros.put("id", ped);
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Pedimento.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, c.getCpttpu());

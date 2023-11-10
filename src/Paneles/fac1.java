@@ -12,17 +12,13 @@ import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daoxmlE;
 import Modelo.Addenda;
-import Modelo.Ciudades;
 import Modelo.Cliente;
 import Modelo.Corridaaddenda;
 import Modelo.Destinoscoppel;
 import Modelo.Dfactura;
 import Modelo.Empresas;
-import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.NAddenda;
-import Modelo.Nocolision;
-import Modelo.Paises;
 import Modelo.Sellofiscal;
 import Modelo.Setaddenda;
 import Modelo.Usuarios;
@@ -32,13 +28,10 @@ import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
 import Server.Serverprod;
-import Server.Serverylite;
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,8 +42,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
@@ -58,12 +49,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import mx.sat.cfd40.timbrarXML;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -75,7 +60,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 /**
@@ -316,7 +300,7 @@ public class fac1 extends javax.swing.JPanel {
         if (arrfacturaxml.get(0).getTotal() != sum) {
             double partedecimal = sum % 1;
             double d = 0;
-            System.out.println(partedecimal);
+//            System.out.println(partedecimal);
             if (partedecimal <= 0.50) {
                 d = BigDecimal.valueOf(sum).setScale(2, RoundingMode.HALF_UP).doubleValue();
             } else {
@@ -326,7 +310,7 @@ public class fac1 extends javax.swing.JPanel {
         } else {
             double partedecimal = arrfacturaxml.get(0).getTotal() % 1;
             double d = 0;
-            System.out.println(partedecimal);
+//            System.out.println(partedecimal);
             if (partedecimal <= 0.50) {
                 d = BigDecimal.valueOf(arrfacturaxml.get(0).getTotal()).setScale(2, RoundingMode.HALF_UP).doubleValue();
             } else {
@@ -463,21 +447,21 @@ public class fac1 extends javax.swing.JPanel {
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
 
-        System.out.println("Leeyendo XML");
+//        System.out.println("Leeyendo XML");
         try {
             DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
             daoempresa d = new daoempresa();
             Empresas e = d.getempresarfc(sqlempresa, "1");
             int row = JtDetalle.getSelectedRow();
             String archivo = e.getXml() + "\\FAC_" + arrfactura.get(row).getFolio() + ".xml";
-            System.out.println(archivo);
+//            System.out.println(archivo);
             Document doc;
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = dbFactory.newDocumentBuilder();
             doc = builder.parse(archivo);
             doc.getDocumentElement().normalize();
             NodeList complemento = doc.getElementsByTagName("cfdi:Concepto");
-            System.out.println(complemento.getLength());
+//            System.out.println(complemento.getLength());
             double descuento = 0;
             double impuestos = 0;
             double baseimp = 0;
@@ -491,7 +475,7 @@ public class fac1 extends javax.swing.JPanel {
                         Element element = (Element) nNode;
                         String f = element.getAttribute("Descuento");
                         descuento += Double.parseDouble(formateador.format(Double.parseDouble(f)));
-//                        System.out.println("descuento " + f);
+////                        System.out.println("descuento " + f);
                     }
                 }
             }
@@ -503,16 +487,16 @@ public class fac1 extends javax.swing.JPanel {
                     Element element = (Element) nNode;
                     String f = element.getAttribute("Importe");
                     impuestos += Double.parseDouble(formateador.format(Double.parseDouble(f)));
-//                    System.out.println("imp " + f);
+////                    System.out.println("imp " + f);
                 }
             }
             double partedecimal = impuestos % 1;
-            System.out.println(partedecimal);
+//            System.out.println(partedecimal);
 
             double tot = arrfactura.get(row).getSubtotal() + impuestos - descuento;
-            System.out.println(descuento + " - " + impuestos + " " + tot);
-            System.out.println(formatdecimal(tot));//            cargarPDF(factura,total);
-            System.out.println(formatdecimal(impuestos));
+//            System.out.println(descuento + " - " + impuestos + " " + tot);
+//            System.out.println(formatdecimal(tot));//            cargarPDF(factura,total);
+//            System.out.println(formatdecimal(impuestos));
         } catch (IOException | ParserConfigurationException | SAXException e) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, e);
         }
@@ -538,7 +522,7 @@ public class fac1 extends javax.swing.JPanel {
             String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
             int row = JtDetalle.getSelectedRow();
             String archivo = getempresa(sqlempresa, e) + "\\FAC_" + arrfactura.get(row).getFolio() + ".xml";
-//            System.out.println("arch "+archivo);
+////            System.out.println("arch "+archivo);
             NAddenda na = new NAddenda();
             na.setArchivo(archivo);
             Setaddenda adenda = new Setaddenda(na);
@@ -564,7 +548,7 @@ public class fac1 extends javax.swing.JPanel {
             String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
             int row = JtDetalle.getSelectedRow();
             String archivo = getempresa(sqlempresa, e) + "\\FAC_" + arrfactura.get(row).getFolio() + ".xml";
-            System.out.println(archivo);
+//            System.out.println(archivo);
             daoAddenda dadenda = new daoAddenda();
             ArrayList<Corridaaddenda> arrcorend = dadenda.getCoraddenda(liteusuario);
 //            Se obtienen los productos para generar en automatico la addenda
@@ -717,7 +701,7 @@ public class fac1 extends javax.swing.JPanel {
         for (int i = 0; i < arrfactura.size(); i++) {
             String estat = (arrfactura.get(i).getEstatus() == 1) ? "ACTIVA" : "CANCELADO";
             String estatfac = (arrfactura.get(i).getFoliofiscal().equals("")) ? "NO TIMBRADO" : "TIMBRADO";
-//            System.out.println(arrfactura.get(i).getTotal());
+////            System.out.println(arrfactura.get(i).getTotal());
             model.setValueAt(arrfactura.get(i).getFolio(), i, 0);
             model.setValueAt(arrfactura.get(i).getNombre(), i, 1);
             model.setValueAt(formateador.format(arrfactura.get(i).getSubtotal()), i, 2);

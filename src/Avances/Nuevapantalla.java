@@ -8,7 +8,6 @@ package Avances;
 import DAO.daoAvances;
 import Modelo.pantalla;
 import java.sql.Connection;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -207,9 +206,9 @@ public class Nuevapantalla extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel7MousePressed
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
-        System.out.println("a " + JtDetalle.getSelectedRow() + " s " + JtDetalle.getRowCount());
+//        System.out.println("a " + JtDetalle.getSelectedRow() + " s " + JtDetalle.getRowCount());
         String ren = JtDetalle.getValueAt(JtDetalle.getSelectedRow(), 1).toString();
-        System.out.println(ren);
+//        System.out.println(ren);
         if (ren.equals("*")) {
             JtDetalle.setValueAt("", JtDetalle.getSelectedRow(), 1);
         } else {

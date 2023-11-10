@@ -6,19 +6,14 @@
 package Tpu;
 
 import DAO.daodurezas;
-import Modelo.Conexiones;
 import Modelo.Dureza;
-import Modelo.Usuarios;
-import Paneltpu.Nuevadurez;
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *

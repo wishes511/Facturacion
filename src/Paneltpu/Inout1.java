@@ -6,78 +6,36 @@
 package Paneltpu;
 
 import Paneles.*;
-import DAO.daoAddenda;
 import DAO.daocfdi;
-import DAO.daoempresa;
-import DAO.daofactura;
 import DAO.daokardexrcpt;
-import DAO.daoxmlE;
-import Modelo.Addenda;
-import Modelo.Ciudades;
-import Modelo.Corridaaddenda;
-import Modelo.Destinoscoppel;
-import Modelo.Dfactura;
-import Modelo.Empresas;
-import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.KardexCmp;
-import Modelo.Nocolision;
-import Modelo.Paises;
-import Modelo.Sellofiscal;
-import Modelo.Setaddenda;
 import Modelo.Usuarios;
-import Modelo.convertirNumeros;
-import Modelo.convertnum;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
 import Server.Serverprod;
-import Server.Serverylite;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import mx.sat.cfd40.timbrarXML;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -329,7 +287,7 @@ public class Inout1 extends javax.swing.JPanel {
         if (evt.getButton() == 2) {
             clic2++;
             String combinacion = clic + "" + clic2 + "" + clic3;
-            System.out.println(combinacion);
+//            System.out.println(combinacion);
             if (combinacion.equals("211")) {
                 if (serie.equals("A")) {
                     serie = "B";
@@ -454,7 +412,7 @@ public class Inout1 extends javax.swing.JPanel {
         DecimalFormat formateador = new DecimalFormat("####.##");
         for (int i = 0; i < k.size(); i++) {
             String estat = (k.get(i).getStatus().equals("1")) ? "ACTIVA" : "NO ACTIVA";
-//            System.out.println(arrfactura.get(i).getTotal());
+////            System.out.println(arrfactura.get(i).getTotal());
             model.setValueAt(k.get(i).getId_kardex(), i, 0);
             model.setValueAt(k.get(i).getNombreproveedor(), i, 1);
             model.setValueAt(k.get(i).getSerie(), i, 2);

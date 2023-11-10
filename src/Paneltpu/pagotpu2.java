@@ -9,7 +9,6 @@ import Paneles.*;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
-import DAO.daoxmlncrtpu;
 import DAO.daoxmlpagostpu;
 import Modelo.ConceptosES;
 import Modelo.Detpagos;
@@ -970,7 +969,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                             int id = dfac.insertpagotpu(cpt, ACobranza, f);
                             if (id != 0) {
                                 JOptionPane.showMessageDialog(null, "Pago realizado con exito");
-                                System.out.println("Exito");
+//                                System.out.println("Exito");
                                 vaciarcampos();
                                 JtCliente.requestFocus();
                             }
@@ -982,7 +981,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 //                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
                             int id = dfac.insertpagotpu(cpt, ACobranza, f);
                             if (id != 0) {
-                                System.out.println("Exito");
+//                                System.out.println("Exito");
                                 daoxmlpagostpu dx = new daoxmlpagostpu();
                                 f.setId(id);
                                 dx.generarfac(f, cpt, sqlempresa);

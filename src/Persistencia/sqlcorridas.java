@@ -5,9 +5,7 @@
  */
 package Persistencia;
 
-import Modelo.Cliente;
 import Modelo.Corridas;
-import Modelo.Producto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

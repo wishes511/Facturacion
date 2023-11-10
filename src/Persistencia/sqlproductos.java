@@ -5,7 +5,6 @@
  */
 package Persistencia;
 
-import Modelo.Cliente;
 import Modelo.Producto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -66,7 +65,7 @@ public class sqlproductos {
                     + "join Lineas l on p.Linea=l.Linea\n"
                     + "where estilo=" + estilo + " and combinacion=" + comb + " and corrida=" + corrida + " and almacen=" + almacen;
             st = con.prepareStatement(sql);
-            System.out.println(sql);
+//            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 p.setProducto(rs.getInt("producto"));

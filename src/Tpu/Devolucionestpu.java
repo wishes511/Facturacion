@@ -9,7 +9,6 @@ package Tpu;
 import Modelo.Conexiones;
 import Modelo.Usuarios;
 import Paneltpu.devstpu;
-import Paneltpu.fac1tpurem;
 import Server.Serverylite;
 import java.io.IOException;
 import java.sql.Connection;

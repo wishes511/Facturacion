@@ -12,17 +12,14 @@ import DAO.daoproductos;
 import Modelo.Almacen;
 import Modelo.Combinacion;
 import Modelo.Corridas;
-import Modelo.Kardexrcpt;
 import Modelo.Producto;
 import Server.Serverprod;
-import com.lowagie.text.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -647,7 +644,7 @@ public class Paresremision extends javax.swing.JDialog {
     private void cerrarbd() {
         try {
             rcpt.close();
-            System.out.println("cerrarbd pares");
+//            System.out.println("cerrarbd pares");
         } catch (SQLException ex) {
             Logger.getLogger(Paresremision.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -730,7 +727,7 @@ public class Paresremision extends javax.swing.JDialog {
         if (cantidad != cant) {
             r = false;
         }
-        System.out.println(resp + " - " + cantidad + " -| " + cant);
+//        System.out.println(resp + " - " + cantidad + " -| " + cant);
         return r;
     }
 

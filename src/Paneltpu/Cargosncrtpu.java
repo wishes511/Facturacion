@@ -5,24 +5,18 @@
  */
 package Paneltpu;
 
-import Paneles.*;
 import Modelo.Almacen;
 import Modelo.Combinacion;
 import Modelo.Corridas;
-import Modelo.Producto;
 import Modelo.cargo;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
@@ -237,11 +231,11 @@ public class Cargosncrtpu extends javax.swing.JDialog {
                 }
             }
         }
-        System.out.println("---------");
+//        System.out.println("---------");
         for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-            System.out.println(arrcargoseleccion1.getReferencia());
+//            System.out.println(arrcargoseleccion1.getReferencia());
         }
-        System.out.println("---------");
+//        System.out.println("---------");
     }//GEN-LAST:event_JtCargoMousePressed
 
     public void desplieguecargos() {
@@ -301,7 +295,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
                     } else {
                         modarrDesc(i, desc,parci);
                     }
-//                        System.out.println(Float.parseFloat(desc) + " " + arrcargoseleccion.get(i).getSaldo());
+////                        System.out.println(Float.parseFloat(desc) + " " + arrcargoseleccion.get(i).getSaldo());
 //                        if (Float.parseFloat(desc) > Float.parseFloat(ars)) {
                     if (Float.parseFloat(desc) > Float.parseFloat(saldomx)) {
                         JOptionPane.showMessageDialog(null, "El valor introducido excede el saldo, intentelo de nuevo");
@@ -329,12 +323,12 @@ public class Cargosncrtpu extends javax.swing.JDialog {
         car.setDescuento(Double.parseDouble(desc));
         car.setParcialidad(Integer.parseInt(parci));
         arrcargoseleccion.set(i, car);// asigna de nuevo el cargo ya modificado
-        System.out.println("descuento " + desc);
+//        System.out.println("descuento " + desc);
     }
 
     private boolean verificaciones(String r) {
         boolean resp = false;
-        System.out.println("valida " + r);
+//        System.out.println("valida " + r);
         if (!r.equals("") && (verificafloat(r) || verificaint(r))) {
             resp = true;
         }

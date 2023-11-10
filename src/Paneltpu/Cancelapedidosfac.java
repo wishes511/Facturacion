@@ -7,12 +7,10 @@ package Paneltpu;
 
 import DAO.daoConceptos;
 import DAO.daoDevolucion;
-import DAO.daodurezas;
 import DAO.daokardexrcpt;
 import Modelo.ConceptosES;
 import Modelo.Ddevolucion;
 import Modelo.Devolucion;
-import Modelo.Dureza;
 import Modelo.Motivosdev;
 import Modelo.Usuarios;
 import java.sql.Connection;

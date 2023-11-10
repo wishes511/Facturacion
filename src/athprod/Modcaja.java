@@ -7,8 +7,6 @@ package athprod;
 
 import DAO.daoDocscpt;
 import Modelo.Documentoscpt;
-import Paneles.Cliente1;
-import Paneles.Cliente2;
 import Server.Serverprod;
 import java.io.IOException;
 import java.sql.Connection;
@@ -19,7 +17,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
-import javax.swing.SingleSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
 /**

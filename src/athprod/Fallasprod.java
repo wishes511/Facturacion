@@ -6,7 +6,6 @@
 package athprod;
 
 import DAO.daoAvances;
-import Modelo.Anuncio;
 import Modelo.Falla;
 import Panelavances.Nuevafalla;
 import Panelavances.Nuevoanuncio;
@@ -153,7 +152,7 @@ public class Fallasprod extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         try {
-            System.out.println("cerrar avances");
+//            System.out.println("cerrar avances");
             c.close();
         } catch (SQLException ex) {
             Logger.getLogger(Fallasprod.class.getName()).log(Level.SEVERE, null, ex);

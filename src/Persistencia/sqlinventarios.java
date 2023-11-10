@@ -64,7 +64,7 @@ public class sqlinventarios {
                 double cant = arr1.getCantidad();
                 String sql = "insert into inventariado(id_pedimento,id_dpedimento,id_material,dureza,nombremat,cantidadrestante)"
                         + "values (" + ped + "," + dped + "," + m + ",'" + d + "','" + n + "'," + cant + ")";
-                System.out.println(" " + sql);
+//                System.out.println(" " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -142,11 +142,11 @@ public class sqlinventarios {
                 double cant = arr1.getCantidad();
                 sql = "insert into inventariado(id_pedimento,id_dpedimento,id_material,dureza,nombremat,cantidadrestante,mes,years) "
                         + "values(" + ped + "," + dped + "," + mat + ",'" + dureza + "','" + nombre + "'," + cant + "," + mes + "," + year + ")";
-                System.out.println("inserta r inv " + sql);
+//                System.out.println("inserta r inv " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
                 sql = "update dpedimentos set cantinv=" + cant + " where id_dpedimento=" + dped;
-                System.out.println("actializa inv x reg " + sql);
+//                System.out.println("actializa inv x reg " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -158,12 +158,12 @@ public class sqlinventarios {
                 nuevoyear = year;
             }
             sql = "update controlinventarios set mes=" + nuevomes + ", years=" + nuevoyear;
-            System.out.println("controlinv " + sql);
+//            System.out.println("controlinv " + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
 
             sql = "delete from inventariado";
-            System.out.println("deelete inv usuario " + sql);
+//            System.out.println("deelete inv usuario " + sql);
             st = lite.prepareStatement(sql);
             st.executeUpdate();
             c.commit();
@@ -194,7 +194,7 @@ public class sqlinventarios {
             sql = "BACKUP DATABASE [Tpucpt]\n"
                     + "TO  DISK = N'C:\\red\\sistemas\\Respaldos\\resTpucpt" + mres + "" + yres + ".bak'\n"
                     + "WITH CHECKSUM;";
-            System.out.println("respaldo " + sql);
+//            System.out.println("respaldo " + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
             c.commit();
@@ -241,7 +241,7 @@ public class sqlinventarios {
             int ped=inv.getId_dpedimento();
             String ref= inv.getReferencia();
             String sql="update inventariado set cantidadsistema="+cant+",diferencia="+dif+", referencia='"+ref+"' where id_dpedimento="+ped;
-//            System.out.println(sql);
+////            System.out.println(sql);
             st=c.prepareStatement(sql);
             st.executeUpdate();
             c.commit();
