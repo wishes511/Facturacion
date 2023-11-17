@@ -3844,7 +3844,7 @@ public class sqlfactura {
                     + "join ACobranzaTpu.dbo.cargo c on a.id_cargo=c.id_cargo\n"
                     + "where id_documento=" + folio;
             st = con.prepareStatement(sql);
-            System.out.println(sql);
+//            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 factura f = new factura();
@@ -3888,7 +3888,7 @@ public class sqlfactura {
             cpt.setAutoCommit(false);
             cob.setAutoCommit(false);
             String sql = "update documento set estatus='0' where id_documento=" + arr.get(0).getId();
-            System.out.println("docs " + sql);
+//            System.out.println("docs " + sql);
             st = cpt.prepareStatement(sql);
             st.executeUpdate();
 //            Busca la cuenta adedcuada para la cancelacion de notas de credito
@@ -3912,18 +3912,18 @@ public class sqlfactura {
                 int cargo = arr1.getIdcargo();
 
                 sql = "update cargo set " + car + "=" + car + "+" + saldo + "  where id_cargo=" + cargo;
-                System.out.println("cargo " + sql);
+//                System.out.println("cargo " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
                 sql = "update abono set estatus='0' where id_abono=" + arr1.getIdabono();
-                System.out.println("abono " + sql);
+//                System.out.println("abono " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
                 sql = "insert into abono(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha"
                         + ",fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
                         + "values(" + cargo + "," + ag + "," + concepto + ","+cli+",'"+ref+"','"+refc+"','"+fecha+"','"
                         +fecha+"','"+t+"',0,"+-saldo+","+-pago+",0,0,'"+obs+"','"+usuario+"','1')";
-                System.out.println("abono nuevo " + sql);
+//                System.out.println("abono nuevo " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
             }

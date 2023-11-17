@@ -223,7 +223,13 @@ public class Nuevoanuncio extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-        nuevoasunto();
+        if (validacharswithfile() && validacharswithoutfile()) {
+            nuevoasunto();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al publicar,\n recuerda que los caracteres MAXIMOS con imagen son maximo 25 y sin imagen 142");
+            JtNombre.requestFocus();
+        }
+
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void JtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNombreActionPerformed
@@ -280,7 +286,14 @@ public class Nuevoanuncio extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "No se pudo agregar el nuevo anuncio, intentelo de nuevo");
             JtNombre.requestFocus();
         }
+    }
 
+    private boolean validacharswithfile() {
+        return (archivo != null && JtNombre.getText().length() < 25);
+    }
+
+    private boolean validacharswithoutfile() {
+        return (archivo == null && JtNombre.getText().length() < 142);
     }
 
     /**
