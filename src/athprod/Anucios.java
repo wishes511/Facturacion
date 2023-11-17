@@ -220,7 +220,7 @@ public class Anucios extends javax.swing.JInternalFrame {
         daoAvances da = new daoAvances();
         java.util.Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        da.setactualizar(c, arr.get(JtEmpresa.getSelectedRow()).getAnuncio(), "anuncio",sdf.format(date));
+        da.setactualizar(c, arr.get(JtEmpresa.getSelectedRow()).getAnuncio(), "anuncio", sdf.format(date));
         setempresas();
     }
 
@@ -238,10 +238,13 @@ public class Anucios extends javax.swing.JInternalFrame {
         }
     }
 
+    /**
+     * Cierra conexion de avances
+     */
     public void cerrarcon() {
         try {
             c.close();
-//            System.out.println("cerrar conexion avance");
+            System.out.println("cerrar conexion avance");
         } catch (SQLException ex) {
             Logger.getLogger(Anucios.class.getName()).log(Level.SEVERE, null, ex);
         }

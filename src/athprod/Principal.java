@@ -89,6 +89,9 @@ public final class Principal extends javax.swing.JFrame {
     String admin = "0";
     String prod = "1";
     Usuarios u = new Usuarios();
+    //Paneles de conexiones independientes
+    Anucios anuncios = new Anucios();
+    Fallasprod fallas = new Fallasprod();
 
     public Principal() {
         initComponents();
@@ -1276,7 +1279,7 @@ public final class Principal extends javax.swing.JFrame {
             interfazlogin();
         }
         if (!u.getUsuario().equals("Michel")) {
-            actualizaempresa();
+            //actualizaempresa();
         }
 //        Desabilitar opciones y mandar indicacion de que empresa se esta utilizando
         if (JrEmpresa.isSelected()) {
@@ -1731,12 +1734,11 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmAnunciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAnunciosActionPerformed
         try {//Abrir anuncios
-            Anucios f = new Anucios();
-            this.JdPanel.add(f);
-            f.getconexion();
-            f.setempresas();
-            f.setMaximum(true);
-            f.show();
+            this.JdPanel.add(anuncios);
+            anuncios.getconexion();
+            anuncios.setempresas();
+            anuncios.setMaximum(true);
+            anuncios.show();
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1744,13 +1746,12 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmFallasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFallasActionPerformed
         try {//Abrir fallas
-            Fallasprod f = new Fallasprod();
-            this.JdPanel.add(f);
-            f.usuario = u.getUsuario();
-            f.getconexion();
-            f.setempresas();
-            f.setMaximum(true);
-            f.show();
+            this.JdPanel.add(fallas);
+            fallas.usuario = u.getUsuario();
+            fallas.getconexion();
+            fallas.setempresas();
+            fallas.setMaximum(true);
+            fallas.show();
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1828,7 +1829,6 @@ public final class Principal extends javax.swing.JFrame {
                     u = dp.getUserlite(liteusuario, a, a);
                     if (!u.getUsuario().equals("")) {
 //                        checkempresa();
-
 //                        Si es administracion usaria tpu y maq
                         if (u.getTipo_usuario().equals("1")) {
                             setTpucon();
@@ -1910,6 +1910,7 @@ public final class Principal extends javax.swing.JFrame {
                         JmSalidas.setVisible(false);
                         JmTpu.setVisible(false);
                         JmProd.setVisible(true);
+                        JmAnuncios.setVisible(true);
                         JmCatalogoprod.setVisible(false);
                         JmFicha.setVisible(false);
                         JmFallas.setVisible(false);
@@ -2056,7 +2057,7 @@ public final class Principal extends javax.swing.JFrame {
             tpucobB = s.getconexionB("RACobranzaTpu");
             conexion.setCobranzatpuB(tpucobB);
         } catch (SQLException | ClassNotFoundException | IOException ex) {
-            JOptionPane.showMessageDialog(null, ex.getMessage()+" No se puede conectar a la base de datos interna!");
+            JOptionPane.showMessageDialog(null, ex.getMessage() + " No se puede conectar a la base de datos interna!");
         }
     }
 
@@ -2131,6 +2132,15 @@ public final class Principal extends javax.swing.JFrame {
             cerrarconexiones();
         }
         cerrarbd();
+//        System.out.println(fallas.isShowing() + " - " + fallas.isClosed());
+//        System.out.println(anuncios.isShowing() + " - " + anuncios.isClosed());
+//      Esos dos metodos para que cierre conexion, si no habrá problemas ya que no se ha iniciado la interfaz ni la conexion  
+        if (!anuncios.isClosed() && anuncios.isShowing()) {
+            anuncios.cerrarcon();
+        }
+        if (!fallas.isClosed() && fallas.isShowing()) {
+            fallas.cerrarcon();
+        }
         System.exit(0);
     }
 
