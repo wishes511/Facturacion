@@ -176,7 +176,6 @@ public class Hrsavances extends javax.swing.JInternalFrame {
     private void setempresas() {
         DefaultTableModel model = new DefaultTableModel();
         daoAvances da = new daoAvances();
-
         arr = da.arrdepp(c);
         model.addColumn("Nombre");
         model.addColumn("Pares x hr");

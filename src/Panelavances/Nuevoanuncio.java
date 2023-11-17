@@ -205,11 +205,12 @@ public class Nuevoanuncio extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Rellena el combo con la info recien obtenida
+     * Con la conexion de avances se obtienen las pantallas disponible y activas
      */
     public void llenacombo() {
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         sqlpantallas s = new sqlpantallas();
+//        Array que captura todas las pantallas activas
         arr = s.getpantalla(avances);
         JcPantalla.setModel(model);
         for (pantalla arr1 : arr) {
@@ -252,15 +253,20 @@ public class Nuevoanuncio extends javax.swing.JDialog {
 
     private void nuevoasunto() {
         Anuncio a = new Anuncio();
+//        Si el archivo de imagen es nulo se utilizara una imagen en blanco para que el navegador no tenga problemas
+//        Si no es nulo almacenara el nombre de la imagen con la ruta ya asignada para el servidor
         a.setImagen((archivo != null) ? "anuncios/" + archivo.getName() : "anuncios/blank.png");
         daoAvances d = new daoAvances();
         java.util.Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         a.setFecha(sdf.format(date));
+//        Seleccion de pantalla mediante el array y el indice del combo
         a.setPantalla(arr.get(JcPantalla.getSelectedIndex()).getPantalla());
         a.setCuerpo(JtNombre.getText().toUpperCase());
         if (d.newanuncio(avances, a)) {
             try {
+//                Si todo esta bien pasara a la validacion del archivo y desplegará un msj de que si se pudo
+//                De igual manera se comprueba que sea nulo para no enviar un archivo incorrecto al servidor
                 if ((archivo != null)) {
                     EnviarArchivo e1 = new EnviarArchivo(archivo.getCanonicalPath(), 5000);
                     e1.enviarArchivo();

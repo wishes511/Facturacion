@@ -1042,9 +1042,11 @@ public class ncr2tpu extends javax.swing.JPanel {
 //                            arruuid.add(arrcargoseleccion.get(j).getFoliofiscal());
                             double desc = arrcargoseleccion.get(j).getDescuento();
                             if (JcUsd.isSelected()) {
-                                desc = Double.parseDouble(formateador.format(arrcargoseleccion.get(j).getSaldo() - desc));
+                                desc = Double.parseDouble(formateador.format(desc));
+                                System.out.println("usd");
                             } else {
-                                desc = Double.parseDouble(formateador.format(arrcargoseleccion.get(j).getSaldomx() - desc));
+                                desc = Double.parseDouble(formateador.format(desc));
+                                System.out.println("mxn");
                             }
                             car.setDescuento(desc);// importe a descontar de cargos
                             car.setFoliofiscal(folios);

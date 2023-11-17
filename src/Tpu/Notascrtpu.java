@@ -101,6 +101,7 @@ public class Notascrtpu extends javax.swing.JInternalFrame {
         c1.arrmetodo = arrmetodo;
         c1.arruso = arruso;
         c1.sqlempresa = liteempresa;
+        c1.u=u;
     }
 
     /**

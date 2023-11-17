@@ -399,10 +399,15 @@ public class Inventarios extends javax.swing.JInternalFrame {
 
     private void setarraywithinv() {
         diferencias = 0;
+//        Se utiliza primero el inv. capturado y asi se limita el numero de renglones para no causar un
+//        Overflow por diferencias de posibles renglones
         for (int i = 0; i < arrinv.size(); i++) {
             int idinv = arrinv.get(i).getId_dpedimento();
+//            Ahora se recorre el segundo array para buscar el dpedimento
             for (int j = 0; j < arr.size(); j++) {
                 int idarr = arr.get(j).getDp().getId_dpedimento();
+//          Si lo encuentra se crea un nuevo objeto de tipo inventario para obtener y hacer una modificacion en
+//          la parte de cantidades, referencia y las diferencias, si es que existen
                 if (idinv == idarr) {
                     daoInventarios d = new daoInventarios();
                     double cantinv = arrinv.get(i).getCantidad();

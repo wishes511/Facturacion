@@ -208,7 +208,7 @@ public interface Facturas {
     
     public ArrayList<factura> getdocvspagoall(Connection cpt, int id);
     
-    public boolean Cancelancr(Connection cpt, Connection cob, ArrayList<factura> f);
+    public boolean Cancelancr(Connection cpt, Connection cob, ArrayList<factura> f, String fecha, String usuario);
     
     public int insertpagotpu(Connection cpt, Connection cob, factura f);
     

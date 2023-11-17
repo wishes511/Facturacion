@@ -17,6 +17,7 @@ import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
+import Modelo.Usuarios;
 import Modelo.convertnum;
 import Modelo.factura;
 import Modelo.metodopago;
@@ -70,6 +71,7 @@ public class ncr1tpu extends javax.swing.JPanel {
     int estado = 0;
     int ciudad = 0;
     int pais = 0;
+    public Usuarios u;
 
     /**
      * Creates new form Cliente1
@@ -366,9 +368,11 @@ public class ncr1tpu extends javax.swing.JPanel {
                 }
                 JOptionPane.showMessageDialog(null, "No puedes cancelar una NCR si tienes un pago hecho con las facturas: \n" + fol);
             } else {// Si no Si efectua la cancelacion de la NCR
+                java.util.Date date = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
                 arr = df.getdocvspagoall(cpt, id);
-                if (df.Cancelancr(cpt, ACobranza, arr)) {
+                if (df.Cancelancr(cpt, ACobranza, arr, sdf.format(date), u.getUsuario())) {
                     JOptionPane.showMessageDialog(null, "Exito al cancelar NCR, recuerda que solo se cancela en el sistema y no en el SAT");
                     Buscanotas();
                 } else {

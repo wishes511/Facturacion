@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Michel araujo
+Ten cuidado ya que aqui es donde se gestionan las conexion y despliegue de menus para cada tipo de usuario
  */
 package athprod;
 
@@ -221,6 +220,8 @@ public final class Principal extends javax.swing.JFrame {
         JmPedimento1 = new javax.swing.JMenuItem();
         JmEntradasS1 = new javax.swing.JMenuItem();
         JmDevoluciones1 = new javax.swing.JMenuItem();
+        JmCmp = new javax.swing.JMenu();
+        JmCatalogoscmp = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         JlSerie = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -807,6 +808,11 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmMaq.add(JmDevoluciones1);
+
+        JmCmp.setText("jMenu1");
+
+        JmCatalogoscmp.setText("Catalogos");
+        JmCmp.add(JmCatalogoscmp);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Produccion ATH ");
@@ -1661,7 +1667,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmSaldosvencidosActionPerformed
 
     private void JmPantallahrsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPantallahrsActionPerformed
-        try {//Abrir app de respaldos
+        try {//Abrir hrs para pantallas
             Formateodedatos fort = new Formateodedatos();
             String hrs = JOptionPane.showInputDialog("Introduzca el numero de horas por jornada, Ej. de 8am a 6 pm son 10 hrs");
             if (fort.verificaint(hrs) && !hrs.equals("0")) {
@@ -1673,7 +1679,6 @@ public final class Principal extends javax.swing.JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Introduzca un valor valido, intentelo de nuevo");
             }
-
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1725,7 +1730,7 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JlEmpresaMousePressed
 
     private void JmAnunciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAnunciosActionPerformed
-        try {//Abrir app de respaldos
+        try {//Abrir anuncios
             Anucios f = new Anucios();
             this.JdPanel.add(f);
             f.getconexion();
@@ -1738,10 +1743,10 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmAnunciosActionPerformed
 
     private void JmFallasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFallasActionPerformed
-        try {//Abrir app de respaldos
+        try {//Abrir fallas
             Fallasprod f = new Fallasprod();
             this.JdPanel.add(f);
-            f.usuario=u.getUsuario();
+            f.usuario = u.getUsuario();
             f.getconexion();
             f.setempresas();
             f.setMaximum(true);
@@ -1897,7 +1902,7 @@ public final class Principal extends javax.swing.JFrame {
                         JmMaq.setVisible(true);
                         JmMaq.setEnabled(true);
                     }
-                    if(u.getRh().equals("1")){
+                    if (u.getRh().equals("1")) {
                         JmVentas.setVisible(false);
                         JmFacturacion.setVisible(false);
                         JmVerfacts.setVisible(false);
@@ -2031,14 +2036,14 @@ public final class Principal extends javax.swing.JFrame {
     }
 
     private void setTpucon() {
+        Serverprod s = new Serverprod();
         try {
-            Serverprod s = new Serverprod();
             tpu = s.getconexionserver8("Tpucpt");
             tpucob = s.getconexionserver8("ACobranzatpu");
-            tpucobB = s.getconexionB("RACobranzaTpu");
+
             conexion.setCpttpu(tpu);
             conexion.setCobranzatpu(tpucob);
-            conexion.setCobranzatpuB(tpucobB);
+
 //            conexion.setCpttpu(s.getconexionserver8("Tpucpt"));
 //            conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
 //            conexion.setCobranzatpuB(s.getconexionB("RACobranzaTpu"));
@@ -2046,6 +2051,12 @@ public final class Principal extends javax.swing.JFrame {
         } catch (ClassNotFoundException | IOException | SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            tpucobB = s.getconexionB("RACobranzaTpu");
+            conexion.setCobranzatpuB(tpucobB);
+        } catch (SQLException | ClassNotFoundException | IOException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage()+" No se puede conectar a la base de datos interna!");
         }
     }
 
@@ -2069,7 +2080,6 @@ public final class Principal extends javax.swing.JFrame {
     }
 
     private void setconexionprueba() {
-
         if (prod.equals("0")) {
             Serverprod s = new Serverprod();
             Serverylite s1 = new Serverylite();
@@ -2231,10 +2241,12 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmAvancesprod;
     private javax.swing.JMenuItem JmCES;
     private javax.swing.JMenuItem JmCatalogoprod;
+    private javax.swing.JMenuItem JmCatalogoscmp;
     private javax.swing.JMenuItem JmCerrar;
     private javax.swing.JMenuItem JmCliente;
     private javax.swing.JMenuItem JmCliente1;
     private javax.swing.JMenuItem JmClientes;
+    private javax.swing.JMenu JmCmp;
     private javax.swing.JMenu JmCobranza;
     private javax.swing.JMenu JmCobranzatpu;
     private javax.swing.JMenu JmCobranzatpu1;

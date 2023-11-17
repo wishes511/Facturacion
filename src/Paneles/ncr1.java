@@ -88,6 +88,8 @@ public class ncr1 extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pop = new javax.swing.JPopupMenu();
+        JmCancelar = new javax.swing.JMenuItem();
         JbXml1 = new javax.swing.JButton();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -95,6 +97,15 @@ public class ncr1 extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         JtDetalle = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+
+        JmCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/crosscircleregular_106260.png"))); // NOI18N
+        JmCancelar.setText("Cancela ncr");
+        JmCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmCancelarActionPerformed(evt);
+            }
+        });
+        pop.add(JmCancelar);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -136,6 +147,11 @@ public class ncr1 extends javax.swing.JPanel {
             }
         ));
         JtDetalle.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        JtDetalle.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JtDetalleMousePressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(JtDetalle);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/file_pdf_download_icon-icons.com_68954.png"))); // NOI18N
@@ -322,6 +338,16 @@ public class ncr1 extends javax.swing.JPanel {
 //        }
     }//GEN-LAST:event_jLabel6MousePressed
 
+    private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
+        if (evt.getButton() == 3) {// activar con clic derecho
+            pop.show(evt.getComponent(), evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_JtDetalleMousePressed
+
+    private void JmCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCancelarActionPerformed
+
+    }//GEN-LAST:event_JmCancelarActionPerformed
+
     private void setreport() {
         try {
             String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
@@ -498,11 +524,13 @@ public class ncr1 extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton JbXml1;
+    private javax.swing.JMenuItem JmCancelar;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JPopupMenu pop;
     // End of variables declaration//GEN-END:variables
 }

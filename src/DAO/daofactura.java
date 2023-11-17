@@ -467,9 +467,9 @@ public class daofactura implements Facturas {
     }
 
     @Override
-    public boolean Cancelancr(Connection cpt, Connection cob, ArrayList<factura> f) {
+    public boolean Cancelancr(Connection cpt, Connection cob, ArrayList<factura> f, String fecha, String usuario) {
         sqlfactura s = new sqlfactura();
-        return s.deletencr(cpt, cob, f);
+        return s.deletencr(cpt, cob, f, fecha, usuario);
     }
 
     @Override

@@ -36,21 +36,23 @@ import javax.swing.JOptionPane;
 public class sqlfactura {
 
     /**
-     * Funcion que formatea el nombre del cliente por si tiene comillas simples que puedan detener el proceso
+     * Funcion que formatea el nombre del cliente por si tiene comillas simples
+     * que puedan detener el proceso
+     *
      * @param n
-     * @return 
+     * @return
      */
-   private String formatnombre(String n) {
+    private String formatnombre(String n) {
         String resp = "";
         for (int i = 0; i < n.length(); i++) {
             String aux = n.charAt(i) + "";
             if (!aux.equals("'")) {
-                resp+=aux;
+                resp += aux;
             }
         }
         return resp;
     }
-    
+
     private double getnewcantidades6(double a, String tipo) {
         double cant = 0;
         switch (tipo) {
@@ -529,7 +531,7 @@ public class sqlfactura {
             String sql = "select top(100) id_documento,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formapago,metodopago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal,d.usocfdi,d.regimen,moneda,cadenaoriginal,descmetodopago,c.id_cliente\n"
                     + "from documento d\n"
                     + "join ACobranzaTpu.dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
-                    + "where (d.id_cliente like '%" + folio + "%') and serie='" + serie + "'";
+                    + "where (d.id_cliente like '%" + folio + "%') and serie='" + serie + "' order by id_documento desc";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
@@ -2276,8 +2278,8 @@ public class sqlfactura {
 
                 double descuento = f.getArrcargo().get(i).getDescuento();
                 int idcargo = f.getArrcargo().get(i).getId_cargo();
-                sql = "update cargo set " + tiposaldo + "=" + descuento + " where id_cargo=" + idcargo;
-//                System.out.println("Actualizar cargos" + sql);
+                sql = "update cargo set " + tiposaldo + "="+tiposaldo+"-" + descuento + " where id_cargo=" + idcargo;
+                System.out.println("Actualizar cargos" + sql);
                 st = cobranza.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -2295,7 +2297,7 @@ public class sqlfactura {
                         + "fecha,fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
                         + "values (" + idcargo + "," + agente + "," + concepto + "," + cliente + ",'" + m + "','" + resp + "','"
                         + fecha + "','" + fecha + "'," + turno + ",0," + descuento + "," + descuento + ",0,0,'" + obs + "','" + usuario + "','1')";
-//                System.out.println("Nuevo Abono " + sql);
+                System.out.println("Nuevo Abono " + sql);
                 st = cobranza.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -3835,11 +3837,14 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select folio,id_documento,id_abono,c.id_cargo as cargo,a.importe,moneda\n"
+            String sql="select folio,id_documento,id_abono,c.id_cargo as cargo,a.importe,moneda, a.id_agente,\n"
+                    + "a.id_cliente,a.referencia,a.referenciac,a.turno,pago\n"
                     + "from documento d\n"
                     + "join ACobranzaTpu.dbo.abono a on a.referenciac=d.id_documento\n"
                     + "join ACobranzaTpu.dbo.cargo c on a.id_cargo=c.id_cargo\n"
-                    + "where id_documento=17");
+                    + "where id_documento=" + folio;
+            st = con.prepareStatement(sql);
+            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 factura f = new factura();
@@ -3849,6 +3854,12 @@ public class sqlfactura {
                 f.setIdcargo(rs.getInt("cargo"));
                 f.setMoneda(rs.getString("moneda"));
                 f.setMonto(rs.getDouble("importe"));
+                f.setIdcliente(rs.getInt("id_cliente"));
+                f.setAgente(rs.getInt("id_agente"));
+                f.setReferencia(rs.getString("referencia"));
+                f.setRefncredito(rs.getString("referenciac"));
+                f.setTurno(rs.getString("turno"));
+                f.setPago(rs.getDouble("pago"));
                 arr.add(f);
             }
             rs.close();
@@ -3859,32 +3870,62 @@ public class sqlfactura {
         return arr;
     }
 
-    public boolean deletencr(Connection cpt, Connection cob, ArrayList<factura> arr) {
+    /**
+     * Cambio, se actualiza el documento de la nota de credio y estatus 0 se
+     * regresa el importe de cada abono a su cargo Se añade un nuevo abono pero
+     * con importe negativo El estatus del abono de la ncr es cero y el nuevo 1,
+     * posible cambio posterior
+     *
+     * @param cpt
+     * @param cob
+     * @param arr
+     * @return
+     */
+    public boolean deletencr(Connection cpt, Connection cob, ArrayList<factura> arr, String fecha, String usuario) {
         try {
             PreparedStatement st;
+            ResultSet rs;
             cpt.setAutoCommit(false);
             cob.setAutoCommit(false);
             String sql = "update documento set estatus='0' where id_documento=" + arr.get(0).getId();
-//            System.out.println("docs " + sql);
+            System.out.println("docs " + sql);
             st = cpt.prepareStatement(sql);
             st.executeUpdate();
+//            Busca la cuenta adedcuada para la cancelacion de notas de credito
+            int concepto = 0;
+            st = cob.prepareStatement("select id_concepto from catcuenta where cancelancr='1'");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                concepto=rs.getInt("id_concepto");
+            }
+//            Detalle de los abonos, regreso de saldos y cancelacion de abono por renglon
             for (factura arr1 : arr) {
                 String car = (arr1.getMoneda().equals("MXN")) ? "saldomx" : "saldo";
                 double saldo = arr1.getMonto();
-                sql = "update cargo set estatus='0'," + car + "=" + car + "+" + saldo + "  where id_cargo=" + arr1.getIdcargo();
-////                System.out.println("cargo " + sql);
+                double pago = arr1.getPago();
+                int ag = arr1.getAgente();
+                int cli = arr1.getIdcliente();
+                String ref = arr1.getReferencia();
+                String refc = arr1.getRefncredito();
+                String t = arr1.getTurno();
+                String obs = "CANCELACION " + ref;
+                int cargo = arr1.getIdcargo();
+
+                sql = "update cargo set " + car + "=" + car + "+" + saldo + "  where id_cargo=" + cargo;
+                System.out.println("cargo " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
-
-//                sql = "update cargo set " + car + "=" + car + "+" + saldo + " where id_cargo=" + arr1.getIdcargo();
-//////                System.out.println("saldo " + sql);
-//                st = cob.prepareStatement(sql);
-//                st.executeUpdate();
                 sql = "update abono set estatus='0' where id_abono=" + arr1.getIdabono();
-////                System.out.println("abono " + sql);
+                System.out.println("abono " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
-
+                sql = "insert into abono(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha"
+                        + ",fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
+                        + "values(" + cargo + "," + ag + "," + concepto + ","+cli+",'"+ref+"','"+refc+"','"+fecha+"','"
+                        +fecha+"','"+t+"',0,"+-saldo+","+-pago+",0,0,'"+obs+"','"+usuario+"','1')";
+                System.out.println("abono nuevo " + sql);
+                st = cob.prepareStatement(sql);
+                st.executeUpdate();
             }
             cob.commit();
             cpt.commit();
@@ -3893,11 +3934,11 @@ public class sqlfactura {
             try {
                 cob.rollback();
                 cpt.rollback();
-                JOptionPane.showMessageDialog(null, "Cancelar ncr " + ex.getMessage());
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
             }
+            JOptionPane.showMessageDialog(null, "Cancelar ncr " + ex.getMessage());
             return false;
         }
     }

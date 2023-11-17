@@ -677,7 +677,7 @@ public class Nuevafalla extends javax.swing.JDialog {
 
     /**
      * Envia los archivos hacia el servidor solamente los que hayan sido
-     * seleccionados
+     * seleccionados y manda al servidor aquellos que no sean nulos
      */
     private void validenviarchivo() {
         try {
@@ -706,11 +706,6 @@ public class Nuevafalla extends javax.swing.JDialog {
         } catch (IOException ex) {
             Logger.getLogger(Nuevafalla.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    private void vaciarcampos() {
-        JtNombre.setText("");
-        JtNombre.requestFocus();
     }
 
     /**

@@ -37,7 +37,7 @@ public class timbrarXML {
     String estado = "";
     String estatustim="";
     Sellofiscal s = new Sellofiscal();
-    boolean produccion =true;
+    boolean produccion =false;
     String user = "testing@solucionfactible.com";
     String pass = "timbrado.SF.16672";
 

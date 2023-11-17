@@ -538,6 +538,7 @@ public class fac1 extends javax.swing.JPanel {
         if (df.updateclientefacv2(cpt, c, arrfactura.get(row).getId())) {
             JOptionPane.showMessageDialog(null, "Modificacion completa  ");
             Buscanotas();
+            JtCliente.requestFocus();
         } else {
             JOptionPane.showMessageDialog(null, "No se pudo modificar, avisa a sistemas");
         }

@@ -253,6 +253,7 @@ public class Nuevacapturainv extends javax.swing.JDialog {
         DefaultComboBoxModel ped = new DefaultComboBoxModel();
         daopedimentos d = new daopedimentos();
         daoInventarios di = new daoInventarios();
+//        Se obtienen ambos arrays con los registros de sistema y captura
         arr = d.getallpedimento(cpt, "");
         arrlite = di.getinventarios(liteusuario);
         organizaarray();
@@ -263,7 +264,6 @@ public class Nuevacapturainv extends javax.swing.JDialog {
     }
 
     public void settabla() {
-
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Material");//0  estilo combinacion corrida
         model.addColumn("Cantidad");//0  estilo combinacion corrida
