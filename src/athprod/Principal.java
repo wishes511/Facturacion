@@ -90,8 +90,9 @@ public final class Principal extends javax.swing.JFrame {
     String prod = "1";
     Usuarios u = new Usuarios();
     //Paneles de conexiones independientes
-    Anucios anuncios = new Anucios();
-    Fallasprod fallas = new Fallasprod();
+    Anucios anuncios;
+    Fallasprod fallas;
+    Hrsavances hravance;
 
     public Principal() {
         initComponents();
@@ -1674,11 +1675,11 @@ public final class Principal extends javax.swing.JFrame {
             Formateodedatos fort = new Formateodedatos();
             String hrs = JOptionPane.showInputDialog("Introduzca el numero de horas por jornada, Ej. de 8am a 6 pm son 10 hrs");
             if (fort.verificaint(hrs) && !hrs.equals("0")) {
-                Hrsavances f = new Hrsavances();
-                f.cantidaddehoras = Integer.parseInt(hrs);
-                this.JdPanel.add(f);
+                hravance = new Hrsavances();
+                hravance.cantidaddehoras = Integer.parseInt(hrs);
+                this.JdPanel.add(hravance);
 //            f.setMaximum(true);
-                f.show();
+                hravance.show();
             } else {
                 JOptionPane.showMessageDialog(null, "Introduzca un valor valido, intentelo de nuevo");
             }
@@ -1734,6 +1735,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmAnunciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAnunciosActionPerformed
         try {//Abrir anuncios
+            anuncios = new Anucios();
             this.JdPanel.add(anuncios);
             anuncios.getconexion();
             anuncios.setempresas();
@@ -1746,6 +1748,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmFallasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmFallasActionPerformed
         try {//Abrir fallas
+            fallas = new Fallasprod();
             this.JdPanel.add(fallas);
             fallas.usuario = u.getUsuario();
             fallas.getconexion();
@@ -1989,7 +1992,7 @@ public final class Principal extends javax.swing.JFrame {
                         conexion.setEmpresacob("ACobranzauptown");
                         conexion.setEmpresarcpt("UptownRCPT");
                     }
-                    System.out.println(conexion.getEmpresa());
+//                    System.out.println(conexion.getEmpresa());
                 }
             }
         }
@@ -2132,6 +2135,15 @@ public final class Principal extends javax.swing.JFrame {
             cerrarconexiones();
         }
         cerrarbd();
+        cerrarventanasindependientes();
+        System.exit(0);
+    }
+
+    /**
+     * Funcion que cierra todas las ventanas activas y sin cerrar al termino del
+     * la vida del programa
+     */
+    public void cerrarventanasindependientes() {
 //        System.out.println(fallas.isShowing() + " - " + fallas.isClosed());
 //        System.out.println(anuncios.isShowing() + " - " + anuncios.isClosed());
 //      Esos dos metodos para que cierre conexion, si no habrá problemas ya que no se ha iniciado la interfaz ni la conexion  
@@ -2141,7 +2153,9 @@ public final class Principal extends javax.swing.JFrame {
         if (!fallas.isClosed() && fallas.isShowing()) {
             fallas.cerrarcon();
         }
-        System.exit(0);
+        if (!hravance.isClosed() && hravance.isShowing()) {
+            hravance.cerrarcon();
+        }
     }
 
     public void cerrarbd() {

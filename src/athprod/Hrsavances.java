@@ -25,7 +25,7 @@ public class Hrsavances extends javax.swing.JInternalFrame {
 
     Connection c;
     ArrayList<metadep> arr = new ArrayList<>();
-    public int cantidaddehoras=0;
+    public int cantidaddehoras = 0;
 
     /**
      * Creates new form Respaldos
@@ -134,13 +134,17 @@ public class Hrsavances extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+    public void cerrarcon() {
         try {
 //            System.out.println("cerrar avances");
             c.close();
         } catch (SQLException ex) {
             Logger.getLogger(Hrsavances.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        cerrarcon();
     }//GEN-LAST:event_formInternalFrameClosing
 
     private void JtEmpresaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtEmpresaMousePressed
@@ -152,7 +156,7 @@ public class Hrsavances extends javax.swing.JInternalFrame {
     private void JmHrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmHrActionPerformed
         String hrs = JOptionPane.showInputDialog(null, "Ingresar nueva hr para el departamento");
         String nombre = arr.get(JtEmpresa.getSelectedRow()).getNombre();
-        String meta=Integer.parseInt(hrs)*cantidaddehoras+"";
+        String meta = Integer.parseInt(hrs) * cantidaddehoras + "";
         if (updatecantidad(Integer.parseInt(hrs), meta, nombre)) {
             JOptionPane.showMessageDialog(null, "Exito al modificar");
             setempresas();
