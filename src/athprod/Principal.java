@@ -88,8 +88,10 @@ public final class Principal extends javax.swing.JFrame {
     int logint = 0;
     String admin = "0";
     String prod = "1";
+//    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
+    boolean adminmod = false;
     Usuarios u = new Usuarios();
-    //Paneles de conexiones independientes
+    //Panel de conexiones independientes
     Anucios anuncios;
     Fallasprod fallas;
     Hrsavances hravance;
@@ -1082,8 +1084,7 @@ public final class Principal extends javax.swing.JFrame {
                     JmConf.setVisible(true);
                     JmVentas.setVisible(true);
                     JmCobranza.setVisible(true);
-                } else {
-
+                    adminmod = true;
                 }
             }
         });
@@ -1102,7 +1103,6 @@ public final class Principal extends javax.swing.JFrame {
             Procserie p = new Procserie();
             p.setConnecxiones(arr);// asignar valores de coneccion a la clase
             p.start();//iniciar hilo
-
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -2136,6 +2136,7 @@ public final class Principal extends javax.swing.JFrame {
         }
         cerrarbd();
         cerrarventanasindependientes();
+        cerrarmodoadmin();
         System.exit(0);
     }
 
@@ -2213,6 +2214,21 @@ public final class Principal extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(0);
+        }
+    }
+
+    /**
+     * Cierra la conexion establecida con el modo admin si es que se activo
+     */
+    private void cerrarmodoadmin() {
+        if (adminmod) {
+            for (int i = 0; i < arr.size(); i++) {
+                try {
+                    arr.get(i).close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
 
