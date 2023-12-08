@@ -292,7 +292,9 @@ public class NuevomatPedimento extends javax.swing.JDialog {
     private void JcSatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JcSatMousePressed
         JlUnidad.setText(arrmat.get(JcSat.getSelectedIndex()).getUnidad());
     }//GEN-LAST:event_JcSatMousePressed
-
+/**
+ * Agrega el material en un objeto de tipo material y al termino se pasa el dato al arraylist
+ */
     private void setmaterial() {
         boolean band=verificafloat(JtPrecio.getText());
         boolean band1=verificafloat(JtCantidad.getText());

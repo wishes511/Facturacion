@@ -149,7 +149,11 @@ public class VerInventarios extends javax.swing.JDialog {
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         dispose();
     }//GEN-LAST:event_jLabel2MousePressed
-
+    
+    /**
+     *Evento generado al dar clic en la flecha paraa ejecutar una funcion
+     * @param evt
+     */
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
         int row = JcFecha.getSelectedIndex();
         String mes = arr.get(row).getMes() + "";
@@ -168,19 +172,28 @@ public class VerInventarios extends javax.swing.JDialog {
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             this.dispose();
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Saldos vencidos");
+            ver.setTitle("Inventario "+mes+"-"+years);
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    /**
+     * Le da valor al array con los inventarios existenctes
+     *
+     * @return Regresa el valor booleano si el array esta vacio o no
+     */
     public boolean setcombo() {
         daoInventarios di = new daoInventarios();
         arr = di.getinventarios(cpt, 0, 0);
         return arr.isEmpty();
     }
 
+    /**
+     * Con el array previamente cargado se le da valor a cada uno de los
+     * elementos del combo
+     */
     public void llenacombo() {
         if (!arr.isEmpty()) {
             DefaultComboBoxModel per = new DefaultComboBoxModel();

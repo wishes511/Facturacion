@@ -1,6 +1,6 @@
 /*
  * Michel araujo
-Ten cuidado ya que aqui es donde se gestionan las conexion y despliegue de menus para cada tipo de usuario
+Ten cuidado ya que aqui es donde se gestionan las conexiones y despliegue de menus para cada tipo de usuario
  */
 package athprod;
 
@@ -61,6 +61,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 
 /**
+ * Esta clase a pasado por varios cambios, entonces si es necesario que cada
+ * cambio en cuanto a cualquier tipo de proceso, sea cambio de nombre de
+ * variable, nueva variable, Nuevo, modificacion o eliminacion de cualquier
+ * objeto o variable, es necesario hacer commit o hacer un respaldo.
  *
  * @author GATEWAY1-
  */
@@ -136,6 +140,7 @@ public final class Principal extends javax.swing.JFrame {
             u.setUsuario("Michel");
             u.setGrado("2");
             u.setTurno("0");
+            u.setProduccion("1");
             u.setTipo_usuario("1");
             modoadmin();
             JmSesion.setEnabled(false);
@@ -1022,6 +1027,9 @@ public final class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Todos los menus invisibles
+     */
     private void setinicio() {
         JmVentas.setVisible(false);
         JmCobranza.setVisible(false);
@@ -1035,6 +1043,9 @@ public final class Principal extends javax.swing.JFrame {
         JmMaq.setVisible(false);
     }
 
+    /**
+     * Proceso en seundo plano y oculto en la barra de tareas.
+     */
     private void iniciartray() {
         if (SystemTray.isSupported()) {
             try {
@@ -1046,6 +1057,9 @@ public final class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Opciones disponibles al estar la aplicacion en seundo plano dentro de la barra de iconos
+     */
     private void popup() {
         mi.setLabel("Abrir");
         mi2.setLabel("Cerrar");
@@ -1077,6 +1091,7 @@ public final class Principal extends javax.swing.JFrame {
                 String a = JOptionPane.showInputDialog("Introduce contraseña");
                 admin = (a.equals("0605")) ? "1" : "0";
                 if (admin.equals("1")) {
+                    u.setProduccion("1");
                     setconexiones();
                     JmRespaldos.setVisible(true);
                     JmCES.setVisible(true);
@@ -1112,7 +1127,10 @@ public final class Principal extends javax.swing.JFrame {
         }
     }
 
-    private void cerrarconexiones() {//Cerrar todas las conexiones de base de datos
+    /**
+     * Cerrar todas las conexiones de base de datos que se utilizaron para la ejecucion en segundo plano
+     */
+    private void cerrarconexiones() {
         try {
             if (admin.equals("1")) {
                 arr.get(0).close();
@@ -1813,7 +1831,7 @@ public final class Principal extends javax.swing.JFrame {
                 if (a.equals("0605")) {
                     JlUsuario.setText("Michel Admin");
                     u.setUsuario("Michel");
-
+                    u.setProduccion("1");
                     u.setGrado("2");
                     u.setTurno("0");
                     u.setTipo_usuario("1");
@@ -1929,7 +1947,6 @@ public final class Principal extends javax.swing.JFrame {
                 }
             }
         }
-
         return band;
     }
 
@@ -2001,6 +2018,12 @@ public final class Principal extends javax.swing.JFrame {
 //        setconexiones("FATIMACPT","FATIMARCPT","ACobranzaFH");
     }
 
+    /**
+     * Antes de la ultima actualizacion se permitia elegir entre ambas empresas al
+     * mismo tiempo sin salirse de la aplicacion, pero como el usuario no 
+     * le daba el uso correctose opto por desactivarolo y que solo iniciara 
+     * sesion en uno solo a la ves y no poderlo cambiar
+     */
     public void actualizaadmin() {
         setconexionesglobal();
         if (JrEmpresa.isSelected()) {
@@ -2020,6 +2043,9 @@ public final class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Conexiones hacia las bd de cpt y uptown
+     */
     private void setconexionesglobal() {
         if (prod.equals("1")) {
             Serverprod s = new Serverprod();
@@ -2039,6 +2065,9 @@ public final class Principal extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Genera las conexiones hacia la bd de tpu
+     */
     private void setTpucon() {
         Serverprod s = new Serverprod();
         try {
@@ -2064,6 +2093,9 @@ public final class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Genera conexion a la bd de maquinaria
+     */
     private void setTpumaq() {
         try {
             Serverprod s = new Serverprod();
@@ -2083,6 +2115,9 @@ public final class Principal extends javax.swing.JFrame {
         }
     }
 
+    /**
+     * Conexiones a la bd de prueba y/o desarrollo
+     */
     private void setconexionprueba() {
         if (prod.equals("0")) {
             Serverprod s = new Serverprod();
@@ -2130,12 +2165,17 @@ public final class Principal extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Funcion que contiene el cerrado seguro a las conexiones de basaes de datos y cerrar la aplicacion
+     */
     private void cerrartodo() {
         if (admin.equals("1")) {
             cerrarconexiones();
         }
         cerrarbd();
-        cerrarventanasindependientes();
+        if (u.getProduccion().equals("1")) {
+            cerrarventanasindependientes();
+        }
         cerrarmodoadmin();
         System.exit(0);
     }
@@ -2148,17 +2188,29 @@ public final class Principal extends javax.swing.JFrame {
 //        System.out.println(fallas.isShowing() + " - " + fallas.isClosed());
 //        System.out.println(anuncios.isShowing() + " - " + anuncios.isClosed());
 //      Esos dos metodos para que cierre conexion, si no habrá problemas ya que no se ha iniciado la interfaz ni la conexion  
-        if (!anuncios.isClosed() && anuncios.isShowing()) {
-            anuncios.cerrarcon();
+        if (anuncios != null) {
+            if (!anuncios.isClosed() && anuncios.isShowing()) {
+                anuncios.cerrarcon();
+            }
         }
-        if (!fallas.isClosed() && fallas.isShowing()) {
-            fallas.cerrarcon();
+
+        if (fallas != null) {
+            if (!fallas.isClosed() && fallas.isShowing()) {
+                fallas.cerrarcon();
+            }
         }
-        if (!hravance.isClosed() && hravance.isShowing()) {
-            hravance.cerrarcon();
+        if (hravance != null) {
+            if (!hravance.isClosed() && hravance.isShowing()) {
+                hravance.cerrarcon();
+            }
         }
+
     }
 
+    /**
+     * Funcion que cierra toda base de datos abierta dependiendo el tipo de usuario ya que no todos manejan
+     * las mismas funcionalidades
+     */
     public void cerrarbd() {
         try {
 //            Allsingleton.getC().close();

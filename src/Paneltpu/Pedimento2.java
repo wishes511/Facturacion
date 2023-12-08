@@ -14,6 +14,7 @@ import Modelo.Almacen;
 import Modelo.Conexiones;
 import Modelo.Dpedimento;
 import Modelo.Dureza;
+import Modelo.Formateodedatos;
 import Modelo.Materiales;
 import Modelo.ProveedorMPrima;
 import Modelo.Usuarios;
@@ -317,6 +318,24 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
     }//GEN-LAST:event_JmBorrarActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
+        Formateodedatos fdato= new Formateodedatos();
+//        Es importante hacer esta validacion y que no se nos vaya algun caracter especial y nos truene algo que no deberia
+        boolean flag=fdato.verificaStringsSC(JtPedimento.getText());
+        boolean flag1=fdato.verificaStringsSC(JtObservaciones.getText());
+        if(!flag){
+            JtPedimento.requestFocus();
+        }
+        if(!flag1){
+            JtObservaciones.requestFocus();
+        }
+        if(flag && flag1){
+            setpedimento();
+        }else{
+            JOptionPane.showMessageDialog(null, "Solamente puedes escribir letras y numeros");
+        }
+    }//GEN-LAST:event_jLabel2MousePressed
+
+    private void setpedimento() {
         if (arrmatseleccion.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Antes debes de seleccionar materiales al pedimento");
         } else {
@@ -329,7 +348,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
             daokardexrcpt dk = new daokardexrcpt();
             p.setId_kardex(dk.maxkardexsincuenta(c.getCpttpu()));
             double canttotal = 0;
-            total=0;
+            total = 0;
             ArrayList<Dpedimento> arr = new ArrayList<>();
             for (int i = 0; i < arrmatseleccion.size(); i++) {
                 Dpedimento dp = new Dpedimento();
@@ -374,9 +393,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
                 JOptionPane.showMessageDialog(null, "Error al completar, intentelo de nuevo");
             }
         }
-
-
-    }//GEN-LAST:event_jLabel2MousePressed
+    }
 
     private void limpiar() {
         JtPedimento.setText("");

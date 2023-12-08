@@ -42,7 +42,7 @@ public class NuevomatPedimentoadd extends javax.swing.JDialog {
     public NuevomatPedimentoadd(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         setLocationRelativeTo(null);
 
     }
@@ -214,32 +214,46 @@ public class NuevomatPedimentoadd extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-        setmaterial();
+//        Se validan las opciones seleccionas de acuerdo al pedimento y no haya repeticion de registros
+        daopedimentos dp = new daopedimentos();
+        int material = arrmat.get(JcSat.getSelectedIndex()).getId_material();
+        int pedimento = ped.getId_pedimento();
+        String dur = arrdur.get(JcDureza.getSelectedIndex()).getDureza();
+        if (dp.checkmatdureza(cpt, material, dur, pedimento)) {
+            setmaterial(material, dur, pedimento);
+        } else {
+            JOptionPane.showMessageDialog(null, "Ya esta dado de alta ese material con esa dureza");
+        }
+
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void JcSatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JcSatMousePressed
         JlUnidad.setText(arrmat.get(JcSat.getSelectedIndex()).getUnidad());
     }//GEN-LAST:event_JcSatMousePressed
-
-    private void setmaterial() {
-            daopedimentos dp= new daopedimentos();
-            Dpedimento pedi= new Dpedimento();
-            pedi.setId_material(arrmat.get(JcSat.getSelectedIndex()).getId_material());
-            pedi.setId_pedimento(ped.getId_pedimento());
-            pedi.setCantidad(0);
-            pedi.setPrecio(0);
-            pedi.setCosto(0);
-            pedi.setCantrestante(0);
-            pedi.setMatped(arrmat.get(JcSat.getSelectedIndex()).getDescripcion() + " " + arrdur.get(JcDureza.getSelectedIndex()).getDureza());
-            pedi.setDureza(arrdur.get(JcDureza.getSelectedIndex()).getDureza());
-            if(dp.newmatpedimento(cpt, pedi)){
-                JOptionPane.showMessageDialog(null, "Material agregado al pedimento");
-            }else{
-                JOptionPane.showMessageDialog(null, "No se llevo a cabo el registro, contacta a sistemas");
-            }
-            this.dispose();
-
-        
+  
+    /**
+     *Funcion para insertar en la bd
+     * @param material
+     * @param dureza
+     * @param pedimento
+     */
+    private void setmaterial(int material, String dureza, int pedimento) {
+        daopedimentos dp = new daopedimentos();
+        Dpedimento pedi = new Dpedimento();
+        pedi.setId_material(material);
+        pedi.setId_pedimento(pedimento);
+        pedi.setCantidad(0);
+        pedi.setPrecio(0);
+        pedi.setCosto(0);
+        pedi.setCantrestante(0);
+        pedi.setMatped(arrmat.get(JcSat.getSelectedIndex()).getDescripcion() + " " + arrdur.get(JcDureza.getSelectedIndex()).getDureza());
+        pedi.setDureza(dureza);
+        if (dp.newmatpedimento(cpt, pedi)) {
+            JOptionPane.showMessageDialog(null, "Material agregado al pedimento");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se llevo a cabo el registro, contacta a sistemas");
+        }
+        this.dispose();
     }
 
     public Materiales getmaterial() {

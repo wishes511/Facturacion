@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
@@ -197,17 +198,22 @@ public class Pedimento1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JmImprimirActionPerformed
 
     private void JmAddmaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAddmaterialActionPerformed
-        NuevomatPedimentoadd n = new NuevomatPedimentoadd(null, true);
-        daomateriales am = new daomateriales();
-        daoalmacenes da = new daoalmacenes();
-        daodurezas dd = new daodurezas();
-        n.cpt=c.getCpttpu();
-        n.ped = arr.get(JtDetalle.getSelectedRow());
-        n.arrmat = am.getmateriales(c.getCpttpu(), "");
-        n.arralm = da.getalmacenescpt(c.getCpttpu());
-        n.arrdur = dd.getdurezas(c.getCpttpu());
-        n.setcombos();
-        n.setVisible(true);
+        int row = JtDetalle.getSelectedRow();
+        if (arr.get(row).getReferencia().equals("0")) {
+            NuevomatPedimentoadd n = new NuevomatPedimentoadd(null, true);
+            daomateriales am = new daomateriales();
+            daoalmacenes da = new daoalmacenes();
+            daodurezas dd = new daodurezas();
+            n.cpt = c.getCpttpu();
+            n.ped = arr.get(row);
+            n.arrmat = am.getmateriales(c.getCpttpu(), "");
+            n.arralm = da.getalmacenescpt(c.getCpttpu());
+            n.arrdur = dd.getdurezas(c.getCpttpu());
+            n.setcombos();
+            n.setVisible(true);
+        }else{
+            JOptionPane.showMessageDialog(null, "No se pueden agregar materiales extra a un pedimento que no sea el cero");
+        }
     }//GEN-LAST:event_JmAddmaterialActionPerformed
 
     private void settabla() {

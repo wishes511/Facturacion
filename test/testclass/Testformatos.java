@@ -5,6 +5,8 @@
  */
 package testclass;
 
+import Modelo.Formateodedatos;
+
 /**
  *
  * @author GATEWAY1-
@@ -14,7 +16,9 @@ public class Testformatos {
     public static void main(String[] args) {
         Testformatos t = new Testformatos();
         //t.formatfecha("2018-10-06 17:44:24.000");
-        t.formatnombre("COMERCIAL D'PORTENIS");
+        //t.formatnombre("COMERCIAL D'PORTENIS");
+        Formateodedatos fort= new Formateodedatos();
+        System.out.println(fort.verificaStringsSC("holaca recu lo  ."));
     }
 
     private String formatfecha(String fe) {

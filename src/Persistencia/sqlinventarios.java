@@ -140,11 +140,13 @@ public class sqlinventarios {
                 String nombre = arr1.getNombre();
                 String dureza = arr1.getDureza();
                 double cant = arr1.getCantidad();
+//                inserta registros en la bd de sqlserver para mantener un historial
                 sql = "insert into inventariado(id_pedimento,id_dpedimento,id_material,dureza,nombremat,cantidadrestante,mes,years) "
                         + "values(" + ped + "," + dped + "," + mat + ",'" + dureza + "','" + nombre + "'," + cant + "," + mes + "," + year + ")";
 //                System.out.println("inserta r inv " + sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
+//                Actualiza el stock de inventarios por renglon de pedimento
                 sql = "update dpedimentos set cantinv=" + cant + " where id_dpedimento=" + dped;
 //                System.out.println("actializa inv x reg " + sql);
                 st = c.prepareStatement(sql);
@@ -157,11 +159,12 @@ public class sqlinventarios {
                 nuevomes = mes + 1;
                 nuevoyear = year;
             }
+//            Actualiza el mes y año  de la base de datos
             sql = "update controlinventarios set mes=" + nuevomes + ", years=" + nuevoyear;
 //            System.out.println("controlinv " + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
-
+//Borra todos los registros de la bd de sqlite que es donde se almacena temporalmente el inventario
             sql = "delete from inventariado";
 //            System.out.println("deelete inv usuario " + sql);
             st = lite.prepareStatement(sql);

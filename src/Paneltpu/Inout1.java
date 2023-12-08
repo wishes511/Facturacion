@@ -250,6 +250,7 @@ public class Inout1 extends javax.swing.JPanel {
         int row = JtDetalle.getSelectedRow();
         String ped= k.get(row).getPedido();
         if (k.get(row).getStatus().equals("1")) {
+//            Es importante la serie y que el pedido sea vacio ya que solo se permite borrar movimientos independientes
 //            Tomar en cuenta solo algunas cuentas y no todas, entradas y salidas
             if ((cuenta == 60 || cuenta==1||cuenta==10) && serie.equals("B") && ped.equals("")) {
                 JbCancelar.setVisible(true);
@@ -319,42 +320,6 @@ public class Inout1 extends javax.swing.JPanel {
     }//GEN-LAST:event_BsActionPerformed
 
     /**
-     *
-     * @param tipo
-     * @param cant
-     *
-     * @return
-     */
-    private double formatdecimal(double cant) {
-        int dato = 0;
-        int punto = 0;
-        boolean band = false;
-        double resp = 0;
-        String c = String.valueOf(cant);
-        String cadena = "";
-        for (int i = 0; i < c.length(); i++) {
-            if (c.charAt(i) == '.') {
-                band = true;
-            }
-            if (band) {
-                if (punto == 3) {
-                    dato = Integer.parseInt(c.charAt(i) + "");
-                    i = c.length();
-                    break;
-                }
-                cadena += c.charAt(i);
-                punto++;
-            }
-        }
-        if ((dato <= 5)) {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
-        } else {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        }
-        return resp;
-    }
-
-    /**
      * Despliega reporte del pedido individual
      *
      * @param folio
@@ -374,7 +339,7 @@ public class Inout1 extends javax.swing.JPanel {
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Pedido " + folio);
+            ver.setTitle("Mov " + folio);
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);

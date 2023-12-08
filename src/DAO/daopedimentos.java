@@ -78,4 +78,19 @@ public class daopedimentos implements pedimentos {
         return s.getpedimentoinv(cpt);
     }
 
+    /**
+     * Verifica que el material y la dureza no exista
+     *
+     * @param cpt
+     * @param mat
+     * @param dur
+     * @param ped
+     * @return
+     */
+    @Override
+    public boolean checkmatdureza(Connection cpt, int mat, String dur, int ped) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.checkmatdureza(cpt, mat, dur,ped);
+    }
+
 }

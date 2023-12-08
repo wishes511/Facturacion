@@ -66,6 +66,8 @@ public class Nuevoanuncio extends javax.swing.JDialog {
         JcPantalla = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         Jlimagen = new javax.swing.JLabel();
+        JtAllpantallas = new javax.swing.JCheckBox();
+        jLabel10 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -128,6 +130,11 @@ public class Nuevoanuncio extends javax.swing.JDialog {
         jLabel9.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel9.setText("Seleccion de pantalla");
 
+        JtAllpantallas.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel10.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel10.setText("Seleccionar todas?");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -144,12 +151,8 @@ public class Nuevoanuncio extends javax.swing.JDialog {
                                 .addGap(171, 171, 171)
                                 .addComponent(jLabel6))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3))))
+                                .addGap(182, 182, 182)
+                                .addComponent(jLabel1)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -157,9 +160,18 @@ public class Nuevoanuncio extends javax.swing.JDialog {
                             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(JtNombre, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel9)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel10))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
-                                .addComponent(JcPantalla, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(JtAllpantallas)
+                                    .addComponent(JcPantalla, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel3)
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(Jlimagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
@@ -179,13 +191,17 @@ public class Nuevoanuncio extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(JcPantalla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JtAllpantallas)
+                    .addComponent(jLabel10))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel7)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Jlimagen, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(Jlimagen, javax.swing.GroupLayout.DEFAULT_SIZE, 15, Short.MAX_VALUE)
+                .addGap(17, 17, 17)
                 .addComponent(jLabel1)
                 .addContainerGap())
         );
@@ -223,7 +239,8 @@ public class Nuevoanuncio extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-        if (validacharswithfile() && validacharswithoutfile()) {
+        System.out.println(JtNombre.getText().length());
+        if (validacharswithfile() || validacharswithoutfile()) {
             nuevoasunto();
         } else {
             JOptionPane.showMessageDialog(null, "Error al publicar,\n recuerda que los caracteres MAXIMOS con imagen son maximo 25 y sin imagen 142");
@@ -259,8 +276,6 @@ public class Nuevoanuncio extends javax.swing.JDialog {
 
     private void nuevoasunto() {
         Anuncio a = new Anuncio();
-//        Si el archivo de imagen es nulo se utilizara una imagen en blanco para que el navegador no tenga problemas
-//        Si no es nulo almacenara el nombre de la imagen con la ruta ya asignada para el servidor
         a.setImagen((archivo != null) ? "anuncios/" + archivo.getName() : "anuncios/blank.png");
         daoAvances d = new daoAvances();
         java.util.Date date = new Date();
@@ -269,22 +284,49 @@ public class Nuevoanuncio extends javax.swing.JDialog {
 //        Seleccion de pantalla mediante el array y el indice del combo
         a.setPantalla(arr.get(JcPantalla.getSelectedIndex()).getPantalla());
         a.setCuerpo(JtNombre.getText().toUpperCase());
-        if (d.newanuncio(avances, a)) {
-            try {
-//                Si todo esta bien pasara a la validacion del archivo y desplegará un msj de que si se pudo
-//                De igual manera se comprueba que sea nulo para no enviar un archivo incorrecto al servidor
-                if ((archivo != null)) {
-                    EnviarArchivo e1 = new EnviarArchivo(archivo.getCanonicalPath(), 5000);
-                    e1.enviarArchivo();
-                }
+//        Se hace la distincion entre si es solo una pantalla o todas
+        if (JtAllpantallas.isSelected()) {//Si son todas las pantallas
+            boolean resp = false;
+            for (pantalla arr1 : arr) {
+                a.setPantalla(arr1.getPantalla());
+                resp = d.newanuncio(avances, a);
+            }
+//          Aqui esta fuera del ciclo para que no repita n veces la subida de archivos si ya existe uno
+//          Y tambien no impacte en el desempeño del equipo y servidor
+            if (resp) {
+                sendtoserver(archivo);
+                JOptionPane.showMessageDialog(null, "Exito al publicar un nuevo anuncio en todas las pantallas");
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al publicar anuncios, llama a sistemas");
+            }
+        } else {//Solo si es una pantalla
+            if (d.newanuncio(avances, a)) {
+                sendtoserver(archivo);
                 JOptionPane.showMessageDialog(null, "Exito al publicar un nuevo anuncio");
                 dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "No se pudo agregar el nuevo anuncio, intentelo de nuevo");
+                JtNombre.requestFocus();
+            }
+        }
+
+    }
+
+    /**
+     * Funcion para mandar el archivo seleccionado al server
+     * @param archivo 
+     */
+    private void sendtoserver(File archivo) {
+//      Si todo esta bien pasara a la validacion del archivo y desplegará un msj de que si se pudo
+//      De igual manera se comprueba que sea nulo para no enviar un archivo incorrecto al servidor
+        if ((archivo != null)) {
+            try {
+                EnviarArchivo e1 = new EnviarArchivo(archivo.getCanonicalPath(), 5000);
+                e1.enviarArchivo();
             } catch (IOException ex) {
                 Logger.getLogger(Nuevoanuncio.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "No se pudo agregar el nuevo anuncio, intentelo de nuevo");
-            JtNombre.requestFocus();
         }
     }
 
@@ -348,8 +390,10 @@ public class Nuevoanuncio extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcPantalla;
     private javax.swing.JLabel Jlimagen;
-    private javax.swing.JTextField JtNombre;
+    private javax.swing.JCheckBox JtAllpantallas;
+    public javax.swing.JTextField JtNombre;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;

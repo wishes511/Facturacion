@@ -227,8 +227,8 @@ public class Anucios extends javax.swing.JInternalFrame {
     public void getconexion() {
         try {
             Serverprod s = new Serverprod();
-//            c = s.getconexionTPU("Avances");
-            c = s.getconexionserver8("Avances");
+            c = s.getconexionTPU("Avances");
+//            c = s.getconexionserver8("Avances");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Nuevoanuncio.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

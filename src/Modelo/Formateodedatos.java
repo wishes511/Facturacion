@@ -186,8 +186,8 @@ public class Formateodedatos {
         }
         return resp;
     }
-    
-        public String formateamesrespaldo(int m) {
+
+    public String formateamesrespaldo(int m) {
         String mes = "";
         switch (m) {
             case 1:
@@ -238,6 +238,24 @@ public class Formateodedatos {
             y += year.charAt(i);
         }
         return y;
+    }
+
+    /**
+     * Verifica el string sin tienen solo puro alfanumerico y sin ningun
+     * caracter
+     *
+     * @param cad
+     * @return
+     */
+    public boolean verificaStringsSC(String cad) {
+        boolean resp = false;
+        String patt = "[\\s\\w@.-]*";
+        Pattern pat = Pattern.compile(patt);
+        Matcher match = pat.matcher(cad);
+        if (match.matches()) {
+            resp = true;
+        }
+        return resp;
     }
 
 }

@@ -104,7 +104,7 @@ public class sqlpedimentos {
                 String dureza = p.getArr().get(i).getDureza();
                 int alm = p.getArr().get(i).getId_almacen();
                 sql = "insert into dpedimentos(id_material,id_pedimento,cantidad,precio,costo,importe,cantidadrestante,estatus,matpedimento,dureza,cantinv)"
-                        + " values(" + mat + "," + pedimento + "," + cant + "," + precio + "," + precio + "," + importe + "," + cant + ",'1','" + matped + "','" + dureza + "',"+cant+")";
+                        + " values(" + mat + "," + pedimento + "," + cant + "," + precio + "," + precio + "," + importe + "," + cant + ",'1','" + matped + "','" + dureza + "'," + cant + ")";
 ////                System.out.println("dped " + sql);
                 st = cpt.prepareStatement(sql);
                 st.executeUpdate();
@@ -260,5 +260,26 @@ public class sqlpedimentos {
             Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
+    }
+
+    public boolean checkmatdureza(Connection c, int mat, String dur, int ped) {
+        boolean resp;
+        int cont = 0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select id_dpedimento from dpedimentos\n"
+                    + "where id_material="+mat+" and dureza='"+dur+"' and id_pedimento="+ped;
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                cont++;
+            }
+            resp = cont == 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
+            resp = false;
+        }
+        return resp;
     }
 }
