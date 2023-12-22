@@ -108,7 +108,7 @@ public class sqladdenda {
         try {
             PreparedStatement st;
             ResultSet rs;
-            int fac = f.getFolio();
+            String fac = f.getFolio()+"";
             String sql = "select f.factura, numcliente,SUBSTRING(f.pedido,0,LEN(f.pedido)-1) as pedido,dp.corrida, convert(date,f.fecha) as fecha,dp.estilo,"
                     + "dp.precio,c.puntoinicial,c.puntofinal,cp.descripcion as sat,m.descripcion as material,col.descripcion as color,p.producto,\n"
                     + "c15 = case when dp.Corrida =90 THEN SUM(cant1) else '' END,\n"
@@ -157,11 +157,12 @@ public class sqladdenda {
                     + "join Combinaciones com on p.Combinacion=com.Combinacion\n"
                     + "join materiales m on com.Material1=m.Material\n"
                     + "join colores col on com.Color1=col.Color\n"
-                    + "where f.estatus='F' and f.factura='"+fac+"'\n"
+                    + "where f.estatus='F' and f.factura=? \n"
                     + "group by f.factura, numcliente,f.pedido,dp.corrida,f.fecha,dp.estilo,dp.precio,c.puntoinicial,c.puntofinal,"
                     + "cp.descripcion,m.descripcion ,col.descripcion,p.producto";
 //            System.out.println(sql);
             st = rcpt.prepareStatement(sql);
+            st.setString(1, fac);
             rs = st.executeQuery();
             int band = 0;
             int index = 0;
