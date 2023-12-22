@@ -5,18 +5,14 @@
  */
 package DAO;
 
-import Modelo.Cliente;
 import Modelo.factura;
 import Modelo.metodopago;
 import athprod.Facturacion;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Connection;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mx.sat.cfd40.generarXML40;
 import mx.sat.cfd40.generarXML40ncr;
 import mx.sat.cfd40.xmlDAO;
 

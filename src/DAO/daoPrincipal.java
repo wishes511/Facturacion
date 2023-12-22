@@ -63,8 +63,9 @@ public class daoPrincipal implements principal {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String query = "select *  from usuarios  where pass='" + pass + "' and estatus='1'";
+            String query = "select *  from usuarios  where pass=? and estatus='1'";
             st = c.prepareStatement(query);
+            st.setString(1, pass);
             rs = st.executeQuery();
             while (rs.next()) {
                 us.setUsuario(rs.getString("usuario"));

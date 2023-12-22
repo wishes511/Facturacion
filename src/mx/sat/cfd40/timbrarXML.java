@@ -8,7 +8,6 @@ import com.solucionfactible.cfdi.ws.timbrado.xsd.CFDICertificacion;
 import com.solucionfactible.cfdi.ws.timbrado.xsd.CFDIResultadoCancelacion;
 import com.solucionfactible.cfdi.ws.timbrado.xsd.CFDIResultadoCertificacion;
 import com.solucionfactible.ws.timbrado.client.Timbrado;
-import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;

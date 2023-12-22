@@ -11,7 +11,15 @@ package Modelo;
  */
 public class Anuncio implements java.io.Serializable{
     private int anuncio,pantalla;
-    private String asunto, cuerpo, fecha, estatus, imagen, nombrepant;
+    private String asunto, cuerpo, fecha, estatus, imagen, nombrepant, fechav;
+
+    public String getFechav() {
+        return fechav;
+    }
+
+    public void setFechav(String fechav) {
+        this.fechav = fechav;
+    }
 
     public String getNombrepant() {
         return nombrepant;

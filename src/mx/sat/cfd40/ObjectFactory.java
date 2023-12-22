@@ -3,6 +3,8 @@
 // Visite <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas las modificaciones realizadas en este archivo se perder�n si se vuelve a compilar el esquema de origen. 
 // Generado el: 2022.10.27 a las 04:05:03 PM CDT 
+// Este archivo es el que se utiliza para poder instanciar y dar valor a cada
+// uno de los nodos del XML
 //
 package mx.sat.cfd40;
 

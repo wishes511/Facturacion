@@ -3,6 +3,10 @@
 // Visite <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas las modificaciones realizadas en este archivo se perder�n si se vuelve a compilar el esquema de origen. 
 // Generado el: 2022.10.27 a las 04:05:03 PM CDT 
+// De igual manera que con el archivo de Defaultprefixmapper, mejor no le muevas
+// y si es cambio de version de cfdi, ve la manera de hacer su propio paquete 
+// sin afectar este ya que van de la mano, se hicieron muchas pruebas para la
+// compatibilidad de complementos a pago.
 //
 @javax.xml.bind.annotation.XmlSchema(namespace = "http://www.sat.gob.mx/cfd/4", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
 //@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.sat.gob.mx/Pagos20", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)

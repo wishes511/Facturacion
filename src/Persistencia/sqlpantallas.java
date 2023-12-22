@@ -248,8 +248,9 @@ public class sqlpantallas {
             String cuerpo = a.getCuerpo();
             String fecha = a.getFecha();
             String imagen = a.getImagen();
-            st = c.prepareStatement("insert into anuncios(pantalla, asunto, cuerpo, fecha, imagen,estatus) "
-                    + "values(" + pant + ",'','" + cuerpo + "','" + fecha + "','" + imagen + "','1')");
+            String fechav=a.getFechav();
+            st = c.prepareStatement("insert into anuncios(pantalla, asunto, cuerpo, fecha, imagen,estatus,fechav) "
+                    + "values(" + pant + ",'','" + cuerpo + "','" + fecha + "','" + imagen + "','1','"+fechav+"')");
             st.executeUpdate();
             c.commit();
             return true;
@@ -269,10 +270,10 @@ public class sqlpantallas {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select a.pantalla,anuncio,cuerpo,fecha,imagen,estatus,nombre\n"
-                    + "from anuncios a\n"
-                    + "join pantallas p on a.pantalla=p.pantalla\n"
-                    + "order by fecha desc";
+            String sql = "select top(30) a.pantalla,anuncio,cuerpo,fecha,imagen,estatus,nombre,convert(date,fechav) as fechav,SUBSTRING(imagen,10,50) as imag\n" +
+"                    from anuncios a\n" +
+"                    join pantallas p on a.pantalla=p.pantalla\n" +
+"                    order by fecha desc";
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -284,6 +285,8 @@ public class sqlpantallas {
                 a.setFecha(rs.getString("fecha"));
                 a.setNombrepant(rs.getString("nombre"));
                 a.setEstatus(rs.getString("estatus"));
+                a.setFechav(rs.getString("fechav"));
+                a.setImagen(rs.getString("imag"));
                 arr.add(a);
             }
         } catch (SQLException ex) {

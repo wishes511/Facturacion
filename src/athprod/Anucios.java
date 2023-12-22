@@ -199,6 +199,8 @@ public class Anucios extends javax.swing.JInternalFrame {
         model.addColumn("Asunto");
         model.addColumn("Fecha");
         model.addColumn("Estado");
+        model.addColumn("fecha vencimiento");
+        model.addColumn("imagen");
         model.setNumRows(arr.size());
         JtEmpresa.setModel(model);
         for (int i = 0; i < arr.size(); i++) {
@@ -207,6 +209,8 @@ public class Anucios extends javax.swing.JInternalFrame {
             JtEmpresa.setValueAt(arr.get(i).getCuerpo(), i, 1);
             JtEmpresa.setValueAt(arr.get(i).getFecha(), i, 2);
             JtEmpresa.setValueAt(estatus, i, 3);
+            JtEmpresa.setValueAt(arr.get(i).getFechav(), i, 4);
+            JtEmpresa.setValueAt(arr.get(i).getImagen(), i,5);
         }
     }
 
@@ -227,8 +231,8 @@ public class Anucios extends javax.swing.JInternalFrame {
     public void getconexion() {
         try {
             Serverprod s = new Serverprod();
-            c = s.getconexionTPU("Avances");
-//            c = s.getconexionserver8("Avances");
+//            c = s.getconexionTPU("Avances");
+            c = s.getconexionserver8("Avances");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Nuevoanuncio.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
