@@ -11,8 +11,16 @@ package Modelo;
  */
 public class Davance implements java.io.Serializable{
     private String fecha,depa;
-    private int cor,precor,pes,des,oji,insp,prea,mont,pt;
+    private int cor,precor,pes,des,oji,insp,prea,mont,mont2,pt;
     private int reportado, muestras, total, acumulado, proyeccion;
+
+    public int getMont2() {
+        return mont2;
+    }
+
+    public void setMont2(int mont2) {
+        this.mont2 = mont2;
+    }
 
     public String getDepa() {
         return depa;

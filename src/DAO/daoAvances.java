@@ -152,27 +152,31 @@ public class daoAvances implements Avances {
         return a.insertaregsinavansemana(c, arr);
     }
 
-/**
- * Obtiene y organiza los registros para el reporte de avances de produccion por mes
- * @param c
- * @param f1
- * @param f2
- * @param nfecha
- * @param nmaq
- * @param dep
- * @return 
- */
+    /**
+     * Obtiene y organiza los registros para el reporte de avances de produccion
+     * por mes
+     *
+     * @param c
+     * @param f1
+     * @param f2
+     * @param nfecha
+     * @param nmaq
+     * @param dep
+     * @param depa Importante para identificar mas de una banda en montado sino no es necesario
+     * @return
+     */
     @Override
-    public ArrayList<Colsdepartamentos> getarrmes(Connection c, String f1, String f2, String nfecha, String nmaq, String dep) {
+    public ArrayList<Colsdepartamentos> getarrmes(Connection c, String f1, String f2, String nfecha, String nmaq, String dep, int depa) {
         sqlavances a = new sqlavances();
-        return a.getarrayavancemes(c, f1, f2,nfecha, nmaq, dep);
+        return a.getarrayavancemes(c, f1, f2, nfecha, nmaq, dep, depa);
     }
 
     /**
      * Insertar registros en bd SQLITE para su posterior d3espliegue
+     *
      * @param c
      * @param arr
-     * @return 
+     * @return
      */
     @Override
     public boolean inserttarregsmes(Connection c, ArrayList<Davance> arr) {
@@ -181,10 +185,12 @@ public class daoAvances implements Avances {
     }
 
     /**
-     * Eliminacion de registros de la misma bd SQLITE con seleccion de tabla como parametro
+     * Eliminacion de registros de la misma bd SQLITE con seleccion de tabla
+     * como parametro
+     *
      * @param c
      * @param col
-     * @return 
+     * @return
      */
     @Override
     public boolean deleteregmes(Connection c, String col) {
@@ -194,12 +200,13 @@ public class daoAvances implements Avances {
 
     /**
      * Obtiene los registros por departamento x dia desde avances del 6.8
+     *
      * @param c
      * @param f2
      * @param nmaq
      * @param nfecha
      * @param dep
-     * @return 
+     * @return
      */
     @Override
     public Davance getregsDia(Connection c, String f2, String nmaq, String nfecha, String dep) {
@@ -209,9 +216,10 @@ public class daoAvances implements Avances {
 
     /**
      * Inserta registros en la bd de sqlite respecto a avances x dia
+     *
      * @param c
      * @param arr
-     * @return 
+     * @return
      */
     @Override
     public boolean insertarregsDia(Connection c, ArrayList<Davance> arr) {
@@ -221,8 +229,9 @@ public class daoAvances implements Avances {
 
     /**
      * Obtiene el nombre de las columnas de los avances usando conexion del 6.8
+     *
      * @param c
-     * @return 
+     * @return
      */
     @Override
     public ArrayList<Colsdepartamentos> getcoldepartamentos(Connection c) {
@@ -262,10 +271,11 @@ public class daoAvances implements Avances {
 
     /**
      * Actualiza a auna fecha acual y poderla utilizar al instante
+     *
      * @param c
      * @param id
      * @param tabla
-     * @param fecha 
+     * @param fecha
      */
     @Override
     public void setactualizar(Connection c, int id, String tabla, String fecha) {

@@ -32,9 +32,14 @@ public class sqlavances {
             int pares = av.getPares();
             String fecha = av.getFecha();
             String punto = av.getPunto();
-            String sql = "insert into lotespt(lotes,fecha,punto,pares,estatus) values(" + lote + ",'" + fecha + "','" + punto + "'," + pares + ",'1')";
+            String sql = "insert into lotespt(lotes,fecha,punto,pares,estatus) values(?,?,?,?,'1')";
+//            String sql = "insert into lotespt(lotes,fecha,punto,pares,estatus) values(" + lote + ",'" + fecha + "','" + punto + "'," + pares + ",'1')";
 //            System.out.println(sql);
             st = a.prepareStatement(sql);
+            st.setInt(1, lote);
+            st.setString(2, fecha);
+            st.setString(3, punto);
+            st.setInt(4, pares);
             st.executeUpdate();
             a.commit();
 
@@ -234,9 +239,12 @@ public class sqlavances {
         try {
             c.setAutoCommit(false);
             PreparedStatement st;
-            String sql = "update metaxdep set cantxhr=" + prs + ", cantxdia=" + col + " where nombre='" + nombre + "'";
+            String sql = "update metaxdep set cantxhr=?, cantxdia=? where nombre=?";
 //            System.out.println("actualiza prs avance " + sql);
             st = c.prepareStatement(sql);
+            st.setInt(1,prs);
+            st.setInt(2, Integer.parseInt(col));
+            st.setString(3, nombre);
             st.executeUpdate();
             c.commit();
             return true;
@@ -316,9 +324,20 @@ public class sqlavances {
             String pt = p.getPt();
             String m2 = p.getMontado2();
             String sql = "insert into pantallas "
-                    + "values(" + pant + ",'" + n + "','" + cor + "','" + prec + "','" + pes + "','"
-                    + des + "','" + oji + "','" + prea + "','" + ins + "','" + m + "','" + pt + "','" + m2 + "')";
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?)";
             st = c.prepareStatement(sql);
+            st.setInt(1, pant);
+            st.setString(2, n);
+            st.setString(3, cor);
+            st.setString(4, prec);
+            st.setString(5, pes);
+            st.setString(6, des);
+            st.setString(7, oji);
+            st.setString(8, prea);
+            st.setString(9, ins);
+            st.setString(10, m);
+            st.setString(11, pt);
+            st.setString(12, m2);
             st.executeUpdate();
             c.commit();
             return true;
@@ -426,9 +445,13 @@ public class sqlavances {
             c.setAutoCommit(false);
             for (Colsdepartamentos arr1 : arr) {
                 String sql = "insert into Avances_semanal(nombre,dia,ndia,pares) "
-                        + "values('" + arr1.getNombre() + "'," + arr1.getDia() + ",'" + arr1.getNdia() + "'," + arr1.getPares() + ")";
+                        + "values(?,?,?,?)";
 ////                System.out.println("insert avance sem " + sql);
                 st = c.prepareStatement(sql);
+                st.setString(1, arr1.getNombre());
+                st.setInt(2, arr1.getDia() );
+                st.setString(3, arr1.getNdia());
+                st.setInt(4, arr1.getPares());
                 st.executeUpdate();
             }
             c.commit();
@@ -464,7 +487,7 @@ public class sqlavances {
 //        }
 //    }
 
-    public ArrayList<Colsdepartamentos> getarrayavancemes(Connection c, String f1, String f2, String nfecha, String nmaq, String dep) {
+    public ArrayList<Colsdepartamentos> getarrayavancemes(Connection c, String f1, String f2, String nfecha, String nmaq, String dep, int depa) {
         ArrayList<Colsdepartamentos> arr = new ArrayList<>();
         try {
             PreparedStatement st;
@@ -473,7 +496,7 @@ public class sqlavances {
                     + "pares=case when " + dep + "!=0  then sum(npares) else 0 end\n"
                     + "from programa p\n"
                     + "join avance a on p.id_prog=a.id_prog\n"
-                    + "where convert(date," + nfecha + ") between '" + f1 + "' and '" + f2 + "' and " + nmaq + "='PL'\n"
+                    + "where convert(date," + nfecha + ") between '" + f1 + "' and '" + f2 + "' and " + nmaq + "='PL' and "+dep+"="+depa+"\n"
                     + "group by convert(date," + nfecha + ")," + dep + "\n"
                     + "order by convert(date," + nfecha + ")";
 //            System.out.println("avancexdepa " + sql);
@@ -512,9 +535,20 @@ public class sqlavances {
                 int mont = arr1.getMont();
                 int pt = arr1.getPt();
                 sql = "insert into Avances_mensual(fecha,corte,precor,pes,des,oji,ins,prea,mont,pt) "
-                        + "values('" + f + "'," + cor + "," + pre + "," + pes + "," + des + "," + oji + "," + ins + "," + prea + "," + mont + "," + pt + ")";
+//                        + "values('" + f + "'," + cor + "," + pre + "," + pes + "," + des + "," + oji + "," + ins + "," + prea + "," + mont + "," + pt + ")";
+                        + "values(?,?,?,?,?,?,?,?,?,?)";
 //                System.out.println("Avanmensual " + sql);
                 st = c.prepareStatement(sql);
+                st.setString(1, f);
+                st.setInt(2, cor);
+                st.setInt(3, pre);
+                st.setInt(4, pes);
+                st.setInt(5, des);
+                st.setInt(6, oji);
+                st.setInt(7, ins);
+                st.setInt(8, prea);
+                st.setInt(9, mont);
+                st.setInt(10, pt);
                 st.executeUpdate();
             }
             c.commit();
@@ -609,9 +643,15 @@ public class sqlavances {
                 int acum = arr1.getAcumulado();
                 int proy = arr1.getProyeccion();
                 sql = "insert into Avances_Diario(nombre,reportado,muestras,Total,Acumulado,Proyeccion) "
-                        + "values('" + n + "'," + repor + "," + mues + "," + t + "," + acum + "," + proy + ")";
+                        + "values(?,?,?,?,?,?)";
 ////                System.out.println("Avadiario " + sql);
                 st = c.prepareStatement(sql);
+                st.setString(1, n);
+                st.setInt(2, repor);
+                st.setInt(3, mues);
+                st.setInt(4, t);
+                st.setInt(5, acum);
+                st.setInt(6, proy);
                 st.executeUpdate();
             }
             c.commit();

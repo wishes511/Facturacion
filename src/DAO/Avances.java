@@ -59,7 +59,7 @@ public interface Avances {
 
     public boolean insertaregistrosAvances_sem(Connection c, ArrayList<Colsdepartamentos> arr);
 
-    public ArrayList<Colsdepartamentos> getarrmes(Connection c, String f1, String f2, String nfecha, String nmaq, String dep);
+    public ArrayList<Colsdepartamentos> getarrmes(Connection c, String f1, String f2, String nfecha, String nmaq, String dep, int depa);
 
     public boolean inserttarregsmes(Connection c, ArrayList<Davance> arr);
 

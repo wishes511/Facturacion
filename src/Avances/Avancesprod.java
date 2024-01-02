@@ -354,43 +354,97 @@ public class Avancesprod extends javax.swing.JDialog {
         daoAvances d = new daoAvances();
         ArrayList<Davance> arr = new ArrayList<>();
 //        Se obtiene el los registros de cada uno de los departamentos para cada fecha
-        ArrayList<Colsdepartamentos> arrcor = d.getarrmes(c, f1, f2, "fechacor", "cormaq", "corte");
-        ArrayList<Colsdepartamentos> arrprecor = d.getarrmes(c, f1, f2, "fechaprecor", "precormaq", "precorte");
-        ArrayList<Colsdepartamentos> arrpes = d.getarrmes(c, f1, f2, "fechapes", "pesmaq", "pespunte");
-        ArrayList<Colsdepartamentos> arrdes = d.getarrmes(c, f1, f2, "fechades", "desmaq", "deshebrado");
-        ArrayList<Colsdepartamentos> arroji = d.getarrmes(c, f1, f2, "fechacor", "ojimaq", "ojillado");
-        ArrayList<Colsdepartamentos> arrins = d.getarrmes(c, f1, f2, "fechainsp", "inspmaq", "inspeccion");
-        ArrayList<Colsdepartamentos> arrprea = d.getarrmes(c, f1, f2, "fechaprea", "preamaq", "preacabado");
-        ArrayList<Colsdepartamentos> arrmont = d.getarrmes(c, f1, f2, "fechacor", "montmaq", "montado");
-        ArrayList<Colsdepartamentos> arrpt = d.getarrmes(c, f1, f2, "fechapt", "ptmaq", "prodt");
+        ArrayList<Colsdepartamentos> arrcor = d.getarrmes(c, f1, f2, "fechacor", "cormaq", "corte", 1);
+        ArrayList<Colsdepartamentos> arrprecor = d.getarrmes(c, f1, f2, "fechaprecor", "precormaq", "precorte", 1);
+        ArrayList<Colsdepartamentos> arrpes = d.getarrmes(c, f1, f2, "fechapes", "pesmaq", "pespunte", 1);
+        ArrayList<Colsdepartamentos> arrdes = d.getarrmes(c, f1, f2, "fechades", "desmaq", "deshebrado", 1);
+        ArrayList<Colsdepartamentos> arroji = d.getarrmes(c, f1, f2, "fechaoji", "ojimaq", "ojillado", 1);
+        ArrayList<Colsdepartamentos> arrins = d.getarrmes(c, f1, f2, "fechainsp", "inspmaq", "inspeccion", 1);
+        ArrayList<Colsdepartamentos> arrprea = d.getarrmes(c, f1, f2, "fechaprea", "preamaq", "preacabado", 1);
+        ArrayList<Colsdepartamentos> arrmont = d.getarrmes(c, f1, f2, "fechamont", "montmaq", "montado", 1);
+        ArrayList<Colsdepartamentos> arrmont2 = d.getarrmes(c, f1, f2, "fechamont", "montmaq", "montado", 2);
+        ArrayList<Colsdepartamentos> arrpt = d.getarrmes(c, f1, f2, "fechapt", "ptmaq", "prodt", 1);
 //        Se utiliza el array de corte como base para el ciclo
         for (int i = 0; i < arrcor.size(); i++) {
             Davance av = new Davance();
 //            Obtiene la fecha de acuerdo y siempre y cuando haya mas de 1 registro en el array
             String fecha = (arrcor.size() > 0) ? arrcor.get(i).getFecha() : "";
-            String fprecor = (arrprecor.size() > 0) ? arrprecor.get(i).getFecha() : "";
-            String fpes = (arrpes.size() > 0) ? arrpes.get(i).getFecha() : "";
-            String fdes = (arrdes.size() > 0) ? arrdes.get(i).getFecha() : "";
-            String foji = (arroji.size() > 0) ? arroji.get(i).getFecha() : "";
-            String fins = (arrins.size() > 0) ? arrins.get(i).getFecha() : "";
-            String fprea = (arrprea.size() > 0) ? arrprea.get(i).getFecha() : "";
-            String fmont = (arrmont.size() > 0) ? arrmont.get(i).getFecha() : "";
-            String fpt = (arrpt.size() > 0) ? arrpt.get(i).getFecha() : "";
+            String fprecor = getfechaarr(arrprecor, fecha);
+            String fpes = getfechaarr(arrpes, fecha);
+            String fdes = getfechaarr(arrdes, fecha);
+            String foji = getfechaarr(arroji, fecha);
+            String fins = getfechaarr(arrins, fecha);
+            String fprea = getfechaarr(arrprea, fecha);
+            String fmont = getfechaarr(arrmont, fecha);
+            String fmont2 = getfechaarr(arrmont2, fecha);
+            String fpt = getfechaarr(arrpt, fecha);
 //            Se asigna el valor de los pares si la fecha concuenrda con la de corte y el array es mayor a 0
             av.setCor((arrcor.size() > 0) ? arrcor.get(i).getPares() : 0);
-            av.setPrecor((fecha.equals(fprecor) && arrprecor.size() > 0) ? arrprecor.get(i).getPares() : 0);
-            av.setPes((fecha.equals(fpes) && arrpes.size() > 0) ? arrpes.get(i).getPares() : 0);
-            av.setDes((fecha.equals(fdes) && arrdes.size() > 0) ? arrdes.get(i).getPares() : 0);
-            av.setOji((fecha.equals(foji) && arroji.size() > 0) ? arroji.get(i).getPares() : 0);
-            av.setInsp((fecha.equals(fins) && arrins.size() > 0) ? arrins.get(i).getPares() : 0);
-            av.setPrea((fecha.equals(fprea) && arrprea.size() > 0) ? arrprea.get(i).getPares() : 0);
-            av.setMont((fecha.equals(fmont) && arrmont.size() > 0) ? arrmont.get(i).getPares() : 0);
-            av.setPt((fecha.equals(fpt) && arrpt.size() > 0) ? arrpt.get(i).getPares() : 0);
+//            av.setPrecor((fecha.equals(fprecor) && arrprecor.size() > 0) ? arrprecor.get(i).getPares() : 0);
+            av.setPrecor(getparesarr(arrprecor,fprecor));
+            av.setPes(getparesarr(arrpes,fpes));
+            av.setDes(getparesarr(arrdes,fdes));
+            av.setOji(getparesarr(arroji,foji));
+            av.setInsp(getparesarr(arrins,fins));
+            av.setPrea(getparesarr(arrprea,fprea));
+            av.setMont(getparesarr(arrmont,fmont));
+            av.setMont2(getparesarr(arrmont,fmont2));
+            av.setPt(getparesarr(arrpt,fpt));
             av.setFecha(fecha);
             arr.add(av);
         }
 //        Se inserta en la bd de Sqlite para su posterior despliegue
         d.inserttarregsmes(sqliteuser, arr);
+    }
+
+    /**
+     * Funcion que obtiene la fecha indicada del arreglo si no existe va vacio
+     *
+     * @param arr
+     * @param fecha
+     * @return
+     */
+    private String getfechaarr(ArrayList<Colsdepartamentos> arr, String fecha) {
+        String f = "";
+        if (!arr.isEmpty()) {
+            for (Colsdepartamentos arr1 : arr) {
+                if (arr1.getFecha().equals(fecha)) {
+                    f = arr1.getFecha();
+                    break;
+                } else {
+                    f = "";
+                }
+            }
+        } else {
+            f = "";
+        }
+        return f;
+    }
+
+    /**
+     * Funcion parecida a la de la fecha solo que en esta verifica que no haya
+     * desbordamiento
+     *
+     * @param arr
+     * @param fecha
+     * @return
+     */
+    private int getparesarr(ArrayList<Colsdepartamentos> arr, String fecha) {
+        int f = 0;
+        if (!arr.isEmpty()) {
+            for (Colsdepartamentos arr1 : arr) {
+                if (arr1.getFecha().equals(fecha)) {
+                    f = arr1.getPares();
+                    break;
+                } else {
+                    f = 0;
+                }
+            }
+        } else {
+            f = 0;
+        }
+
+        return f;
     }
 
     private void setreport(String f1, String f2) {
