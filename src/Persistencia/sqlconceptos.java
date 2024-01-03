@@ -88,8 +88,10 @@ public class sqlconceptos {
             ResultSet rs;
             st = con.prepareStatement("select id_concepto,cuenta,subcuenta,descripcion "
                     + "from Conceptos "
-                    + "where cuenta=" + cuenta + " and subcuenta=" + subcuenta + " order by cuenta");
+                    + "where cuenta=? and subcuenta=? order by cuenta");
             rs = st.executeQuery();
+            st.setInt(1, cuenta);
+            st.setInt(2, subcuenta);
             while (rs.next()) {
 
                 c.setId_concepto(rs.getInt("id_concepto"));
