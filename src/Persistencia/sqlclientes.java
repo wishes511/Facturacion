@@ -104,9 +104,10 @@ public class sqlclientes {
             ResultSet rs;
             String sql = "select id_cliente, id_agente, nombre, rfc, cp, razonsocial, usocfdi, calle, colonia, pais, Estado, regimen, estatus, ciudad,correo,cuenta,telefono \n"
                     + "from cliente c\n"
-                    + "where nombre like '%" + cli + "%'\n"
+                    + "where nombre like ? \n"
                     + "order by nombre desc";
             st = cob.prepareStatement(sql);
+            st.setString(1, "%"+cli+"%");
 //            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -233,13 +234,24 @@ public class sqlclientes {
         try {
             cpt.setAutoCommit(false);
             PreparedStatement st;
-            String sql = "update cliente set nombre='" + c.getNombre() + "',rfc='" + c.getRfc() + "',cp='" + c.getCp()
-                    + "',usocfdi='" + c.getUsocfdi() + "',calle='" + c.getCalle() + "',colonia='" + c.getColonia()
-                    + "',pais='" + c.getPais() + "',estado='" + c.getEstado() + "',regimen='" + c.getRegimen()
-                    + "',ciudad='" + c.getCiudad() + "',correo='" + c.getCorreo() + "',cuenta='" + c.getCuenta()
-                    + "',telefono='" + c.getTelefono() + "'  where id_cliente=" + c.getCvecliente();
+            String sql = "update cliente set nombre=?,rfc=?,cp=?,usocfdi=?,calle=?,colonia=?,pais=?,"
+                    + "estado=?,regimen=?,ciudad=?,correo=?,cuenta=?,telefono=?  where id_cliente=?";
             st = cpt.prepareStatement(sql);
-            int i = st.executeUpdate();
+            st.setString(0, c.getNombre());
+            st.setString(1, c.getRfc());
+            st.setString(2, c.getCp());
+            st.setString(3, c.getUsocfdi());
+            st.setString(4, c.getCalle());
+            st.setString(5, c.getColonia());
+            st.setString(6, c.getPais());
+            st.setString(7, c.getEstado());
+            st.setString(8, c.getRegimen());
+            st.setString(9, c.getCiudad());
+            st.setString(10, c.getCorreo());
+            st.setString(11, c.getCuenta());
+            st.setString(12, c.getTelefono());
+            st.setInt(13, c.getCvecliente());
+            st.executeUpdate();
 //            System.out.println("mod cliente " + i);
             cpt.commit();
             st.close();
