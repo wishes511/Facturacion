@@ -175,7 +175,8 @@ public class sqlclientes {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select * from clientes where numcliente=" + idcliente);
+            st = con.prepareStatement("select * from clientes where numcliente=?");
+            st.setInt(1, idcliente);
             rs = st.executeQuery();
             while (rs.next()) {
                 c.setCvecliente(rs.getInt("numcliente"));

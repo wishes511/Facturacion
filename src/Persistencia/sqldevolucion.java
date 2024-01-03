@@ -63,8 +63,10 @@ public class sqldevolucion {
                     + "from pedido p\n"
                     + "join Devoluciones d on d.id_pedido=p.id_pedido join \n"
                     + "documento doc on p.id_pedido=doc.pedidos\n"
-                    + "where p.serie='" + serie + "' and d.estatus='1' and id_documento=" + idped;
+                    + "where p.serie=? and d.estatus='1' and id_documento=?";
             st = c.prepareStatement(sql);
+            st.setString(1, serie);
+            st.setInt(2, idped);
             rs = st.executeQuery();
             while (rs.next()) {
                 rows++;
@@ -83,8 +85,10 @@ public class sqldevolucion {
             String sql = "select p.nombre \n"
                     + "from pedido p\n"
                     + "join Devoluciones d on d.id_pedido=p.id_pedido\n"
-                    + "where p.serie='" + serie + "' and d.estatus='1' and p.id_pedido=" + idped;
+                    + "where p.serie=? and d.estatus='1' and p.id_pedido=?";
             st = c.prepareStatement(sql);
+            st.setString(1, serie);
+            st.setInt(2, idped);
             rs = st.executeQuery();
             while (rs.next()) {
                 rows++;
@@ -102,7 +106,7 @@ public class sqldevolucion {
      * @param id
      * @return
      */
-    public ArrayList<Ddevolucion> getpedidowithpedido(Connection c, int id,String bdname) {
+    public ArrayList<Ddevolucion> getpedidowithpedido(Connection c, int id, String bdname) {
         ArrayList<Ddevolucion> arr = new ArrayList<>();
         try {
             PreparedStatement st;
@@ -112,9 +116,9 @@ public class sqldevolucion {
                     + "join Dpedido dp on dp.id_pedido=p.id_pedido\n"
                     + "join Materiales m on dp.id_material=m.id_material\n"
                     + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
-//                    + "join [192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
-//                    + "join RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
-                    + ""+bdname+"\n"
+                    //                    + "join [192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
+                    //                    + "join RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS\n"
+                    + "" + bdname + "\n"
                     + "where serie='B' and p.id_pedido=" + id;
 //            System.out.println("dev ped " + sql);
             st = c.prepareStatement(sql);
@@ -159,9 +163,10 @@ public class sqldevolucion {
             String sql = "select d.id_devolucion,k.id_material,k.dureza,k.renglon,k.cantidad,k.precio,k.id_kardex,id_pedimento,k.serie\n"
                     + "from devoluciones d\n"
                     + "join kardex k on k.id_kardex=d.id_kardex\n"
-                    + "where d.id_devolucion=" + id + " and d.estatus='1'";
+                    + "where d.id_devolucion=? and d.estatus='1'";
 //            System.out.println("dev id " + sql);
             st = c.prepareStatement(sql);
+            st.setInt(1, id);
             rs = st.executeQuery();
             while (rs.next()) {
                 Ddevolucion d = new Ddevolucion();
@@ -193,10 +198,11 @@ public class sqldevolucion {
                     + "join pedido p on p.id_pedido=d.id_pedido\n"
                     + "join motivodev m on d.id_motivo=m.id_motivo\n"
                     + "left join documento doc on doc.pedidos=p.id_pedido\n"
-                    + "where d.serie='" + serie + "'\n"
+                    + "where d.serie=? \n"
                     + "order by id_devolucion desc";
 //            System.out.println("devs " + sql);
             st = c.prepareStatement(sql);
+            st.setString(1, serie);
             rs = st.executeQuery();
             while (rs.next()) {
                 Devolucion d = new Devolucion();
@@ -232,9 +238,10 @@ public class sqldevolucion {
                     + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
                     + "join Documento d on d.pedidos=p.id_pedido\n"
                     + "join ACobranzatpu.dbo.Cargo c on d.folio=c.referencia\n"
-                    + "where p.serie='A' and d.serie='FAC' and id_documento=" + id;
+                    + "where p.serie='A' and d.serie='FAC' and id_documento=?";
 //            System.out.println("dev ped " + sql);
             st = c.prepareStatement(sql);
+            st.setInt(1, id);
             rs = st.executeQuery();
             while (rs.next()) {
                 Ddevolucion d = new Ddevolucion();
@@ -275,9 +282,11 @@ public class sqldevolucion {
                     + "join Documento d on d.pedidos=p.id_pedido\n"
                     + "join ACobranzatpu.dbo.Cargo c on d.folio=c.referencia\n"
                     + "join devoluciones dev on p.id_pedido=dev.id_pedido \n"
-                    + "where p.serie='" + serie + "' and d.serie='FAC' and dev.estatus='1' and id_documento=" + id;
+                    + "where p.serie=? and d.serie='FAC' and dev.estatus='1' and id_documento=?";
 //            System.out.println("dev ped " + sql);
             st = c.prepareStatement(sql);
+            st.setString(1, serie);
+            st.setInt(2, id);
             rs = st.executeQuery();
             while (rs.next()) {
                 Ddevolucion d = new Ddevolucion();
@@ -318,9 +327,11 @@ public class sqldevolucion {
                     + "join DPedimentos dpp on dpp.id_dpedimento=dp.id_dpedimento\n"
                     + "join " + bdcob + "\n"
                     + "join devoluciones dev on p.id_pedido=dev.id_pedido\n"
-                    + "where p.serie='" + serie + "' and dev.estatus='1' and p.id_pedido=" + id;
+                    + "where p.serie=? and dev.estatus='1' and p.id_pedido=?";
 //            System.out.println("dev ped " + sql);
             st = c.prepareStatement(sql);
+            st.setString(1, serie);
+            st.setInt(2, id);
             rs = st.executeQuery();
             while (rs.next()) {
                 Ddevolucion d = new Ddevolucion();
