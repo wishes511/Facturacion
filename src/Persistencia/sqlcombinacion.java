@@ -30,8 +30,10 @@ public class sqlcombinacion {
                     + "join Combinaciones c on p.Combinacion=c.Combinacion\n"
                     + "join Materiales m on c.Material1= m.Material\n"
                     + "join Colores col on c.Color1=col.Color\n"
-                    + "where estilo=" + estilo + " and corrida =" + corrida);
+                    + "where estilo=? and corrida =?");
             rs = st.executeQuery();
+            st.setInt(1, estilo);
+            st.setInt(2, corrida);
             while (rs.next()) {
                 Combinacion c = new Combinacion();
                 c.setCombinacion(rs.getInt("combinacion"));
