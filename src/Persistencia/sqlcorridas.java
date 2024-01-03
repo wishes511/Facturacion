@@ -27,8 +27,9 @@ public class sqlcorridas {
             ResultSet rs;
             st = con.prepareStatement("select distinct estilo,p.corrida,c.Descripcion,PuntoInicial,PuntoFinal from productos p\n"
                     + "join corridas c on p.Corrida=c.Corrida\n"
-                    + "where estilo="+estilo+" and p.estatus='A'");
+                    + "where estilo=? and p.estatus='A'");
             rs = st.executeQuery();
+            st.setInt(1, estilo);
             while (rs.next()) {
                 Corridas p = new Corridas();
                 p.setCorrida(rs.getInt("corrida"));
