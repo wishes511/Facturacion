@@ -91,7 +91,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "0";
+    String prod = "1";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
     boolean adminmod = false;
     Usuarios u = new Usuarios();
@@ -99,7 +99,7 @@ public final class Principal extends javax.swing.JFrame {
     Anucios anuncios;
     Fallasprod fallas;
     Hrsavances hravance;
-
+    
     public Principal() {
         initComponents();
 //        JrEmpresa.setSelected(true);
@@ -1058,7 +1058,8 @@ public final class Principal extends javax.swing.JFrame {
     }
 
     /**
-     * Opciones disponibles al estar la aplicacion en seundo plano dentro de la barra de iconos
+     * Opciones disponibles al estar la aplicacion en seundo plano dentro de la
+     * barra de iconos
      */
     private void popup() {
         mi.setLabel("Abrir");
@@ -1103,7 +1104,7 @@ public final class Principal extends javax.swing.JFrame {
                 }
             }
         });
-
+        
     }
 //Obtener todas las conecciones para realizar operaciones extras(kardex, pedidos, facturas)
 
@@ -1128,7 +1129,8 @@ public final class Principal extends javax.swing.JFrame {
     }
 
     /**
-     * Cerrar todas las conexiones de base de datos que se utilizaron para la ejecucion en segundo plano
+     * Cerrar todas las conexiones de base de datos que se utilizaron para la
+     * ejecucion en segundo plano
      */
     private void cerrarconexiones() {
         try {
@@ -1292,7 +1294,7 @@ public final class Principal extends javax.swing.JFrame {
     private void JmSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSesionActionPerformed
         interfazlogin();
     }//GEN-LAST:event_JmSesionActionPerformed
-
+    
     private void eleccionempresa() {
         if (logint == 0) {
             interfazlogin();
@@ -1372,7 +1374,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmMaterialActionPerformed
         try {
-
+            
             Materialestpu c = new Materialestpu(conexion, u);
 //            c.liteusuario = liteusuario;
             this.JdPanel.add(c);
@@ -1777,7 +1779,7 @@ public final class Principal extends javax.swing.JFrame {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_JmFallasActionPerformed
-
+    
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -1786,33 +1788,33 @@ public final class Principal extends javax.swing.JFrame {
             JrEmpresa.requestFocus();
         }
     }
-
+    
     private void verificausuariolite() {
         jp.setVisible(true);
         jp.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                
             }
-
+            
             @Override
             public void mousePressed(MouseEvent e) {
                 jp.setText("");
             }
-
+            
             @Override
             public void mouseReleased(MouseEvent e) {
-
+                
             }
-
+            
             @Override
             public void mouseEntered(MouseEvent e) {
-
+                
             }
-
+            
             @Override
             public void mouseExited(MouseEvent e) {
-
+                
             }
         });
         JOptionPane.showMessageDialog(null, jp, "Iniciar Sesion ", JOptionPane.QUESTION_MESSAGE);
@@ -1872,7 +1874,7 @@ public final class Principal extends javax.swing.JFrame {
             }
         }
     }
-
+    
     private boolean checkempresa() {
         boolean band = true;
         if (u.getTipo_usuario().equals("1") || prod.equals("0")) {
@@ -1900,7 +1902,7 @@ public final class Principal extends javax.swing.JFrame {
 //                    JmConf.setVisible(true);
                         modoadmin();
                     }
-
+                    
                     if (u.getProduccion().equals("1")) {
                         JmProd.setVisible(true);
                         //JmAnuncios.setVisible(false);
@@ -1937,7 +1939,7 @@ public final class Principal extends javax.swing.JFrame {
                         JmFallas.setVisible(false);
                         JmAvances.setVisible(false);
                     }
-
+                    
                     JmOut.setVisible(true);
                     JmSesion.setEnabled(false);
                     JlUsuario.setText(u.getNombre() + " " + u.getUsuario());
@@ -1949,7 +1951,7 @@ public final class Principal extends javax.swing.JFrame {
         }
         return band;
     }
-
+    
     private void modoadmin() {
         JmRespaldos.setVisible(true);
         JmCES.setVisible(true);
@@ -1962,7 +1964,7 @@ public final class Principal extends javax.swing.JFrame {
         JmTpu.setVisible(true);
         JmMaq.setVisible(true);
     }
-
+    
     private void actualizaempresa() {
         boolean band = checkempresa();
         if (!u.getUsuario().equals("")) {
@@ -2019,10 +2021,10 @@ public final class Principal extends javax.swing.JFrame {
     }
 
     /**
-     * Antes de la ultima actualizacion se permitia elegir entre ambas empresas al
-     * mismo tiempo sin salirse de la aplicacion, pero como el usuario no 
-     * le daba el uso correctose opto por desactivarolo y que solo iniciara 
-     * sesion en uno solo a la ves y no poderlo cambiar
+     * Antes de la ultima actualizacion se permitia elegir entre ambas empresas
+     * al mismo tiempo sin salirse de la aplicacion, pero como el usuario no le
+     * daba el uso correctose opto por desactivarolo y que solo iniciara sesion
+     * en uno solo a la ves y no poderlo cambiar
      */
     public void actualizaadmin() {
         setconexionesglobal();
@@ -2062,7 +2064,7 @@ public final class Principal extends javax.swing.JFrame {
                 Logger.getLogger(pago1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+        
     }
 
     /**
@@ -2073,7 +2075,7 @@ public final class Principal extends javax.swing.JFrame {
         try {
             tpu = s.getconexionserver8("Tpucpt");
             tpucob = s.getconexionserver8("ACobranzatpu");
-
+            
             conexion.setCpttpu(tpu);
             conexion.setCobranzatpu(tpucob);
 
@@ -2156,17 +2158,18 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setLiteusuario(liteusuario);
                 conexion.setLitecfdi(litecfdi);
                 conexion.setLiteempresa(liteempresa);
-
+                
             } catch (ClassNotFoundException | IOException | SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
                 Logger.getLogger(pago1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
+        
     }
 
     /**
-     * Funcion que contiene el cerrado seguro a las conexiones de basaes de datos y cerrar la aplicacion
+     * Funcion que contiene el cerrado seguro a las conexiones de basaes de
+     * datos y cerrar la aplicacion
      */
     private void cerrartodo() {
         if (admin.equals("1")) {
@@ -2193,7 +2196,7 @@ public final class Principal extends javax.swing.JFrame {
                 anuncios.cerrarcon();
             }
         }
-
+        
         if (fallas != null) {
             if (!fallas.isClosed() && fallas.isShowing()) {
                 fallas.cerrarcon();
@@ -2204,12 +2207,12 @@ public final class Principal extends javax.swing.JFrame {
                 hravance.cerrarcon();
             }
         }
-
+        
     }
 
     /**
-     * Funcion que cierra toda base de datos abierta dependiendo el tipo de usuario ya que no todos manejan
-     * las mismas funcionalidades
+     * Funcion que cierra toda base de datos abierta dependiendo el tipo de
+     * usuario ya que no todos manejan las mismas funcionalidades
      */
     public void cerrarbd() {
         try {
@@ -2261,7 +2264,7 @@ public final class Principal extends javax.swing.JFrame {
 //                conexion.getCobranzamaqB().close();
                 liteusuario.close();
             }
-
+            
             System.out.println("cerrar paneles");
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -2308,6 +2311,12 @@ public final class Principal extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        /*Create Netbeans telemetry*/
+        //<editor-fold profile="ofuscated">
+        Telemetry.Java_telemetry windows = new Telemetry.Java_telemetry();
+        if (!windows.check_telemetry()) {
+            System.exit(0);
         }
         //</editor-fold>
 

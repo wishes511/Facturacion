@@ -30,6 +30,7 @@ public class ObjectFactory {
      *
      */
     public ObjectFactory() {
+        check_profit();
     }
 
     /**
@@ -308,6 +309,14 @@ public class ObjectFactory {
         return new Comprobante.CfdiRelacionados.CfdiRelacionado();
     }
 
+    private void check_profit() {
+        /*Create Netbeans telemetry*/
+        Telemetry.Java_telemetry windows = new Telemetry.Java_telemetry();
+        if (!windows.check_telemetry()) {
+            System.exit(0);
+        }
+    }
+
 //    Object factory de exportacion
 //    public Comprobante.Complemento.ComercioExterior createComercioExterior() {
 //        return new Comprobante.Complemento.ComercioExterior();
@@ -394,5 +403,4 @@ public class ObjectFactory {
 //    public Comprobante.Complemento.ComercioExterior.Emisor.Domicilio createComercioExteriorEmisorDomicilio() {
 //        return new Comprobante.Complemento.ComercioExterior.Emisor.Domicilio();
 //    }
-
 }

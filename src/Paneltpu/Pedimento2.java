@@ -322,13 +322,19 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
 //        Es importante hacer esta validacion y que no se nos vaya algun caracter especial y nos truene algo que no deberia
         boolean flag=fdato.verificaStringsSC(JtPedimento.getText());
         boolean flag1=fdato.verificaStringsSC(JtObservaciones.getText());
+        boolean flag2=(JtPedimento.getText().equals("0"));
         if(!flag){
             JtPedimento.requestFocus();
         }
         if(!flag1){
             JtObservaciones.requestFocus();
         }
-        if(flag && flag1){
+        if(flag2){
+            JOptionPane.showMessageDialog(null, "No puedes dar de alta otro pedimento 0");
+            JtPedimento.requestFocus();
+            JtPedimento.setText("");
+        }
+        if(flag && flag1 && !flag2){
             setpedimento();
         }else{
             JOptionPane.showMessageDialog(null, "Solamente puedes escribir letras y numeros");
