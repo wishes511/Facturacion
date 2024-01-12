@@ -442,6 +442,7 @@ public class fac1tpurem extends javax.swing.JPanel {
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: "+ex.getMessage());
         }
     }
 

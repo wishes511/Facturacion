@@ -8,6 +8,7 @@ package Tpu;
 import DAO.daoClientes;
 import Modelo.Cliente;
 import Modelo.Conexiones;
+import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Paneltpu.ClienteUpdate;
 import Paneltpu.Clientetpu1;
@@ -266,9 +267,43 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        Cliente client= new Cliente();
-        client.setNombre(c1.JtNombre.getText().toUpperCase());
-        client.setRfc(c1.JtRfc.getText().toUpperCase());
+        if (checkcampos()) {
+            Cliente client = new Cliente();
+            client.setNombre(c1.JtNombre.getText().toUpperCase());
+            client.setRfc(c1.JtRfc.getText().toUpperCase());
+            client.setTelefono(c1.JtTelefono.getText());
+            client.setCorreo(c1.JtCorreo.getText());
+            client.setCalle(c1.JtCalle.getText().toUpperCase());
+            client.setColonia(c1.JtColonia.getText().toUpperCase());
+            client.setCp(c1.JtCp.getText());
+            client.setPais(c1.JtPais.getText().toUpperCase());
+            client.setEstado(c1.JtEstado.getText().toUpperCase());
+            client.setCiudad(c1.JtCiudad.getText().toUpperCase());
+            client.setNombreagente(c1.JtContacto.getText().toUpperCase());
+            client.setUsocfdi(c1.JtUso.getText().toUpperCase());
+            client.setRegimen(c1.JtRegimen.getText().toUpperCase());
+            daoClientes d = new daoClientes();
+            if (u.getTurno().equals("6")) {
+                client.setCvecliente(d.maxcliente(con.getCobranzatpuB()));
+                if (d.nuevocliente(con.getCobranzatpuB(), client)) {
+                    JOptionPane.showMessageDialog(null, "Exito al ingresar nuevo cliente");
+                    vaciacampos();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No puedo llevarse a cabo el ingreso del cliente, intentelo de nuevo o llame a sistemas");
+                }
+            } else {
+                client.setCvecliente(d.maxcliente(con.getCobranzatpu()));
+                if (d.nuevocliente(con.getCobranzatpuB(), client)) {
+                    d.nuevocliente(con.getCobranzatpu(), client);
+                    JOptionPane.showMessageDialog(null, "Exito al ingresar nuevo cliente");
+                    vaciacampos();
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Alguno de los campos esta mal o estas usando algun caracter no permitido");
+            c1.JtNombre.requestFocus();
+        }
+
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void JtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtBuscarActionPerformed
@@ -281,6 +316,28 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
             model.addElement(arr1.getNombre());
         }
         JlCliente.setModel(model);
+    }
+
+    private boolean checkcampos() {
+        Formateodedatos d = new Formateodedatos();
+        return (d.verificaStringsSC(c1.JtNombre.getText()) && d.verificaStringsSC(c1.JtRfc.getText())
+                && d.verificaStringsSC(c1.JtTelefono.getText()) && d.verificaStringsSC(c1.JtCorreo.getText())
+                && d.verificaStringsSC(c1.JtCalle.getText()) && d.verificaStringsSC(c1.JtColonia.getText())
+                && d.verificaStringsSC(c1.JtCp.getText()) && d.verificaStringsSC(c1.JtContacto.getText())
+                && d.verificaStringsSC(c1.JtUso.getText()) && d.verificaStringsSC(c1.JtRegimen.getText()));
+    }
+
+    private void vaciacampos() {
+        c1.JtNombre.setText("");
+        c1.JtRegimen.setText("");
+        c1.JtRfc.setText("");
+        c1.JtTelefono.setText("");
+        c1.JtCorreo.setText("");
+        c1.JtCalle.setText("");
+        c1.JtColonia.setText("");
+        c1.JtCp.setText("");
+        c1.JtContacto.setText("");
+        c1.JtUso.setText("");
     }
 
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
@@ -351,7 +408,15 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     public void buscacliente() {
         String cliente = JtBuscar.getText();
         daoClientes dc = new daoClientes();
-        arr = dc.getClientestpuall(con.getCobranzatpu(), cliente);
+        if(u.getTurno().equals("6") && serie.equals("A")){
+            JOptionPane.showMessageDialog(null, "No puedes realizar consultas fiscales, cambia a serie 'B' o rojo");
+        }else{
+            if(u.getTurno().equals("6")){
+                arr = dc.getClientestpuall(con.getCobranzatpuB(), cliente);
+            }else{
+                arr = dc.getClientestpuall(con.getCobranzatpu(), cliente);
+            }
+        }
         llenalista();
     }
 

@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -107,7 +108,7 @@ public class sqlclientes {
                     + "where nombre like ? \n"
                     + "order by nombre desc";
             st = cob.prepareStatement(sql);
-            st.setString(1, "%"+cli+"%");
+            st.setString(1, "%" + cli + "%");
 //            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -260,6 +261,64 @@ public class sqlclientes {
         } catch (SQLException ex) {
             try {
                 cpt.rollback();
+                Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public int maxcliente(Connection cob) {
+        int resp = 0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select max(id_cliente) as cliente from cliente";
+            st = cob.prepareStatement(sql);
+            rs=st.executeQuery();
+            while(rs.next()){
+                resp=rs.getInt("cliente");
+            }
+            resp++;
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
+    public boolean nuevocliente(Connection cpt, Cliente c) {
+        try {
+            PreparedStatement st;
+            String sql = "insert into cliente(id_cliente,id_agente,nombre,rfc,cp,razonsocial,"
+                    + "usocfdi,calle,colonia,pais,estado,regimen,estatus,ciudad,"
+                    + "correo,cuenta,telefono) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,'1',?,?,?,?)";
+            cpt.setAutoCommit(false);
+            st = cpt.prepareStatement(sql);
+            st.setInt(1, c.getCvecliente());
+            st.setInt(2, 1);
+            st.setString(3, c.getNombre());
+            st.setString(4, c.getRfc());
+            st.setString(5, c.getCp());
+            st.setString(6, c.getNombre());
+            st.setString(7, c.getUsocfdi());
+            st.setString(8, c.getCalle());
+            st.setString(9, c.getColonia());
+            st.setString(10, c.getPais());
+            st.setString(11, c.getEstado());
+            st.setString(12, c.getRegimen());
+            st.setString(13, c.getCiudad());
+            st.setString(14, c.getCorreo());
+            st.setString(15, "");
+            st.setString(16, c.getTelefono());
+            st.executeUpdate();
+            cpt.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                cpt.rollback();
+                JOptionPane.showMessageDialog(null, "Error al agregar cliente llama a sistemas, "+ex.getMessage());
                 Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex1);

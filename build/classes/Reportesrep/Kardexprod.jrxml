@@ -37,11 +37,11 @@ group by k.id_material,dureza,m.descripcion]]>
 				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="190" y="50" width="217" height="20" uuid="78f66f86-defa-4eaf-baa5-6d4c975838ee"/>
+				<reportElement x="144" y="50" width="302" height="20" uuid="78f66f86-defa-4eaf-baa5-6d4c975838ee"/>
 				<textElement textAlignment="Center">
 					<font size="15" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Reporte kardex x material]]></text>
+				<text><![CDATA[Reporte kardex x material x Periodo]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="190" y="70" width="100" height="20" uuid="4ec37f68-55c0-4d14-8082-21f649b54772"/>

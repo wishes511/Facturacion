@@ -167,8 +167,8 @@ public class sqlpedimentos {
                     + "  from pedimentos p\n"
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
-                    + "where (" + referencias + ")";
-//            System.out.println(sql);
+                    + "where (" + referencias + ") and dp.estatus='1'";
+            System.out.println(sql);
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {

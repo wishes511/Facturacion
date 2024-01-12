@@ -91,7 +91,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
     boolean adminmod = false;
     Usuarios u = new Usuarios();
@@ -139,7 +139,7 @@ public final class Principal extends javax.swing.JFrame {
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
-            u.setTurno("0");
+            u.setTurno("6");
             u.setProduccion("1");
             u.setTipo_usuario("1");
             modoadmin();
@@ -1608,6 +1608,7 @@ public final class Principal extends javax.swing.JFrame {
             conexion.setCpttpu(maq);
             conexion.setCobranzatpu(maqcob);
             conexion.setCobranzatpuB(maqcobB);
+            u.setTurno("6");
             System.out.println("cambio a maq");
         }
 
@@ -1618,6 +1619,7 @@ public final class Principal extends javax.swing.JFrame {
             conexion.setCpttpu(tpu);
             conexion.setCobranzatpu(tpucob);
             conexion.setCobranzatpuB(tpucobB);
+            u.setTurno("5");
             System.out.println("cambio a tpu");
         } else {
             conexion.setCpttpu(tpu);
@@ -2075,10 +2077,8 @@ public final class Principal extends javax.swing.JFrame {
         try {
             tpu = s.getconexionserver8("Tpucpt");
             tpucob = s.getconexionserver8("ACobranzatpu");
-            
             conexion.setCpttpu(tpu);
             conexion.setCobranzatpu(tpucob);
-
 //            conexion.setCpttpu(s.getconexionserver8("Tpucpt"));
 //            conexion.setCobranzatpu(s.getconexionserver8("ACobranzatpu"));
 //            conexion.setCobranzatpuB(s.getconexionB("RACobranzaTpu"));
@@ -2113,6 +2113,7 @@ public final class Principal extends javax.swing.JFrame {
 //            conexion.setRcpttpu(s.getconexionserver8("Tpurcpt"));
         } catch (ClassNotFoundException | IOException | SQLException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
+            JOptionPane.showMessageDialog(null, ex.getMessage() + " No se puede conectar a la base de datos interna!");
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

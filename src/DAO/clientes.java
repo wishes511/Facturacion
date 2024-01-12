@@ -28,5 +28,9 @@ public interface clientes {
     public boolean importacliente(Connection c, Cliente cli);
     
     public boolean modcliente(Connection cpt, Cliente cli);
+    
+    public boolean nuevocliente(Connection cpt, Cliente cli);
+    
+    public int maxcliente(Connection cob);
 
 }

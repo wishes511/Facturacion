@@ -58,4 +58,28 @@ public class daoClientes implements clientes {
         return s.modcliente(cpt, cli);
     }
 
+    /**
+     * Inserta un nuevo cliente en la bd ya sea interno o fiscal
+     *
+     * @param cpt
+     * @param cli
+     * @return
+     */
+    @Override
+    public boolean nuevocliente(Connection cpt, Cliente cli) {
+        sqlclientes s = new sqlclientes();
+        return s.nuevocliente(cpt, cli);
+    }
+
+    /**
+     * Obtiene el id maximo de la tabla de clientes
+     * @param cob
+     * @return 
+     */
+    @Override
+    public int maxcliente(Connection cob) {
+        sqlclientes s = new sqlclientes();
+        return s.maxcliente(cob);
+    }
+
 }

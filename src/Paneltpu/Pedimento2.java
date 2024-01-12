@@ -287,7 +287,11 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
         daomateriales am = new daomateriales();
         daoalmacenes da = new daoalmacenes();
         daodurezas dd = new daodurezas();
-        arrmat = am.getmateriales(c.getCpttpu(), "");
+        if(u.getTurno().equals("5")){
+            arrmat = am.getmateriales(c.getCpttpu(), "");
+        }else{
+            arrmat=am.getmaterialesmaq(c.getCpttpu(), "");
+        }
         arralm = da.getalmacenescpt(c.getCpttpu());
         arrdur = dd.getdurezas(c.getCpttpu());
         n.arrmat = arrmat;

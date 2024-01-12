@@ -20,7 +20,7 @@
 from kardex k
 join materiales m on k.id_material=m.id_material
 join Pedimentos p on k.id_pedimento=p.id_pedimento
-where k.fecha between $P{f1} and $P{f2} and k.estatus='1' and k.id_material=$P{idmat} and dureza=$P{dureza}
+where k.fecha between $P{f1} and $P{f2} and k.estatus='1' and k.id_material=$P{idmat} and dureza=$P{dureza} and p.estatus='1'
 group by k.id_pedimento,p.referencia]]>
 	</queryString>
 	<field name="referencia" class="java.lang.String"/>
