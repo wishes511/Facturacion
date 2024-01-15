@@ -28,8 +28,8 @@ order by cli.nombre]]>
 	<title>
 		<band height="79" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="0" width="127" height="34" uuid="091637db-9462-4ab2-b72c-4b8c6c5165e4"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
+				<reportElement x="0" y="0" width="194" height="47" uuid="091637db-9462-4ab2-b72c-4b8c6c5165e4"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicals.png"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="160" y="47" width="120" height="20" uuid="8333b7ca-bc84-4ca6-a10e-0f6b7e2cc988"/>

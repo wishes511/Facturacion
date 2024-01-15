@@ -10,10 +10,18 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Cliente implements java.io.Serializable{
-    private int cvecliente, agente, plazo, canal;
+    private int cvecliente, agente, plazo, canal, Id_cliente;
     private String nombre,rfc,cp,calle,numext, numint, colonia,municipio,estado, pais,regimen,ciudad, marca,
             formapago, usocfdi, clave, nombreagente,estatus,correo,cuenta,telefono;
     private Agentes ag;
+
+    public int getId_cliente() {
+        return Id_cliente;
+    }
+
+    public void setId_cliente(int Id_cliente) {
+        this.Id_cliente = Id_cliente;
+    }
 
     public String getCorreo() {
         return correo;

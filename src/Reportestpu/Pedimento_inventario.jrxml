@@ -7,7 +7,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select * from pedimentos p ]]>
+		<![CDATA[select * from pedimentos p]]>
 	</queryString>
 	<field name="id_pedimento" class="java.lang.Integer"/>
 	<field name="id_proveedor" class="java.lang.Integer"/>
@@ -27,8 +27,8 @@
 	<title>
 		<band height="87" splitType="Stretch">
 			<image>
-				<reportElement x="0" y="0" width="132" height="32" uuid="051dea46-5a85-4d5c-8cc0-359b196fbbc2"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
+				<reportElement x="0" y="0" width="133" height="42" uuid="051dea46-5a85-4d5c-8cc0-359b196fbbc2"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicals.png"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="472" y="67" width="100" height="20" uuid="280df04f-8369-4991-88dc-5d45d4ed4098"/>

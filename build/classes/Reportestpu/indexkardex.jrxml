@@ -57,8 +57,8 @@ order by k.fecha desc]]>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="0" y="0" width="180" height="35" uuid="44fd323e-e6bc-4433-9405-519f61252f5b"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
+				<reportElement x="0" y="0" width="300" height="50" uuid="44fd323e-e6bc-4433-9405-519f61252f5b"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicals.png"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="80" width="53" height="15" uuid="8d0889fa-3b89-492a-a171-c42f9309a5fe"/>

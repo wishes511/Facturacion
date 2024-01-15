@@ -34,8 +34,8 @@
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="0" y="0" width="314" height="35" uuid="e9d344e9-9d83-49ba-bf74-e39ca9165ed1"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
+				<reportElement x="0" y="0" width="408" height="42" uuid="e9d344e9-9d83-49ba-bf74-e39ca9165ed1"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicals.png"]]></imageExpression>
 			</image>
 		</band>
 	</title>

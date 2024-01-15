@@ -22,6 +22,7 @@ import Tpu.Materialestpu;
 import Server.ServerProccpt;
 import Server.Serverprod;
 import Server.Serverylite;
+import Tpu.Antiguedad;
 import Tpu.ClientesTpu;
 import Tpu.Devolucionestpu;
 import Tpu.Durezastpu;
@@ -203,6 +204,7 @@ public final class Principal extends javax.swing.JFrame {
         JmEdocuenta = new javax.swing.JMenuItem();
         JmAuxcliente = new javax.swing.JMenuItem();
         JmSaldosvencidos = new javax.swing.JMenuItem();
+        JmAntiguedad = new javax.swing.JMenuItem();
         JmKardexprod = new javax.swing.JMenuItem();
         JmVentaserie = new javax.swing.JMenuItem();
         JmCobranzatpu = new javax.swing.JMenu();
@@ -569,6 +571,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmRepcob.add(JmSaldosvencidos);
+
+        JmAntiguedad.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/antique.png"))); // NOI18N
+        JmAntiguedad.setText("Reporte de antiguedad");
+        JmAntiguedad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAntiguedadActionPerformed(evt);
+            }
+        });
+        JmRepcob.add(JmAntiguedad);
 
         Jmreportes.add(JmRepcob);
 
@@ -1781,6 +1792,15 @@ public final class Principal extends javax.swing.JFrame {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_JmFallasActionPerformed
+
+    private void JmAntiguedadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAntiguedadActionPerformed
+        Antiguedad a = new Antiguedad();
+        a.lite=conexion.getLiteusuario();
+        a.s68=conexion.getCobranzatpu();
+        a.s90=conexion.getCobranzatpuB();
+        a.cargacombos();
+        a.setVisible(true);
+    }//GEN-LAST:event_JmAntiguedadActionPerformed
     
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
@@ -2336,6 +2356,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel JlEmpresa;
     private javax.swing.JLabel JlSerie;
     private javax.swing.JLabel JlUsuario;
+    private javax.swing.JMenuItem JmAntiguedad;
     private javax.swing.JMenuItem JmAnuncios;
     private javax.swing.JMenuItem JmAuxcliente;
     private javax.swing.JMenu JmAvances;

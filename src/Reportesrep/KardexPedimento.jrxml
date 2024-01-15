@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5703b302-15e9-4ee1-9490-4b36c0362c5a">
 	<property name="ireport.zoom" value="2.357947691000002"/>
-	<property name="ireport.x" value="20"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="f1" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
@@ -47,8 +47,8 @@ group by k.id_pedimento,p.referencia]]>
 				<text><![CDATA[Reporte kardex x pedimento]]></text>
 			</staticText>
 			<image>
-				<reportElement x="0" y="0" width="180" height="35" uuid="82743d5a-35e7-4e85-868c-8954a293c88b"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
+				<reportElement x="10" y="0" width="237" height="50" uuid="82743d5a-35e7-4e85-868c-8954a293c88b"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicals.png"]]></imageExpression>
 			</image>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="190" y="70" width="100" height="20" uuid="6decc0a3-803e-46cc-a86f-b6d5c26ef43c"/>
