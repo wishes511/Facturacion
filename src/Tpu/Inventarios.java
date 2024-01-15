@@ -72,6 +72,9 @@ public class Inventarios extends javax.swing.JInternalFrame {
 
         pop = new javax.swing.JPopupMenu();
         JmBaja = new javax.swing.JMenuItem();
+        Pop_reporte = new javax.swing.JPopupMenu();
+        JmReporte = new javax.swing.JMenuItem();
+        JmReporte_pedimento = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         JtDetalle = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -93,6 +96,24 @@ public class Inventarios extends javax.swing.JInternalFrame {
             }
         });
         pop.add(JmBaja);
+
+        JmReporte.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_table_order_report_history_2332.png"))); // NOI18N
+        JmReporte.setText("Reporte Inventarios");
+        JmReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmReporteActionPerformed(evt);
+            }
+        });
+        Pop_reporte.add(JmReporte);
+
+        JmReporte_pedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/documenttextregular_106258.png"))); // NOI18N
+        JmReporte_pedimento.setText("Reporte Material sin pedimento");
+        JmReporte_pedimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmReporte_pedimentoActionPerformed(evt);
+            }
+        });
+        Pop_reporte.add(JmReporte_pedimento);
 
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
@@ -330,6 +351,22 @@ public class Inventarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_JlRespalldoMousePressed
 
     private void jLabel4MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MousePressed
+        Pop_reporte.show(evt.getComponent(), evt.getX(), evt.getY());
+    }//GEN-LAST:event_jLabel4MousePressed
+
+    private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
+        setreporte("Invsiscap");
+    }//GEN-LAST:event_jLabel5MousePressed
+
+    private void JmReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmReporteActionPerformed
+        verinventarios();
+    }//GEN-LAST:event_JmReporteActionPerformed
+
+    private void JmReporte_pedimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmReporte_pedimentoActionPerformed
+        vermat_sinpedimento();
+    }//GEN-LAST:event_JmReporte_pedimentoActionPerformed
+
+    private void verinventarios() {
         VerInventarios v = new VerInventarios(null, true);
 //        Manda el valor de la conexion ademas verifica que haya registros anteriores para el despliegue del reporte
 //        Ahi mismo despliega una interfaz si es que hay registros
@@ -341,21 +378,33 @@ public class Inventarios extends javax.swing.JInternalFrame {
             v.llenacombo();
             v.setVisible(true);
         }
+    }
 
-    }//GEN-LAST:event_jLabel4MousePressed
-
-    private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
-        setreporte("Invsiscap");
-    }//GEN-LAST:event_jLabel5MousePressed
+    private void vermat_sinpedimento() {
+        try {
+            Map parametros = new HashMap();
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Invsiscap_1.jasper"));
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
+            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
+            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            ver.setTitle("Despliegue de Materiales sin pedimento");
+            ver.setVisible(true);
+//            Exportacion al archivo pdf
+        } catch (JRException ex) {
+            JOptionPane.showMessageDialog(null, "No se puede desplegar reporte " + ex.getMessage(), "Error en reporte", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(Inventarios.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * Despliega el reporte de acuerdo a el inv. capturado y las diferencias
-     * @param reporte 
+     *
+     * @param reporte
      */
     private void setreporte(String reporte) {
         try {
 //            Se selecciona el tipo de conexion
-            Connection con=(reporte.equals("Invsiscap"))?liteusuario:cpt;
+            Connection con = (reporte.equals("Invsiscap")) ? liteusuario : cpt;
             Map parametros = new HashMap();
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/" + reporte + ".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, con);
@@ -387,9 +436,11 @@ public class Inventarios extends javax.swing.JInternalFrame {
         }
 
     }
-/**
- * Obtiene el periodo actual de inventarios desde el server ya que ahi esta la informacion alojada
- */
+
+    /**
+     * Obtiene el periodo actual de inventarios desde el server ya que ahi esta
+     * la informacion alojada
+     */
     public void getfecha() {
         daoControlinventarios co = new daoControlinventarios();
         inv = co.getarrinv(cpt);
@@ -431,7 +482,10 @@ public class Inventarios extends javax.swing.JInternalFrame {
     private javax.swing.JLabel JlFecha;
     private javax.swing.JLabel JlRespalldo;
     private javax.swing.JMenuItem JmBaja;
+    private javax.swing.JMenuItem JmReporte;
+    private javax.swing.JMenuItem JmReporte_pedimento;
     private javax.swing.JTable JtDetalle;
+    private javax.swing.JPopupMenu Pop_reporte;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
