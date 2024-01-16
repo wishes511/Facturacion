@@ -2600,8 +2600,9 @@ public class sqlfactura {
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
 
-                if (salant == mo) {
-                    sql = "update cargo set " + saldo + "=0 where id_cargo=" + idcargo;
+//                if (salant == mo) {
+                  if(sald==0){
+                    sql = "update cargo set saldo=0, saldomx=0  where id_cargo=" + idcargo;
 //                    System.out.println("cargos0 " + sql);
                     st = cob.prepareStatement(sql);
                     st.executeUpdate();
@@ -2610,7 +2611,7 @@ public class sqlfactura {
                 sql = "insert into abono(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
                         + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
                         + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + fol + "','" + fol + "','" + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + fol + "','" + usuario + "','1')";
-//                System.out.println("abonos  " + sql);
+                System.out.println("abonos  " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
 
@@ -2766,7 +2767,7 @@ public class sqlfactura {
             String sello = f.getSello();
             String cadena = f.getCadenaorig();
             sql = "update doctospagotpu set certificadoprov='" + cert + "', sello='" + sello + "', cadenaoriginal='" + cadena + "' where id_doctopago=" + f.getId();
-//            System.out.println("actualizar pago sello " + sql);
+            System.out.println("actualizar pago sello " + sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
             con.commit();

@@ -142,7 +142,7 @@ public final class Principal extends javax.swing.JFrame {
             u.setGrado("2");
             u.setTurno("6");
             u.setProduccion("1");
-            u.setTipo_usuario("1");
+            u.setTipo_usuario("2");
             modoadmin();
             JmSesion.setEnabled(false);
             jLabel1.requestFocus();

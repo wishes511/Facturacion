@@ -63,7 +63,7 @@ public class sqlantiguedadnotas {
 //                    + "join catcuentas cat on c.Cuenta=cat.Cuenta and c.SubCuenta=cat.SubCuenta\n"
 //                    + "where convert(date,Fecha) between '" + n.getF1() + "' and '" + n.getF2() + "' and saldo !=0 and c.cveagente like '" + n.getAgente() + "'\n"
 //                    + "order by a.cveagente";
-            System.out.println("get regs " + sql);
+//            System.out.println("get regs " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -123,7 +123,7 @@ public class sqlantiguedadnotas {
                         + "cliente,numagente,agente,referencia,fecha,fechav,dias,a1,a2,a3,a4,a5,a6,importe) "
                         + "values(" + cuenta + "," + sub + ",'" + desc + "'," + ncli + ",'" + cli + "'," + nag + ",'" + ag + "','"
                         + ref + "','" + f + "','" + fv + "'," + dia + "," + a1 + "," + a2 + "," + a3 + "," + a4 + "," + a5 + "," + a6 + "," + imp + ")";
-                System.out.println(sql);
+//                System.out.println(sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
@@ -187,7 +187,7 @@ public class sqlantiguedadnotas {
         try {
             PreparedStatement st;
             String sql = "delete from antiguedad_notas";
-            System.out.println(sql);
+//            System.out.println(sql);
             c.setAutoCommit(false);
             st = c.prepareStatement(sql);
             st.executeUpdate();

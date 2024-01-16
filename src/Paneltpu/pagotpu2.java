@@ -7,14 +7,17 @@ package Paneltpu;
 
 import Paneles.*;
 import DAO.daocfdi;
+import DAO.daocomisiones;
 import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daoxmlpagostpu;
+import Modelo.Comision;
 import Modelo.ConceptosES;
 import Modelo.Detpagos;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
@@ -849,7 +852,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 //                f.setImpiva16(getnewcantidades((total / 1.16) * 0.16, "iva"));// Nodo totales
 //                f.setBaseiva16(getnewcantidades(total / 1.16, "importe"));
 //                f.setTotalpago16(total);
-                f.setImpiva16(impuestos);// Nodo totales
+                f.setImpiva16(formatdecimal(impuestos));// Nodo totales
                 f.setBaseiva16(formatdecimal(subtotal));
                 f.setTotalpago16(formatdecimal(total));
 //                Fin nodo totales
@@ -968,6 +971,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                         } else {
                             int id = dfac.insertpagotpu(cpt, ACobranza, f);
                             if (id != 0) {
+                                setcomisiones(f);
                                 JOptionPane.showMessageDialog(null, "Pago realizado con exito");
 //                                System.out.println("Exito");
                                 vaciarcampos();
@@ -990,6 +994,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                                 dfac.Updatesellofiscalpagotpu(cpt, s, id);
                                 setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
                                 JOptionPane.showMessageDialog(null, "Proceso terminado- " + s.getEstado());
+                                setcomisiones(f);
                                 vaciarcampos();
                                 JtCliente.requestFocus();
                             }
@@ -1059,6 +1064,84 @@ public class pagotpu2 extends javax.swing.JPanel {
             arr.add(car);
         }
         return arr;
+    }
+
+    /**
+     * La funcion realiza la busqueda de informacion del pago recien realizado
+     * La funcion no se ejecuta en ninguna otra ocasion amenos que haya
+     * terminado de forma exitosa.
+     *
+     * @param f
+     */
+    private void setcomisiones(factura f) {
+        daocomisiones dc = new daocomisiones();
+        Formateodedatos form = new Formateodedatos();
+//        Realiza la busqueda de acuerdo a la fecha formateada y referencias
+        ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza, fechasinT(f.getFecha()), referencias());
+        for (int i = 0; i < arrcomision.size(); i++) {
+//            Se da valor a un nuevo objeto Comision para despues hacer el remplazo
+//          del indice con el nuevo valor del objeto
+            Comision comi = new Comision();
+            double tipocambio = f.getTipocambio();
+            double comision = arrcomision.get(i).getComision();
+            double resultado=(f.getMoneda().equals("USD"))?tipocambio * comision:comision;
+            comi.setComision(form.formatdecimal(resultado));
+            comi.setId_cargo(arrcomision.get(i).getId_cargo());
+            comi.setId_agente(arrcomision.get(i).getId_agente());
+            comi.setReferencia(arrcomision.get(i).getReferencia());
+            comi.setSerie("A");
+            comi.setDias(arrcomision.get(i).getDias());
+            comi.setFecha(f.getFecha());
+            comi.setUsuario(f.getClaveusuario());
+            comi.setImporte(arrcomision.get(i).getImporte());
+            comi.setTipocambio(tipocambio);
+            arrcomision.set(i, comi);
+        }
+//        Se realiza la insercion de cada de los folios validos en la bd
+        dc.newcomision(cpt, arrcomision);
+    }
+
+    /**
+     * Formatea y ordena cada folio y /o referencia a filtrar del pago que
+     * recientemente se realizo
+     *
+     * @return
+     */
+    private String referencias() {
+        String ref = "";
+        for (int i = 0; i < arrcargoseleccion.size(); i++) {
+            String arrref = arrcargoseleccion.get(i).getReferencia();
+            if (arrcargoseleccion.size() == 1) {
+                ref = "referencia='" + arrref + "'";
+            } else {
+                if (i == 0) {
+                    ref = "referencia='" + arrref + "' or ";
+                } else {
+                    ref += "referencia='" + arrref + "'";
+                }
+            }
+        }
+        return ref;
+    }
+
+    /**
+     * La funcion realiza el intercambio de el caracter 'T' por un vacio, ya que
+     * en la funcion es necesario el uso de la fecha pero con el caracter la
+     * consulta es invalida
+     *
+     * @param fecha
+     * @return
+     */
+    private String fechasinT(String fecha) {
+        String resp = "";
+        for (int i = 0; i < fecha.length(); i++) {
+            if (fecha.charAt(i) == 'T') {
+                resp += ' ';
+            } else {
+                resp += fecha.charAt(i) + "";
+            }
+        }
+        return resp;
     }
 
     /**
