@@ -25,13 +25,14 @@ public class sqlconceptos {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select cuenta,subcuenta,descripcion from ConceptosES order by cuenta");
+            st = con.prepareStatement("select cuenta,subcuenta,descripcion,tipooperacion from ConceptosES order by cuenta");
             rs = st.executeQuery();
             while (rs.next()) {
                 ConceptosES c = new ConceptosES();
                 c.setCuenta(rs.getString("cuenta"));
                 c.setSubcuenta(rs.getString("subcuenta"));
                 c.setNombre(rs.getString("descripcion"));
+                c.setTipo(rs.getString("tipooperacion"));
                 arr.add(c);
             }
             rs.close();
@@ -61,7 +62,8 @@ public class sqlconceptos {
                 cuentas = "cuenta=1  or cuenta=10";
             }
 //            st = con.prepareStatement("select id_concepto,cuenta,subcuenta,descripcion from Conceptos where cuenta=" + cuenta + " order by cuenta");
-            String sql = "select id_concepto,cuenta,subcuenta,descripcion from Conceptos where " + cuentas + " order by cuenta";
+            String sql = "select id_concepto,cuenta,subcuenta,descripcion, tipooperacion"
+                    + " from Conceptos where " + cuentas + " order by cuenta";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
@@ -71,6 +73,7 @@ public class sqlconceptos {
                 c.setCuenta(rs.getString("cuenta"));
                 c.setSubcuenta(rs.getString("subcuenta"));
                 c.setNombre(rs.getString("descripcion"));
+                c.setTipo(rs.getString("tipooperacion"));
                 arr.add(c);
             }
             rs.close();

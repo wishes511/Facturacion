@@ -26,28 +26,28 @@ order by cli.nombre]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
-			<image>
-				<reportElement x="0" y="0" width="160" height="47" uuid="091637db-9462-4ab2-b72c-4b8c6c5165e4"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicals.png"]]></imageExpression>
-			</image>
+		<band height="103" splitType="Stretch">
 			<textField>
-				<reportElement x="160" y="47" width="120" height="20" uuid="8333b7ca-bc84-4ca6-a10e-0f6b7e2cc988"/>
+				<reportElement x="160" y="77" width="120" height="20" uuid="8333b7ca-bc84-4ca6-a10e-0f6b7e2cc988"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{f1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="280" y="47" width="120" height="20" uuid="643a9ab7-d12c-4045-a0c3-8495b4ff15e6"/>
+				<reportElement x="280" y="77" width="120" height="20" uuid="643a9ab7-d12c-4045-a0c3-8495b4ff15e6"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{f2}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="160" y="14" width="240" height="33" uuid="bcf40b75-3d9f-438a-b48e-1d6236b5f008"/>
+				<reportElement x="160" y="44" width="240" height="33" uuid="bcf40b75-3d9f-438a-b48e-1d6236b5f008"/>
 				<textElement>
 					<font size="18"/>
 				</textElement>
 				<text><![CDATA[Estado de cuenta por cliente]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="247" height="40" uuid="98e27ae3-fd10-4aad-b6d0-f7041675af31"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

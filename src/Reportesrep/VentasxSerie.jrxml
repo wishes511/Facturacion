@@ -54,10 +54,6 @@ order by p.serie]]>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement x="0" y="0" width="180" height="35" uuid="44fd323e-e6bc-4433-9405-519f61252f5b"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="182" y="50" width="217" height="20" uuid="78f66f86-defa-4eaf-baa5-6d4c975838ee"/>
 				<textElement textAlignment="Center">
@@ -86,6 +82,10 @@ order by p.serie]]>
 				</textElement>
 				<text><![CDATA[A]]></text>
 			</staticText>
+			<image>
+				<reportElement x="1" y="0" width="247" height="40" uuid="5f1514cc-86c8-48c4-bb91-aadc804bf89e"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

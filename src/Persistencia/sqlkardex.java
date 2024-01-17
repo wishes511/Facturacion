@@ -554,7 +554,7 @@ public class sqlkardex {
                 if (tipo.equals("60")) {
                     sql = "select k.id_kardex,k.id_cliente,id_prov,k.serie,p.nombre as n,k.fecha,c.cuenta,subcuenta,c.descripcion as concepto,"
                             + "m.descripcion as mat,k.dureza,k.cantidad,k.precio,(k.cantidad*k.precio) as importe,k.estatus,isnull(pedido,'') as pedido,k.renglon"
-                            + ", k.id_material,k.id_pedimento\n"
+                            + ", k.id_material,k.id_pedimento,id_almacen,k.referencia,k.id_concepto\n"
                             + "from Kardex k\n"
                             + "join Conceptos c on k.id_concepto=c.id_concepto\n"
                             + "join " + cob + ".dbo.Cliente p on k.id_cliente=p.id_cliente\n"
@@ -566,14 +566,14 @@ public class sqlkardex {
                 } else {
                     sql = "select k.id_kardex,k.id_cliente,id_prov,k.serie,p.nombre as n,k.fecha,c.cuenta,subcuenta,c.descripcion as concepto,"
                             + "m.descripcion as mat,k.dureza,k.cantidad,k.precio,(k.cantidad*k.precio) as importe,k.estatus,isnull(pedido,'') as pedido,k.renglon"
-                            + ", k.id_material,k.id_pedimento\n"
+                            + ", k.id_material,k.id_pedimento,id_almacen,k.referencia,k.id_concepto\n"
                             + "from Kardex k\n"
                             + "join Conceptos c on k.id_concepto=c.id_concepto\n"
                             + "join " + cob + ".dbo.Cliente p on k.id_cliente=p.id_cliente\n"
                             + "join Materiales m on k.id_material=m.id_material\n"
                             + "left join pedido ped on k.id_kardex=ped.id_kardex "
                             + "join Pedimentos pedimento on k.id_pedimento=pedimento.id_pedimento\n"
-//                            + "where (p.id_cliente like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and (c.cuenta=01 or c.cuenta=10 or c.cuenta=20)\n"
+                            //                            + "where (p.id_cliente like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and (c.cuenta=01 or c.cuenta=10 or c.cuenta=20)\n"
                             + "where (p.id_cliente like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and (c.cuenta=01)\n"
                             + "order by k.fecha desc";
                 }
@@ -581,7 +581,7 @@ public class sqlkardex {
                 if (tipo.equals("60")) {
                     sql = "select k.id_kardex,k.id_cliente,id_prov,k.serie,p.nombre as n,k.fecha,c.cuenta,subcuenta,c.descripcion as concepto,"
                             + "m.descripcion as mat,k.dureza,k.cantidad,k.precio,(k.cantidad*k.precio) as importe,k.estatus,isnull(pedido,'') as pedido,k.renglon"
-                            + ", k.id_material,k.id_pedimento\n"
+                            + ", k.id_material,k.id_pedimento,id_almacen,k.referencia,k.id_concepto\n"
                             + "from Kardex k\n"
                             + "join Conceptos c on k.id_concepto=c.id_concepto\n"
                             + "join " + cob + ".dbo.Cliente p on k.id_cliente=p.id_cliente\n"
@@ -593,7 +593,7 @@ public class sqlkardex {
                 } else {
                     sql = "select k.id_kardex,k.id_cliente,id_prov,k.serie,p.nombre as n,k.fecha,cuenta,subcuenta,c.descripcion as concepto,"
                             + "m.descripcion as mat,k.dureza,k.cantidad,k.precio,(k.cantidad*k.precio) as importe,k.estatus,isnull(pedido,'') as pedido,k.renglon"
-                            + ", k.id_material,k.id_pedimento\n"
+                            + ", k.id_material,k.id_pedimento,id_almacen,k.referencia,k.id_concepto\n"
                             + "from Kardex k\n"
                             + "join Conceptos c on k.id_concepto=c.id_concepto\n"
                             + "join Proveedores p on k.id_prov=p.id_proveedor\n"
@@ -601,12 +601,12 @@ public class sqlkardex {
                             + "left join pedido ped on k.id_kardex=ped.id_kardex\n"
                             + "join Pedimentos pedimento on k.id_pedimento=pedimento.id_pedimento\n"
                             + "where (p.id_proveedor like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and (c.cuenta=01)\n"
-//                            + "where (p.id_proveedor like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and (c.cuenta=01 or c.cuenta=10 or c.cuenta=20)\n"
+                            //                            + "where (p.id_proveedor like '%" + var + "%' or p.nombre like '%" + var + "%') and k.serie='" + serie + "' and (c.cuenta=01 or c.cuenta=10 or c.cuenta=20)\n"
                             + "order by k.fecha desc";
                 }
             }
 
-//            System.out.println("kardex " + sql);
+            System.out.println("kardex " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
@@ -627,6 +627,11 @@ public class sqlkardex {
                 k.setPedido(rs.getString("pedido"));
                 k.setId_material(rs.getInt("id_material"));
                 k.setId_pedimento(rs.getInt("id_pedimento"));
+                k.setId_cliente(rs.getInt("id_cliente"));
+                k.setId_prov(rs.getInt("id_prov"));
+                k.setAlmacen(rs.getInt("id_almacen"));
+                k.setDocref(rs.getString("referencia"));
+                k.setId_concepto(rs.getInt("id_concepto"));
 //                k.setId_dpedimento(rs.getInt("id_dpedimento"));
                 kardex.add(k);
             }
@@ -648,26 +653,62 @@ public class sqlkardex {
         try {
             PreparedStatement st;
             c.setAutoCommit(false);
+            int folio = k.getFolio();
             int kardex = k.getId_kardex();
             int ren = k.getRenglon();
             int dped = k.getId_pedimento();
             double cant = k.getCantidad();
             int mat = k.getId_material();
-            String dureza=k.getDureza();
-            int cuenta=k.getCuenta();
-            String operacion="cantidadrestante";
+            String dureza = k.getDureza();
+            int cuenta = k.getCuenta();
+            int cliente = k.getId_cliente();
+            int prov = k.getId_prov();
+            int alm = k.getAlmacen();
+            String usuario = k.getNombreusuario();
+            String fecha = k.getFechadoc();
+            double costo = k.getCosto();
+            String serie = k.getSerie();
+            String ref = k.getDocref();
+            int concepto = k.getId_concepto();
+            String operacion = "cantidadrestante";
 //            Operacion para hacer la debida operacion entre si es salida o entrada importante ya que es correcion
-            operacion+=(cuenta==1 || cuenta==10 || cuenta==20)?"-"+cant:"+"+cant;
-            String sql = "update kardex set estatus='0' where id_kardex=" + kardex + " and renglon=" + ren;
-//            String sql = "delete from kardex where id_kardex=" + kardex + " and renglon=" + ren;
-//            System.out.println("del kardex " + sql);
+            operacion += (cuenta == 1 || cuenta == 10 || cuenta == 20) ? "-" + cant : "+" + cant;
+            String sql = "update kardex set estatus='2' where id_kardex=" + kardex + " and renglon=" + ren;
+////            String sql = "delete from kardex where id_kardex=" + kardex + " and renglon=" + ren;
+////            System.out.println("del kardex " + sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
 //            sql = "update dpedimentos set cantidadrestante=cantidadrestante+" + cant + " where id_dpedimento=" + dped; ver anterior
 // Se utiliza la funcion cast para insertar en la bd la operacion del stock a solo con 2 decimales, por si hubiera un mayor a 2
-            sql = "update dpedimentos set cantidadrestante=cast("+operacion+" as decimal(20,2)) where id_pedimento=" + dped+" and id_material="+mat+" and dureza='"+dureza+"'";
+            sql = "update dpedimentos set cantidadrestante=cast(" + operacion + " as decimal(20,2)) "
+                    + "where id_pedimento=" + dped + " and id_material=" + mat + " and dureza='" + dureza + "'";
 //            System.out.println("del dpedimento " + sql);
             st = c.prepareStatement(sql);
+            st.executeUpdate();
+
+            sql = "insert into kardex "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+//            System.out.println("del dpedimento " + sql);
+            st = c.prepareStatement(sql);
+            st.setInt(1, folio);
+            st.setInt(2, concepto);
+            st.setInt(3, cliente);
+            st.setInt(4, mat);
+            st.setInt(5, prov);
+            st.setInt(6, alm);
+            st.setInt(7, dped);
+            st.setString(8, usuario);
+            st.setString(9, fecha);
+            st.setDouble(10, costo);
+            st.setDouble(11, costo);
+            st.setDouble(12, cant);
+            st.setInt(13, ren);
+            st.setString(14, serie);
+            st.setString(15, "1");
+            st.setString(16, "1");
+            st.setString(17, dureza);
+            st.setString(18, ref);
             st.executeUpdate();
             c.commit();
             return true;

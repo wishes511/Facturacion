@@ -345,6 +345,17 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        JcConceptos.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JcConceptosItemStateChanged(evt);
+            }
+        });
+        JcConceptos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JcConceptosMousePressed(evt);
+            }
+        });
+
         jLabel21.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel21.setText("Conceptos");
 
@@ -544,6 +555,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 impuestos = 0;
                 descuentos = 0;
 //                Detallado de productos selecionados
+                String tipoconcepto = arrcuentas.get(JcConceptos.getSelectedIndex()).getTipo();
                 for (int i = 0; i < k2.size(); i++) {
                     Dfactura df = new Dfactura();
                     if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
@@ -561,15 +573,25 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                         df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
                         df.setId_pedimento(k2.get(i).getId_pedimento());
                         df.setDescumedida("");
-                        df.setPrecio(Double.parseDouble(formateador.format(precio)));
-                        df.setBase(Double.parseDouble(formateador.format(precio * tpares)));
                         df.setImpuesto("000");
                         df.setTipofactor("Tasa");
-                        String as = formateador.format(((tpares * precio) - descuento));
-                        df.setImporta(Double.parseDouble(as));
-                        String as1 = formateador.format(descuento);
-                        df.setDescuento(Double.parseDouble(as1));
+                        String as1;
                         df.setTasaocuota("0");
+                        if (tipoconcepto.equals("3")) {
+                            as1 = "0";
+                            df.setDescuento(0);
+                            df.setPrecio(0);
+                            df.setBase(0);
+                            df.setImporta(0);
+                            subtotal=0;
+                        } else {
+                            String as = formateador.format(((tpares * precio) - descuento));
+                            as1 = formateador.format(descuento);
+                            df.setDescuento(Double.parseDouble(as1));
+                            df.setPrecio(Double.parseDouble(formateador.format(precio)));
+                            df.setBase(Double.parseDouble(formateador.format(precio * tpares)));
+                            df.setImporta(Double.parseDouble(as));
+                        }
                         arrf.add(df);
                         totalpares += tpares;
                         impuestos = 0;
@@ -584,7 +606,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 f.setSubtotal(formatdecimal(subtotal));
                 f.setTotal(formatdecimal(total));
                 if (arrf.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Error al realizar remision, intente capturar de nuevo","Error",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Error al realizar remision, intente capturar de nuevo", "Error", JOptionPane.ERROR_MESSAGE);
                     vaciarcampos();
                 } else {
                     int id = dfac.nuevaremtpu(cpt, f, cobB);
@@ -762,6 +784,16 @@ public class fac2tpu1rem extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Error, solo colocar numeros enteros en el descuento");
         }
     }//GEN-LAST:event_JtDescuentoActionPerformed
+
+    private void JcConceptosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JcConceptosMousePressed
+
+    }//GEN-LAST:event_JcConceptosMousePressed
+
+    private void JcConceptosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcConceptosItemStateChanged
+        if (arrcuentas.get(JcConceptos.getSelectedIndex()).getTipo().equals("3")) {
+            JOptionPane.showMessageDialog(null, "Seleccionaste consignacion, recuerda que el cargo e importe será de cero");
+        }
+    }//GEN-LAST:event_JcConceptosItemStateChanged
 
 //    Llena la lista con todos los folios de acuerdo al cliente
     private void llenalistasalida() {

@@ -97,6 +97,14 @@ public class daokardexrcpt implements kardexrcpt {
         return s.getkardex(c, serie, cob, tipo, var);
     }
 
+    /**
+     * Funcion para la cencalacion de una salida
+     * @param c
+     * @param k
+     * @param concepto
+     * @param fecha
+     * @return 
+     */
     @Override
     public boolean deleterow(Connection c, KardexCmp k) {
         sqlkardex s = new sqlkardex();

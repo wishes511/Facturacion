@@ -462,6 +462,7 @@ public class fac1tpurem extends javax.swing.JPanel {
         model.addColumn("Iva");
         model.addColumn("Total");
         model.addColumn("Serie");
+        model.addColumn("Concepto");
         model.addColumn("Estado");
         model.setNumRows(arrfactura.size());
         DecimalFormat formateador = new DecimalFormat("####.##");
@@ -476,7 +477,8 @@ public class fac1tpurem extends javax.swing.JPanel {
             model.setValueAt(formateador.format(arrfactura.get(i).getImpuestos()), i, 5);
             model.setValueAt(formateador.format(arrfactura.get(i).getTotal()), i, 6);
             model.setValueAt(arrfactura.get(i).getSerie(), i, 7);
-            model.setValueAt(estat, i, 8);
+            model.setValueAt(arrfactura.get(i).getDesccuenta(), i, 8);
+            model.setValueAt(estat, i, 9);
         }
         JtDetalle.setModel(model);
     }

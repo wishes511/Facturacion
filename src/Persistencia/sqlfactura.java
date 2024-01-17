@@ -2278,7 +2278,7 @@ public class sqlfactura {
 
                 double descuento = f.getArrcargo().get(i).getDescuento();
                 int idcargo = f.getArrcargo().get(i).getId_cargo();
-                sql = "update cargo set " + tiposaldo + "="+tiposaldo+"-" + descuento + " where id_cargo=" + idcargo;
+                sql = "update cargo set " + tiposaldo + "=" + tiposaldo + "-" + descuento + " where id_cargo=" + idcargo;
                 System.out.println("Actualizar cargos" + sql);
                 st = cobranza.prepareStatement(sql);
                 st.executeUpdate();
@@ -2601,7 +2601,7 @@ public class sqlfactura {
                 st.executeUpdate();
 
 //                if (salant == mo) {
-                  if(sald==0){
+                if (sald == 0) {
                     sql = "update cargo set saldo=0, saldomx=0  where id_cargo=" + idcargo;
 //                    System.out.println("cargos0 " + sql);
                     st = cob.prepareStatement(sql);
@@ -3767,9 +3767,13 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select id_pedido,pedido,id_kardex,fecha,total,subtotal,impuestos,serie,estatus as estatus,nombre,id_cliente\n"
-                    + "from pedido\n"
-                    + "where serie='" + serie + "' and nombre like '%" + folio + "%'";
+            String sql = "select id_pedido,pedido,id_kardex,fecha,total,subtotal,impuestos,"
+                    + "serie,estatus as estatus,nombre,id_cliente,c.descripcion as concepto\n"
+                    + "from pedido p\n"
+                    + "join Conceptos c on c.id_concepto=(select distinct k.id_concepto "
+                    + "from kardex k where id_kardex=p.id_kardex)\n"
+                    + "where serie='" + serie + "' and nombre like '%" + folio + "%'"
+                    + "order by id_pedido desc";
 
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
@@ -3786,6 +3790,7 @@ public class sqlfactura {
                 f.setNombrecliente(rs.getString("nombre"));
                 f.setSerie(rs.getString("serie"));
                 f.setEstatus(rs.getInt("estatus"));
+                f.setDesccuenta(rs.getString("concepto"));
                 arr.add(f);
             }
 
@@ -3838,7 +3843,7 @@ public class sqlfactura {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql="select folio,id_documento,id_abono,c.id_cargo as cargo,a.importe,moneda, a.id_agente,\n"
+            String sql = "select folio,id_documento,id_abono,c.id_cargo as cargo,a.importe,moneda, a.id_agente,\n"
                     + "a.id_cliente,a.referencia,a.referenciac,a.turno,pago\n"
                     + "from documento d\n"
                     + "join ACobranzaTpu.dbo.abono a on a.referenciac=d.id_documento\n"
@@ -3897,7 +3902,7 @@ public class sqlfactura {
             st = cob.prepareStatement("select id_concepto from catcuenta where cancelancr='1'");
             rs = st.executeQuery();
             while (rs.next()) {
-                concepto=rs.getInt("id_concepto");
+                concepto = rs.getInt("id_concepto");
             }
 //            Detalle de los abonos, regreso de saldos y cancelacion de abono por renglon
             for (factura arr1 : arr) {
@@ -3922,8 +3927,8 @@ public class sqlfactura {
                 st.executeUpdate();
                 sql = "insert into abono(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha"
                         + ",fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
-                        + "values(" + cargo + "," + ag + "," + concepto + ","+cli+",'"+ref+"','"+refc+"','"+fecha+"','"
-                        +fecha+"','"+t+"',0,"+-saldo+","+-pago+",0,0,'"+obs+"','"+usuario+"','1')";
+                        + "values(" + cargo + "," + ag + "," + concepto + "," + cli + ",'" + ref + "','" + refc + "','" + fecha + "','"
+                        + fecha + "','" + t + "',0," + -saldo + "," + -pago + ",0,0,'" + obs + "','" + usuario + "','1')";
 //                System.out.println("abono nuevo " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();

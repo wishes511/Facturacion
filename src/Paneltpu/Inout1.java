@@ -5,9 +5,11 @@
  */
 package Paneltpu;
 
+import DAO.daoConceptos;
 import Paneles.*;
 import DAO.daocfdi;
 import DAO.daokardexrcpt;
+import Modelo.ConceptosES;
 import Modelo.Formadepago;
 import Modelo.KardexCmp;
 import Modelo.Usuarios;
@@ -19,7 +21,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -239,25 +243,25 @@ public class Inout1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        int row =JtDetalle.getSelectedRow();
-        int folio=k.get(row).getId_kardex();
-        String ser=k.get(row).getSerie();
-        String name=k.get(row).getNombreproveedor();
+        int row = JtDetalle.getSelectedRow();
+        int folio = k.get(row).getId_kardex();
+        String ser = k.get(row).getSerie();
+        String name = k.get(row).getNombreproveedor();
         setreport(folio, name, ser);
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
         int row = JtDetalle.getSelectedRow();
-        String ped= k.get(row).getPedido();
+        String ped = k.get(row).getPedido();
         if (k.get(row).getStatus().equals("1")) {
 //            Es importante la serie y que el pedido sea vacio ya que solo se permite borrar movimientos independientes
 //            Tomar en cuenta solo algunas cuentas y no todas, entradas y salidas
-            if ((cuenta == 60 || cuenta==1||cuenta==10) && serie.equals("B") && ped.equals("")) {
+            if ((cuenta == 60 || cuenta == 1 || cuenta == 10) && serie.equals("B") && ped.equals("")) {
                 JbCancelar.setVisible(true);
-            }else{
+            } else {
                 JbCancelar.setVisible(false);
             }
-        }else{
+        } else {
             JbCancelar.setVisible(false);
         }
         if (evt.getButton() == 3) {// activar con clic derecho
@@ -271,9 +275,22 @@ public class Inout1 extends javax.swing.JPanel {
 
     private void JbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelarActionPerformed
         int row = JtDetalle.getSelectedRow();
-        daokardexrcpt dk= new daokardexrcpt();
-        if(dk.deleterow(cpt, k.get(row))){
-            JOptionPane.showMessageDialog(null, "Proceso completo");
+        daokardexrcpt dk = new daokardexrcpt();
+        daoConceptos d = new daoConceptos();
+        java.util.Date date = new Date();
+//        Se obtiene un nuevo folio
+        int folio = dk.maxkardexsincuenta(cpt);
+//        Se obtiene el id del concepto de cancelacion
+        ConceptosES e = d.getConceptos(cpt, 20, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        KardexCmp kar = k.get(row);
+        kar.setId_concepto(e.getId_concepto());
+        kar.setFolio(folio);
+        kar.setFechadoc(sdf.format(date));
+        kar.setFechamov(sdf.format(date));
+        kar.setNombreusuario(u.getUsuario());
+        if (dk.deleterow(cpt, kar)) {
+            JOptionPane.showMessageDialog(null, "Proceso completo, REVISA TU REPORTE DE KARDEX");
             Buscanotas();
         }
     }//GEN-LAST:event_JbCancelarActionPerformed
@@ -348,8 +365,12 @@ public class Inout1 extends javax.swing.JPanel {
 
 //  Importante ya que es donde se usara la base de datos con clientes fiscales o internos
     private void Buscanotas() {
-        String cob = (serie.equals("B")) ? "[192.168.90.1\\DATOS620].RACobranzaTpu" : "ACobranzaTpu";
-//        String cob = (serie.equals("B")) ? "RACobranzaTpu" : "ACobranzaTpu";
+        String cob;
+        if (u.getTipo_usuario().equals("2")) {
+            cob = (serie.equals("B")) ? "RACobranzaTpu" : "ACobranzaTpu";
+        } else {
+            cob = (serie.equals("B")) ? "[192.168.90.1\\DATOS620].RACobranzaTpu" : "ACobranzaTpu";
+        }
         String tipo = String.valueOf(cuenta);
         String var = JtCliente.getText();
         daokardexrcpt dk = new daokardexrcpt();
@@ -376,7 +397,18 @@ public class Inout1 extends javax.swing.JPanel {
         model.setNumRows(k.size());
         DecimalFormat formateador = new DecimalFormat("####.##");
         for (int i = 0; i < k.size(); i++) {
-            String estat = (k.get(i).getStatus().equals("1")) ? "ACTIVA" : "NO ACTIVA";
+            String estat="0";
+            switch (k.get(i).getStatus()) {
+                case "0":
+                    estat = "NO ACTIVA";
+                    break;
+                case "1":
+                    estat = "ACTIVA";
+                    break;
+                case "2":
+                    estat = "CANCELADA";
+                    break;
+            }
 ////            System.out.println(arrfactura.get(i).getTotal());
             model.setValueAt(k.get(i).getId_kardex(), i, 0);
             model.setValueAt(k.get(i).getNombreproveedor(), i, 1);

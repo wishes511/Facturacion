@@ -13,7 +13,7 @@
 		<![CDATA[select p.referencia,k.id_pedimento
 from kardex k
 join Pedimentos p on k.id_pedimento=p.id_pedimento
-where k.fecha between $P{f1} and $P{f2} and k.estatus='1' and p.estatus='1'
+where k.fecha between $P{f1} and $P{f2} and k.estatus !='0' and p.estatus='1'
 group by k.id_pedimento,p.referencia]]>
 	</queryString>
 	<field name="referencia" class="java.lang.String"/>
@@ -39,10 +39,6 @@ group by k.id_pedimento,p.referencia]]>
 				</textElement>
 				<text><![CDATA[Reporte kardex x pedimento y Material]]></text>
 			</staticText>
-			<image>
-				<reportElement x="0" y="0" width="211" height="38" uuid="82743d5a-35e7-4e85-868c-8954a293c88b"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicals.png"]]></imageExpression>
-			</image>
 			<textField pattern="dd/MM/yyyy">
 				<reportElement x="190" y="70" width="100" height="20" uuid="6decc0a3-803e-46cc-a86f-b6d5c26ef43c"/>
 				<textElement textAlignment="Center">
@@ -64,6 +60,10 @@ group by k.id_pedimento,p.referencia]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{f2}]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="0" y="0" width="247" height="40" uuid="b9bf0579-9ec1-4ee7-b895-90c3f15d330f"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<columnHeader>

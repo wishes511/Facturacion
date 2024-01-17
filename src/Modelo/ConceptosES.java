@@ -10,8 +10,16 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class ConceptosES implements java.io.Serializable{
-    String Cuenta, subcuenta, nombre;
-    int id_concepto;
+    private String Cuenta, subcuenta, nombre, tipo;
+    private int id_concepto;
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
 
     public int getId_concepto() {
         return id_concepto;

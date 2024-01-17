@@ -50,7 +50,7 @@ order by agente;]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch">
+		<band height="86" splitType="Stretch">
 			<textField pattern="EEEEE dd MMMMM yyyy">
 				<reportElement x="472" y="0" width="100" height="12" uuid="889d37d9-c3fd-4aa7-8fcb-6adc8e416ade"/>
 				<textElement>
@@ -58,17 +58,17 @@ order by agente;]]>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement x="0" y="0" width="113" height="29" uuid="d3e4929e-ae28-4bbf-908a-40a619e837ca"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
-			</image>
 			<staticText>
-				<reportElement x="144" y="29" width="274" height="34" uuid="f78d329b-612b-481e-b267-a6f8cc66fb6e"/>
+				<reportElement x="144" y="42" width="274" height="34" uuid="f78d329b-612b-481e-b267-a6f8cc66fb6e"/>
 				<textElement>
 					<font size="18"/>
 				</textElement>
 				<text><![CDATA[Antigüedad de Notas de Venta]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="247" height="40" uuid="7e9499b5-46e1-4823-92e7-947f148c9f35"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>

@@ -59,8 +59,8 @@ where serie= $P{serie} and id_pedido=$P{id}]]>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="0" y="0" width="371" height="45" uuid="44fd323e-e6bc-4433-9405-519f61252f5b"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicals.png"]]></imageExpression>
+				<reportElement x="0" y="0" width="247" height="40" uuid="77893030-3d79-4551-a961-cb320c0115de"/>
+				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
 			</image>
 		</band>
 	</title>

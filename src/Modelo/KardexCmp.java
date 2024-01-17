@@ -120,7 +120,16 @@ public class KardexCmp implements java.io.Serializable{
     public void setOperacion(String operacion) {
         this.operacion = operacion;
     }
-    private int cuenta,subcuenta,folio,proveedor,almacen,renglon,usuario,Ordenfolio,id_material,id_cliente,id_prov,id_pedimento,id_kardex,id_dpedimento;
+    private int cuenta,subcuenta,folio,proveedor,almacen,renglon,usuario,Ordenfolio,
+            id_material,id_cliente,id_prov,id_pedimento,id_kardex,id_dpedimento, id_concepto;
+
+    public int getId_concepto() {
+        return id_concepto;
+    }
+
+    public void setId_concepto(int id_concepto) {
+        this.id_concepto = id_concepto;
+    }
 
     public int getUsuario() {
         return usuario;
