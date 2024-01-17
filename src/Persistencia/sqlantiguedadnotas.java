@@ -167,8 +167,9 @@ public class sqlantiguedadnotas {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select id_cliente,nombre from cliente "
-                    + "where id_agente=1 and estatus='1'\n"
+                    + "where id_agente like '%"+agente+"%' and estatus='1'\n"
                     + "order by nombre";
+//            System.out.println(sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {

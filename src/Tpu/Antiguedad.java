@@ -405,7 +405,7 @@ public class Antiguedad extends javax.swing.JFrame {
     private void JcAgenteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JcAgenteMousePressed
         DefaultComboBoxModel model1 = new DefaultComboBoxModel();
         daoantiguedadnotas d = new daoantiguedadnotas();
-        String ag=(JcAgente.getSelectedIndex()==0)?"":arr.get(JcAgente.getSelectedIndex()).getIdagente()+"";
+        String ag=(JcAgente.getSelectedIndex()==0)?"":arr.get(JcAgente.getSelectedIndex()-1).getIdagente()+"";
         arrc = d.getclientes(s68, ag);
         model1.addElement("TODOS");
         for (Cliente arr1 : arrc) {

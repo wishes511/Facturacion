@@ -111,8 +111,8 @@ public class convertirNumeros {
         String miles = numero.substring(numero.length() - 6);
         String millon = numero.substring(0, numero.length() - 6);
         String n = "";
-
-        if (millon.length() > 1) {
+//        System.out.println(millon);
+        if (Integer.parseInt(millon) > 1) {
             n = getCentenas(millon) + "millones ";
         } else {
             n = getUnidades(millon) + "millon ";

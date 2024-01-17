@@ -7,6 +7,7 @@ package testclass;
 
 import Modelo.Formateodedatos;
 import Modelo.cargo;
+import Modelo.convertirNumeros;
 import java.util.ArrayList;
 
 /**
@@ -21,7 +22,9 @@ public class Testformatos {
         //t.formatnombre("COMERCIAL D'PORTENIS");
         //Formateodedatos fort= new Formateodedatos();
 //        t.folios();
-        t.fechasinT("2024-01-15T13:12:05");
+//        t.fechasinT("2024-01-15T13:12:05");
+        convertirNumeros n = new convertirNumeros();
+        System.out.println(n.Convertir("8800000", true, "MXN"));
 
     }
 
