@@ -22,6 +22,7 @@ import Modelo.convertirNumeros;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
+import Panelmaq.Modificaprecio_pedido;
 import Server.Serverprod;
 import java.sql.Connection;
 import java.text.DecimalFormat;
@@ -48,7 +49,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author GATEWAY1-
  */
 public class fac1tpurem extends javax.swing.JPanel {
-
+    
     public String nombre, empresa, empresacob;
     public Connection sqlcfdi, sqlempresa, liteusuario;
     public Connection ACobranza, cpt, rcpt, cobB;
@@ -90,6 +91,7 @@ public class fac1tpurem extends javax.swing.JPanel {
         Pop = new javax.swing.JPopupMenu();
         JbCancelar1 = new javax.swing.JMenuItem();
         Cancelamiento = new javax.swing.JMenuItem();
+        JmAddprecios = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -117,6 +119,16 @@ public class fac1tpurem extends javax.swing.JPanel {
             }
         });
         Pop.add(Cancelamiento);
+
+        JmAddprecios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/edit-validated_40458.png"))); // NOI18N
+        JmAddprecios.setText("Modificar precios");
+        JmAddprecios.setToolTipText("");
+        JmAddprecios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAddpreciosActionPerformed(evt);
+            }
+        });
+        Pop.add(JmAddprecios);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -233,7 +245,7 @@ public class fac1tpurem extends javax.swing.JPanel {
         if (u.getTurno().equals("6")) {
             String name = JOptionPane.showInputDialog("Introduzca el nombre del cliente:");
             if (name.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "No se puede mostrar el reporte del cliente ya que no se introdujo nada, intentelo de nuevo");
+                JOptionPane.showMessageDialog(null, "No se puede mostrar el reporte del cliente ya que no se introdujo ningun valor, intentelo de nuevo");
             } else {
                 setreportcliente(folio, "MXN", ser, total, ped, name.toUpperCase());
             }
@@ -242,7 +254,7 @@ public class fac1tpurem extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
-
+        
         int row = JtDetalle.getSelectedRow();
         String estados = arrfactura.get(row).getEstatus() + "";
         if (arrfactura.get(row).getSerie().equals("B") && estados.equals("1")) {
@@ -252,7 +264,12 @@ public class fac1tpurem extends javax.swing.JPanel {
             JbCancelar1.setVisible(false);
             Cancelamiento.setVisible(false);
         }
-
+        if (u.getTurno().equals("6") && arrfactura.get(row).getSerie().equals("B")) {
+            JmAddprecios.setVisible(true);
+        } else {
+            JmAddprecios.setVisible(false);
+        }
+        
         if (evt.getButton() == 3) {// activar con clic derecho
             Pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
@@ -303,7 +320,7 @@ public class fac1tpurem extends javax.swing.JPanel {
             can.cpt = cpt;
             can.cob = cobB;
             can.u = u;
-
+            
             can.muestradatos(arrfactura.get(row).getNombrecliente(), arrfactura.get(row).getPedido(), arrfactura.get(row).getId_pedido(), arrfactura.get(row).getIdcliente());
             can.setVisible(true);
             Buscanotas();
@@ -323,7 +340,7 @@ public class fac1tpurem extends javax.swing.JPanel {
             ArrayList<Ddevolucion> arrd = new ArrayList<>();
             ArrayList<Ddevolucion> arrdevpedimento = new ArrayList();
             Devolucion dev = new Devolucion();
-            String bdcob="";
+            String bdcob = "";
             if (u.getTurno().equals("5")) {
                 bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
             }
@@ -333,48 +350,61 @@ public class fac1tpurem extends javax.swing.JPanel {
 //            bdcob = (u.getTurno().equals("5")) ? "RACobranzaTpu" : "RACobranzamaq";
 //            String bdcob = "RACobranzatpu.dbo.Cargo c on p.pedido=c.referencia";
 //            if (!ncr && !pag) {
-                daoDevolucion d = new daoDevolucion();
-                daokardexrcpt dk = new daokardexrcpt();
-                int rows = d.verificadevsped(cpt, "B", arrfactura.get(JtDetalle.getSelectedRow()).getId_pedido());
+            daoDevolucion d = new daoDevolucion();
+            daokardexrcpt dk = new daokardexrcpt();
+            int rows = d.verificadevsped(cpt, "B", arrfactura.get(JtDetalle.getSelectedRow()).getId_pedido());
 //                Verifica si hay devoluciones o no, si tiene entra sino solo hace el regreso al kardex
-                if (rows != 0) {
-                    arrd = d.getpedscancelrem(cpt, arrfactura.get(row).getId_pedido(), "B", bdcob);
-                    arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
-                    dev.setId_kardex(dk.maxkardexsincuenta(cpt));
-                    dev.setId_kardexnuevo(dev.getId_kardex() + 1);
-                } else {
-                    arrd = d.getpedidocancelsindev(cpt, arrfactura.get(row).getId_pedido(), "B", bdcob);
-                    dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
-                }
+            if (rows != 0) {
+                arrd = d.getpedscancelrem(cpt, arrfactura.get(row).getId_pedido(), "B", bdcob);
+                arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
+                dev.setId_kardex(dk.maxkardexsincuenta(cpt));
+                dev.setId_kardexnuevo(dev.getId_kardex() + 1);
+            } else {
+                arrd = d.getpedidocancelsindev(cpt, arrfactura.get(row).getId_pedido(), "B", bdcob);
+                dev.setId_kardexnuevo(dk.maxkardexsincuenta(cpt));
+            }
 //                if (arrd.isEmpty() || arrdevpedimento.isEmpty()) {
 //                    JOptionPane.showMessageDialog(null, "Error al cancelar, contacta a sistemas");
 //                } else {
 
-                daoConceptos dc = new daoConceptos();
-                java.util.Date date = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-                ConceptosES cuentacancel = dc.getConceptos(cpt, 70, 20);
-                ConceptosES cuentadevstock = dc.getConceptos(cpt, 20, 1);
-                dev.setCuenta1(cuentacancel.getId_concepto());
-                dev.setCuenta2(cuentadevstock.getId_concepto());
-                dev.setFecha(sdf.format(date));
-                dev.setId_pedido(arrd.get(0).getId_pedido());
-                dev.setNombre(arrfactura.get(row).getNombre());
-                dev.setId_cliente(arrfactura.get(row).getIdcliente());
-                dev.setSerie("B");
-                dev.setId_cargoenc(arrd.get(0).getId_cargo());
-                dev.setId_dev(arrd.get(0).getId_devolucion());
-                dev.setUsuario(u.getUsuario());
-                dev.setArr(arrd);
-                if (d.nuevacancelacion(cpt, cobB, dev, arrdevpedimento)) {
-                    JOptionPane.showMessageDialog(null, "Proceso completo");
-                    Buscanotas();
-                    JtCliente.requestFocus();
-                }
+            daoConceptos dc = new daoConceptos();
+            java.util.Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            ConceptosES cuentacancel = dc.getConceptos(cpt, 70, 20);
+            ConceptosES cuentadevstock = dc.getConceptos(cpt, 20, 1);
+            dev.setCuenta1(cuentacancel.getId_concepto());
+            dev.setCuenta2(cuentadevstock.getId_concepto());
+            dev.setFecha(sdf.format(date));
+            dev.setId_pedido(arrd.get(0).getId_pedido());
+            dev.setNombre(arrfactura.get(row).getNombre());
+            dev.setId_cliente(arrfactura.get(row).getIdcliente());
+            dev.setSerie("B");
+            dev.setId_cargoenc(arrd.get(0).getId_cargo());
+            dev.setId_dev(arrd.get(0).getId_devolucion());
+            dev.setUsuario(u.getUsuario());
+            dev.setArr(arrd);
+            if (d.nuevacancelacion(cpt, cobB, dev, arrdevpedimento)) {
+                JOptionPane.showMessageDialog(null, "Proceso completo");
+                Buscanotas();
+                JtCliente.requestFocus();
+            }
 
 //            }
         }
     }//GEN-LAST:event_CancelamientoActionPerformed
+
+    private void JmAddpreciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAddpreciosActionPerformed
+        cargadpedidos();
+    }//GEN-LAST:event_JmAddpreciosActionPerformed
+    
+    private void cargadpedidos() {
+        int row = JtDetalle.getSelectedRow();
+        Modificaprecio_pedido mp = new Modificaprecio_pedido(null, true);
+        mp.setconections(cpt, cobB, arrfactura.get(row),u);
+        mp.llenatabla();
+        mp.setVisible(true);
+        Buscanotas();
+    }
 
     /**
      * Despliega reporte del pedido individual
@@ -442,16 +472,16 @@ public class fac1tpurem extends javax.swing.JPanel {
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Error: "+ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
         }
     }
-
+    
     private void Buscanotas() {
         daofactura df = new daofactura();
         arrfactura = df.getpedidos(cpt, JtCliente.getText(), serie);
         generatabla();
     }
-
+    
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Pedido");
@@ -488,6 +518,7 @@ public class fac1tpurem extends javax.swing.JPanel {
     private javax.swing.JMenuItem Cancelamiento;
     private javax.swing.JMenuItem JbCancelar1;
     private javax.swing.JLabel JlSerie;
+    private javax.swing.JMenuItem JmAddprecios;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;
     private javax.swing.JPopupMenu Pop;

@@ -12,11 +12,37 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public class Dfactura implements java.io.Serializable{
-    int id, idoc, producto,talla,cantidad,renglon,id_dpedimento,id_pedimento, years;
-    int c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14, almacen,linea,corrida,estilo,combinacion, foliokardex;
-    String factura,descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor,uuid, stock, descumedida,dureza,fecha;
-    double base,  importa, descuento,precio,  cantidadfloat, precioant,costo;
+    private int id, idoc, producto,talla,cantidad,renglon,id_dpedimento,id_pedimento, years;
+    private int c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14, almacen,linea,corrida,estilo,combinacion, foliokardex;
+    private String factura,descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor,uuid, stock, descumedida,dureza,fecha;
+    private double base,  importa, descuento,precio,  cantidadfloat, precioant,costo;
+    private int kardex, cargo;
+    private String pedido;
     ArrayList<String> arruuid = new ArrayList<>();
+
+    public int getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(int cargo) {
+        this.cargo = cargo;
+    }
+
+    public void setKardex(int kardex) {
+        this.kardex = kardex;
+    }
+
+    public void setPedido(String pedido) {
+        this.pedido = pedido;
+    }
+
+    public int getKardex() {
+        return kardex;
+    }
+
+    public String getPedido() {
+        return pedido;
+    }
 
     public double getCosto() {
         return costo;

@@ -48,6 +48,13 @@ order by cli.nombre]]>
 				<reportElement x="0" y="0" width="247" height="40" uuid="98e27ae3-fd10-4aad-b6d0-f7041675af31"/>
 				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
 			</image>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="432" y="0" width="140" height="12" uuid="fba12d5e-048f-4c21-8b48-c5a552ba13a9"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -93,7 +100,7 @@ order by cli.nombre]]>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="51" splitType="Stretch">
+		<band height="43" splitType="Stretch">
 			<textField>
 				<reportElement x="46" y="0" width="509" height="20" uuid="cbb35c46-7edf-43fe-bf77-1793065a85be"/>
 				<textElement>
@@ -109,7 +116,7 @@ order by cli.nombre]]>
 				<textFieldExpression><![CDATA[$F{id_cliente}]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="0" y="31" width="572" height="13" uuid="e72f927f-a99b-4c44-bc3f-61f93a34dcc5"/>
+				<reportElement x="0" y="25" width="572" height="13" uuid="e72f927f-a99b-4c44-bc3f-61f93a34dcc5"/>
 				<subreportParameter name="f2">
 					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
 				</subreportParameter>

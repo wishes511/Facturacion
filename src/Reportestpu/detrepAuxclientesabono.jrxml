@@ -13,7 +13,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select c.id_cargo,a.referencia,cu.cuenta,cu.subcuenta,cu.descripcion,convert(date,c.fecha) as fecha,c.id_cliente,cli.nombre,a.importe,a.saldo
+		<![CDATA[select c.id_cargo,a.referencia,cu.cuenta,cu.subcuenta,cu.descripcion,convert(date,c.fecha) as fecha,c.id_cliente,cli.nombre,a.importe,a.saldo,saldomx
 from cargo c
 join cliente cli on c.id_cliente=cli.id_cliente
 join abono a on a.id_cargo=c.id_cargo
@@ -31,6 +31,13 @@ order by cli.nombre]]>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="importe" class="java.lang.Double"/>
 	<field name="saldo" class="java.lang.Double"/>
+	<field name="saldomx" class="java.lang.Double"/>
+	<variable name="saldo" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
+	</variable>
+	<variable name="saldomx" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldomx}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -72,19 +79,51 @@ order by cli.nombre]]>
 				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="424" y="0" width="70" height="12" uuid="161ea049-7cc3-430f-931a-433983ba6016"/>
+				<reportElement x="354" y="0" width="70" height="12" uuid="161ea049-7cc3-430f-931a-433983ba6016"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="494" y="0" width="70" height="12" uuid="1babd938-909b-4a43-9f16-2f56c9e9bfb5"/>
+				<reportElement x="424" y="0" width="70" height="12" uuid="1babd938-909b-4a43-9f16-2f56c9e9bfb5"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="494" y="0" width="70" height="12" uuid="e9b27938-d48a-4d77-ae97-186ddf84e090"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldomx}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
+	<summary>
+		<band height="17">
+			<textField pattern="#,##0.00">
+				<reportElement x="424" y="0" width="70" height="13" uuid="365b7d6f-a372-45eb-858d-8ab8e9793754"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{saldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="494" y="0" width="70" height="13" uuid="9decc843-32c9-4965-a517-026ba34c775b"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{saldomx}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="378" y="0" width="46" height="13" uuid="9bb6ec67-8766-4707-8d07-e6bdcb706e85"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totales :]]></text>
+			</staticText>
+		</band>
+	</summary>
 </jasperReport>

@@ -27,6 +27,12 @@ order by cli.nombre]]>
 	<field name="nombre" class="java.lang.String"/>
 	<field name="saldousd" class="java.lang.Double"/>
 	<field name="saldomx" class="java.lang.Double"/>
+	<variable name="saldo" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldousd}]]></variableExpression>
+	</variable>
+	<variable name="saldomx" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldomx}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -83,4 +89,29 @@ order by cli.nombre]]>
 			</textField>
 		</band>
 	</detail>
+	<summary>
+		<band height="17">
+			<textField pattern="#,##0.00">
+				<reportElement x="354" y="0" width="100" height="11" uuid="1f344921-44b4-4617-8ed2-a7d050fedfe0"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{saldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="454" y="0" width="92" height="11" uuid="fdc2df3c-5794-4dfe-b9fd-c0f98b9b3f58"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{saldomx}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="312" y="0" width="42" height="11" uuid="8264d7e6-5f88-468b-8144-a4dbc93fb26a"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totales :]]></text>
+			</staticText>
+		</band>
+	</summary>
 </jasperReport>

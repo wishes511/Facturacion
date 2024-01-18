@@ -91,6 +91,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
         JtCliente.requestFocus();
         JtFolio1.setVisible(false);
         setdolar();
+        jPanel5.setVisible(false);
     }
 
     /**
