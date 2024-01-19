@@ -702,8 +702,70 @@
               <Image iconType="3" name="/Recursos/books_21813.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Reportes"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+          <SubComponents>
+            <Menu class="javax.swing.JMenu" name="JmRepcob1">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/exchange-dollar_icon-icons.com_53141.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Reportes Cobranza"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="JmEdocuenta1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Reporte Estado de cuenta"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmEdocuenta1ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="JmAuxcliente1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Reporte Auxiliar de clientes"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmAuxcliente1ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="JmSaldosvencidos1">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Reporte Saldos Vencidos x Vencer"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmSaldosvencidos1ActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <MenuItem class="javax.swing.JMenuItem" name="JmVentaserie2">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/Documents_43884.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Reporte de inventario"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmVentaserie2ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="JmKardexprod1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Kardex x producto"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmKardexprod1ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="JmVentaserie1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Reporte de ventas"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmVentaserie1ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="JmCobranzatpu1">
           <Properties>

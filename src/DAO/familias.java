@@ -20,4 +20,7 @@ public interface familias {
     public boolean newfamilia(Connection c, Familia f);
     
     boolean updateestatus(Connection cpt, int id, String estatus);
+    
+    public ArrayList<String> gettipomaterial(Connection cpt);
+    
 }

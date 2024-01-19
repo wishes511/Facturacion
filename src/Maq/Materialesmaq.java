@@ -176,20 +176,22 @@ public class Materialesmaq extends javax.swing.JInternalFrame {
     private void settable() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Maquina");
-        model.addColumn("precio");
+        model.addColumn("Precio");
         model.addColumn("No. Serie");
+        model.addColumn("Modelo");
         model.addColumn("Marca");
-        model.addColumn("Moneda");
         model.addColumn("");
+        model.addColumn("Moneda");
         model.setNumRows(arrmat.size());
         for (int i = 0; i < arrmat.size(); i++) {
             String estado=(arrmat.get(i).getEstatus().equals("1"))?"Activo":"Inactivo";
             model.setValueAt(arrmat.get(i).getDescripcion(), i, 0);
             model.setValueAt(arrmat.get(i).getPrecio(), i, 1);
             model.setValueAt(arrmat.get(i).getNoserie(), i, 2);
-            model.setValueAt(arrmat.get(i).getMarca(), i, 3);
-            model.setValueAt(arrmat.get(i).getMoneda(), i, 4);
+            model.setValueAt(arrmat.get(i).getTipo_maquina(), i, 3);
+            model.setValueAt(arrmat.get(i).getMarca(), i, 4);
             model.setValueAt(estado, i, 5);
+            model.setValueAt(arrmat.get(i).getMoneda(), i, 6);
         }
         JtDetalle.setModel(model);
     }

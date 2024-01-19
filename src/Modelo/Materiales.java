@@ -11,9 +11,17 @@ package Modelo;
  */
 public class Materiales implements java.io.Serializable{
     private String descripcion,codigo,codigosat,unidad, materialpedimento,dureza,moneda,noserie, imag1,imag2,imag3,
-            marca,estatus;
+            marca,estatus, tipo_maquina;
     private int id_material, id_familia, id_almacen;
     private double precio, costo, cantidad;
+
+    public String getTipo_maquina() {
+        return tipo_maquina;
+    }
+
+    public void setTipo_maquina(String tipo_maquina) {
+        this.tipo_maquina = tipo_maquina;
+    }
 
     public String getEstatus() {
         return estatus;

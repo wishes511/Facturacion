@@ -13,6 +13,7 @@ import Modelo.Formateodedatos;
 import Modelo.Procserie;
 import Modelo.Usuarios;
 import Paneles.pago1;
+import Panelmaq.ReporteInventario;
 import Paneltpu.Kardexprod;
 import Paneltpu.RepSaldosV;
 import Paneltpu.Repauxcliente;
@@ -100,7 +101,7 @@ public final class Principal extends javax.swing.JFrame {
     Anucios anuncios;
     Fallasprod fallas;
     Hrsavances hravance;
-    
+
     public Principal() {
         initComponents();
 //        JrEmpresa.setSelected(true);
@@ -225,6 +226,13 @@ public final class Principal extends javax.swing.JFrame {
         JmCliente1 = new javax.swing.JMenuItem();
         JmFamilia1 = new javax.swing.JMenuItem();
         Jmreportes1 = new javax.swing.JMenu();
+        JmRepcob1 = new javax.swing.JMenu();
+        JmEdocuenta1 = new javax.swing.JMenuItem();
+        JmAuxcliente1 = new javax.swing.JMenuItem();
+        JmSaldosvencidos1 = new javax.swing.JMenuItem();
+        JmVentaserie2 = new javax.swing.JMenuItem();
+        JmKardexprod1 = new javax.swing.JMenuItem();
+        JmVentaserie1 = new javax.swing.JMenuItem();
         JmCobranzatpu1 = new javax.swing.JMenu();
         JmNotascrtpu1 = new javax.swing.JMenuItem();
         JmPagostpu1 = new javax.swing.JMenuItem();
@@ -756,7 +764,61 @@ public final class Principal extends javax.swing.JFrame {
 
         Jmreportes1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/books_21813.png"))); // NOI18N
         Jmreportes1.setText("Reportes");
-        Jmreportes1.setEnabled(false);
+
+        JmRepcob1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/exchange-dollar_icon-icons.com_53141.png"))); // NOI18N
+        JmRepcob1.setText("Reportes Cobranza");
+
+        JmEdocuenta1.setText("Reporte Estado de cuenta");
+        JmEdocuenta1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmEdocuenta1ActionPerformed(evt);
+            }
+        });
+        JmRepcob1.add(JmEdocuenta1);
+
+        JmAuxcliente1.setText("Reporte Auxiliar de clientes");
+        JmAuxcliente1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAuxcliente1ActionPerformed(evt);
+            }
+        });
+        JmRepcob1.add(JmAuxcliente1);
+
+        JmSaldosvencidos1.setText("Reporte Saldos Vencidos x Vencer");
+        JmSaldosvencidos1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmSaldosvencidos1ActionPerformed(evt);
+            }
+        });
+        JmRepcob1.add(JmSaldosvencidos1);
+
+        Jmreportes1.add(JmRepcob1);
+
+        JmVentaserie2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Documents_43884.png"))); // NOI18N
+        JmVentaserie2.setText("Reporte de inventario");
+        JmVentaserie2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmVentaserie2ActionPerformed(evt);
+            }
+        });
+        Jmreportes1.add(JmVentaserie2);
+
+        JmKardexprod1.setText("Kardex x producto");
+        JmKardexprod1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmKardexprod1ActionPerformed(evt);
+            }
+        });
+        Jmreportes1.add(JmKardexprod1);
+
+        JmVentaserie1.setText("Reporte de ventas");
+        JmVentaserie1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmVentaserie1ActionPerformed(evt);
+            }
+        });
+        Jmreportes1.add(JmVentaserie1);
+
         JmMaq.add(Jmreportes1);
 
         JmCobranzatpu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/exchange-dollar_icon-icons.com_53141.png"))); // NOI18N
@@ -1115,7 +1177,7 @@ public final class Principal extends javax.swing.JFrame {
                 }
             }
         });
-        
+
     }
 //Obtener todas las conecciones para realizar operaciones extras(kardex, pedidos, facturas)
 
@@ -1305,7 +1367,7 @@ public final class Principal extends javax.swing.JFrame {
     private void JmSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSesionActionPerformed
         interfazlogin();
     }//GEN-LAST:event_JmSesionActionPerformed
-    
+
     private void eleccionempresa() {
         if (logint == 0) {
             interfazlogin();
@@ -1385,7 +1447,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmMaterialActionPerformed
         try {
-            
+
             Materialestpu c = new Materialestpu(conexion, u);
 //            c.liteusuario = liteusuario;
             this.JdPanel.add(c);
@@ -1795,13 +1857,49 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmAntiguedadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAntiguedadActionPerformed
         Antiguedad a = new Antiguedad();
-        a.lite=conexion.getLiteusuario();
-        a.s68=conexion.getCobranzatpu();
-        a.s90=conexion.getCobranzatpuB();
+        a.lite = conexion.getLiteusuario();
+        a.s68 = conexion.getCobranzatpu();
+        a.s90 = conexion.getCobranzatpuB();
         a.cargacombos();
         a.setVisible(true);
     }//GEN-LAST:event_JmAntiguedadActionPerformed
-    
+
+    private void JmEdocuenta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEdocuenta1ActionPerformed
+        Repedocuenta n = new Repedocuenta(null, true);
+        n.u = conexion;
+        n.setVisible(true);
+    }//GEN-LAST:event_JmEdocuenta1ActionPerformed
+
+    private void JmAuxcliente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAuxcliente1ActionPerformed
+        Repauxcliente n = new Repauxcliente(null, true);
+        n.u = conexion;
+        n.setVisible(true);
+    }//GEN-LAST:event_JmAuxcliente1ActionPerformed
+
+    private void JmSaldosvencidos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSaldosvencidos1ActionPerformed
+        RepSaldosV n = new RepSaldosV(null, true);
+        n.u = conexion;
+        n.setVisible(true);
+    }//GEN-LAST:event_JmSaldosvencidos1ActionPerformed
+
+    private void JmKardexprod1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmKardexprod1ActionPerformed
+        Kardexprod n = new Kardexprod(null, true);
+        n.u = conexion;
+        n.setVisible(true);
+    }//GEN-LAST:event_JmKardexprod1ActionPerformed
+
+    private void JmVentaserie1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserie1ActionPerformed
+        Ventasserie n = new Ventasserie(null, true);
+        n.u = conexion;
+        n.setVisible(true);
+    }//GEN-LAST:event_JmVentaserie1ActionPerformed
+
+    private void JmVentaserie2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserie2ActionPerformed
+        ReporteInventario r = new ReporteInventario();
+        r.setvars(conexion);
+        r.setreport();
+    }//GEN-LAST:event_JmVentaserie2ActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -1810,33 +1908,33 @@ public final class Principal extends javax.swing.JFrame {
             JrEmpresa.requestFocus();
         }
     }
-    
+
     private void verificausuariolite() {
         jp.setVisible(true);
         jp.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                
+
             }
-            
+
             @Override
             public void mousePressed(MouseEvent e) {
                 jp.setText("");
             }
-            
+
             @Override
             public void mouseReleased(MouseEvent e) {
-                
+
             }
-            
+
             @Override
             public void mouseEntered(MouseEvent e) {
-                
+
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
-                
+
             }
         });
         JOptionPane.showMessageDialog(null, jp, "Iniciar Sesion ", JOptionPane.QUESTION_MESSAGE);
@@ -1896,7 +1994,7 @@ public final class Principal extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private boolean checkempresa() {
         boolean band = true;
         if (u.getTipo_usuario().equals("1") || prod.equals("0")) {
@@ -1924,7 +2022,7 @@ public final class Principal extends javax.swing.JFrame {
 //                    JmConf.setVisible(true);
                         modoadmin();
                     }
-                    
+
                     if (u.getProduccion().equals("1")) {
                         JmProd.setVisible(true);
                         //JmAnuncios.setVisible(false);
@@ -1961,7 +2059,7 @@ public final class Principal extends javax.swing.JFrame {
                         JmFallas.setVisible(false);
                         JmAvances.setVisible(false);
                     }
-                    
+
                     JmOut.setVisible(true);
                     JmSesion.setEnabled(false);
                     JlUsuario.setText(u.getNombre() + " " + u.getUsuario());
@@ -1973,7 +2071,7 @@ public final class Principal extends javax.swing.JFrame {
         }
         return band;
     }
-    
+
     private void modoadmin() {
         JmRespaldos.setVisible(true);
         JmCES.setVisible(true);
@@ -1986,7 +2084,7 @@ public final class Principal extends javax.swing.JFrame {
         JmTpu.setVisible(true);
         JmMaq.setVisible(true);
     }
-    
+
     private void actualizaempresa() {
         boolean band = checkempresa();
         if (!u.getUsuario().equals("")) {
@@ -2086,7 +2184,7 @@ public final class Principal extends javax.swing.JFrame {
                 Logger.getLogger(pago1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
     }
 
     /**
@@ -2179,13 +2277,13 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setLiteusuario(liteusuario);
                 conexion.setLitecfdi(litecfdi);
                 conexion.setLiteempresa(liteempresa);
-                
+
             } catch (ClassNotFoundException | IOException | SQLException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage());
                 Logger.getLogger(pago1.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
     }
 
     /**
@@ -2217,7 +2315,7 @@ public final class Principal extends javax.swing.JFrame {
                 anuncios.cerrarcon();
             }
         }
-        
+
         if (fallas != null) {
             if (!fallas.isClosed() && fallas.isShowing()) {
                 fallas.cerrarcon();
@@ -2228,7 +2326,7 @@ public final class Principal extends javax.swing.JFrame {
                 hravance.cerrarcon();
             }
         }
-        
+
     }
 
     /**
@@ -2285,7 +2383,7 @@ public final class Principal extends javax.swing.JFrame {
 //                conexion.getCobranzamaqB().close();
                 liteusuario.close();
             }
-            
+
             System.out.println("cerrar paneles");
         } catch (Exception ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
@@ -2359,6 +2457,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmAntiguedad;
     private javax.swing.JMenuItem JmAnuncios;
     private javax.swing.JMenuItem JmAuxcliente;
+    private javax.swing.JMenuItem JmAuxcliente1;
     private javax.swing.JMenu JmAvances;
     private javax.swing.JMenuItem JmAvancesPt;
     private javax.swing.JMenuItem JmAvancesprod;
@@ -2378,6 +2477,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmDevoluciones1;
     private javax.swing.JMenuItem JmDureza;
     private javax.swing.JMenuItem JmEdocuenta;
+    private javax.swing.JMenuItem JmEdocuenta1;
     private javax.swing.JMenuItem JmEmpresas;
     private javax.swing.JMenuItem JmEntradasS;
     private javax.swing.JMenuItem JmEntradasS1;
@@ -2389,6 +2489,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmFicha;
     private javax.swing.JMenuItem JmInventarios;
     private javax.swing.JMenuItem JmKardexprod;
+    private javax.swing.JMenuItem JmKardexprod1;
     private javax.swing.JMenu JmMaq;
     private javax.swing.JMenuItem JmMaterial;
     private javax.swing.JMenuItem JmMaterial1;
@@ -2412,15 +2513,19 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmRemision;
     private javax.swing.JMenuItem JmRemision1;
     private javax.swing.JMenu JmRepcob;
+    private javax.swing.JMenu JmRepcob1;
     private javax.swing.JMenu JmReportes;
     private javax.swing.JMenuItem JmRespaldos;
     private javax.swing.JMenuItem JmRespaldos1;
     private javax.swing.JMenuItem JmSaldosvencidos;
+    private javax.swing.JMenuItem JmSaldosvencidos1;
     private javax.swing.JMenuItem JmSalidas;
     private javax.swing.JMenuItem JmSesion;
     private javax.swing.JMenu JmTpu;
     private javax.swing.JMenu JmVentas;
     private javax.swing.JMenuItem JmVentaserie;
+    private javax.swing.JMenuItem JmVentaserie1;
+    private javax.swing.JMenuItem JmVentaserie2;
     private javax.swing.JMenuItem JmVerfacts;
     private javax.swing.JMenuItem Jmabrir;
     private javax.swing.JMenu Jmreportes;

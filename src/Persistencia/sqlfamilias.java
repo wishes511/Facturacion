@@ -100,4 +100,21 @@ public class sqlfamilias {
             return false;
         }
     }
+    
+        public ArrayList<String> gettipom(Connection c) {
+        ArrayList<String> arr = new ArrayList<>();
+        try {
+            ResultSet rs;
+            PreparedStatement st;
+            String sql = "select nombre_maquina from tipo_maquina where estatus='1' order by nombre_maquina";
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                arr.add(rs.getString("nombre_maquina"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlfamilias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
 }

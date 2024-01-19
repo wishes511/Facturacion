@@ -14,7 +14,7 @@ import java.util.ArrayList;
  *
  * @author GATEWAY1-
  */
-public class daofamilias implements familias{
+public class daofamilias implements familias {
 
     @Override
     public ArrayList<Familia> getallfamilia(Connection c, String f) {
@@ -33,5 +33,17 @@ public class daofamilias implements familias{
         sqlfamilias s = new sqlfamilias();
         return s.updateestatus(cpt, id, estatus);
     }
-    
+
+    /**
+     * Funcion solo para obtener el nombre para el tipo de maquina
+     *
+     * @param cpt
+     * @return
+     */
+    @Override
+    public ArrayList<String> gettipomaterial(Connection cpt) {
+        sqlfamilias s = new sqlfamilias();
+        return s.gettipom(cpt);
+    }
+
 }

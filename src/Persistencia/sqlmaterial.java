@@ -124,6 +124,7 @@ public class sqlmaterial {
         try {
             con.setAutoCommit(false);
             String mat = m.getDescripcion();
+            String tipo = m.getTipo_maquina();
             double precio = m.getPrecio();
             String unidad = m.getUnidad();
             String codigosat = m.getCodigosat();
@@ -133,8 +134,8 @@ public class sqlmaterial {
             String i1 = m.getImag1();
             String i2 = m.getImag2();
             String i3 = m.getImag3();
-            String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia,moneda,noserie,imag1,imag2,imag3)"
-                    + " values('" + mat + "'," + precio + ",'1','" + unidad + "','" + codigosat + "'," + idfam + ",'" + mon + "','" + nserie + "','" + i1 + "','" + i2 + "','" + i3 + "')";
+            String sql = "insert into Materiales(descripcion,precio,estatus,unidad,codigosat,id_familia,moneda,modelo,noserie,imag1,imag2,imag3)"
+                    + " values('" + tipo + "'," + precio + ",'1','" + unidad + "','" + codigosat + "'," + idfam + ",'" + mon + "','" + mat + "','" + nserie + "','" + i1 + "','" + i2 + "','" + i3 + "')";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);
             st.executeUpdate();
@@ -151,21 +152,25 @@ public class sqlmaterial {
         try {
             PreparedStatement st;
             ResultSet rs;
-            st = con.prepareStatement("select id_material,m.descripcion as modelo,precio,unidad,noserie,moneda,f.descripcion as marca,m.estatus\n"
+            String sql = "select id_material,m.descripcion as descr,precio,unidad,"
+                    + "noserie,moneda,f.descripcion as marca,m.estatus, m.modelo as model\n"
                     + "from materiales m\n"
                     + "join familias f on m.id_familia=f.id_familia\n"
-                    + "where m.descripcion like '%" + mat + "%' order by m.descripcion");
+                    + "where m.descripcion like '%" + mat + "%' order by m.descripcion";
+            st = con.prepareStatement(sql);
+            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Materiales m = new Materiales();
                 m.setId_material(rs.getInt("id_material"));
-                m.setDescripcion(rs.getString("modelo"));
+                m.setDescripcion(rs.getString("descr"));
                 m.setPrecio(rs.getDouble("precio"));
                 m.setUnidad(rs.getString("unidad"));
                 m.setNoserie(rs.getString("noserie"));
                 m.setMoneda(rs.getString("moneda"));
                 m.setMarca(rs.getString("marca"));
                 m.setEstatus(rs.getString("estatus"));
+                m.setTipo_maquina(rs.getString("model"));
                 arr.add(m);
             }
             rs.close();
