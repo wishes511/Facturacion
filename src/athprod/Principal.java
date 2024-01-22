@@ -875,7 +875,6 @@ public final class Principal extends javax.swing.JFrame {
 
         JmEntradasS1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/move_23058.png"))); // NOI18N
         JmEntradasS1.setText("Entradas/Salidas");
-        JmEntradasS1.setEnabled(false);
         JmEntradasS1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JmEntradasS1ActionPerformed(evt);
@@ -1661,7 +1660,14 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmPedimento1ActionPerformed
 
     private void JmEntradasS1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEntradasS1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            EntradasSalidas p = new EntradasSalidas(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_JmEntradasS1ActionPerformed
 
     private void JmDevoluciones1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDevoluciones1ActionPerformed
@@ -1908,7 +1914,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmVentaserie2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserie2ActionPerformed
         ReporteInventario r = new ReporteInventario();
-        r.setvars(conexion,u);
+        r.setvars(conexion, u);
         r.setreport();
     }//GEN-LAST:event_JmVentaserie2ActionPerformed
 

@@ -840,7 +840,6 @@
               <Image iconType="3" name="/Recursos/move_23058.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Entradas/Salidas"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmEntradasS1ActionPerformed"/>

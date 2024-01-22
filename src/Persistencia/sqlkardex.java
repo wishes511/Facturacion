@@ -606,7 +606,7 @@ public class sqlkardex {
                 }
             }
 
-            System.out.println("kardex " + sql);
+//            System.out.println("kardex " + sql);
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
