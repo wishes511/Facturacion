@@ -6,6 +6,8 @@
 package Paneltpu;
 
 import Modelo.Conexiones;
+import Modelo.Formateodedatos;
+import Modelo.Usuarios;
 import Paneles.fac1;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
@@ -32,6 +34,7 @@ public class Repedocuenta extends javax.swing.JDialog {
 
     public Conexiones u;
     public Connection litecfdi;
+    private Usuarios user;
 
     /**
      * Creates new form Nuevomaterial
@@ -188,6 +191,9 @@ public class Repedocuenta extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void setconexiones(Usuarios user) {
+        this.user = user;
+    }
 
     private void JtNombreMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtNombreMousePressed
         JtNombre.setText("");
@@ -206,23 +212,27 @@ public class Repedocuenta extends javax.swing.JDialog {
         java.util.Date date = new Date();
         String f1 = sdf.format(Fecha.getDate());
         String f2 = sdf.format(Fecha1.getDate());
-        String cliente=JtNombre.getText();
+        String cliente = JtNombre.getText();
         setreport(f1, f2, cliente);
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void setreport(String f1, String f2, String n) {
         try {
+            Connection con = (user.getTurno().equals("5")) ? u.getCobranzatpu() : u.getCobranzatpuB();
+            Formateodedatos fd = new Formateodedatos();
             Map parametros = new HashMap();
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
             parametros.put("cliente", n);
+            parametros.put("imagen", fd.getimagenreporte(user));
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Indexrepclientes.jasper"));
-            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, u.getCobranzatpu());
+            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, con);
+//            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, u.getCobranzatpu());
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             this.dispose();
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("Kardex Producto");
+            ver.setTitle("Estado de cuenta");
             ver.setVisible(true);
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);

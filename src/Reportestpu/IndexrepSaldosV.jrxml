@@ -12,6 +12,9 @@
 	<parameter name="cliente" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="imag" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select distinct c.id_agente,a.nombre
 from cargo c 
@@ -43,8 +46,8 @@ where id_cliente like '%$P!{cliente}%' and fechavencimiento<=$P{f2}  and (saldo!
 				<text><![CDATA[Saldos Vencidos x vencer]]></text>
 			</staticText>
 			<image>
-				<reportElement x="-1" y="0" width="247" height="40" uuid="06c59eda-fd40-47c8-9a2e-f5b06d4b3f22"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
+				<reportElement x="-1" y="0" width="160" height="34" uuid="06c59eda-fd40-47c8-9a2e-f5b06d4b3f22"/>
+				<imageExpression><![CDATA[$P{imag}]]></imageExpression>
 			</image>
 		</band>
 	</title>

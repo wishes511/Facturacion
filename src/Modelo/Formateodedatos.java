@@ -7,6 +7,7 @@ package Modelo;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Connection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -258,4 +259,14 @@ public class Formateodedatos {
         return resp;
     }
 
+    /**
+     * Obtiene el nombre de la imagen para el reporte de acuerdo al usuario
+     * por ahora solo aplica para tpu y maquinaria
+     * @param u
+     * @return 
+     */
+    public String getimagenreporte(Usuarios u) {
+        return "C:\\af\\prod\\images\\" + u.getImag();
+    }
+    
 }

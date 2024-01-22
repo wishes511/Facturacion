@@ -15,6 +15,9 @@
 	<parameter name="dureza" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="imag" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select p.referencia,k.id_pedimento
 from kardex k
@@ -69,7 +72,7 @@ group by k.id_pedimento,p.referencia]]>
 			</textField>
 			<image>
 				<reportElement x="0" y="0" width="247" height="40" uuid="39788a5e-1009-4d15-93bc-b8eac379fada"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{imag}]]></imageExpression>
 			</image>
 		</band>
 	</title>

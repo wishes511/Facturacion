@@ -14,6 +14,15 @@ public class Usuarios implements java.io.Serializable{
     
     private String nombre,usuario,tipo_usuario,contraseña,grado,departamento;
     private String cobranza, ventas, produccion, avances, ath, uptown, turno, ventascob,rh;
+    private String imag;
+
+    public String getImag() {
+        return imag;
+    }
+
+    public void setImag(String imag) {
+        this.imag = imag;
+    }
 
     public String getRh() {
         return rh;

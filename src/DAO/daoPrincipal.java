@@ -80,6 +80,7 @@ public class daoPrincipal implements principal {
                 us.setTurno(rs.getString("turno"));
                 us.setVentascob(rs.getString("ventascob"));
                 us.setRh(rs.getString("rh"));
+                us.setImag(rs.getString("imagen"));
             }
             rs.close();
             st.close();

@@ -12,6 +12,9 @@
 	<parameter name="serie" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="imag" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select id_pedido,pedido,p.serie,convert(date,p.fecha) as fecha,p.nombre,p.subtotal,p.impuestos,p.total,p.descuento,
 case when p.estatus='1' then 'A' else 'C' end as 'estado'
@@ -84,7 +87,7 @@ order by p.serie]]>
 			</staticText>
 			<image>
 				<reportElement x="1" y="0" width="247" height="40" uuid="5f1514cc-86c8-48c4-bb91-aadc804bf89e"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{imag}]]></imageExpression>
 			</image>
 		</band>
 	</title>

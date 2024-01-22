@@ -6,6 +6,8 @@
 package Paneltpu;
 
 import Modelo.Conexiones;
+import Modelo.Formateodedatos;
+import Modelo.Usuarios;
 import Paneles.fac1;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
@@ -34,6 +36,7 @@ public class Ventasserie extends javax.swing.JDialog {
     public Conexiones u;
     public Connection litecfdi;
     String serie="A";
+    private Usuarios user;
 
     /**
      * Creates new form Nuevomaterial
@@ -46,6 +49,10 @@ public class Ventasserie extends javax.swing.JDialog {
 
     }
 
+    public void setconexiones(Usuarios user){
+        this.user=user;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -245,10 +252,12 @@ public class Ventasserie extends javax.swing.JDialog {
         private void setreport(String f1, String f2) {
         try {
             Map parametros = new HashMap();
+            Formateodedatos fd = new Formateodedatos();
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
             parametros.put("serie", serie);
+            parametros.put("imag", fd.getimagenreporte(user));
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportesrep/VentasxSerie.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, u.getCpttpu());
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte

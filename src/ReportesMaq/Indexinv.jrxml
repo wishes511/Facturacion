@@ -12,6 +12,9 @@
 	<parameter name="totalletra" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="imag" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[select distinct referencia,id_pedimento
 from pedimentos 
@@ -33,7 +36,7 @@ order by referencia]]>
 			</textField>
 			<image>
 				<reportElement x="0" y="0" width="314" height="35" uuid="44fd323e-e6bc-4433-9405-519f61252f5b"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\AF.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{imag}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="0" y="47" width="572" height="20" uuid="c801813f-a459-4087-bb72-c64ee7826b8d"/>

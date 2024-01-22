@@ -95,7 +95,7 @@ public final class Principal extends javax.swing.JFrame {
     String admin = "0";
     String prod = "0";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
-    boolean adminmod = false;
+    boolean adminmod = true;
     Usuarios u = new Usuarios();
     //Panel de conexiones independientes
     Anucios anuncios;
@@ -1682,6 +1682,7 @@ public final class Principal extends javax.swing.JFrame {
             conexion.setCobranzatpu(maqcob);
             conexion.setCobranzatpuB(maqcobB);
             u.setTurno("6");
+            u.setImag("AF.jpg");
             System.out.println("cambio a maq");
         }
 
@@ -1693,6 +1694,7 @@ public final class Principal extends javax.swing.JFrame {
             conexion.setCobranzatpu(tpucob);
             conexion.setCobranzatpuB(tpucobB);
             u.setTurno("5");
+            u.setImag("chemicalsnueva.jpg");
             System.out.println("cambio a tpu");
         } else {
             conexion.setCpttpu(tpu);
@@ -1705,12 +1707,14 @@ public final class Principal extends javax.swing.JFrame {
     private void JmKardexprodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmKardexprodActionPerformed
         Kardexprod n = new Kardexprod(null, true);
         n.u = conexion;
+        n.setusuario(u);
         n.setVisible(true);
     }//GEN-LAST:event_JmKardexprodActionPerformed
 
     private void JmVentaserieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserieActionPerformed
         Ventasserie n = new Ventasserie(null, true);
         n.u = conexion;
+        n.setconexiones(u);
         n.setVisible(true);
     }//GEN-LAST:event_JmVentaserieActionPerformed
 
@@ -1739,12 +1743,14 @@ public final class Principal extends javax.swing.JFrame {
     private void JmEdocuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEdocuentaActionPerformed
         Repedocuenta n = new Repedocuenta(null, true);
         n.u = conexion;
+        n.setconexiones(u);
         n.setVisible(true);
     }//GEN-LAST:event_JmEdocuentaActionPerformed
 
     private void JmAuxclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAuxclienteActionPerformed
         Repauxcliente n = new Repauxcliente(null, true);
         n.u = conexion;
+        n.setconexiones(u);
         n.setVisible(true);
     }//GEN-LAST:event_JmAuxclienteActionPerformed
 
@@ -1762,6 +1768,7 @@ public final class Principal extends javax.swing.JFrame {
     private void JmSaldosvencidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSaldosvencidosActionPerformed
         RepSaldosV n = new RepSaldosV(null, true);
         n.u = conexion;
+        n.setconexiones(u);
         n.setVisible(true);
     }//GEN-LAST:event_JmSaldosvencidosActionPerformed
 
@@ -1867,36 +1874,41 @@ public final class Principal extends javax.swing.JFrame {
     private void JmEdocuenta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEdocuenta1ActionPerformed
         Repedocuenta n = new Repedocuenta(null, true);
         n.u = conexion;
+        n.setconexiones(u);
         n.setVisible(true);
     }//GEN-LAST:event_JmEdocuenta1ActionPerformed
 
     private void JmAuxcliente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAuxcliente1ActionPerformed
         Repauxcliente n = new Repauxcliente(null, true);
         n.u = conexion;
+        n.setconexiones(u);
         n.setVisible(true);
     }//GEN-LAST:event_JmAuxcliente1ActionPerformed
 
     private void JmSaldosvencidos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmSaldosvencidos1ActionPerformed
         RepSaldosV n = new RepSaldosV(null, true);
         n.u = conexion;
+        n.setconexiones(u);
         n.setVisible(true);
     }//GEN-LAST:event_JmSaldosvencidos1ActionPerformed
 
     private void JmKardexprod1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmKardexprod1ActionPerformed
         Kardexprod n = new Kardexprod(null, true);
         n.u = conexion;
+        n.setusuario(u);
         n.setVisible(true);
     }//GEN-LAST:event_JmKardexprod1ActionPerformed
 
     private void JmVentaserie1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserie1ActionPerformed
         Ventasserie n = new Ventasserie(null, true);
         n.u = conexion;
+        n.setconexiones(u);
         n.setVisible(true);
     }//GEN-LAST:event_JmVentaserie1ActionPerformed
 
     private void JmVentaserie2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaserie2ActionPerformed
         ReporteInventario r = new ReporteInventario();
-        r.setvars(conexion);
+        r.setvars(conexion,u);
         r.setreport();
     }//GEN-LAST:event_JmVentaserie2ActionPerformed
 
@@ -2044,6 +2056,7 @@ public final class Principal extends javax.swing.JFrame {
                     if (u.getTurno().equals("6")) {
                         JmMaq.setVisible(true);
                         JmMaq.setEnabled(true);
+                        JmVentaserie1.setVisible(false);
                     }
                     if (u.getRh().equals("1")) {
                         JmVentas.setVisible(false);

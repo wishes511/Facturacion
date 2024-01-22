@@ -6,6 +6,7 @@
 package Panelmaq;
 
 import Modelo.Conexiones;
+import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Paneles.fac1;
 import java.sql.Connection;
@@ -28,10 +29,14 @@ import net.sf.jasperreports.view.JasperViewer;
 public class ReporteInventario {
 
     private Conexiones u;
+    private Usuarios user;
 
+    
     public void setreport() {
         try {
             Map parametros = new HashMap();
+            Formateodedatos f = new Formateodedatos();
+            parametros.put("imag", f.getimagenreporte(user));
 //            Agregar parametros al reporte
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportesmaq/Indexinv.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, u.getCpttpu());
@@ -44,7 +49,8 @@ public class ReporteInventario {
         }
     }
 
-    public void setvars(Conexiones u) {
+    public void setvars(Conexiones u, Usuarios user) {
         this.u = u;
+        this.user=user;
     }
 }

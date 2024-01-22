@@ -12,6 +12,7 @@
 	<parameter name="cliente" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="imagen" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select c.id_cliente,cli.nombre
 from cargo c
@@ -46,7 +47,7 @@ order by cli.nombre]]>
 			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="247" height="40" uuid="98e27ae3-fd10-4aad-b6d0-f7041675af31"/>
-				<imageExpression><![CDATA["C:\\af\\prod\\images\\chemicalsnueva.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{imagen}]]></imageExpression>
 			</image>
 			<textField pattern="EEEEE dd MMMMM yyyy">
 				<reportElement x="432" y="0" width="140" height="12" uuid="fba12d5e-048f-4c21-8b48-c5a552ba13a9"/>
@@ -78,12 +79,12 @@ order by cli.nombre]]>
 				<text><![CDATA[S]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="120" y="0" width="177" height="13" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
+				<reportElement x="120" y="0" width="119" height="13" uuid="073d9351-cf37-4e93-aee7-f0dafad64af3"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Concepto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="297" y="0" width="57" height="13" uuid="0e1fbc24-2037-4962-a4b9-2143d816f99c"/>
+				<reportElement x="239" y="0" width="57" height="13" uuid="0e1fbc24-2037-4962-a4b9-2143d816f99c"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Fecha]]></text>
 			</staticText>
@@ -96,6 +97,11 @@ order by cli.nombre]]>
 				<reportElement x="454" y="0" width="92" height="13" uuid="d59cd489-aed7-4149-b572-068d064ffe96"/>
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[Saldo Mxn]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="296" y="0" width="58" height="13" uuid="eaf5bc3b-0da3-468a-bda7-d08a90c2ee4f"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Importe]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

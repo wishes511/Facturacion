@@ -6,6 +6,8 @@
 package Paneltpu;
 
 import Modelo.Conexiones;
+import Modelo.Formateodedatos;
+import Modelo.Usuarios;
 import Paneles.fac1;
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
@@ -32,6 +34,7 @@ public class Kardexprod extends javax.swing.JDialog {
 
     public Conexiones u;
     public Connection litecfdi;
+    private Usuarios user;
 
     /**
      * Creates new form Nuevomaterial
@@ -45,6 +48,10 @@ public class Kardexprod extends javax.swing.JDialog {
         grupo.add(boton1);
         grupo.add(boton2);
         grupo.add(boton3);
+    }
+
+    public void setusuario(Usuarios user) {
+        this.user = user;
     }
 
     /**
@@ -290,6 +297,8 @@ public class Kardexprod extends javax.swing.JDialog {
     private void setreport(String f1, String f2) {
 //        String rep = (boton1.isSelected()) ? "Kardexprod" : "KardexPedimento";
         String rep;
+        Formateodedatos fd= new Formateodedatos();
+        String imag=fd.getimagenreporte(user);
         if (boton1.isSelected()) {
             rep = "Kardexprod";
         } else if (boton2.isSelected()) {
@@ -302,6 +311,7 @@ public class Kardexprod extends javax.swing.JDialog {
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
+            parametros.put("imag", imag);
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportesrep/" + rep + ".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, u.getCpttpu());
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
