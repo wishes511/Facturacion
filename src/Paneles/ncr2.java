@@ -859,8 +859,6 @@ public class ncr2 extends javax.swing.JPanel {
     }
 
     private void setfactura() {
-//        Formatea los decimales version anterior de igual manera se usa en algunas caracteristicas
-        DecimalFormat formateador = new DecimalFormat("####.##");
 //        Si no hay nada en los cargos de seleccion regresa al campo original
         if (arrcargoseleccion.isEmpty()) {
             JtCliente.requestFocus();
@@ -998,9 +996,11 @@ public class ncr2 extends javax.swing.JPanel {
                     double pre = 0;
                     if (rel.equals("03")) {//numero de renglones tambien para detalle docs
                         pre = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
-                        unidad = Double.parseDouble(formateador.format(pre));
+                        unidad = formatdecimal(pre);
+//                        unidad = Double.parseDouble(formateador.format(pre));
                         pares = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
-                        precio = Double.parseDouble(formateador.format((pre * pares) * 0.16 + (pre * pares)));
+                        precio = formatdecimal((pre * pares) * 0.16 + (pre * pares));
+//                        precio = Double.parseDouble(formateador.format((pre * pares) * 0.16 + (pre * pares)));
                         descripcion = JtDetalle.getValueAt(i, 0).toString();
                         codigosat = JtDetalle.getValueAt(i, 1).toString();
                         umedida = JtDetalle.getValueAt(i, 4).toString().toUpperCase();
@@ -1240,7 +1240,6 @@ public class ncr2 extends javax.swing.JPanel {
             //verirfica de que no tenga facturas
             if (!arrcargoseleccion.isEmpty()) {
                 int rows = model.getRowCount();
-                DecimalFormat formateador = new DecimalFormat("####.##");
                 for (int i = 0; i < rows; i++) {
                     //Verifica de que sea un numero y no cualquier cosa
                     if ((verificafloat(JtDetalle.getValueAt(i, 2).toString()) || verificaint(JtDetalle.getValueAt(i, 2).toString())
@@ -1262,15 +1261,14 @@ public class ncr2 extends javax.swing.JPanel {
                 total = subtotal + impuestos;
 //                System.out.println(impuestos);
                 //Solo para despliqgue de informacion
-                JlIva.setText(formateador.format(impuestos));
-                Jlsub.setText(formateador.format(subtotal));
-                JlDesc.setText(formateador.format(descuentos));
-                JlTotal.setText(formateador.format(total));
+                JlIva.setText(formatdecimal(impuestos)+"");
+                Jlsub.setText(formatdecimal(subtotal)+"");
+                JlDesc.setText(formatdecimal(descuentos)+"");
+                JlTotal.setText(formatdecimal(total)+"");
             } else {
                 JtCliente.requestFocus();// regresa al campo inicial del cliente
             }
         } else {
-            DecimalFormat formateador = new DecimalFormat("####.##");
             if (!arrcargoseleccion.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
                 for (int i = 0; i < arrcargoseleccion.size(); i++) {
                     double precio = arrcargoseleccion.get(i).getDescuento();
