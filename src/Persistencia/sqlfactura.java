@@ -949,8 +949,7 @@ public class sqlfactura {
     }
 
     public int insertfacturatpu(Connection con, factura f, Connection cobranza) {//Rcpt y cpt
-        PreparedStatement st = null;
-
+        PreparedStatement st;
         ResultSet rs;
         int pedido = 0;
         int docu = 0;
@@ -3686,6 +3685,8 @@ public class sqlfactura {
                 p.setAcumulativo(rs.getString("Acumulativa"));
                 arr.add(p);
             }
+            rs.close();
+            st.close();
         } catch (SQLException ex) {
             Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
         }

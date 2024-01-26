@@ -431,6 +431,7 @@ public final class Principal extends javax.swing.JFrame {
 
         JmVerfacts.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/applicationvnd_103607.png"))); // NOI18N
         JmVerfacts.setText("Generar pdf fac");
+        JmVerfacts.setEnabled(false);
         JmVerfacts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JmVerfactsActionPerformed(evt);
@@ -1703,9 +1704,9 @@ public final class Principal extends javax.swing.JFrame {
             u.setImag("chemicalsnueva.jpg");
             System.out.println("cambio a tpu");
         } else {
-            conexion.setCpttpu(tpu);
-            conexion.setCobranzatpu(tpucob);
-            conexion.setCobranzatpuB(tpucobB);
+//            conexion.setCpttpu(tpu);
+//            conexion.setCobranzatpu(tpucob);
+//            conexion.setCobranzatpuB(tpucobB);
             System.out.println("cambio a tpu");
         }
     }//GEN-LAST:event_JmTpuMenuSelected

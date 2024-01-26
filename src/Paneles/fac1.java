@@ -108,6 +108,9 @@ public class fac1 extends javax.swing.JPanel {
         JmPedfac = new javax.swing.JMenuItem();
         JmNombre = new javax.swing.JMenuItem();
         JmBorraadenda = new javax.swing.JMenuItem();
+        Pop2 = new javax.swing.JPopupMenu();
+        JmReportenormal = new javax.swing.JMenuItem();
+        JmReporteEspecial = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -145,6 +148,24 @@ public class fac1 extends javax.swing.JPanel {
             }
         });
         Pop.add(JmBorraadenda);
+
+        JmReportenormal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/file_pdf_download_icon-icons.com_68954.png"))); // NOI18N
+        JmReportenormal.setText("Reporte normal");
+        JmReportenormal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmReportenormalActionPerformed(evt);
+            }
+        });
+        Pop2.add(JmReportenormal);
+
+        JmReporteEspecial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/applicationsoffice_103791.png"))); // NOI18N
+        JmReporteEspecial.setText("Reporte especial");
+        JmReporteEspecial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmReporteEspecialActionPerformed(evt);
+            }
+        });
+        Pop2.add(JmReporteEspecial);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -278,7 +299,9 @@ public class fac1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        setreport();
+
+        Pop2.show(evt.getComponent(), evt.getX(), evt.getY());
+
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JbXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbXmlActionPerformed
@@ -530,6 +553,14 @@ public class fac1 extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_JmBorraadendaActionPerformed
 
+    private void JmReportenormalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmReportenormalActionPerformed
+        setreport("index");
+    }//GEN-LAST:event_JmReportenormalActionPerformed
+
+    private void JmReporteEspecialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmReporteEspecialActionPerformed
+        setreport("indexE");
+    }//GEN-LAST:event_JmReporteEspecialActionPerformed
+
     private void setmod() {
         int row = JtDetalle.getSelectedRow();
         daofactura df = new daofactura();
@@ -610,7 +641,7 @@ public class fac1 extends javax.swing.JPanel {
         return resp;
     }
 
-    private void setreport() {
+    private void setreport(String tipo) {
         String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
         String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
                 + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
@@ -645,7 +676,7 @@ public class fac1 extends javax.swing.JPanel {
             parametros.put("regimencliente", arrfactura.get(JtDetalle.getSelectedRow()).getRegimen());
             parametros.put("confo", conformidad);
 
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/index.jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportes/"+tipo+".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -736,9 +767,12 @@ public class fac1 extends javax.swing.JPanel {
     private javax.swing.JMenuItem JmBorraadenda;
     private javax.swing.JMenuItem JmNombre;
     private javax.swing.JMenuItem JmPedfac;
+    private javax.swing.JMenuItem JmReporteEspecial;
+    private javax.swing.JMenuItem JmReportenormal;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;
     private javax.swing.JPopupMenu Pop;
+    private javax.swing.JPopupMenu Pop2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
