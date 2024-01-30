@@ -16,6 +16,7 @@ import Modelo.ConceptosES;
 import Modelo.Ddevolucion;
 import Modelo.Devolucion;
 import Modelo.Formadepago;
+import Modelo.Formateodedatos;
 import Modelo.KardexCmp;
 import Modelo.Usuarios;
 import Modelo.convertirNumeros;
@@ -242,7 +243,7 @@ public class fac1tpurem extends javax.swing.JPanel {
         String ser = arrfactura.get(row).getSerie();
         double total = Double.parseDouble(formateador.format(arrfactura.get(row).getTotal()));
         String ped = arrfactura.get(row).getPedido();
-        if (u.getTurno().equals("6")) {
+        if (u.getTurno().equals("6") || u.getTurno().equals("7")) {
             String name = JOptionPane.showInputDialog("Introduzca el nombre del cliente:");
             if (name.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No se puede mostrar el reporte del cliente ya que no se introdujo ningun valor, intentelo de nuevo");
@@ -340,13 +341,18 @@ public class fac1tpurem extends javax.swing.JPanel {
             ArrayList<Ddevolucion> arrd = new ArrayList<>();
             ArrayList<Ddevolucion> arrdevpedimento = new ArrayList();
             Devolucion dev = new Devolucion();
-            String bdcob = "";
-            if (u.getTurno().equals("5")) {
-                bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
-            }
-            if (u.getTurno().equals("6")) {
-                bdcob = "[192.168.90.1\\DATOS620].RACobranzamaq.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
-            }
+            Formateodedatos fd= new Formateodedatos();
+//            Obtiene la direcion con la bd correcta de acuerdo al turno del usuario
+            String bdcob = fd.getBDcob_REMinterna(u.getTurno());
+//            if (u.getTurno().equals("5")) {
+//                bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+//            }
+//            if (u.getTurno().equals("6")) {
+//                bdcob = "[192.168.90.1\\DATOS620].RACobranzamaq.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+//            }
+//            if (u.getTurno().equals("6")) {
+//                bdcob = "[192.168.90.1\\DATOS620].RACobranzamaq.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+//            }
 //            bdcob = (u.getTurno().equals("5")) ? "RACobranzaTpu" : "RACobranzamaq";
 //            String bdcob = "RACobranzatpu.dbo.Cargo c on p.pedido=c.referencia";
 //            if (!ncr && !pag) {

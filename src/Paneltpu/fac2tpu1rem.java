@@ -18,6 +18,7 @@ import Modelo.ConceptosES;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Modelo.convertirNumeros;
 import Modelo.factura;
@@ -516,12 +517,17 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                 DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
                 f.setFolio(dfac.getmaxfoliotpu(cpt, "REM"));//Obtiene y setea el foliomaximo de *documentos
                 int rowc = JcCliente.getSelectedIndex();
+                Formateodedatos fort= new Formateodedatos();
 //                f.setFolio(n.getfolio());
-                if (u.getTurno().equals("5")) {
-                    f.setPedido("TPU " + mes + "-" + f.getFolio());
-                } else {
-                    f.setPedido("MAQ " + mes + "-" + f.getFolio());
-                }
+//                if (u.getTurno().equals("5")) {
+//                    f.setPedido("TPU " + mes + "-" + f.getFolio());
+//                } else if (u.getTurno().equals("6")) {
+//                    f.setPedido("MAQ " + mes + "-" + f.getFolio());
+//                } else if (u.getTurno().equals("7")) {
+//                    f.setPedido("MAQ " + mes + "-" + f.getFolio());
+//                }
+//              Obtiene el folio ya formateado de acuerdo al turno
+                f.setPedido(fort.folioremision(u.getTurno(), mes, f.getFolio()));
                 daokardexrcpt dk = new daokardexrcpt();
                 f.setFoliokardex(dk.maxkardexsincuenta(cpt));// folio del kardex
                 f.setClaveusuario(u.getUsuario());
@@ -584,7 +590,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
                             df.setPrecio(0);
                             df.setBase(0);
                             df.setImporta(0);
-                            subtotal=0;
+                            subtotal = 0;
                         } else {
                             String as = formateador.format(((tpares * precio) - descuento));
                             as1 = formateador.format(descuento);

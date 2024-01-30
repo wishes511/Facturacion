@@ -260,13 +260,105 @@ public class Formateodedatos {
     }
 
     /**
-     * Obtiene el nombre de la imagen para el reporte de acuerdo al usuario
-     * por ahora solo aplica para tpu y maquinaria
+     * Obtiene el nombre de la imagen para el reporte de acuerdo al usuario por
+     * ahora solo aplica para tpu y maquinaria
+     *
      * @param u
-     * @return 
+     * @return
      */
     public String getimagenreporte(Usuarios u) {
         return "C:\\af\\prod\\images\\" + u.getImag();
     }
-    
+
+    /**
+     * Obtiene el formateo del folio de la remision de acuerdo al turno
+     *
+     * @param turno
+     * @param mes
+     * @param folio
+     * @return Remision TPU,MAQ, TMAQ + folio
+     */
+    public String folioremision(String turno, int mes, int folio) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = "TPU " + mes + "-" + folio;
+                break;
+            case "6":
+                resp = "MAQ " + mes + "-" + folio;
+                break;
+            case "7":
+                resp = "TMAQ " + mes + "-" + folio;
+                break;
+        }
+        return resp;
+    }
+
+    /**
+     * +
+     * Obtiene la bd de la base de datos del servidor interno reservado para
+     * remisiones o serie B, la cual verifica que turno es y le asigna la base
+     * de datos indicada
+     *
+     * @param turno
+     * @return [192.168.90.1\\datos620].RACObranza....
+     */
+    public String getBDcob_REMinterna(String turno) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = "[192.168.90.1\\DATOS620].RACobranzaTpu.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+                break;
+            case "6":
+                resp = "[192.168.90.1\\DATOS620].RACobranzamaq.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+                break;
+            case "7":
+                resp = "[192.168.90.1\\DATOS620].RACobranzamaq2.dbo.Cargo c on p.pedido=c.referencia collate SQL_Latin1_General_CP1_CI_AS";
+                break;
+        }
+        return resp;
+    }
+
+    /**
+     * Verifica y obtiene el tipo de base de datos de cobranza a usar, y utiliza
+     * el tipo de usuario para diferenciar entre el usuario normal y pruebas,
+     * dentro de eso el turno, ya que de ahi deriva la base de datos de cada
+     * nueva empresa
+     *
+     * @param tipo
+     * @param turno
+     * @param serie
+     * @return 192.168.90.1\\DATOS620].RACob... Or RACobranza
+     */
+    public String getB_or_Amovs(String tipo, String turno, String serie) {
+        String cob = "";
+//        Primero de verifica el tipo de usuario
+        if (tipo.equals("2")) {
+//            Des pues el turno para saber que bd a usar
+            switch (turno) {
+                case "5":
+                    cob = (serie.equals("B")) ? "RACobranzaTpu" : "ACobranzaTpu";
+                    break;
+                case "6":
+                    cob = (serie.equals("B")) ? "RACobranzamaq" : "ACobranzamaq";
+                    break;
+                case "7":
+                    cob = (serie.equals("B")) ? "RACobranzamaq2" : "ACobranzamaq2";
+                    break;
+            }
+        } else {
+            switch (turno) {
+                case "5":
+                    cob = (serie.equals("B")) ? "[192.168.90.1\\DATOS620].RACobranzaTpu" : "ACobranzaTpu";
+                    break;
+                case "6":
+                    cob = (serie.equals("B")) ? "[192.168.90.1\\DATOS620].RACobranzamaq" : "ACobranzamaq";
+                    break;
+                case "7":
+                    cob = (serie.equals("B")) ? "[192.168.90.1\\DATOS620].RACobranzamaq2" : "ACobranzamaq2";
+                    break;
+            }
+        }
+        return cob;
+    }
 }

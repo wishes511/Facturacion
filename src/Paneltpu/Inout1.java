@@ -11,6 +11,7 @@ import DAO.daocfdi;
 import DAO.daokardexrcpt;
 import Modelo.ConceptosES;
 import Modelo.Formadepago;
+import Modelo.Formateodedatos;
 import Modelo.KardexCmp;
 import Modelo.Usuarios;
 import Modelo.factura;
@@ -365,12 +366,14 @@ public class Inout1 extends javax.swing.JPanel {
 
 //  Importante ya que es donde se usara la base de datos con clientes fiscales o internos
     private void Buscanotas() {
-        String cob;
-        if (u.getTipo_usuario().equals("2")) {
-            cob = (serie.equals("B")) ? "RACobranzaTpu" : "ACobranzaTpu";
-        } else {
-            cob = (serie.equals("B")) ? "[192.168.90.1\\DATOS620].RACobranzaTpu" : "ACobranzaTpu";
-        }
+        Formateodedatos fd= new Formateodedatos();
+//        obtiene la bd a usar mediante los datos del usuario y lo que se quiere buscar
+        String cob=fd.getB_or_Amovs(u.getTipo_usuario(), u.getTurno(), serie);
+//        if (u.getTipo_usuario().equals("2")) {
+//            cob = (serie.equals("B")) ? "RACobranzaTpu" : "ACobranzaTpu";
+//        } else {
+//            cob = (serie.equals("B")) ? "[192.168.90.1\\DATOS620].RACobranzaTpu" : "ACobranzaTpu";
+//        }
         String tipo = String.valueOf(cuenta);
         String var = JtCliente.getText();
         daokardexrcpt dk = new daokardexrcpt();
