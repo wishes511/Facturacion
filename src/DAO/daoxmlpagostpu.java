@@ -46,6 +46,7 @@ public class daoxmlpagostpu {
             x.setEmpresa(f.getEmpresa());
             x.setFolio(f.getFolio() + "");                              // Folio
             x.setSerie(f.getSerie());                                   // Serie
+            x.setTurno(f.getTurno());
             x.setFormaP(f.getFormapago());                              // forma de pago
             x.setDescripcionP(descmetodo);      // metodo descripcion
 //            x.setDescuento(BigDecimal.valueOf(0));

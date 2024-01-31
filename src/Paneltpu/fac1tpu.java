@@ -23,6 +23,7 @@ import Modelo.Devolucion;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateodedatos;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
 import Modelo.convertirNumeros;
@@ -271,7 +272,7 @@ public class fac1tpu extends javax.swing.JPanel {
         String condicion;
         java.util.Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
+        Formateodedatos fd = new Formateodedatos();
         ArrayList<Dfactura> arrf = new ArrayList<>();
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
         String im = String.valueOf(formateador.format(arrfacturaxml.get(0).getImpuestos()));
@@ -318,7 +319,7 @@ public class fac1tpu extends javax.swing.JPanel {
         f.setImpuestos(Double.parseDouble(im));
         f.setFolio(arrfacturaxml.get(0).getFolio());
         f.setClaveusuario(u.getUsuario());
-        f.setSerie("FAC");
+        f.setSerie(fd.SerieFiscal(u.getTurno()));
         f.setFecha(sdf.format(date));
         f.setDescuento(Double.parseDouble(desc));
         f.setSubtotal(Double.parseDouble(sub));

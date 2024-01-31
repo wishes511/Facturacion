@@ -4,6 +4,7 @@ import DAO.daoempresa;
 import DAO.daofactura;
 import Modelo.Detpagos;
 import Modelo.Empresas;
+import Modelo.Formateodedatos;
 import Modelo.factura;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 import java.io.ByteArrayOutputStream;
@@ -87,11 +88,12 @@ public class generarXML40pagostpu {
 
         ObjectFactory of = new ObjectFactory();
         Comprobante xml = of.createComprobante();
+        Formateodedatos fd= new Formateodedatos();
 
         //Datos generales
         xml.setVersion("4.0");
         xml.setExportacion("01");
-        xml.setSerie(encabezado.getSerie() + "TPU");
+        xml.setSerie(fd.SerieFiscal_PAG(encabezado.getTurno()));
         xml.setFolio(encabezado.getFolio());
         xml.setFecha(fecha);
         //Totales, tipo comprobante

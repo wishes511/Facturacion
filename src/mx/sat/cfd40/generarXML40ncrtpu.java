@@ -3,6 +3,7 @@ package mx.sat.cfd40;
 import DAO.daoempresa;
 import DAO.daofactura;
 import Modelo.Empresas;
+import Modelo.Formateodedatos;
 import Modelo.factura;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 import java.io.ByteArrayOutputStream;
@@ -97,11 +98,11 @@ public class generarXML40ncrtpu {
 
         ObjectFactory of = new ObjectFactory();
         Comprobante xml = of.createComprobante();
-
+        Formateodedatos fd= new Formateodedatos();
         //Datos generales
         xml.setVersion("4.0");
         xml.setExportacion(encabezado.getExportacion());
-        xml.setSerie(encabezado.getSerie()+"TPU");
+        xml.setSerie(fd.SerieFiscal_NCR(encabezado.getTurno()));
         xml.setFolio(encabezado.getFolio());
         xml.setFecha(fecha);
         xml.setFormaPago(encabezado.getFormaP());
@@ -168,10 +169,6 @@ public class generarXML40ncrtpu {
         //relacionados se agrega solo si es requerido
         if (!encabezado.getRelacion().equals("")) {
             xml.cfdiRelacionados = createrelacionados(of, encabezado.getArruuid(), encabezado.getRelacion());
-        }
-        if (encabezado.getSerie().equals("PAG")) {
-//            xml.setTipoDeComprobante(CTipoDeComprobante.P);
-//            xml.setComplemento(createcomplemento(of, data, fecha));
         }
 
         //Agregar certificado y no. de certificado al comprobante por medio del archivo .cer del contribuyente

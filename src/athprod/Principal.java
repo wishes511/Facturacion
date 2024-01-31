@@ -262,6 +262,8 @@ public final class Principal extends javax.swing.JFrame {
         JmNotascrtpu2 = new javax.swing.JMenuItem();
         JmPagostpu4 = new javax.swing.JMenuItem();
         JmPagostpu5 = new javax.swing.JMenuItem();
+        JtFacturaciontpu2 = new javax.swing.JMenuItem();
+        JtFacturaciontpu3 = new javax.swing.JMenuItem();
         JmRemision2 = new javax.swing.JMenuItem();
         JmPedimento2 = new javax.swing.JMenuItem();
         JmEntradasS2 = new javax.swing.JMenuItem();
@@ -1069,6 +1071,24 @@ public final class Principal extends javax.swing.JFrame {
 
         JmMaq2.add(JmCobranzatpu2);
 
+        JtFacturaciontpu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtir.png"))); // NOI18N
+        JtFacturaciontpu2.setText("Facturacion");
+        JtFacturaciontpu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtFacturaciontpu2ActionPerformed(evt);
+            }
+        });
+        JmMaq2.add(JtFacturaciontpu2);
+
+        JtFacturaciontpu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirP0.png"))); // NOI18N
+        JtFacturaciontpu3.setText("Facturacion pedimento 0");
+        JtFacturaciontpu3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JtFacturaciontpu3ActionPerformed(evt);
+            }
+        });
+        JmMaq2.add(JtFacturaciontpu3);
+
         JmRemision2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirR.png"))); // NOI18N
         JmRemision2.setText("Pedidos");
         JmRemision2.addActionListener(new java.awt.event.ActionListener() {
@@ -1327,6 +1347,7 @@ public final class Principal extends javax.swing.JFrame {
         JmOut.setVisible(false);
         JmTpu.setVisible(false);
         JmMaq.setVisible(false);
+        JmMaq2.setVisible(false);
     }
 
     /**
@@ -2271,7 +2292,14 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmEntradasS2ActionPerformed
 
     private void JmDevoluciones2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmDevoluciones2ActionPerformed
-        // TODO add your handling code here:
+        try {
+            Devolucionestpu p = new Devolucionestpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_JmDevoluciones2ActionPerformed
 
     private void JmMaq2MenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_JmMaq2MenuSelected
@@ -2288,6 +2316,30 @@ public final class Principal extends javax.swing.JFrame {
     private void JmMaq2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmMaq2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JmMaq2ActionPerformed
+
+    private void JtFacturaciontpu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFacturaciontpu2ActionPerformed
+        try {
+//            System.out.println("cerrada " + conexion.getCobranzatpu());
+//            System.out.println("cerrada " + conexion.getCpttpu().isClosed());
+            FacturacionTpu p = new FacturacionTpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JtFacturaciontpu2ActionPerformed
+
+    private void JtFacturaciontpu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFacturaciontpu3ActionPerformed
+        try {
+            FacturacionTpuAth p = new FacturacionTpuAth(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JtFacturaciontpu3ActionPerformed
 
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
@@ -2438,7 +2490,7 @@ public final class Principal extends javax.swing.JFrame {
                     if (u.getTurno().equals("7")) {
                         JmMaq2.setVisible(true);
                         JmMaq2.setEnabled(true);
-                        JmVentaserie1.setVisible(false);
+                        JmVentaserie2.setVisible(false);
                     }
                     if (u.getRh().equals("1")) {
                         JmVentas.setVisible(false);
@@ -2478,7 +2530,7 @@ public final class Principal extends javax.swing.JFrame {
         JmOut.setVisible(true);
         JmTpu.setVisible(true);
         JmMaq.setVisible(true);
-        JmMaq.setVisible(true);
+        JmMaq2.setVisible(true);
     }
 
     private void actualizaempresa() {
@@ -2987,6 +3039,8 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JRadioButton JrEmpresa1;
     private javax.swing.JMenuItem JtFacturaciontpu;
     private javax.swing.JMenuItem JtFacturaciontpu1;
+    private javax.swing.JMenuItem JtFacturaciontpu2;
+    private javax.swing.JMenuItem JtFacturaciontpu3;
     private javax.swing.JPopupMenu PopMenu;
     private javax.swing.ButtonGroup grupo;
     private javax.swing.JLabel jLabel1;

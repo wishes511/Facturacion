@@ -821,6 +821,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 daokardexrcpt dk = new daokardexrcpt();
                 f.setFoliokardex(dk.maxkardexsincuenta(cpt));// folio del kardex
                 f.setClaveusuario(u.getUsuario());
+//                Obtiene la serie fiscal de acuerdo al turno
                 f.setSerie("FAC");
 //                f.setFolio(dfac.getmaxfolio(rcpt, "FAC"));//Obtiene y setea el foliomaximo de *documentos
                 f.setTurno(u.getTurno());
@@ -988,7 +989,6 @@ public class fac2tpu extends javax.swing.JPanel {
                     vaciarcampos();
                 } else {
                     int id = dfac.nuevafactpu(cpt, f, ACobranza);
-
                     Sellofiscal s = new Sellofiscal();
                     if (id != 0) {
 //                        System.out.println("Exito");

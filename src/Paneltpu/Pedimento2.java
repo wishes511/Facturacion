@@ -287,6 +287,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
         daomateriales am = new daomateriales();
         daoalmacenes da = new daoalmacenes();
         daodurezas dd = new daodurezas();
+//        Ejecuta la consulta adecuada al turno
         if(u.getTurno().equals("5")){
             arrmat = am.getmateriales(c.getCpttpu(), "");
         }else{
@@ -294,6 +295,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
         }
         arralm = da.getalmacenescpt(c.getCpttpu());
         arrdur = dd.getdurezas(c.getCpttpu());
+        n.u=u;
         n.arrmat = arrmat;
         n.arralm = arralm;
         n.arrdur = arrdur;

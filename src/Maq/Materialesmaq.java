@@ -157,6 +157,7 @@ public class Materialesmaq extends javax.swing.JInternalFrame {
         n.rcpt = rcpt;
         n.litecfdi = litecfdi;
         n.setVisible(true);
+        setrows();
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void JtMaterialMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtMaterialMousePressed

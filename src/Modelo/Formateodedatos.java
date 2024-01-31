@@ -323,12 +323,12 @@ public class Formateodedatos {
      * Verifica y obtiene el tipo de base de datos de cobranza a usar, y utiliza
      * el tipo de usuario para diferenciar entre el usuario normal y pruebas,
      * dentro de eso el turno, ya que de ahi deriva la base de datos de cada
-     * nueva empresa
+     * nueva empresa.
      *
      * @param tipo
      * @param turno
      * @param serie
-     * @return 192.168.90.1\\DATOS620].RACob... Or RACobranza
+     * @return 192.168.90.1\\DATOS620].RACob... O RACobranza, Acobranza
      */
     public String getB_or_Amovs(String tipo, String turno, String serie) {
         String cob = "";
@@ -336,6 +336,7 @@ public class Formateodedatos {
         if (tipo.equals("2")) {
 //            Des pues el turno para saber que bd a usar
             switch (turno) {
+//                Variable para uso en modo de pruebas
                 case "5":
                     cob = (serie.equals("B")) ? "RACobranzaTpu" : "ACobranzaTpu";
                     break;
@@ -347,6 +348,7 @@ public class Formateodedatos {
                     break;
             }
         } else {
+//            Variable para produccion
             switch (turno) {
                 case "5":
                     cob = (serie.equals("B")) ? "[192.168.90.1\\DATOS620].RACobranzaTpu" : "ACobranzaTpu";
@@ -360,5 +362,50 @@ public class Formateodedatos {
             }
         }
         return cob;
+    }
+
+    /**
+     * De acuerdo al turno asigna la serie al tipo de documento
+     *
+     * @param turno
+     * @return FAC o MFAC, n FAC de acuerdo a configuraciones
+     */
+    public String SerieFiscal(String turno) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = "FACTPU";
+                break;
+            case "7":
+                resp = "FACMAQ";
+                break;
+        }
+        return resp;
+    }
+
+    public String SerieFiscal_NCR(String turno) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = "NCRTPU";
+                break;
+            case "7":
+                resp = "NCRMAQ";
+                break;
+        }
+        return resp;
+    }
+
+    public String SerieFiscal_PAG(String turno) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = "PAGTPU";
+                break;
+            case "7":
+                resp = "PAGMAQ";
+                break;
+        }
+        return resp;
     }
 }

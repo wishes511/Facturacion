@@ -158,7 +158,7 @@ public class sqlmaterial {
                     + "join familias f on m.id_familia=f.id_familia\n"
                     + "where m.descripcion like '%" + mat + "%' order by m.descripcion";
             st = con.prepareStatement(sql);
-            System.out.println(sql);
+//            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 Materiales m = new Materiales();

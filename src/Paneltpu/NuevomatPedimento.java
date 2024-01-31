@@ -10,6 +10,7 @@ import Modelo.Claveprov;
 import Modelo.Dureza;
 import Modelo.Materiales;
 import Modelo.Unidades;
+import Modelo.Usuarios;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -31,6 +32,7 @@ public class NuevomatPedimento extends javax.swing.JDialog {
     ArrayList<Almacen> arralm = new ArrayList<>();
     private Materiales mat;
     ArrayList<Dureza> arrdur = new ArrayList<>();
+    public Usuarios u;
 
     /**
      * Creates new form Nuevomaterial
@@ -38,7 +40,7 @@ public class NuevomatPedimento extends javax.swing.JDialog {
     public NuevomatPedimento(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
+
         setLocationRelativeTo(null);
 
     }
@@ -101,6 +103,12 @@ public class NuevomatPedimento extends javax.swing.JDialog {
         jLabel8.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel8.setText("Producto");
 
+        JcSat.setFont(new java.awt.Font("Calibri", 0, 11)); // NOI18N
+        JcSat.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JcSatItemStateChanged(evt);
+            }
+        });
         JcSat.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 JcSatMousePressed(evt);
@@ -150,47 +158,43 @@ public class NuevomatPedimento extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSeparator3)
-                            .addComponent(JtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(142, 142, 142)
-                        .addComponent(jLabel10)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSeparator4)
-                            .addComponent(JtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(202, 202, 202)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 186, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(34, 34, 34))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 420, Short.MAX_VALUE)
-                        .addComponent(jLabel2))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 518, Short.MAX_VALUE)
+                                .addComponent(jLabel2))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(27, 27, 27)
+                                .addComponent(JlUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jSeparator3)
+                                    .addComponent(JtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(77, 77, 77)
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jSeparator4)
+                                    .addComponent(JtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel6)
                             .addComponent(jLabel9)
-                            .addComponent(JcAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(JcAlmacen, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JcDureza, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JcDureza, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(JcSat, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JlUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(JcSat, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(297, 297, 297))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,11 +203,11 @@ public class NuevomatPedimento extends javax.swing.JDialog {
                     .addComponent(jLabel2)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addComponent(jLabel8)
-                        .addGap(7, 7, 7)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JcSat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8)
                             .addComponent(JlUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(7, 7, 7)
+                .addComponent(JcSat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -250,7 +254,7 @@ public class NuevomatPedimento extends javax.swing.JDialog {
         DefaultComboBoxModel almc = new DefaultComboBoxModel();
         DefaultComboBoxModel dur = new DefaultComboBoxModel();
         for (Materiales arrmat1 : arrmat) {
-            mate.addElement(arrmat1.getDescripcion()+" -  "+arrmat1.getNoserie());
+            mate.addElement(arrmat1.getDescripcion() + " -  " + arrmat1.getNoserie());
         }
         for (Almacen arrmat1 : arralm) {
             almc.addElement(arrmat1.getNombre());
@@ -290,37 +294,46 @@ public class NuevomatPedimento extends javax.swing.JDialog {
     }//GEN-LAST:event_JtCantidadActionPerformed
 
     private void JcSatMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JcSatMousePressed
-        JlUnidad.setText(arrmat.get(JcSat.getSelectedIndex()).getUnidad());
+
     }//GEN-LAST:event_JcSatMousePressed
-/**
- * Agrega el material en un objeto de tipo material y al termino se pasa el dato al arraylist
- */
+
+    private void JcSatItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcSatItemStateChanged
+        mostrarunidad();
+    }//GEN-LAST:event_JcSatItemStateChanged
+    /**
+     * Agrega el material en un objeto de tipo material y al termino se pasa el
+     * dato al arraylist
+     */
     private void setmaterial() {
-        boolean band=verificafloat(JtPrecio.getText());
-        boolean band1=verificafloat(JtCantidad.getText());
-        if(!band){
+        boolean band = verificafloat(JtPrecio.getText());
+        boolean band1 = verificafloat(JtCantidad.getText());
+        if (!band) {
             JtPrecio.requestFocus();
             JtPrecio.setText("");
         }
-        if(!band1){
+        if (!band1) {
             JtCantidad.requestFocus();
             JtCantidad.setText("");
         }
-        if(band&&band1){
+        if (band && band1) {
             mat = new Materiales();
             mat.setId_material(arrmat.get(JcSat.getSelectedIndex()).getId_material());
             mat.setPrecio(Double.parseDouble(JtPrecio.getText()));
             mat.setCantidad(Double.parseDouble(JtCantidad.getText()));
-            mat.setMaterialpedimento(arrmat.get(JcSat.getSelectedIndex()).getDescripcion() + " " + arrdur.get(JcDureza.getSelectedIndex()).getDureza());
             mat.setDureza(arrdur.get(JcDureza.getSelectedIndex()).getDureza());
             mat.setDescripcion(arrmat.get(JcSat.getSelectedIndex()).getDescripcion());
             mat.setId_almacen(arralm.get(JcAlmacen.getSelectedIndex()).getAlmacen());
             mat.setUnidad(arrmat.get(JcSat.getSelectedIndex()).getUnidad());
+            if(u.getTurno().equals("5")){
+                mat.setMaterialpedimento(arrmat.get(JcSat.getSelectedIndex()).getDescripcion() + " " + arrdur.get(JcDureza.getSelectedIndex()).getDureza());
+            }else{
+                mat.setMaterialpedimento(arrmat.get(JcSat.getSelectedIndex()).getTipo_maquina() + " " + arrdur.get(JcDureza.getSelectedIndex()).getDureza());
+            }
             this.dispose();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Error al capturar alguno de los datos, intentalo de nuevo");
         }
-        
+
     }
 
     public Materiales getmaterial() {
@@ -353,6 +366,15 @@ public class NuevomatPedimento extends javax.swing.JDialog {
             resp = true;
         }
         return resp;
+    }
+
+    private void mostrarunidad() {
+        if (!u.getTurno().equals("5")) {
+            String val = arrmat.get(JcSat.getSelectedIndex()).getUnidad() + ", " + arrmat.get(JcSat.getSelectedIndex()).getNoserie();
+            JlUnidad.setText(val);
+        } else {
+            JlUnidad.setText(arrmat.get(JcSat.getSelectedIndex()).getUnidad());
+        }
     }
 
     /**

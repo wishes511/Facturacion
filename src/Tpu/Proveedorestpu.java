@@ -169,6 +169,7 @@ public class Proveedorestpu extends javax.swing.JInternalFrame {
         Nuevoproveedor n = new Nuevoproveedor(null, true);
         n.cpt = cpt;
         n.setVisible(true);
+        setrows();
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void JtMaterialMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtMaterialMousePressed

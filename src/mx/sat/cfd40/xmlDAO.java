@@ -66,6 +66,15 @@ public class xmlDAO {
     private int parcialidad;
     private String exportacion;
     private String folioorig;
+    private String turno;
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
 
     public String getFolioorig() {
         return folioorig;
