@@ -900,7 +900,6 @@ public class ncr2tpu extends javax.swing.JPanel {
 //                totalrev += Double.parseDouble(formateador.format(arrcargoseleccion.get(i).getDescuento()));
                 totalrev += formatdecimal(arrcargoseleccion.get(i).getDescuento());
             }
-
 //            System.out.println(total + " " + totalrev);
 //            System.out.println(total + " " + formateador.format(totalrev));
 //            if (totalrev != total) {

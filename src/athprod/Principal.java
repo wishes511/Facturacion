@@ -1042,7 +1042,6 @@ public final class Principal extends javax.swing.JFrame {
 
         JmNotascrtpu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495.png"))); // NOI18N
         JmNotascrtpu2.setText("Notas de credito");
-        JmNotascrtpu2.setEnabled(false);
         JmNotascrtpu2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JmNotascrtpu2ActionPerformed(evt);
@@ -1052,7 +1051,6 @@ public final class Principal extends javax.swing.JFrame {
 
         JmPagostpu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_table_order_report_history_2332.png"))); // NOI18N
         JmPagostpu4.setText("Pagos");
-        JmPagostpu4.setEnabled(false);
         JmPagostpu4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JmPagostpu4ActionPerformed(evt);
@@ -1118,7 +1116,6 @@ public final class Principal extends javax.swing.JFrame {
 
         JmDevoluciones2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Return_icon-icons.com_54801.png"))); // NOI18N
         JmDevoluciones2.setText("Devoluciones");
-        JmDevoluciones2.setEnabled(false);
         JmDevoluciones2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JmDevoluciones2ActionPerformed(evt);
@@ -2240,11 +2237,25 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmVentaserie4ActionPerformed
 
     private void JmNotascrtpu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmNotascrtpu2ActionPerformed
-        // TODO add your handling code here:
+        try {
+            Notascrtpu p = new Notascrtpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_JmNotascrtpu2ActionPerformed
 
     private void JmPagostpu4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagostpu4ActionPerformed
-        // TODO add your handling code here:
+        try {
+            Pagostpu p = new Pagostpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_JmPagostpu4ActionPerformed
 
     private void JmPagostpu5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagostpu5ActionPerformed

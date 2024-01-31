@@ -51,6 +51,7 @@ public class daoxmlncr {
             x.setIddocumentos(f.getId());
             x.setEmpresa(f.getEmpresa());
             x.setFolio(f.getFolio() + "");                              // Folio
+            x.setTurno(f.getTurno());
             x.setSerie(f.getSerie());                                   // Serie
             x.setFormaP(f.getFormapago());                              // forma de pago
             x.setDescripcionP(descmetodo);      // metodo descripcion

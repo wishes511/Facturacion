@@ -3,6 +3,7 @@ package mx.sat.cfd40;
 import DAO.daoempresa;
 import DAO.daofactura;
 import Modelo.Empresas;
+import Modelo.Formateodedatos;
 import Modelo.factura;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 import java.io.ByteArrayOutputStream;
@@ -97,11 +98,12 @@ public class generarXML40ncr {
 //        Crear documento y nodo base
         ObjectFactory of = new ObjectFactory();
         Comprobante xml = of.createComprobante();
+        Formateodedatos fd= new Formateodedatos();
 
         //Datos generales
         xml.setVersion("4.0");
         xml.setExportacion(encabezado.getExportacion());
-        xml.setSerie(encabezado.getSerie());
+        xml.setSerie(fd.SerieFiscal_NCR(encabezado.getSerie()));
         xml.setFolio(encabezado.getFolio());
         xml.setFecha(fecha);
         xml.setFormaPago(encabezado.getFormaP());

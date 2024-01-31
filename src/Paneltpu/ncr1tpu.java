@@ -280,6 +280,7 @@ public class ncr1tpu extends javax.swing.JPanel {
         f.setImpuestos(im);
         f.setFolio(arrfacturaxml.get(0).getFolio());
         f.setSerie("NCR");
+        f.setTurno(u.getTurno());
         f.setFecha(sdf.format(date));
         f.setDescuento(Double.parseDouble(desc));
         f.setSubtotal(Double.parseDouble(sub));
@@ -296,7 +297,7 @@ public class ncr1tpu extends javax.swing.JPanel {
         f.setUsocfdi(arrfacturaxml.get(0).getUsocfdi());
         condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
         f.setCondicion(condicion);
-        f.setLugarexpedicion("36400");
+        f.setLugarexpedicion("36350");
         f.setTiporelacion(arrfacturaxml.get(0).getTiporelacion());
         f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
         double iva = arrfacturaxml.get(0).getIva();

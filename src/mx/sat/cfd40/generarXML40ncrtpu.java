@@ -102,6 +102,7 @@ public class generarXML40ncrtpu {
         //Datos generales
         xml.setVersion("4.0");
         xml.setExportacion(encabezado.getExportacion());
+        //Obtiene la serie fiscal para el xml desde el turno del usuario
         xml.setSerie(fd.SerieFiscal_NCR(encabezado.getTurno()));
         xml.setFolio(encabezado.getFolio());
         xml.setFecha(fecha);
@@ -125,6 +126,7 @@ public class generarXML40ncrtpu {
                 break;
         }
         xml.setTotal(encabezado.getTotal().setScale(2));
+        
         //Identificar y asignar si es un egreso o ingreso
         if (encabezado.getSerie().equals("FAC")) {
             xml.setTipoDeComprobante(CTipoDeComprobante.I);

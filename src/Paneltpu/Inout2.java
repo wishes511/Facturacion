@@ -728,7 +728,7 @@ public class Inout2 extends javax.swing.JPanel {
                 double descuento = (tpares * precio) * 0;
                 model.setValueAt(k2.get(i).getDp().getMatped(), i, 0);
                 model.setValueAt(k2.get(i).getDp().getCodigosat(), i, 1);
-                model.setValueAt("", i, 2);
+                model.setValueAt("0", i, 2);
                 model.setValueAt(formateador.format(precio), i, 3);
                 model.setValueAt(formateador.format(descuento), i, 4);
                 model.setValueAt("0", i, 5);

@@ -1015,7 +1015,6 @@
                   <Image iconType="3" name="/Recursos/1486564168-finance-bank-check_81495.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Notas de credito"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmNotascrtpu2ActionPerformed"/>
@@ -1027,7 +1026,6 @@
                   <Image iconType="3" name="/Recursos/business_table_order_report_history_2332.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Pagos"/>
-                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmPagostpu4ActionPerformed"/>
@@ -1107,7 +1105,6 @@
               <Image iconType="3" name="/Recursos/Return_icon-icons.com_54801.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Devoluciones"/>
-            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmDevoluciones2ActionPerformed"/>

@@ -319,7 +319,7 @@ public class fac1tpu extends javax.swing.JPanel {
         f.setImpuestos(Double.parseDouble(im));
         f.setFolio(arrfacturaxml.get(0).getFolio());
         f.setClaveusuario(u.getUsuario());
-        f.setSerie(fd.SerieFiscal(u.getTurno()));
+        f.setSerie("FAC");
         f.setFecha(sdf.format(date));
         f.setDescuento(Double.parseDouble(desc));
         f.setSubtotal(Double.parseDouble(sub));

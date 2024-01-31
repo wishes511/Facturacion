@@ -218,7 +218,7 @@ public class Repedocuenta extends javax.swing.JDialog {
 
     private void setreport(String f1, String f2, String n) {
         try {
-            Connection con = (user.getTurno().equals("5")) ? u.getCobranzatpu() : u.getCobranzatpuB();
+            Connection con = selecciondeconexion(user.getTurno());
             Formateodedatos fd = new Formateodedatos();
             Map parametros = new HashMap();
 //            Agregar parametros al reporte
@@ -237,6 +237,26 @@ public class Repedocuenta extends javax.swing.JDialog {
         } catch (JRException ex) {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /**
+     * Obtiene la conexion dependiente a si es fiscal o no de acuerdo al turno
+     *
+     * @param turno
+     * @return
+     */
+    private Connection selecciondeconexion(String turno) {
+        Connection resp = null;
+        switch (turno) {
+            case "5":
+            case "7":
+                resp=u.getCobranzatpu();
+                break;
+            case "6":
+                resp=u.getCobranzatpuB();
+                break;
+        }
+        return resp;
     }
 
     private void vaciarcampos() {
