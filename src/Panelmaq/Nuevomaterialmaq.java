@@ -17,6 +17,10 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -42,7 +46,7 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
     ArrayList<Claveprov> arrclave = new ArrayList<>();
     ArrayList<Familia> arrfam = new ArrayList<>();
     ArrayList<String> arrtipo = new ArrayList<>();
-    
+
     private JFileChooser filechooser = new JFileChooser();
     public Connection cpt, rcpt;
     public Connection litecfdi;
@@ -132,6 +136,11 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
 
         jLabel6.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel6.setText("Imagenes");
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel6MousePressed(evt);
+            }
+        });
 
         jSeparator2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -475,7 +484,7 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
         for (Familia fam : arrfam) {
             fami.addElement(fam.getDescripcion());
         }
-        
+
         for (String fam : arrtipo) {
             tipom.addElement(fam);
         }
@@ -517,7 +526,7 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
             Materiales m = new Materiales();
             String unidad = arrunidad.get(JcUnidad.getSelectedIndex()).getClave();
             String claveprod = arrclave.get(JlSat.getSelectedIndex()).getClaveprod();
-            String tipo=arrtipo.get(JcTipo.getSelectedIndex());
+            String tipo = arrtipo.get(JcTipo.getSelectedIndex());
             m.setDescripcion(JtMaterial.getText().toUpperCase());
             m.setPrecio(Double.parseDouble(JtPrecio.getText()));
             m.setUnidad(unidad);
@@ -525,9 +534,9 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
             m.setNoserie(JtNoserie.getText().toUpperCase());
             m.setMoneda(JcMoneda.getSelectedItem().toString());
             m.setTipo_maquina(tipo);
-            m.setImag1("C:\\af\\prod\\maquinas\\" + n1);
-            m.setImag2("C:\\af\\prod\\maquinas\\" + n2);
-            m.setImag3("C:\\af\\prod\\maquinas\\" + n3);
+            m.setImag1("C:\\af\\prod\\maquinas\\" + ((n1.equals("")) ? "whitefont.png" : n1));
+            m.setImag2("C:\\af\\prod\\maquinas\\" + ((n2.equals("")) ? "whitefont.png" : n2));
+            m.setImag3("C:\\af\\prod\\maquinas\\" + ((n3.equals("")) ? "whitefont.png" : n3));
             m.setId_familia(arrfam.get(JcFamilia.getSelectedIndex()).getId_familia());
             if (dm.nuevomatmaq(cpt, m)) {
                 JOptionPane.showMessageDialog(null, "Alta de producto Completo");
@@ -589,6 +598,10 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
 //        resetimag(Label1);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
+        copyfile();
+    }//GEN-LAST:event_jLabel6MousePressed
+
     private void resetimag(JLabel imag) {
         try {
             File file = new File("c:\\af\\prod\\images\\whitefont.png");
@@ -628,6 +641,7 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
                         break;
                 }
             } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null, ex);
                 Logger.getLogger(Fichatecnica.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
@@ -637,16 +651,25 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
 
     private void copyfile() {
         try {
-//            String cmd = "mkdir C:\\af\\prod\\maquinas\\";//Crear carpeta 
-//            Runtime.getRuntime().exec(cmd);
-            String cmd = "cp " + imag1 + " C:\\af\\prod\\maquinas\\" + n1;//copiar archivo de url de pc
-            Runtime.getRuntime().exec(cmd);
-            cmd = "cp " + imag2 + " C:\\af\\prod\\maquinas\\" + n2;//copiar archivo de url de pc
-            Runtime.getRuntime().exec(cmd);
-            cmd = "cp " + imag3 + " C:\\af\\prod\\maquinas\\" + n3;//copiar archivo de url de pc
-            Runtime.getRuntime().exec(cmd);
-//            System.out.println(cmd);
+//           Verifica que el nombre de la imagen sea distinta a vacio para poder hacer la copia
+            Path f1 = FileSystems.getDefault().getPath(imag1);
+            Path f2 = FileSystems.getDefault().getPath("C:\\af\\prod\\maquinas\\" + n1);
+            if (!n1.equals("")) {
+                Files.copy(f1, f2, StandardCopyOption.REPLACE_EXISTING);
+            }
+            if (!n2.equals("")) {
+                f1 = FileSystems.getDefault().getPath(imag2);
+                f2 = FileSystems.getDefault().getPath("C:\\af\\prod\\maquinas\\" + n2);
+                Files.copy(f1, f2, StandardCopyOption.REPLACE_EXISTING);
+            }
+            if (!n3.equals("")) {
+                f1 = FileSystems.getDefault().getPath(imag3);
+                f2 = FileSystems.getDefault().getPath("C:\\af\\prod\\maquinas\\" + n3);
+                Files.copy(f1, f2, StandardCopyOption.REPLACE_EXISTING);
+            }
+
         } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Error al copiar archivo: " + ex.getMessage());
             Logger.getLogger(Fichatecnica.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
