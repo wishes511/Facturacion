@@ -505,6 +505,11 @@ public class pagotpu2 extends javax.swing.JPanel {
 
         jLabel11.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel11.setText("Fecha Pago");
+        jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel11MousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -675,8 +680,9 @@ public class pagotpu2 extends javax.swing.JPanel {
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
         String r = JtCliente.getText();
         daofactura df = new daofactura();
+        Formateodedatos fd = new Formateodedatos();
 //        arrcargo = df.getfactsoncrtpu(cpt, r, empresa);// cpt a usar
-        arrcargo = df.getfactopagotpu(cpt, r, empresa);
+        arrcargo = df.getfactopagotpu(cpt, r, fd.getbd_tocargo(u.getTurno()));
         if (arrcargo.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
             JtCliente.setText("");
@@ -762,6 +768,10 @@ public class pagotpu2 extends javax.swing.JPanel {
         }
 
     }//GEN-LAST:event_JtTCambioActionPerformed
+
+    private void jLabel11MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MousePressed
+
+    }//GEN-LAST:event_jLabel11MousePressed
 
     private void setdolar() {
         if (JcUsd.isSelected()) {
@@ -1084,7 +1094,7 @@ public class pagotpu2 extends javax.swing.JPanel {
             Comision comi = new Comision();
             double tipocambio = f.getTipocambio();
             double comision = arrcomision.get(i).getComision();
-            double resultado=(f.getMoneda().equals("USD"))?tipocambio * comision:comision;
+            double resultado = (f.getMoneda().equals("USD")) ? tipocambio * comision : comision;
             comi.setComision(form.formatdecimal(resultado));
             comi.setId_cargo(arrcomision.get(i).getId_cargo());
             comi.setId_agente(arrcomision.get(i).getId_agente());
@@ -1100,7 +1110,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 //        Se realiza la insercion de cada de los folios validos en la bd
         dc.newcomision(cpt, arrcomision);
     }
-
+    
     /**
      * Formatea y ordena cada folio y /o referencia a filtrar del pago que
      * recientemente se realizo

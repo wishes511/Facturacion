@@ -828,6 +828,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Fecha Pago"/>
               </Properties>
+              <Events>
+                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jLabel11MousePressed"/>
+              </Events>
             </Component>
             <Component class="com.toedter.calendar.JDateChooser" name="JtFecha">
             </Component>

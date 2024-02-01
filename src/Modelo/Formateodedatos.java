@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import com.toedter.calendar.JDateChooser;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Connection;
@@ -188,6 +189,10 @@ public class Formateodedatos {
         return resp;
     }
 
+    public boolean verficafechanula(JDateChooser jt){
+        return (jt.getDate() == null); 
+    }
+    
     public String formateamesrespaldo(int m) {
         String mes = "";
         switch (m) {

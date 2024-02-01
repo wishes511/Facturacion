@@ -1074,7 +1074,6 @@ public class ncr2tpu extends javax.swing.JPanel {
 //                        df.setPrecioant(Double.parseDouble(formateador.format(impuestos)));
                         impuesto = formatdecimal(impuestos);
                     }
-
 ////                    System.out.println((float) precio * pares);
                     df.setRenglon(i + 1);
                     df.setProducto(0);
