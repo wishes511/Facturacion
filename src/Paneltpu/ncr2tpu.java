@@ -1015,12 +1015,13 @@ public class ncr2tpu extends javax.swing.JPanel {
                     if (rel.equals("03")) {//numero de renglones tambien para detalle docs
                         pre = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         unidad = formatdecimal(pre);
+//                        unidad = Double.parseDouble(formateador.format(pre));
                         pares = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
                         precio = formatdecimal((pre * pares) * 0.16 + (pre * pares));
+//                        precio = Double.parseDouble(formateador.format((pre * pares) * 0.16 + (pre * pares)));
                         descripcion = JtDetalle.getValueAt(i, 0).toString();
                         codigosat = JtDetalle.getValueAt(i, 1).toString();
                         umedida = JtDetalle.getValueAt(i, 4).toString().toUpperCase();
-//                        Lista de Cargos a caplicar
                         arrayc = getcargosfacs();
                     } else {
                         //Detalle solo para 1 renglon que es la relacion 01 y 07
@@ -1035,13 +1036,15 @@ public class ncr2tpu extends javax.swing.JPanel {
                             cargo car = new cargo();
 //                            arruuid.add(arrcargoseleccion.get(j).getFoliofiscal());
                             double desc = arrcargoseleccion.get(j).getDescuento();
-//                            if (JcUsd.isSelected()) {
-//                                desc = formatdecimal(desc);
+//                            Hace el calculo interno del saldo restante y no hacerlo directo en la consulta
+//                            Todo de acuerdo a si la ncr es en dolares o no
+                            if (JcUsd.isSelected()) {
+                                desc = formatdecimal(arrcargoseleccion.get(j).getSaldo()-desc);
 //                                System.out.println("usd");
-//                            } else {
-//                                desc = Double.parseDouble(formateador.format(desc));
+                            } else {
+                                desc = formatdecimal(arrcargoseleccion.get(j).getSaldomx()-desc);
 //                                System.out.println("mxn");
-//                            }
+                            }
                             car.setDescuento(desc);// importe a descontar de cargos
                             car.setFoliofiscal(folios);
                             car.setCuenta(arrcargoseleccion.get(j).getCuenta());
