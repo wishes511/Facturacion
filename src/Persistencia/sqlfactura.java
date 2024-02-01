@@ -3248,10 +3248,12 @@ public class sqlfactura {
             String sql = "select distinct id_cargo,id_concepto,c.referencia,c.fecha,importe,\n"
                     + "saldo,cli.nombre,sim,c.plazo, c.id_cliente,\n"
                     + " c.referencia as ref, d.FolioFiscal,c.id_agente,d.RFC,cli.cp,cli.regimen,saldomx\n"
-                    + "from ACobranzaTpu.dbo.cargo c\n"
-                    + "join ACobranzaTpu.dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
+                    + "from "+bd+".dbo.cargo c\n"
+                    + "join "+bd+".dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
                     + "join Documento d on c.referencia =d.folio\n"
-                    + "where (c.id_cliente = " + nombre + " ) and c.referencia NOT Like '%NCR%' and saldo!=0 and d.Serie='fac' and d.estatus='1' and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' order by c.fecha";
+                    + "where (c.id_cliente = " + nombre + " ) and c.referencia NOT Like '%NCR%' "
+                    + "and saldo!=0 and d.Serie='fac' and d.estatus='1' and ISNULL(foliofiscal,'') !='' "
+                    + "and foliofiscal!= 'null' order by c.fecha";
 //            System.out.println("get clientencr " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();

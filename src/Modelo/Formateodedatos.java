@@ -383,6 +383,12 @@ public class Formateodedatos {
         return resp;
     }
 
+    /**
+     * Parecido al de facturacion solo que para ncr
+     *
+     * @param turno
+     * @return NCR.....
+     */
     public String SerieFiscal_NCR(String turno) {
         String resp = "";
         switch (turno) {
@@ -396,6 +402,12 @@ public class Formateodedatos {
         return resp;
     }
 
+    /**
+     * Parecido al de facturacion solo que para ncr
+     *
+     * @param turno
+     * @return PAG.....
+     */
     public String SerieFiscal_PAG(String turno) {
         String resp = "";
         switch (turno) {
@@ -404,6 +416,27 @@ public class Formateodedatos {
                 break;
             case "7":
                 resp = "PAGMAQ";
+                break;
+        }
+        return resp;
+    }
+
+    /**
+     * Obtiene el nombre de la base de datos de cobranza para hacer join con
+     * cargos, para esto es necesario el turno del usuario ya que pueden ser
+     * varias empresas las que esten implicadas o un posible futuro.
+     *
+     * @param turno
+     * @return ACobranza...;
+     */
+    public String getbd_tocargo(String turno) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = "ACobranzaTpu";
+                break;
+            case "7":
+                resp = "ACobranzaMaq2";
                 break;
         }
         return resp;

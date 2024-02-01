@@ -14,6 +14,7 @@ import Modelo.ConceptosES;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
@@ -689,7 +690,9 @@ public class ncr2tpu extends javax.swing.JPanel {
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
         String r = JtCliente.getText();
         daofactura df = new daofactura();
-        arrcargo = df.getfactsoncrtpu(cpt, r, empresa);// cpt a usar
+        Formateodedatos fd= new Formateodedatos();
+//        Obtiene los cargos pendientes y utiliza el nombre de la bd formateada
+        arrcargo = df.getfactsoncrtpu(cpt, r, fd.getbd_tocargo(u.getTurno()));// cpt a usar
 //        Revisa que haya cargos de facturas pendientes si no manda mensaje
         if (arrcargo.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
@@ -700,7 +703,6 @@ public class ncr2tpu extends javax.swing.JPanel {
             cargacombos();
 //            cargacargos();
         }
-
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void JcMetodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcMetodoActionPerformed
@@ -890,7 +892,6 @@ public class ncr2tpu extends javax.swing.JPanel {
     }
 
     private void setfactura() {
-        DecimalFormat formateador = new DecimalFormat("####.##");
         if (arrcargoseleccion.isEmpty()) {
             JtCliente.requestFocus();
         } else {
@@ -915,8 +916,6 @@ public class ncr2tpu extends javax.swing.JPanel {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 daofactura dfac = new daofactura();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
-//                DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-
 //                Nocolisionncr n = new Nocolisionncr();
                 f.setFolio(dfac.getmaxfoliotpu(cpt, "NCR"));//Obtiene y setea el foliomaximo de *documentos
 //                n.setConnecxiones(rcpt, f.getFolio());
@@ -937,7 +936,7 @@ public class ncr2tpu extends javax.swing.JPanel {
                 // fin setear impuestos
 //                f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
 //                f.setImpuestos(formatdecimal(subtotal*0.16));
-                f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
+                f.setImpuestos(formatdecimal(impuestos));
                 f.setExportacion("01");
                 f.setTiporelacion(arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion());
                 f.setIva(16);
@@ -980,7 +979,6 @@ public class ncr2tpu extends javax.swing.JPanel {
                 String folios = "";
                 String facturas = "";
                 //Mandar un string con los folios fiscales
-
                 ArrayList<String> arruuid = new ArrayList<>();
                 for (int i = 0; i < arrcargoseleccion.size(); i++) {
                     if (i == 0) {
@@ -992,7 +990,6 @@ public class ncr2tpu extends javax.swing.JPanel {
                     }
                     arruuid.add(arrcargoseleccion.get(i).getFoliofiscal());
                 }
-
 //                System.out.println("cargo seleccion " + arrcargoseleccion.size());
                 f.setRefncredito(facturas);
                 f.setObservaciones(JtObs.getText().toUpperCase() + ", Facturas: " + facturas);
@@ -1015,18 +1012,16 @@ public class ncr2tpu extends javax.swing.JPanel {
                     String umedida = "";
                     double impuesto;
                     double pre = 0;
-
                     if (rel.equals("03")) {//numero de renglones tambien para detalle docs
                         pre = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
-                        unidad = Double.parseDouble(formateador.format(pre));
+                        unidad = formatdecimal(pre);
                         pares = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
-                        precio = Double.parseDouble(formateador.format((pre * pares) * 0.16 + (pre * pares)));
+                        precio = formatdecimal((pre * pares) * 0.16 + (pre * pares));
                         descripcion = JtDetalle.getValueAt(i, 0).toString();
                         codigosat = JtDetalle.getValueAt(i, 1).toString();
                         umedida = JtDetalle.getValueAt(i, 4).toString().toUpperCase();
 //                        Lista de Cargos a caplicar
                         arrayc = getcargosfacs();
-
                     } else {
                         //Detalle solo para 1 renglon que es la relacion 01 y 07
 //                        precio = Float.parseFloat(formateador.format(arrcargoseleccion.get(i).getDescuento() / 1.16));
@@ -1040,13 +1035,13 @@ public class ncr2tpu extends javax.swing.JPanel {
                             cargo car = new cargo();
 //                            arruuid.add(arrcargoseleccion.get(j).getFoliofiscal());
                             double desc = arrcargoseleccion.get(j).getDescuento();
-                            if (JcUsd.isSelected()) {
-                                desc = Double.parseDouble(formateador.format(desc));
-                                System.out.println("usd");
-                            } else {
-                                desc = Double.parseDouble(formateador.format(desc));
-                                System.out.println("mxn");
-                            }
+//                            if (JcUsd.isSelected()) {
+//                                desc = formatdecimal(desc);
+//                                System.out.println("usd");
+//                            } else {
+//                                desc = Double.parseDouble(formateador.format(desc));
+//                                System.out.println("mxn");
+//                            }
                             car.setDescuento(desc);// importe a descontar de cargos
                             car.setFoliofiscal(folios);
                             car.setCuenta(arrcargoseleccion.get(j).getCuenta());
@@ -1061,11 +1056,11 @@ public class ncr2tpu extends javax.swing.JPanel {
                         }
                     }
                     if (rel.equals("03")) {
-                        df.setPrecioant(Double.parseDouble(formateador.format(precio)));
+                        df.setPrecioant(formatdecimal(precio));
 //                        df.setPrecio(Double.parseDouble(formateador.format(precio / 1.16)));
                         df.setPrecio(unidad);
-                        df.setBase(Double.parseDouble(formateador.format(precio / 1.16)));
-                        precio = Double.parseDouble(formateador.format(precio / 1.16));
+                        df.setBase(formatdecimal(precio / 1.16));
+                        precio = formatdecimal(precio / 1.16);
                         impuesto = formatdecimal((precio * 0.16));
                     } else {
                         df.setPrecio(formatdecimal(subtotal));
@@ -1281,7 +1276,6 @@ public class ncr2tpu extends javax.swing.JPanel {
             //verirfica de que no tenga facturas
             if (!arrcargoseleccion.isEmpty()) {
                 int rows = model.getRowCount();
-                DecimalFormat formateador = new DecimalFormat("####.##");
                 for (int i = 0; i < rows; i++) {
                     //Verifica de que sea un numero y no cualquier cosa
 
@@ -1289,8 +1283,8 @@ public class ncr2tpu extends javax.swing.JPanel {
                             || verificaflotante(JtDetalle.getValueAt(i, 2).toString())) && !JtDetalle.getValueAt(i, 4).toString().isEmpty()) {
                         double precio = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
                         int can = Integer.parseInt(JtDetalle.getValueAt(i, 3).toString());
-                        subtotal += Double.parseDouble(formateador.format((precio) * can));
-                        impuestos += Double.parseDouble(formateador.format(((precio) * can) * 0.16));
+                        subtotal += formatdecimal((precio) * can);
+                        impuestos += formatdecimal((precio * can) * 0.16);
                     } else {
                         JOptionPane.showMessageDialog(null, "Introduce solo numeros o el campo de unidad esta vacio, intentalo de nuevo");
                         break;
@@ -1299,15 +1293,14 @@ public class ncr2tpu extends javax.swing.JPanel {
                 total = subtotal + impuestos;
 //                System.out.println(impuestos);
                 //Solo para despliqgue de informacion
-                JlIva.setText(formateador.format(impuestos));
-                Jlsub.setText(formateador.format(subtotal));
-                JlDesc.setText(formateador.format(descuentos));
-                JlTotal.setText(formateador.format(total));
+                JlIva.setText(formatdecimal(impuestos)+"");
+                Jlsub.setText(formatdecimal(subtotal)+"");
+                JlDesc.setText(formatdecimal(descuentos)+"");
+                JlTotal.setText(formatdecimal(total)+"");
             } else {
                 JtCliente.requestFocus();// regresa al campo inicial del cliente
             }
         } else {
-            DecimalFormat formateador = new DecimalFormat("####.##");
             if (!arrcargoseleccion.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
                 for (int i = 0; i < arrcargoseleccion.size(); i++) {
                     double precio = arrcargoseleccion.get(i).getDescuento();
@@ -1338,7 +1331,6 @@ public class ncr2tpu extends javax.swing.JPanel {
             String uso = arruso.get(JcUso.getSelectedIndex()).getusocfdi();
             verificaregimen(sqlcfdi, regimen, uso);
         }
-
     }
 
     private boolean verificaint(String cad) {
