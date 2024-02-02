@@ -235,6 +235,7 @@ public class sqlpedimentos {
                     + "  from pedimentos p\n"
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
+                    + "where p.estatus='1'\n"
                     + "order by referencia";
 //            System.out.println(sql);
             st = cpt.prepareStatement(sql);
