@@ -43,6 +43,7 @@ public class sqlcomisiones {
                 s.setImporte(rs.getDouble("importe"));
                 s.setDias(rs.getInt("dias"));
                 s.setComision(rs.getDouble("comision"));
+                s.setId_agente(rs.getInt("id_agente"));
                 arr.add(s);
             }
             rs.close();
