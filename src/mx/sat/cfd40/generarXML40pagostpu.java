@@ -234,20 +234,20 @@ public class generarXML40pagostpu {
         pago.setFechaPago(fecha);
         pago.setFormaDePagoP(f.getFormaP());
         if (f.getMoneda().equals("MXN")) {
-            totales.setMontoTotalPagos(BigDecimal.valueOf(f.getTotalpago16()).setScale(2, RoundingMode.HALF_UP));
-            totales.setTotalTrasladosImpuestoIVA16(BigDecimal.valueOf(f.getImpiva16()).setScale(2, RoundingMode.HALF_UP));
-            totales.setTotalTrasladosBaseIVA16(BigDecimal.valueOf(f.getBaseiva16()).setScale(2, RoundingMode.HALF_UP));
+            totales.setMontoTotalPagos(BigDecimal.valueOf(f.getTotalpago16()).setScale(2));
+            totales.setTotalTrasladosImpuestoIVA16(BigDecimal.valueOf(f.getImpiva16()).setScale(2));
+            totales.setTotalTrasladosBaseIVA16(BigDecimal.valueOf(f.getBaseiva16()).setScale(2));
             pago.setMonedaP(CMoneda.MXN);
             pago.setTipoCambioP(BigDecimal.valueOf(1));
         } else {
-            totales.setMontoTotalPagos(BigDecimal.valueOf(f.getTotalpago16() * f.getTipoC().doubleValue()).setScale(2, RoundingMode.HALF_UP));
-            totales.setTotalTrasladosBaseIVA0((BigDecimal.valueOf(f.getBaseiva16() * f.getTipoC().doubleValue()).setScale(2, RoundingMode.HALF_UP)));
+            totales.setMontoTotalPagos(BigDecimal.valueOf(f.getTotalpago16() * f.getTipoC().doubleValue()).setScale(2));
+            totales.setTotalTrasladosBaseIVA0((BigDecimal.valueOf(f.getBaseiva16() * f.getTipoC().doubleValue()).setScale(2)));
             totales.setTotalTrasladosImpuestoIVA0(BigDecimal.valueOf(0.00).setScale(2));
             pago.setMonedaP(CMoneda.USD);
             pago.setTipoCambioP(f.getTipoC());
         }
 
-        pago.setMonto(BigDecimal.valueOf(f.getTotalpago16()).setScale(2, RoundingMode.HALF_UP));
+        pago.setMonto(BigDecimal.valueOf(f.getTotalpago16()).setScale(2));
 //        pago.setMonto(BigDecimal.valueOf(f.getTotalpago16()).setScale(2, RoundingMode.FLOOR));
 
         pago.setNumOperacion(f.getFolio());
@@ -266,9 +266,9 @@ public class generarXML40pagostpu {
             } else {
                 doc.setMonedaDR(CMoneda.USD);
             }
-            doc.setImpSaldoInsoluto(BigDecimal.valueOf(f.getArrpagos().get(i).getImpsaldoinsoluto()).setScale(2, RoundingMode.HALF_UP));
-            doc.setImpSaldoAnt(BigDecimal.valueOf(f.getArrpagos().get(i).getImportesaldoant()).setScale(2, RoundingMode.HALF_UP));
-            doc.setImpPagado(BigDecimal.valueOf(f.getArrpagos().get(i).getImportepagado()).setScale(2, RoundingMode.HALF_UP));
+            doc.setImpSaldoInsoluto(BigDecimal.valueOf(f.getArrpagos().get(i).getImpsaldoinsoluto()).setScale(2));
+            doc.setImpSaldoAnt(BigDecimal.valueOf(f.getArrpagos().get(i).getImportesaldoant()).setScale(2));
+            doc.setImpPagado(BigDecimal.valueOf(f.getArrpagos().get(i).getImportepagado()).setScale(2));
 //            doc.setImpSaldoInsoluto(BigDecimal.valueOf(f.getArrpagos().get(i).getImpsaldoinsoluto()).setScale(2, RoundingMode.FLOOR));
 //            doc.setImpSaldoAnt(BigDecimal.valueOf(f.getArrpagos().get(i).getImportesaldoant()).setScale(2, RoundingMode.FLOOR));
 //            doc.setImpPagado(BigDecimal.valueOf(f.getArrpagos().get(i).getImportepagado()).setScale(2, RoundingMode.FLOOR));
@@ -286,7 +286,7 @@ public class generarXML40pagostpu {
                 tr.setTasaOCuotaDR(f.getTasaCuota());
                 tr.setImporteDR(BigDecimal.valueOf((f.getArrpagos().get(i).getImportepagado() / 1.16) * 0.16).setScale(2, RoundingMode.HALF_UP));
             } else {
-                tr.setTasaOCuotaDR(BigDecimal.valueOf(0.000000).setScale(6));
+                tr.setTasaOCuotaDR(BigDecimal.valueOf(0.000000).setScale(6, RoundingMode.HALF_UP));
                 tr.setImporteDR(BigDecimal.valueOf(0.00).setScale(2));
             }
 //            tr.setImporteDR(BigDecimal.valueOf((f.getArrpagos().get(i).getImportepagado() / 1.16) * 0.16).setScale(6, RoundingMode.FLOOR));
@@ -305,10 +305,10 @@ public class generarXML40pagostpu {
         trasladop.setTipoFactorP(CTipoFactor.TASA);
 
         trasladop.setImpuestoP("002");
-        trasladop.setBaseP(BigDecimal.valueOf(f.getBaseiva16()).setScale(2, RoundingMode.HALF_UP));
+        trasladop.setBaseP(BigDecimal.valueOf(f.getBaseiva16()).setScale(2));
         if (f.getMoneda().equals("MXN")) {
             trasladop.setTasaOCuotaP(f.getTasaCuota());
-            trasladop.setImporteP(BigDecimal.valueOf(f.getImpiva16()).setScale(6, RoundingMode.HALF_UP));
+            trasladop.setImporteP(BigDecimal.valueOf(f.getImpiva16()).setScale(6));
         } else {
             trasladop.setTasaOCuotaP(BigDecimal.valueOf(0.000000));
             trasladop.setImporteP(BigDecimal.valueOf(0.00).setScale(6));

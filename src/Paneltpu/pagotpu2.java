@@ -708,7 +708,10 @@ public class pagotpu2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JcUsoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        setfactura();
+        Formateodedatos fd = new Formateodedatos();
+        if(!fd.verficafechanula(JtFecha)){
+            setfactura();
+        }
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
@@ -813,9 +816,8 @@ public class pagotpu2 extends javax.swing.JPanel {
 
     private void llenalistafac() {
         DefaultListModel<String> model = new DefaultListModel<>();
-        DecimalFormat formateador = new DecimalFormat("####.##");
         for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-            model.addElement("FAC " + arrcargoseleccion1.getReferencia() + " - " + formateador.format(arrcargoseleccion1.getDescuento()));
+            model.addElement("FAC " + arrcargoseleccion1.getReferencia() + " - " + formatdecimal(arrcargoseleccion1.getDescuento()));
         }
         Jlcargofac.setModel(model);
     }
@@ -936,10 +938,9 @@ public class pagotpu2 extends javax.swing.JPanel {
                         flagmetodo = metodo.equals(arrcargoseleccion.get(i).getMetodopago());
                         ispue = arrcargoseleccion.get(i).getMetodopago().equals("PUE");
                         if (flagmetodo == false) {
-                            i = arrcargoseleccion.size();
+//                            i = arrcargoseleccion.size();
                             break;
                         }
-
                     }
                     double sa;
                     double pa;
@@ -965,7 +966,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                 arrdet.add(df);
                 f.setArr(arrdet);
                 f.setArrpagos(arrdetpago);
-                f.setArrpagos17(arrdetpago17);
+                //f.setArrpagos17(arrdetpago17);
 
                 f.setRefncredito(facturas);
                 f.setObservaciones(JtObs.getText().toUpperCase());
@@ -1050,7 +1051,7 @@ public class pagotpu2 extends javax.swing.JPanel {
                 punto++;
             }
         }
-        if ((dato < 5)) {
+        if ((dato <= 5)) {
             resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
         } else {
             resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
@@ -1060,11 +1061,10 @@ public class pagotpu2 extends javax.swing.JPanel {
 
     public ArrayList<cargo> getcargosfacs() {
         ArrayList<cargo> arr = new ArrayList<>();
-        DecimalFormat formateador = new DecimalFormat("####.##");
         for (int y = 0; y < arrcargoseleccion.size(); y++) {
             cargo car = new cargo();
-            double desc = Double.parseDouble(formateador.format(arrcargoseleccion.get(y).getDescuento()));
-            car.setDescuento(Double.parseDouble(formateador.format(desc)));
+            double desc = formatdecimal(arrcargoseleccion.get(y).getDescuento());
+            car.setDescuento(formatdecimal(desc));
             car.setFoliofiscal(arrcargoseleccion.get(y).getFoliofiscal());
             car.setCuenta(arrcargoseleccion.get(y).getCuenta());
             car.setSubcuenta(arrcargoseleccion.get(y).getSubcuenta());
@@ -1253,8 +1253,9 @@ public class pagotpu2 extends javax.swing.JPanel {
                 model.setValueAt(importe, i, 2);
                 model.setValueAt(iva, i, 3);
 //                total += totalcar;
-                subtotal += getnewcantidades6(totalcar, "importe");
-                impuestos += getnewcantidades6(totalcar, "iva");
+                subtotal += getcant(importe);
+                impuestos += getcant(iva);
+                System.out.println("a");
             }
             JtDetalle.setModel(model);
             total = subtotal + impuestos;
@@ -1286,10 +1287,12 @@ public class pagotpu2 extends javax.swing.JPanel {
         double cant = 0;
         switch (tipo) {
             case "importe":
-                cant = BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16;
+                double aux=a/1.16;
+                cant = BigDecimal.valueOf(aux).setScale(6, RoundingMode.HALF_UP).doubleValue();
                 break;
             case "iva":
-                cant = (BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue() / 1.16) * 0.16;
+                aux=(a/1.16)*0.16;
+                cant = (BigDecimal.valueOf(aux).setScale(6, RoundingMode.HALF_UP).doubleValue());
                 break;
         }
         cant = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
