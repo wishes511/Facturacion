@@ -17,6 +17,8 @@ import javax.swing.JOptionPane;
 public class ClienteUpdate extends javax.swing.JDialog {
 
     public Connection cpttpu;
+    public Connection cobB;
+    
     /**
      * Creates new form ClienteUpdate
      */
@@ -202,7 +204,9 @@ public class ClienteUpdate extends javax.swing.JDialog {
         JlRegimen.setText(cli.getRegimen());
         JlUso.setText(cli.getUsocfdi());
         JlAgente.setText(cli.getNombreagente());
+        //Es improtante insertar tanto en fiscal como en Interna
         if(d.importacliente(cpttpu, cli)){
+            d.importacliente(cobB, cli);
             JOptionPane.showMessageDialog(null, "Importacion completa");
         }else{
             JOptionPane.showMessageDialog(null, "Error al completar operacion intentelo de nuevo");

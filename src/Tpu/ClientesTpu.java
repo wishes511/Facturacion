@@ -348,6 +348,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
         ClienteUpdate cu = new ClienteUpdate(null, true);
         cu.cpttpu = con.getCobranzatpu();
+        cu.cobB=con.getCobranzatpuB();
         cu.setVisible(true);
     }//GEN-LAST:event_jLabel5MousePressed
 

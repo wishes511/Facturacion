@@ -94,7 +94,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "0";
+    String prod = "1";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
     boolean adminmod = true;
     Usuarios u = new Usuarios();
@@ -2573,7 +2573,7 @@ public final class Principal extends javax.swing.JFrame {
                 conexion.setEmpresarcpt("RCPT");
             } else if (u.getTurno().equals("7")) {
                 setconexionesglobal();//provicional
-                setTpumaq();
+                setmaq2();
                 conexion.setLitecfdi(litecfdi);
                 conexion.setEmpresa(empresa);
                 conexion.setCpt(concpt);

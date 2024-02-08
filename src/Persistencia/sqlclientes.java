@@ -206,7 +206,8 @@ public class sqlclientes {
                 ag = rs.getInt("id_agente");
             }
             if (ag == 0) {
-                sql = "insert into Agente(id_agente,nombre,canal,comision,estatus) values(" + cli.getAgente() + ",'" + cli.getNombreagente() + "'," + cli.getCanal() + ",0,'1')";
+                sql = "insert into Agente(id_agente,nombre,canal,comision,estatus) "
+                        + "values(" + cli.getAgente() + ",'" + cli.getNombreagente() + "'," + cli.getCanal() + ",0,'1')";
 //                System.out.println(sql);
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
@@ -224,7 +225,6 @@ public class sqlclientes {
             try {
                 c.rollback();
                 Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
-
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex1);
             }
