@@ -194,6 +194,45 @@ public class sqlpedimentos {
         return arr;
     }
 
+    public ArrayList<pedimento> getpedimentoadvMaquina(Connection cpt, String referencias) {
+        ArrayList<pedimento> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select p.id_pedimento as ped,id_dpedimento,referencia,m.modelo,m.descripcion,m.noserie,cantidadrestante,unidad,dp.precio as precio,\n"
+                    + "codigosat,dureza,dp.id_material as mat, convert(date,fechapedimento) as fechaped\n"
+                    + "  from pedimentos p\n"
+                    + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
+                    + "join materiales m on dp.id_material=m.id_material\n"
+                    + "where (" + referencias + ") and dp.estatus='1'";
+//            System.out.println(sql);
+            st = cpt.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                pedimento p = new pedimento();
+                Dpedimento dp = new Dpedimento();
+                String desc=rs.getString("modelo")+" "+rs.getString("descripcion")+" "
+                        +rs.getString("noserie");
+                p.setId_pedimento(rs.getInt("ped"));
+                p.setReferencia(rs.getString("referencia"));
+                dp.setId_dpedimento(rs.getInt("id_dpedimento"));
+                dp.setMatped(desc);
+                dp.setCantrestante(rs.getDouble("cantidadrestante"));
+                dp.setUnidad(rs.getString("unidad"));
+                dp.setPrecio(rs.getDouble("precio"));
+                dp.setCodigosat(rs.getString("codigosat"));
+                dp.setDureza(rs.getString("dureza"));
+                dp.setId_material(rs.getInt("mat"));
+                p.setFechapedimento(rs.getString("fechaped"));
+                p.setDp(dp);
+                arr.add(p);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
     public boolean newmatpedimento(Connection c, Dpedimento p) {
         try {
             c.setAutoCommit(false);
@@ -270,7 +309,7 @@ public class sqlpedimentos {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select id_dpedimento from dpedimentos\n"
-                    + "where id_material="+mat+" and dureza='"+dur+"' and id_pedimento="+ped;
+                    + "where id_material=" + mat + " and dureza='" + dur + "' and id_pedimento=" + ped;
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {

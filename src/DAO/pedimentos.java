@@ -28,6 +28,8 @@ public interface pedimentos {
     
     public ArrayList<pedimento> getpedimentoaadv(Connection cpt, String referencias);
     
+    public ArrayList<pedimento> getpedimentoaadvMAQ(Connection cpt, String referencias);
+    
     public ArrayList<pedimento> getpedimentoinv(Connection cpt);
     
     public boolean checkmatdureza(Connection cpt, int mat, String dur, int ped);

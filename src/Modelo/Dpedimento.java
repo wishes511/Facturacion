@@ -9,10 +9,27 @@ package Modelo;
  *
  * @author GATEWAY1-
  */
-public class Dpedimento implements java.io.Serializable{
+public class Dpedimento implements java.io.Serializable {
+
     private int id_dpedimento, id_material, id_almacen, id_pedimento;
-    private double cantidad,precio,costo, importe,impuesto,cantrestante;
-    private String matped, dureza, unidad, codigosat, codigo;
+    private double cantidad, precio, costo, importe, impuesto, cantrestante;
+    private String matped, dureza, unidad, codigosat, codigo, noserie, descripcion;
+
+    public String getNoserie() {
+        return noserie;
+    }
+
+    public void setNoserie(String noserie) {
+        this.noserie = noserie;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
     public int getId_pedimento() {
         return id_pedimento;
@@ -133,5 +150,5 @@ public class Dpedimento implements java.io.Serializable{
     public void setCantrestante(double cantrestante) {
         this.cantrestante = cantrestante;
     }
-    
+
 }

@@ -90,7 +90,21 @@ public class daopedimentos implements pedimentos {
     @Override
     public boolean checkmatdureza(Connection cpt, int mat, String dur, int ped) {
         sqlpedimentos s = new sqlpedimentos();
-        return s.checkmatdureza(cpt, mat, dur,ped);
+        return s.checkmatdureza(cpt, mat, dur, ped);
+    }
+
+    /**
+     * Es el mismo proposito que la original ADV, solo que esta trae 3 columnas
+     * mas e ignora la dureza ya que es para las maquinas, de ahi en mas es la
+     * misma consulta base.
+     * @param cpt
+     * @param referencias
+     * @return Pedimento junto su detalle
+     */
+    @Override
+    public ArrayList<pedimento> getpedimentoaadvMAQ(Connection cpt, String referencias) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.getpedimentoadvMaquina(cpt, referencias);
     }
 
 }

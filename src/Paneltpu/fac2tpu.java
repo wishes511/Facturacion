@@ -887,7 +887,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 int totalpares = 0;// Se usa para la tabla facturas
                 impuestos = 0;
                 descuentos = 0;
-                subtotal=0;
+                subtotal = 0;
 //                Detallado de productos selecionados
                 for (int i = 0; i < k2.size(); i++) {
                     Dfactura df = new Dfactura();
@@ -925,7 +925,7 @@ public class fac2tpu extends javax.swing.JPanel {
 
                         arrf.add(df);
                         totalpares += tpares;
-                        subtotal+=df.getBase();
+                        subtotal += df.getBase();
                         impuestos += Double.parseDouble(as);
                         descuentos += Double.parseDouble(as1);
                     }
@@ -1290,7 +1290,16 @@ public class fac2tpu extends javax.swing.JPanel {
     private void seleccionfolio(String folios) {
 //        daokardexrcpt dk = new daokardexrcpt();
         daopedimentos dk1 = new daopedimentos();
-        k2 = dk1.getpedimentoaadv(cpt, folios);
+        switch (u.getTurno()) {
+            case "5":
+                k2 = dk1.getpedimentoaadv(cpt, folios);
+                break;
+            case "6":
+            case "7":
+                k2 = dk1.getpedimentoaadvMAQ(cpt, folios);
+                break;
+        }
+        //k2 = dk1.getpedimentoaadv(cpt, folios);
 //        String r = k0.get(JtFolio1.getSelectedIndex()).getFolio() + "";
 //        k = dk.getkardexfac(rcpt, r, empresacob);// nueva carga de datos
 //        k = dk.getkardexfacMulti(rcpt, empresacob, folios);
