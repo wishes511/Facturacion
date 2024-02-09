@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
  * @author GATEWAY1-
  */
 public class ClientesTpu extends javax.swing.JInternalFrame {
-
+    
     Clientetpu1 c1;
     Clientetpu2 c2;
     Cliente cli;
@@ -314,7 +314,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     private void JtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtBuscarActionPerformed
         buscacliente();
     }//GEN-LAST:event_JtBuscarActionPerformed
-
+    
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (Cliente arr1 : arr) {
@@ -322,7 +322,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         }
         JlCliente.setModel(model);
     }
-
+    
     private boolean checkcampos() {
         Formateodedatos d = new Formateodedatos();
         return (d.verificaStringsSC(c1.JtNombre.getText()) && d.verificaStringsSC(c1.JtRfc.getText())
@@ -331,7 +331,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
                 && d.verificaStringsSC(c1.JtCp.getText()) && d.verificaStringsSC(c1.JtContacto.getText())
                 && d.verificaStringsSC(c1.JtUso.getText()) && d.verificaStringsSC(c1.JtRegimen.getText()));
     }
-
+    
     private void vaciacampos() {
         c1.JtNombre.setText("");
         c1.JtRegimen.setText("");
@@ -343,12 +343,15 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         c1.JtCp.setText("");
         c1.JtContacto.setText("");
         c1.JtUso.setText("");
+        c1.JtPais.setText("");
+        c1.JtEstado.setText("");
+        c1.JtCiudad.setText("");
     }
 
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
         ClienteUpdate cu = new ClienteUpdate(null, true);
         cu.cpttpu = con.getCobranzatpu();
-        cu.cobB=con.getCobranzatpuB();
+        cu.cobB = con.getCobranzatpuB();
         cu.setVisible(true);
     }//GEN-LAST:event_jLabel5MousePressed
 
@@ -404,28 +407,28 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     private void JlSerieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JlSerieKeyPressed
 
     }//GEN-LAST:event_JlSerieKeyPressed
-
+    
     public void setcampos() {
         int row = JlCliente.getSelectedIndex();
         c1.c = arr.get(row);
         c1.setcampos();
     }
-
+    
     public void buscacliente() {
         String cliente = JtBuscar.getText();
         daoClientes dc = new daoClientes();
-        if(u.getTurno().equals("6") && serie.equals("A")){
+        if (u.getTurno().equals("6") && serie.equals("A")) {
             JOptionPane.showMessageDialog(null, "No puedes realizar consultas fiscales, cambia a serie 'B' o rojo");
-        }else{
-            if(u.getTurno().equals("6")){
+        } else {
+            if (u.getTurno().equals("6")) {
                 arr = dc.getClientestpuall(con.getCobranzatpuB(), cliente);
-            }else{
+            } else {
                 arr = dc.getClientestpuall(con.getCobranzatpu(), cliente);
             }
         }
         llenalista();
     }
-
+    
     public final void generaciontab() {
         c1 = new Clientetpu1();
         //c2 = new Clientetpu2();

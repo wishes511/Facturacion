@@ -339,7 +339,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(JtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
                     .addComponent(jSeparator2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 913, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 880, Short.MAX_VALUE)
                 .addComponent(jLabel7)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(JlEstatus)
@@ -607,11 +607,11 @@ public class Clientetpu1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtCalleActionPerformed
 
     private void JtColoniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtColoniaActionPerformed
-        JtCp.requestFocus();
+        JtPais.requestFocus();
     }//GEN-LAST:event_JtColoniaActionPerformed
 
     private void JtCpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCpActionPerformed
-        JtPais.requestFocus();
+        JtBanco.requestFocus();
     }//GEN-LAST:event_JtCpActionPerformed
 
     private void JtBancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtBancoActionPerformed
@@ -623,7 +623,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtNombreActionPerformed
 
     private void JtContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtContactoActionPerformed
-        JtRegimen.requestFocus();
+        
     }//GEN-LAST:event_JtContactoActionPerformed
 
     private void JtPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtPaisActionPerformed
@@ -635,7 +635,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtEstadoActionPerformed
 
     private void JtCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCiudadActionPerformed
-        JtBanco.requestFocus();
+        JtRegimen.requestFocus();
     }//GEN-LAST:event_JtCiudadActionPerformed
 
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
@@ -647,7 +647,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtRegimenActionPerformed
 
     private void JtUsoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtUsoActionPerformed
-        // TODO add your handling code here:
+        JtCp.requestFocus();
     }//GEN-LAST:event_JtUsoActionPerformed
 
     private boolean verificaint(String cad) {

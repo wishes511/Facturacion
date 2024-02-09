@@ -282,6 +282,7 @@ public class sqlclientes {
             }
             resp++;
         } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
             Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resp;

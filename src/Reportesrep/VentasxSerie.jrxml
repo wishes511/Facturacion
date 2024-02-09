@@ -20,7 +20,7 @@
 case when p.estatus='1' then 'A' else 'C' end as 'estado'
 from pedido p
 left join documento d on d.pedidos=p.id_pedido
-where p.fecha between $P{f1} and $P{f2} and p.serie=$P{serie}
+where convert(date,p.fecha) between $P{f1} and $P{f2} and p.serie=$P{serie}
 order by p.serie]]>
 	</queryString>
 	<field name="id_pedido" class="java.lang.Integer"/>
