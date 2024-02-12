@@ -67,7 +67,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author GATEWAY1-
  */
 public class fac2tpu extends javax.swing.JPanel {
-
+    
     public String nombre, empresa, empresarcpt, empresacob;
     public Connection sqlcfdi, sqlempresa;
     public Connection ACobranza, rcpt, cpt;
@@ -691,7 +691,7 @@ public class fac2tpu extends javax.swing.JPanel {
         JcUso.setModel(uso);
         JcCliente.setModel(cliente);
     }
-
+    
     private void setcombos() {
         boolean band = false;
         boolean band1 = false;
@@ -803,7 +803,7 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         return resp;
     }
-
+    
     private void setfactura() {
         if (!k2.isEmpty()) {
             boolean a = verificafloat(JtDescuento.getText());
@@ -841,7 +841,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 n.start();
 //                JOptionPane.showMessageDialog(null, "Espera al msj de Aceptacion de folio "+n.isAlive());
                 do {
-
+                    
                 } while (n.isAlive());
                 int rowc = JcCliente.getSelectedIndex();
                 f.setExportacion("01");
@@ -880,7 +880,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 f.setLugarexpedicion("36350");
 //                f.setAgente(k.get(row).getCli().getAgente());
                 f.setAgente(arrcliente.get(rowc).getAg().getIdagente());
-
+                
                 if (JcUsd1.isSelected()) {
                     f.setMoneda("USD");
                     f.setTipocambio(Double.parseDouble(JtTCambio1.getText()));
@@ -920,6 +920,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 for (int i = 0; i < k2.size(); i++) {
                     Dfactura df = new Dfactura();
                     if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
+                        String sodigosat = JtDetalle.getValueAt(i, 1).toString();
                         double precio = fd.formatdecimal(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString()));
                         double tpares = fd.formatdecimal(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()));
                         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
@@ -932,7 +933,8 @@ public class fac2tpu extends javax.swing.JPanel {
                         df.setRenglon(i + 1);
                         df.setProducto(k2.get(i).getDp().getId_material());
                         df.setCantidadfloat(tpares);
-                        df.setCodigo(k2.get(i).getDp().getCodigosat());
+//                        df.setCodigo(k2.get(i).getDp().getCodigosat());
+                        df.setCodigo(sodigosat);
                         df.setUmedida(k2.get(i).getDp().getUnidad());
                         df.setDureza(k2.get(i).getDp().getDureza());
                         df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
@@ -950,7 +952,7 @@ public class fac2tpu extends javax.swing.JPanel {
                         String as1 = String.valueOf(fd.formatdecimal(descuento));
                         df.setDescuento(Double.parseDouble(as1));
                         df.setTasaocuota(iva + "");
-
+                        
                         arrf.add(df);
                         totalpares += tpares;
                         subtotal += df.getBase();
@@ -1055,7 +1057,7 @@ public class fac2tpu extends javax.swing.JPanel {
 //                        }
 //                    }
                 }
-
+                
             }
         }
     }
@@ -1117,7 +1119,7 @@ public class fac2tpu extends javax.swing.JPanel {
             String logo = "AF.png";
             String ser;
             String report;
-
+            
             Empresas e = d.getempresarfc(sqlempresa, n);
             String lugar = "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();
 //             fin identificar empresa
@@ -1151,7 +1153,7 @@ public class fac2tpu extends javax.swing.JPanel {
             parametros.put("uso", arruso.get(JcUso.getSelectedIndex()).getDescripcion());
             parametros.put("serie", ser);
             parametros.put("regimencliente", regimen);
-
+            
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/" + report + ".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
@@ -1187,7 +1189,7 @@ public class fac2tpu extends javax.swing.JPanel {
     private void jLabel13MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MousePressed
         int row = JcCliente.getSelectedIndex();
         if (k1.isEmpty() && JtFolio1.getSelectedIndex() == -1) {
-
+            
         } else {
             FactsReltpu f = new FactsReltpu(null, true);
             daofactura df = new daofactura();
@@ -1260,7 +1262,7 @@ public class fac2tpu extends javax.swing.JPanel {
             JtTCambio1.requestFocus();
         }
     }//GEN-LAST:event_JtTCambio1ActionPerformed
-
+    
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (cargo arrcargoseleccion1 : arrcargoseleccion) {
@@ -1288,7 +1290,7 @@ public class fac2tpu extends javax.swing.JPanel {
         JlCliente1.setModel(model);
         JlCliente1.requestFocus();
     }
-
+    
     private void vaciarcampos() {
         if (!k1.isEmpty()) {
             k1.clear();
@@ -1314,7 +1316,7 @@ public class fac2tpu extends javax.swing.JPanel {
         llenalista();
         llenalistasalida();
     }
-
+    
     private void seleccionfolio(String folios) {
 //        daokardexrcpt dk = new daokardexrcpt();
         daopedimentos dk1 = new daopedimentos();
@@ -1336,7 +1338,7 @@ public class fac2tpu extends javax.swing.JPanel {
         generatabla();
 //        setAgentes();
     }
-
+    
     public final void generatabla() {//Tabla actualizable con respecto al descuento e iva
         subtotal = 0;
         impuestos = 0;
@@ -1359,7 +1361,7 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         if (!k2.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
             model.setRowCount(k2.size());
-
+            
             for (int i = 0; i < k2.size(); i++) {
                 double tpares = k2.get(i).getDp().getCantrestante();
                 double desc = Double.parseDouble(JtDescuento.getText()) / 100;
@@ -1390,7 +1392,7 @@ public class fac2tpu extends javax.swing.JPanel {
         JlTotal.setText(formateador.format(total));
         JtDetalle.setModel(model);
     }
-
+    
     private void actualizaimportes() {
         subtotal = 0;
         impuestos = 0;
@@ -1429,10 +1431,10 @@ public class fac2tpu extends javax.swing.JPanel {
 //                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
                             impuestos += ((tpares * precio) - descuento) * iva;
                         }
-
+                        
                     }
                 }
-
+                
             }
             if (resp) {// Si, y solo si es un entero o decimal
                 //Variables para manejo de totales
@@ -1457,7 +1459,7 @@ public class fac2tpu extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Verifica la clave del SAT");
         }
     }
-
+    
     private void setdolar() {
         if (JcUsd1.isSelected()) {
             JlTcambio2.setVisible(true);
@@ -1468,7 +1470,7 @@ public class fac2tpu extends javax.swing.JPanel {
             JtTCambio1.setVisible(false);
         }
     }
-
+    
     private boolean verificaint(String cad) {
         boolean resp = false;
         String patt = "[0-9]+";
@@ -1479,7 +1481,7 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         return resp;
     }
-
+    
     private boolean verificafloat(String cad) {
         boolean resp = false;
         String patt = "[0-9]+||[0-9]+.[0-9]+";
@@ -1490,7 +1492,7 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         return resp;
     }
-
+    
     private boolean verificadetalle() {
         boolean resp = true;
         for (int i = 0; i < k2.size(); i++) {
@@ -1502,7 +1504,7 @@ public class fac2tpu extends javax.swing.JPanel {
         }
         return resp;
     }
-
+    
     private boolean verificaregimen(Connection cfdi, String regimen, String uso) {
         daocfdi df = new daocfdi();
         boolean a = true;
