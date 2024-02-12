@@ -502,8 +502,11 @@ public class fac1tpu extends javax.swing.JPanel {
             boolean ncr = getdoccancel(arrfactura.get(row).getId(), "NCR");
             boolean pag = getdoccancel(arrfactura.get(row).getId(), "PAG");
             if (!ncr && !pag) {
+                Formateodedatos fort= new Formateodedatos();
                 int rows = d.verificadevs(cpt, "A", arrfactura.get(JtDetalle.getSelectedRow()).getId());
-                String bdcob = "ACobranzatpu.dbo.Cargo c on doc.folio=c.referencia";
+//                Obtiene el nombre de la bd de cobranza mediante el turno
+                String bd=fort.getbd_tocargo(u.getTurno());
+                String bdcob = bd+".dbo.Cargo c on doc.folio=c.referencia";
 //                arrd = d.getpedscancel(cpt, arrfactura.get(row).getId(), "A", bdcob);
 //                arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
                 if (rows != 0) {
