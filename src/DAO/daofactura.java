@@ -526,12 +526,13 @@ public class daofactura implements Facturas {
      * @param c
      * @param iddoc
      * @param serie
+     * @param bd
      * @return
      */
     @Override
-    public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie) {
+    public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie, String bd) {
         sqlfactura s = new sqlfactura();
-        return s.searchPagncrtofac(c, iddoc, serie);
+        return s.searchPagncrtofac(c, iddoc, serie, bd);
     }
 
     @Override
@@ -572,9 +573,10 @@ public class daofactura implements Facturas {
 
     /**
      * Obtiene registros del pago de acuerdo al id del documento de pago
+     *
      * @param c
      * @param id
-     * @return 
+     * @return
      */
     @Override
     public ArrayList<factura> getregspcancelpagotpu(Connection c, int id) {
@@ -584,10 +586,11 @@ public class daofactura implements Facturas {
 
     /**
      * Ejecuta modificacion de registros para cancelacion de un pago en tpu
+     *
      * @param c
      * @param cob
      * @param arr
-     * @return 
+     * @return
      */
     @Override
     public boolean execcancelacionPago(Connection c, Connection cob, ArrayList<factura> arr) {

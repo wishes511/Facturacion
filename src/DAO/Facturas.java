@@ -220,7 +220,7 @@ public interface Facturas {
     
     public boolean updateclientefacv2(Connection con, Cliente c, int id_documento);
     
-    public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie);
+    public ArrayList<factura> searchPagncrtofac(Connection c, int iddoc, String serie, String bd);
     
     public ArrayList<cargo> getfactrem(Connection cobB, String var, String ncob);
     

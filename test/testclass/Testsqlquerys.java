@@ -9,7 +9,6 @@ import DAO.daoDevolucion;
 import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
 import Modelo.cargo;
-import Persistencia.sqlfactura;
 import Server.Serverprod;
 import java.io.IOException;
 import java.sql.Connection;
@@ -31,7 +30,7 @@ public class Testsqlquerys {
 //        try {
         Testsqlquerys t = new Testsqlquerys();
 //            t.verificadevs("A", 19);
-        t.modificacaostodfactura();
+//        t.modificacaostodfactura();
 //        t.actualizavencimientos();
 //        } catch (ClassNotFoundException ex) {
 //            Logger.getLogger(Testsqlquerys.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,29 +52,29 @@ public class Testsqlquerys {
     /**
      * Actualiza y modifica los costos de dfacturas
      */
-    public void modificacaostodfactura() {
-        try {
-            Serverprod s = new Serverprod();
-            Connection concpt = s.getconexionserver8("CPT");
-            Connection conrcpt = s.getconexionserver8("RCPT");
-            sqlfactura sql = new sqlfactura();
-            ArrayList<Kardexrcpt> arr = sql.modcostodfac(conrcpt);
-            if (sql.setmodificaciondfactura(conrcpt, arr) || sql.setmodificaciondfactura(concpt, arr)) {
-                System.out.println("Completo");
-            }
-//            for (Kardexrcpt arr1 : arr) {
-//                System.out.println(arr1.getFactura()+" "+arr1.getId_prod()+" "+arr1.getCosto()+" "+arr1.getVenta()+"");
+//    public void modificacaostodfactura() {
+//        try {
+//            Serverprod s = new Serverprod();
+//            Connection concpt = s.getconexionserver8("CPT");
+//            Connection conrcpt = s.getconexionserver8("RCPT");
+//            sqlfactura sql = new sqlfactura();
+//            ArrayList<Kardexrcpt> arr = sql.modcostodfac(conrcpt);
+//            if (sql.setmodificaciondfactura(conrcpt, arr) || sql.setmodificaciondfactura(concpt, arr)) {
+//                System.out.println("Completo");
 //            }
-            concpt.close();
-            conrcpt.close();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Testsqlquerys.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Testsqlquerys.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Testsqlquerys.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+////            for (Kardexrcpt arr1 : arr) {
+////                System.out.println(arr1.getFactura()+" "+arr1.getId_prod()+" "+arr1.getCosto()+" "+arr1.getVenta()+"");
+////            }
+//            concpt.close();
+//            conrcpt.close();
+//        } catch (ClassNotFoundException ex) {
+//            Logger.getLogger(Testsqlquerys.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(Testsqlquerys.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (SQLException ex) {
+//            Logger.getLogger(Testsqlquerys.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
 
     /**
      * Actualiza las fechas de vencimiento ya que anterior mente no se

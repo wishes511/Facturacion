@@ -314,17 +314,18 @@ public class sqlfactura {
      * @param con
      * @param iddoc
      * @param serie
+     * @param bd
      * @return
      */
-    public ArrayList<factura> searchPagncrtofac(Connection con, int iddoc, String serie) {//obtiene datos de la factura recien ingresada
+    public ArrayList<factura> searchPagncrtofac(Connection con, int iddoc, String serie, String bd) {//obtiene datos de la factura recien ingresada
         ArrayList<factura> arr = new ArrayList<>();
         try {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select folio,serie,a.referencia\n"
                     + "from documento d\n"
-                    + "join Acobranzatpu.dbo.cargo c on d.folio=c.referencia\n"
-                    + "join Acobranzatpu.dbo.abono a on c.id_cargo=a.id_cargo\n"
+                    + "join "+bd+".dbo.cargo c on d.folio=c.referencia\n"
+                    + "join "+bd+".dbo.abono a on c.id_cargo=a.id_cargo\n"
                     + "where d.id_documento=" + iddoc + " and a.referencia like '%" + serie + "%' and a.estatus='1'";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);

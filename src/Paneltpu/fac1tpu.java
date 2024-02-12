@@ -560,7 +560,9 @@ public class fac1tpu extends javax.swing.JPanel {
     private boolean getdoccancel(int id, String serie) {
         boolean resp = true;
         daofactura df = new daofactura();
-        ArrayList<factura> arrf = df.searchPagncrtofac(cpt, id, serie);
+        Formateodedatos fd= new Formateodedatos();
+        //Necesario, ya que por si hay mas de un turno, manejar distintas bd de acuerdo a ese parametro
+        ArrayList<factura> arrf = df.searchPagncrtofac(cpt, id, serie, fd.getbd_tocargo(u.getTurno()));
         if (arrf.isEmpty()) {
             resp = false;
         } else {

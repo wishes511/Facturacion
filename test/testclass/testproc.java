@@ -8,7 +8,6 @@ package testclass;
 import DAO.daocfdi;
 import Modelo.Poliza;
 import Modelo.Procserie;
-import Persistencia.sqlfactura;
 import Persistencia.sqlkardex;
 import Server.Serverprod;
 import Server.Serverylite;
@@ -49,12 +48,12 @@ public class testproc {
 //            Connection concpt = s.getconexionserver8("CPT");
             Connection concob = s.getconexionserver8("ACobranzaUptown");
 //            Connection concob = s.getconexionserver8("ACobranza");
-            sqlfactura sql = new sqlfactura();
-            ArrayList<Poliza> arr=sql.getpolizas(concpt, "ACobranzaUptown");
-//            ArrayList<Poliza> arr=sql.getpolizas(concpt, "ACobranza");
-            sql.setpoliza(concob, arr);
-            concpt.close();
-            concob.close();
+//            sqlfactura sql = new sqlfactura();
+//            ArrayList<Poliza> arr=sql.getpolizas(concpt, "ACobranzaUptown");
+////            ArrayList<Poliza> arr=sql.getpolizas(concpt, "ACobranza");
+//            sql.setpoliza(concob, arr);
+//            concpt.close();
+//            concob.close();
     }
 
     private static void kardex() {
