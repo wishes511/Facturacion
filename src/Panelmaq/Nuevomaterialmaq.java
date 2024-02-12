@@ -516,7 +516,6 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-
         if (!verificafloat(JtPrecio.getText())) {
             JOptionPane.showMessageDialog(null, "Ingrese un numero valido");
             JtPrecio.setText("");
@@ -525,7 +524,8 @@ public class Nuevomaterialmaq extends javax.swing.JDialog {
             daomateriales dm = new daomateriales();
             Materiales m = new Materiales();
             String unidad = arrunidad.get(JcUnidad.getSelectedIndex()).getClave();
-            String claveprod = arrclave.get(JlSat.getSelectedIndex()).getClaveprod();
+            String claveprod = (JtCodigo.getText().equals("")) ? ""
+                    : arrclave.get(JlSat.getSelectedIndex()).getClaveprod();
             String tipo = arrtipo.get(JcTipo.getSelectedIndex());
             m.setDescripcion(JtMaterial.getText().toUpperCase());
             m.setPrecio(Double.parseDouble(JtPrecio.getText()));

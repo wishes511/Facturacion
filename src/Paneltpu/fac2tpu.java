@@ -13,6 +13,7 @@ import DAO.daofactura;
 import DAO.daokardexrcpt;
 import DAO.daopedimentos;
 import DAO.daoxmltpu;
+import Dao.Dao_Catalogo;
 import Modelo.Agentes;
 import Modelo.Cliente;
 import Modelo.Dfactura;
@@ -777,6 +778,33 @@ public class fac2tpu extends javax.swing.JPanel {
     }//GEN-LAST:event_JcPublicoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
+        if (checkclvprov()) {
+            setfactura();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al verificar la clave de producto, intentalo de nuevo");
+        }
+    }//GEN-LAST:event_jLabel2MousePressed
+
+    /**
+     * Verifica que la clave de producto exista antes de pasar a la factura
+     *
+     * @return boolean respuesta
+     */
+    private boolean checkclvprov() {
+        boolean resp = true;
+        Dao_Catalogo dc = new Dao_Catalogo();
+        for (int i = 0; i < JtDetalle.getRowCount(); i++) {
+            String cv = JtDetalle.getValueAt(i, 1).toString();
+            if (!dc.getClaveprod_Var(sqlcfdi, cv)) {
+                resp = false;
+                JtDetalle.setValueAt("", i, 1);
+                break;
+            }
+        }
+        return resp;
+    }
+
+    private void setfactura() {
         if (!k2.isEmpty()) {
             boolean a = verificafloat(JtDescuento.getText());
             boolean a1 = verificadetalle();
@@ -1030,7 +1058,7 @@ public class fac2tpu extends javax.swing.JPanel {
 
             }
         }
-    }//GEN-LAST:event_jLabel2MousePressed
+    }
 
     /**
      * Funcion para determinar si la cantidad decimal es redondeada o truncada
@@ -1290,6 +1318,7 @@ public class fac2tpu extends javax.swing.JPanel {
     private void seleccionfolio(String folios) {
 //        daokardexrcpt dk = new daokardexrcpt();
         daopedimentos dk1 = new daopedimentos();
+//        Hace la consulta distinta de acuerdo a si es de maquinaria o tpu
         switch (u.getTurno()) {
             case "5":
                 k2 = dk1.getpedimentoaadv(cpt, folios);
@@ -1337,7 +1366,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 double precio = k2.get(i).getDp().getPrecio();
                 double descuento = (tpares * precio) * desc;
                 model.setValueAt(k2.get(i).getDp().getMatped(), i, 0);
-                model.setValueAt(k2.get(i).getDp().getCodigosat(), i, 1);
+                model.setValueAt("", i, 1);
                 model.setValueAt(tpares, i, 2);
                 model.setValueAt(formateador.format(precio), i, 3);
                 model.setValueAt(formateador.format(descuento), i, 4);
@@ -1403,6 +1432,7 @@ public class fac2tpu extends javax.swing.JPanel {
 
                     }
                 }
+
             }
             if (resp) {// Si, y solo si es un entero o decimal
                 //Variables para manejo de totales
@@ -1421,6 +1451,10 @@ public class fac2tpu extends javax.swing.JPanel {
                 JlDesc.setText(formateador.format(descuentos));
                 JlTotal.setText(formateador.format(total));
             }
+        }
+        //Tambien verificar el clave del proveedor al momento de actualizar valores
+        if (!checkclvprov()) {
+            JOptionPane.showMessageDialog(null, "Verifica la clave del SAT");
         }
     }
 
