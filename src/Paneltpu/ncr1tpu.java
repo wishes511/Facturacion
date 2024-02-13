@@ -15,6 +15,7 @@ import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Estados;
 import Modelo.Formadepago;
+import Modelo.Formateodedatos;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
@@ -450,7 +451,8 @@ public class ncr1tpu extends javax.swing.JPanel {
 // Obtiene todas las notas de acuerdo a lo que se introduzca en el campo
     private void Buscanotas() {
         daofactura df = new daofactura();
-        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "NCR");
+        Formateodedatos fd = new Formateodedatos();
+        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "NCR", fd.getbd_tocargo(u.getTurno()));
         generatabla();
     }
 

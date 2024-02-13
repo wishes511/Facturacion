@@ -320,6 +320,7 @@ public class fac1tpu extends javax.swing.JPanel {
         f.setFolio(arrfacturaxml.get(0).getFolio());
         f.setClaveusuario(u.getUsuario());
         f.setSerie("FAC");
+        f.setTurno(u.getTurno());
         f.setFecha(sdf.format(date));
         f.setDescuento(Double.parseDouble(desc));
         f.setSubtotal(Double.parseDouble(sub));
@@ -734,7 +735,8 @@ public class fac1tpu extends javax.swing.JPanel {
 //    Busca las facturas que encuentre
     private void Buscanotas() {
         daofactura df = new daofactura();
-        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "FAC");
+        Formateodedatos fd = new Formateodedatos();
+        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "FAC",fd.getbd_tocargo(u.getTurno()));
         generatabla();
     }
 

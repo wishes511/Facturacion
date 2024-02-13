@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * 
  * @author GATEWAY1-Michel araujo
  */
 public class sqlfactura {
@@ -524,14 +524,14 @@ public class sqlfactura {
         return arr;
     }
 
-    public ArrayList<factura> getdocstpu(Connection con, String folio, String serie) {//obtiene datos de la factura recien ingresada
+    public ArrayList<factura> getdocstpu(Connection con, String folio, String serie, String bd) {//obtiene datos de la factura recien ingresada
         ArrayList<factura> arr = new ArrayList<>();
         try {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select top(100) id_documento,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formapago,metodopago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal,d.usocfdi,d.regimen,moneda,cadenaoriginal,descmetodopago,c.id_cliente\n"
                     + "from documento d\n"
-                    + "join ACobranzaTpu.dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
+                    + "join "+bd+".dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
                     + "where (d.id_cliente like '%" + folio + "%') and serie='" + serie + "' order by id_documento desc";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);

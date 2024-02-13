@@ -23,6 +23,7 @@ import Tpu.Materialestpu;
 import Server.ServerProccpt;
 import Server.Serverprod;
 import Server.Serverylite;
+import Tpu.Agentestpu;
 import Tpu.Antiguedad;
 import Tpu.ClientesTpu;
 import Tpu.Devolucionestpu;
@@ -144,7 +145,7 @@ public final class Principal extends javax.swing.JFrame {
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
-            u.setTurno("6");
+            u.setTurno("0");
             u.setProduccion("1");
             u.setTipo_usuario("2");
             modoadmin();
@@ -2363,7 +2364,14 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JtFacturaciontpu3ActionPerformed
 
     private void JmAgenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAgenteActionPerformed
-        // TODO add your handling code here:
+        try {
+            Agentestpu p = new Agentestpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_JmAgenteActionPerformed
 
     private void interfazlogin() {

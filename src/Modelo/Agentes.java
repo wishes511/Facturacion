@@ -10,8 +10,24 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Agentes {
-    private int idagente,idzona,idcanal;
-    private String Nombre,direccion, ciudad,cp, telefono, rfc;
+    private int idagente,idzona,idcanal, plazo;
+    private String Nombre,direccion, ciudad,cp, telefono, rfc, estatus;
+
+    public String getEstatus() {
+        return estatus;
+    }
+
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
+
+    public int getPlazo() {
+        return plazo;
+    }
+
+    public void setPlazo(int plazo) {
+        this.plazo = plazo;
+    }
 
     public int getIdagente() {
         return idagente;

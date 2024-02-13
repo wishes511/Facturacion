@@ -1368,7 +1368,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 double precio = k2.get(i).getDp().getPrecio();
                 double descuento = (tpares * precio) * desc;
                 model.setValueAt(k2.get(i).getDp().getMatped(), i, 0);
-                model.setValueAt("", i, 1);
+                model.setValueAt(k2.get(i).getDp().getCodigosat(), i, 1);
                 model.setValueAt(tpares, i, 2);
                 model.setValueAt(formateador.format(precio), i, 3);
                 model.setValueAt(formateador.format(descuento), i, 4);

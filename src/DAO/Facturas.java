@@ -200,7 +200,7 @@ public interface Facturas {
      */
     public ArrayList<factura> getpedidos(Connection cpt, String folio, String serie);
     
-    public ArrayList<factura> getdocstpu(Connection cpt, String folio, String serie);
+    public ArrayList<factura> getdocstpu(Connection cpt, String folio, String serie, String bd);
     
     public ArrayList<factura> getdocspagosremi(Connection con, String folio);
     

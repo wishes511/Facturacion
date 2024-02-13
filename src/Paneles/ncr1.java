@@ -271,6 +271,7 @@ public class ncr1 extends javax.swing.JPanel {
         ArrayList<String> arruuid = new ArrayList<>();
         arruuid = formateauuid(arruuid, arrfacturaxml.get(0).getFoliofiscalorig());
         f.setId(id);
+        f.setTurno("0");
         f.setExportacion("01");
         f.setIva(arrfacturaxml.get(0).getIva());
         f.setImpuestos(im);
