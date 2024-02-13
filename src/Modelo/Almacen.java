@@ -10,8 +10,8 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Almacen {
-    String nombre,tipoalmacen,estaus;
-    int almacen;
+    private String nombre,tipoalmacen,estaus;
+    private int almacen;
 
     public String getNombre() {
         return nombre;

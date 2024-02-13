@@ -13,11 +13,11 @@ import java.util.ArrayList;
  */
 public class Producto implements java.io.Serializable {
 
-    int producto, estilo, combinacion, corrida, pi, pf, almacen,
+    private int producto, estilo, combinacion, corrida, pi, pf, almacen,
             cantidad, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, linea;
-    String cordesc, desccombinacion, tipo, marca, codigosat;
-    float precio, costo;
-    ArrayList<String> arr = new ArrayList<>();
+    private String cordesc, desccombinacion, tipo, marca, codigosat;
+    private float precio, costo;
+    private ArrayList<String> arr = new ArrayList<>();
 
     public String getCodigosat() {
         return codigosat;

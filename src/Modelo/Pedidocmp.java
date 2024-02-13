@@ -10,9 +10,9 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Pedidocmp implements java.io.Serializable{
-    String refdoc,fecha,fechadoc,obs,estatus,serie;
-    int folio,proveedor,usuario;
-    float cantidad,importe,impuesto,total,deescuento;
+    private String refdoc,fecha,fechadoc,obs,estatus,serie;
+    private int folio,proveedor,usuario;
+    private float cantidad,importe,impuesto,total,deescuento;
 
     public String getRefdoc() {
         return refdoc;

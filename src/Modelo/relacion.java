@@ -10,7 +10,7 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class relacion {
-    String relacion, concepto;
+    private String relacion, concepto;
 
     public String getRelacion() {
         return relacion;

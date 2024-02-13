@@ -10,8 +10,8 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Cadenas implements java.io.Serializable{
-    int idcadena,nsucursales;
-    String nombre, contacto, direccion, telefono;
+    private int idcadena,nsucursales;
+    private String nombre, contacto, direccion, telefono;
 
     public int getIdcadena() {
         return idcadena;

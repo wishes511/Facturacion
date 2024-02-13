@@ -12,8 +12,8 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public class Servidorsql implements java.io.Serializable {
-    int id, selecccion;
-    String nombre,ip,nombre_estancia,rutarespaldo,estatus,bd,mes,year;
+    private int id, selecccion;
+    private String nombre,ip,nombre_estancia,rutarespaldo,estatus,bd,mes,year;
 
     public String getMes() {
         return mes;

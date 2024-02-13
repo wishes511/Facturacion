@@ -11,7 +11,7 @@ package Modelo;
  */
 public class usocfdi implements java.io.Serializable{
     
-    String usocfdi, descripcion;
+    private String usocfdi, descripcion;
 
     public String getusocfdi() {
         return usocfdi;

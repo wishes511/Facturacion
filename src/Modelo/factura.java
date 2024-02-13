@@ -12,10 +12,10 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public class factura implements java.io.Serializable{
-    int id, folio, naprobacion, estatus, retenciones, idcliente, totalcajas, cantidadxcaja
+    private int id, folio, naprobacion, estatus, retenciones, idcliente, totalcajas, cantidadxcaja
             , addenda,enviado, cvecliente, cveagente, parcialidad, parcialidad2,foliokardex,agente,plazo, totalpares,conceptos,
             id_pedido,id_kardex,foliopago,idcargo,idabono,year;
-    String nombrecliente, ncliente, nombreagente, claveusuario, serie, fecha, fechacancel
+    private String nombrecliente, ncliente, nombreagente, claveusuario, serie, fecha, fechacancel
             , motivodex, pedido, fechasolicitado, condicion, fechaentrega, nombre, rfc
             , calle, nexterior, ninterior,colonia, localidad, referencia, municipio, estado
             , pais, cp, Dnombre, Datencion, Dcalle, Dexterior, Dinterior, Dcolonia, Dlocalidad
@@ -25,19 +25,19 @@ public class factura implements java.io.Serializable{
             , nodeseriecert, fechacert, sellosat, sellocfdi, usocfdi, tiporelacion, descmetodop, empresa, certificado,marca,
             cuentaabono,subabono, desccuenta,refncredito,rfcctaemisora,ctaemisora,rfcctareceptor,
             ctareceptora,bancoemisor,bancoreceptor,ordenpago, seriecpt, turno,fechapago;
-    String codigo, descripcion, umedida,impuestodet,tipofac, exportacion;
-    double monto, impiva16, baseiva16,totalpago16,total, subtotal, impuestos, Descuento,
+    private String codigo, descripcion, umedida,impuestodet,tipofac, exportacion;
+    private double monto, impiva16, baseiva16,totalpago16,total, subtotal, impuestos, Descuento,
             baseimpuesto,cantidadfloat, preciodetalle,basedetalle,descuentodetalle,importedetalle,
             iva, is, montoiva, montoisr, tipocambio, montofoliofiscalorig,impiva17, baseiva17,totalpago17,
             saldo,saldomx,pago,importe;
-    float  montopago;
-    Cliente c;
-    ArrayList<Dfactura> arr = new ArrayList<>();
-    ArrayList<String> arruuid = new ArrayList<>();
-    ArrayList<cargo> arrcargo = new ArrayList<>();
-    ArrayList<Detpagos> arrpagos = new ArrayList<>();
-    ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
-     ArrayList<Poliza> arrpolizas = new ArrayList<>();
+    private float  montopago;
+    private Cliente c;
+    private ArrayList<Dfactura> arr = new ArrayList<>();
+    private ArrayList<String> arruuid = new ArrayList<>();
+    private ArrayList<cargo> arrcargo = new ArrayList<>();
+    private ArrayList<Detpagos> arrpagos = new ArrayList<>();
+    private ArrayList<Detpagos> arrpagos17 = new ArrayList<>();
+    private ArrayList<Poliza> arrpolizas = new ArrayList<>();
 
     public double getSaldo() {
         return saldo;

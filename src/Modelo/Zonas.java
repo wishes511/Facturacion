@@ -10,8 +10,8 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Zonas implements java.io.Serializable{
-    int zona;
-    String descripcion, descorta;
+    private int zona;
+    private String descripcion, descorta;
 
     public int getZona() {
         return zona;

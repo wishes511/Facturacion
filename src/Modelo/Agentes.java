@@ -10,8 +10,8 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Agentes {
-    int idagente,idzona,idcanal;
-    String Nombre,direccion, ciudad,cp, telefono, rfc;
+    private int idagente,idzona,idcanal;
+    private String Nombre,direccion, ciudad,cp, telefono, rfc;
 
     public int getIdagente() {
         return idagente;

@@ -12,9 +12,9 @@ import java.util.ArrayList;
  * @author GATEWAY1-
  */
 public class Estados implements java.io.Serializable{
-    int id_estado, id_pais;
-    String Descripcion, descorta;
-    ArrayList<Ciudades> arrciudades = new ArrayList<>();
+    private int id_estado, id_pais;
+    private String Descripcion, descorta;
+    private ArrayList<Ciudades> arrciudades = new ArrayList<>();
 
     public ArrayList<Ciudades> getArrciudades() {
         return arrciudades;

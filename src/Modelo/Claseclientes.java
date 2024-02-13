@@ -10,8 +10,8 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Claseclientes implements java.io.Serializable{
-    int idclasecliente;
-    String Descripcion;
+    private int idclasecliente;
+    private String Descripcion;
 
     public int getIdclasecliente() {
         return idclasecliente;

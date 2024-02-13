@@ -10,10 +10,10 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class abono {
-    String ref, referencia,ordenpago, nombre, folio,fechapago;
-    int cliente, cuenta, subcuenta, parcialidad;
-    double total,totalpago, pago, saldo, anterior;
-    Cliente c;
+    private String ref, referencia,ordenpago, nombre, folio,fechapago;
+    private int cliente, cuenta, subcuenta, parcialidad;
+    private double total,totalpago, pago, saldo, anterior;
+    private Cliente c;
 
     public String getFechapago() {
         return fechapago;

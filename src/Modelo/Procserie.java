@@ -19,7 +19,7 @@ import java.util.Date;
  */
 public class Procserie extends Thread {
 
-    Connection cpt, rcpt, cptup, rcptup;
+    private Connection cpt, rcpt, cptup, rcptup;
 
     public void setConnecxiones(ArrayList<Connection> arrc) {
         cpt = arrc.get(0);

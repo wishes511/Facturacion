@@ -10,8 +10,8 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Seriecpt implements java.io.Serializable{
-    int folio;
-    String npedido;
+    private int folio;
+    private String npedido;
 
     public int getFolio() {
         return folio;

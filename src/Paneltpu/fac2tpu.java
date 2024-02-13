@@ -795,7 +795,7 @@ public class fac2tpu extends javax.swing.JPanel {
         Dao_Catalogo dc = new Dao_Catalogo();
         for (int i = 0; i < JtDetalle.getRowCount(); i++) {
             String cv = JtDetalle.getValueAt(i, 1).toString();
-            if (!dc.getClaveprod_Var(sqlcfdi, cv)) {
+            if (!dc.getClaveprod_Var(cv)) {
                 resp = false;
                 JtDetalle.setValueAt("", i, 1);
                 break;

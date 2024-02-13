@@ -10,7 +10,7 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class Claveprov implements java.io.Serializable{
-    String claveprod, descripcion;
+    private String claveprod, descripcion;
 
     public String getClaveprod() {
         return claveprod;

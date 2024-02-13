@@ -13,11 +13,8 @@ import java.util.ArrayList;
  */
 public class Ciudades implements java.io.Serializable {
 
-    int id_ciudad, id_estado;
-    String descripcion;
-    
-
-    
+    private int id_ciudad, id_estado;
+    private String descripcion;
 
     public int getId_ciudad() {
         return id_ciudad;
