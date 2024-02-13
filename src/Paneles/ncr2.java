@@ -914,6 +914,7 @@ public class ncr2 extends javax.swing.JPanel {
                 f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
 //                f.setEmpresa("1");
                 f.setClaveusuario(u.getUsuario());
+                f.setTurno(u.getTurno());
                 f.setSerie("NCR");
 //                f.setFolio(dfac.getmaxfolio(rcpt,"NCR"));//Obtiene y setea el foliomaximo NCR de *documentos
                 f.setFecha(sdf.format(date));

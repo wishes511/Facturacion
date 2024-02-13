@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
  * @author GATEWAY1-
  */
 public class ClientesTpu extends javax.swing.JInternalFrame {
-    
+
     Clientetpu1 c1;
     Clientetpu2 c2;
     Cliente cli;
@@ -272,7 +272,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        if (checkcampos()) {
+        if (checkcampos() && checkcampos_campocliente()) {
             Cliente client = new Cliente();
             client.setNombre(c1.JtNombre.getText().toUpperCase());
             client.setRfc(c1.JtRfc.getText().toUpperCase());
@@ -287,6 +287,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
             client.setNombreagente(c1.JtContacto.getText().toUpperCase());
             client.setUsocfdi(c1.JtUso.getText().toUpperCase());
             client.setRegimen(c1.JtRegimen.getText().toUpperCase());
+            client.setCuenta(c1.JtBanco.getText().toUpperCase());
             daoClientes d = new daoClientes();
             if (u.getTurno().equals("6")) {
                 client.setCvecliente(d.maxcliente(con.getCobranzatpuB()));
@@ -297,9 +298,12 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
                     JOptionPane.showMessageDialog(null, "No puedo llevarse a cabo el ingreso del cliente, intentelo de nuevo o llame a sistemas");
                 }
             } else {
-                client.setCvecliente(d.maxcliente(con.getCobranzatpu()));
+//                Se converva por si en algun momento se desea ingresar clientes fiscales sin necesidad de importar
+//                client.setCvecliente(d.maxcliente(con.getCobranzatpu()));
+                client.setCvecliente(Integer.parseInt(c1.JtCliente.getText()));
                 if (d.nuevocliente(con.getCobranzatpuB(), client)) {
-                    d.nuevocliente(con.getCobranzatpu(), client);
+//                    Solo crear clientes que sean para remision
+//                    d.nuevocliente(con.getCobranzatpu(), client);
                     JOptionPane.showMessageDialog(null, "Exito al ingresar nuevo cliente");
                     vaciacampos();
                 }
@@ -308,13 +312,16 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Alguno de los campos esta mal o estas usando algun caracter no permitido");
             c1.JtNombre.requestFocus();
         }
+        if (!checkcampos_campocliente()) {
+            JOptionPane.showMessageDialog(null, "El numero de cliente es incorrecto, agregar otro");
+        }
 
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void JtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtBuscarActionPerformed
         buscacliente();
     }//GEN-LAST:event_JtBuscarActionPerformed
-    
+
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (Cliente arr1 : arr) {
@@ -322,7 +329,13 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         }
         JlCliente.setModel(model);
     }
-    
+
+    /**
+     * Verifica cada uno de los campos que sean correctos y que no tengan algun
+     * caracter invalido
+     *
+     * @return boolean
+     */
     private boolean checkcampos() {
         Formateodedatos d = new Formateodedatos();
         return (d.verificaStringsSC(c1.JtNombre.getText()) && d.verificaStringsSC(c1.JtRfc.getText())
@@ -331,7 +344,18 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
                 && d.verificaStringsSC(c1.JtCp.getText()) && d.verificaStringsSC(c1.JtContacto.getText())
                 && d.verificaStringsSC(c1.JtUso.getText()) && d.verificaStringsSC(c1.JtRegimen.getText()));
     }
-    
+
+    /**
+     * Este metodo separado ya que verificará en solitario el id del cliente y
+     * si es incorrecto hacer enfasis solo en el
+     *
+     * @return boolean
+     */
+    private boolean checkcampos_campocliente() {
+        Formateodedatos d = new Formateodedatos();
+        return (d.verificaStringsSC(c1.JtCliente.getText()));
+    }
+
     private void vaciacampos() {
         c1.JtNombre.setText("");
         c1.JtRegimen.setText("");
@@ -346,6 +370,8 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         c1.JtPais.setText("");
         c1.JtEstado.setText("");
         c1.JtCiudad.setText("");
+        c1.JtBanco.setText("");
+        c1.JtCliente.setText("");
     }
 
     private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
@@ -407,13 +433,13 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     private void JlSerieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JlSerieKeyPressed
 
     }//GEN-LAST:event_JlSerieKeyPressed
-    
+
     public void setcampos() {
         int row = JlCliente.getSelectedIndex();
         c1.c = arr.get(row);
         c1.setcampos();
     }
-    
+
     public void buscacliente() {
         String cliente = JtBuscar.getText();
         daoClientes dc = new daoClientes();
@@ -428,7 +454,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         }
         llenalista();
     }
-    
+
     public final void generaciontab() {
         c1 = new Clientetpu1();
         //c2 = new Clientetpu2();

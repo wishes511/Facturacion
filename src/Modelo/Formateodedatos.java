@@ -397,6 +397,9 @@ public class Formateodedatos {
     public String SerieFiscal_NCR(String turno) {
         String resp = "";
         switch (turno) {
+            case "0":
+                resp = "NCR";
+                break;
             case "5":
                 resp = "NCRTPU";
                 break;

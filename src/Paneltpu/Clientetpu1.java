@@ -128,8 +128,8 @@ public class Clientetpu1 extends javax.swing.JPanel {
         });
 
         JtCliente.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        JtCliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         JtCliente.setBorder(null);
-        JtCliente.setEnabled(false);
         JtCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JtClienteActionPerformed(evt);
@@ -688,7 +688,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JlEstatus;
-    private javax.swing.JTextField JtBanco;
+    public javax.swing.JTextField JtBanco;
     public javax.swing.JTextField JtCalle;
     public javax.swing.JTextField JtCiudad;
     public javax.swing.JTextField JtCliente;

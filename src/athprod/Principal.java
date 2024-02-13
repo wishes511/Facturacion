@@ -203,6 +203,7 @@ public final class Principal extends javax.swing.JFrame {
         JmCliente = new javax.swing.JMenuItem();
         JmDureza = new javax.swing.JMenuItem();
         JmFamilia = new javax.swing.JMenuItem();
+        JmAgente = new javax.swing.JMenuItem();
         Jmreportes = new javax.swing.JMenu();
         JmRepcob = new javax.swing.JMenu();
         JmEdocuenta = new javax.swing.JMenuItem();
@@ -575,6 +576,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         Catalogos.add(JmFamilia);
+
+        JmAgente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/person_3_icon-icons.com_68899.png"))); // NOI18N
+        JmAgente.setText("Agentes");
+        JmAgente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAgenteActionPerformed(evt);
+            }
+        });
+        Catalogos.add(JmAgente);
 
         JmTpu.add(Catalogos);
 
@@ -2352,6 +2362,10 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JtFacturaciontpu3ActionPerformed
 
+    private void JmAgenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAgenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JmAgenteActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -2948,6 +2962,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel JlEmpresa;
     private javax.swing.JLabel JlSerie;
     private javax.swing.JLabel JlUsuario;
+    private javax.swing.JMenuItem JmAgente;
     private javax.swing.JMenuItem JmAntiguedad;
     private javax.swing.JMenuItem JmAnuncios;
     private javax.swing.JMenuItem JmAuxcliente;
