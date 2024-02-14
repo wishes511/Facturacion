@@ -148,7 +148,6 @@ public class sqlclientes {
             ResultSet rs;
             rs = st.executeQuery();
             while (rs.next()) {
-
                 c.setCvecliente(rs.getInt("numcliente"));
                 c.setNombre(rs.getString("nombre40"));
                 c.setAgente(rs.getInt("agente1"));

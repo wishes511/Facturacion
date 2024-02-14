@@ -214,13 +214,13 @@ public class Agentestpu extends javax.swing.JInternalFrame {
         model.addColumn("Plazo");
         model.addColumn("Estatus");
         model.setNumRows(arra.size());
+        JtDetalle.setModel(model);
         for (int i = 0; i < arra.size(); i++) {
             String estado = (arra.get(i).getEstatus().equals("1")) ? "Activo" : "Inactivo";
             model.setValueAt(arra.get(i).getNombre(), i, 0);
             model.setValueAt(arra.get(i).getPlazo(), i, 1);
             model.setValueAt(estado, i, 2);
         }
-        JtDetalle.setModel(model);
     }
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
