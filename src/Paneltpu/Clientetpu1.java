@@ -41,7 +41,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
     ArrayList<Estados> arrestado = new ArrayList<>();
     ArrayList<Ciudades> arrciudad = new ArrayList<>();
     ArrayList<Agentes> arrage = new ArrayList<>();
-    public Cliente c;
+    public Cliente c = new Cliente();
     daocfdi dcfdi = new daocfdi();
     int estado = 0;
     int ciudad = 0;
@@ -625,6 +625,21 @@ public class Clientetpu1 extends javax.swing.JPanel {
                 break;
             }
         }
+    }
+
+    /**
+     * setea el valor del id del agente actual y la lista de agentes disponibles
+     *
+     * @param arr
+     */
+    public void setagente(ArrayList<Agentes> arr) {
+        this.arrage = arr;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (Agentes age : arr) {
+            model.addElement(age.getNombre());
+        }
+        //busca el id del agente para setearlo en el combo y dejarlo como predefinido
+        JcAgente.setModel(model);
     }
 
 

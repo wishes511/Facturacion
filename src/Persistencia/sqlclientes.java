@@ -301,7 +301,7 @@ public class sqlclientes {
             cpt.setAutoCommit(false);
             st = cpt.prepareStatement(sql);
             st.setInt(1, c.getCvecliente());
-            st.setInt(2, 1);
+            st.setInt(2, c.getAgente());
             st.setString(3, c.getNombre());
             st.setString(4, c.getRfc());
             st.setString(5, c.getCp());

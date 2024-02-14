@@ -55,6 +55,7 @@ public class Agentestpu extends javax.swing.JInternalFrame {
         JmBaja = new javax.swing.JMenuItem();
         JmAlta = new javax.swing.JMenuItem();
         JmModplazo = new javax.swing.JMenuItem();
+        JmModNombre = new javax.swing.JMenuItem();
         jScrollPane1 = new javax.swing.JScrollPane();
         JtDetalle = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
@@ -88,6 +89,15 @@ public class Agentestpu extends javax.swing.JInternalFrame {
             }
         });
         pop.add(JmModplazo);
+
+        JmModNombre.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/etiqueta.png"))); // NOI18N
+        JmModNombre.setText("Modificar Nombre");
+        JmModNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmModNombreActionPerformed(evt);
+            }
+        });
+        pop.add(JmModNombre);
 
         setBackground(new java.awt.Color(255, 255, 255));
         setClosable(true);
@@ -256,8 +266,27 @@ public class Agentestpu extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "El campo esta vacio o es invalido, intentalo de nuevo");
             }
         }
-
     }//GEN-LAST:event_JmModplazoActionPerformed
+
+    private void JmModNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmModNombreActionPerformed
+        String nombre = JOptionPane.showInputDialog("Introduzca el numero del plazo");
+        if (nombre != null) {
+            Formateodedatos fd = new Formateodedatos();
+            if (!nombre.isEmpty() && fd.verificaStringsSC(nombre)) {
+                int agente = arra.get(JtDetalle.getSelectedRow()).getIdagente();
+                Dao_Agente da = new Dao_Agente();
+                if (da.Edit_Nombre(cobranza, agente,nombre.toUpperCase())) {
+                    da.Edit_Nombre(cobb, agente, nombre.toUpperCase());
+                    JOptionPane.showMessageDialog(null, "Modificacion de plazo completo");
+                    setrows();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al modificar el plazo");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "El campo esta vacio o es invalido, intentalo de nuevo");
+            }
+        }
+    }//GEN-LAST:event_JmModNombreActionPerformed
 
     private void cambiaestado() {
         String estado = (arra.get(JtDetalle.getSelectedRow()).getEstatus().equals("1")) ? "0" : "1";
@@ -273,6 +302,7 @@ public class Agentestpu extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem JmAlta;
     private javax.swing.JMenuItem JmBaja;
+    private javax.swing.JMenuItem JmModNombre;
     private javax.swing.JMenuItem JmModplazo;
     private javax.swing.JTable JtDetalle;
     public javax.swing.JTextField JtMaterial;

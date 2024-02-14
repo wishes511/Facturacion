@@ -274,21 +274,22 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         if (checkcampos() && checkcampos_campocliente()) {
-            Cliente client = new Cliente();
-            client.setNombre(c1.JtNombre.getText().toUpperCase());
-            client.setRfc(c1.JtRfc.getText().toUpperCase());
-            client.setTelefono(c1.JtTelefono.getText());
-            client.setCorreo(c1.JtCorreo.getText());
-            client.setCalle(c1.JtCalle.getText().toUpperCase());
-            client.setColonia(c1.JtColonia.getText().toUpperCase());
-            client.setCp(c1.JtCp.getText());
-            client.setPais(c1.JtPais.getText().toUpperCase());
-            client.setEstado(c1.JtEstado.getText().toUpperCase());
-            client.setCiudad(c1.JtCiudad.getText().toUpperCase());
-            client.setNombreagente(c1.JtContacto.getText().toUpperCase());
-            client.setUsocfdi(c1.JtUso.getText().toUpperCase());
-            client.setRegimen(c1.JtRegimen.getText().toUpperCase());
-            client.setCuenta(c1.JtBanco.getText().toUpperCase());
+            Cliente client = c1.getCliente();
+//            client.setNombre(c1.JtNombre.getText().toUpperCase());
+//            client.setRfc(c1.JtRfc.getText().toUpperCase());
+//            client.setTelefono(c1.JtTelefono.getText());
+//            client.setCorreo(c1.JtCorreo.getText());
+//            client.setCalle(c1.JtCalle.getText().toUpperCase());
+//            client.setColonia(c1.JtColonia.getText().toUpperCase());
+//            client.setCp(c1.JtCp.getText());
+//            client.setPais(c1.JtPais.getText().toUpperCase());
+//            client.setEstado(c1.JtEstado.getText().toUpperCase());
+//            client.setCiudad(c1.JtCiudad.getText().toUpperCase());
+//            client.setNombreagente(c1.JtContacto.getText().toUpperCase());
+//            client.setUsocfdi(c1.JtUso.getText().toUpperCase());
+//            client.setRegimen(c1.JtRegimen.getText().toUpperCase());
+//            client.setCuenta(c1.JtBanco.getText().toUpperCase());
+//            client.setUsocfdi(c1.JtUso.getText().toUpperCase());
             daoClientes d = new daoClientes();
             if (u.getTurno().equals("6")) {
                 client.setCvecliente(d.maxcliente(con.getCobranzatpuB()));
@@ -340,7 +341,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     private boolean checkcampos() {
         Formateodedatos d = new Formateodedatos();
         return (d.verificaStringsSC(c1.JtNombre.getText()) && d.verificaStringsSC(c1.JtRfc.getText())
-                && d.verificaStringsSC(c1.JtTelefono.getText()) && d.verificaStringsSC(c1.JtCorreo.getText())
+                && d.verificaStringsSC(c1.JtTelefono.getText())
                 && d.verificaStringsSC(c1.JtCalle.getText()) && d.verificaStringsSC(c1.JtColonia.getText())
                 && d.verificaStringsSC(c1.JtCp.getText()) && d.verificaStringsSC(c1.JtContacto.getText())
                 && d.verificaStringsSC(c1.JtUso.getText()) && d.verificaStringsSC(c1.JtRegimen.getText()));
@@ -449,6 +450,10 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_JlSerieKeyPressed
 
+    /**
+     * Utilizado para el despliegue de los agentes, pero es necesario que 
+     * un cliente haya sido seleccionado para su posterior seleccion.
+     */
     public void setcampos() {
         //libreria para solo valores del agente
         Dao_Agente da = new Dao_Agente();
@@ -457,6 +462,17 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         c1.setcampos();
         //funcion solo setear la lista de agentes y el agente actual
         c1.setagente(arr.get(row).getAgente(), da.getagentes_all(con.getCobranzatpu()));
+    }
+
+    /**
+     * Solo se utiliza para el despliegue de los clientes sin necesidad
+     * de algun actionlistener
+     */
+    public void setcamposinicial() {
+        //libreria para solo valores del agente
+        Dao_Agente da = new Dao_Agente();
+        //funcion solo setear la lista de agentes y el agente actual
+        c1.setagente(da.getagentes_all(con.getCobranzatpu()));
     }
 
     public void buscacliente() {
@@ -468,7 +484,12 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
             if (u.getTurno().equals("6")) {
                 arr = dc.getClientestpuall(con.getCobranzatpuB(), cliente);
             } else {
-                arr = dc.getClientestpuall(con.getCobranzatpu(), cliente);
+                if (serie.equals("B")) {
+                    arr = dc.getClientestpuall(con.getCobranzatpuB(), cliente);
+                } else {
+                    arr = dc.getClientestpuall(con.getCobranzatpu(), cliente);
+                }
+
             }
         }
         llenalista();
