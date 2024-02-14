@@ -6,6 +6,7 @@
 package Tpu;
 
 import DAO.daoClientes;
+import Dao.Dao_Agente;
 import Modelo.Cliente;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
@@ -389,12 +390,26 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         cli = c1.getCliente();
         if (!cli.getNombre().isEmpty()) {
             daoClientes dc = new daoClientes();
-            if (dc.modcliente(con.getCobranzatpu(), cli)) {
-                JOptionPane.showMessageDialog(null, "Actualizacion completa");
-                JtBuscar.setText("");
-                buscacliente();
+            if (serie.equals("A") && !u.getTurno().equals("6")) {
+                if (dc.modcliente(con.getCobranzatpu(), cli)) {
+                    dc.modcliente(con.getCobranzatpuB(), cli);
+                    JOptionPane.showMessageDialog(null, "Actualizacion completa");
+                    JtBuscar.setText("");
+                    buscacliente();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar");
+                }
             } else {
-                JOptionPane.showMessageDialog(null, "Error al actualizar");
+                JOptionPane.showMessageDialog(null, "Debes de colocar la serie B o ser un usuario con permisos");
+            }
+            if (serie.equals("B")) {
+                if (dc.modcliente(con.getCobranzatpuB(), cli)) {
+                    JOptionPane.showMessageDialog(null, "Actualizacion completa");
+                    JtBuscar.setText("");
+                    buscacliente();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al actualizar");
+                }
             }
         }
     }//GEN-LAST:event_jLabel3MousePressed
@@ -435,9 +450,13 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_JlSerieKeyPressed
 
     public void setcampos() {
+        //libreria para solo valores del agente
+        Dao_Agente da = new Dao_Agente();
         int row = JlCliente.getSelectedIndex();
         c1.c = arr.get(row);
         c1.setcampos();
+        //funcion solo setear la lista de agentes y el agente actual
+        c1.setagente(arr.get(row).getAgente(), da.getagentes_all(con.getCobranzatpu()));
     }
 
     public void buscacliente() {

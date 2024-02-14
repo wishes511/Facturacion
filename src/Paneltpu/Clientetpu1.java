@@ -6,6 +6,7 @@
 package Paneltpu;
 
 import DAO.daocfdi;
+import Modelo.Agentes;
 import Modelo.Ciudades;
 import Modelo.Cliente;
 import Modelo.Estados;
@@ -21,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -38,6 +40,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
     ArrayList<Paises> arrpais = new ArrayList<>();
     ArrayList<Estados> arrestado = new ArrayList<>();
     ArrayList<Ciudades> arrciudad = new ArrayList<>();
+    ArrayList<Agentes> arrage = new ArrayList<>();
     public Cliente c;
     daocfdi dcfdi = new daocfdi();
     int estado = 0;
@@ -109,6 +112,8 @@ public class Clientetpu1 extends javax.swing.JPanel {
         jSeparator23 = new javax.swing.JSeparator();
         JtUso = new javax.swing.JTextField();
         jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        JcAgente = new javax.swing.JComboBox<>();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -328,6 +333,11 @@ public class Clientetpu1 extends javax.swing.JPanel {
         jLabel24.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel24.setText("Uso cfdi");
 
+        jLabel25.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        jLabel25.setText("Agente");
+
+        JcAgente.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -424,26 +434,29 @@ public class Clientetpu1 extends javax.swing.JPanel {
                                         .addComponent(JtUso)
                                         .addComponent(jSeparator23, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(JtCiudad)
+                                    .addComponent(jSeparator21)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(4, 4, 4)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jSeparator13, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
+                                    .addComponent(JtColonia)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jSeparator16, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(JtCp, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(JtCiudad)
-                                        .addComponent(jSeparator21)))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(4, 4, 4)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jSeparator13, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
-                                        .addComponent(JtColonia)))))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(JcAgente, 0, 274, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -540,7 +553,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
                         .addComponent(JtRegimen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSeparator22, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(49, 49, 49)
+                .addGap(48, 48, 48)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -551,10 +564,13 @@ public class Clientetpu1 extends javax.swing.JPanel {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel22)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(JtContacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(JtContacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel25)
+                                .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jSeparator18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     private void iniciarconexiones() {
@@ -587,6 +603,28 @@ public class Clientetpu1 extends javax.swing.JPanel {
         JtCorreo.setText(c.getCorreo());
         JtBanco.setText(c.getCuenta());
         JtTelefono.setText(c.getTelefono());
+    }
+
+    /**
+     * setea el valor del id del agente actual y la lista de agentes disponibles
+     *
+     * @param agente
+     * @param arr
+     */
+    public void setagente(int agente, ArrayList<Agentes> arr) {
+        this.arrage = arr;
+        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        for (Agentes age : arr) {
+            model.addElement(age.getNombre());
+        }
+        //busca el id del agente para setearlo en el combo y dejarlo como predefinido
+        JcAgente.setModel(model);
+        for (int i = 0; i < arr.size(); i++) {
+            if (arr.get(i).getIdagente() == agente) {
+                JcAgente.setSelectedIndex(i);
+                break;
+            }
+        }
     }
 
 
@@ -623,7 +661,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtNombreActionPerformed
 
     private void JtContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtContactoActionPerformed
-        
+
     }//GEN-LAST:event_JtContactoActionPerformed
 
     private void JtPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtPaisActionPerformed
@@ -682,11 +720,15 @@ public class Clientetpu1 extends javax.swing.JPanel {
             c.setCuenta(JtBanco.getText().toUpperCase());
             c.setRegimen(JtRegimen.getText().toUpperCase());
             c.setUsocfdi(JtUso.getText().toUpperCase());
+            c.setAgente(arrage.get(JcAgente.getSelectedIndex()).getIdagente());
         }
         return c;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> JcAgente;
+    private javax.swing.JComboBox<String> JcAgente1;
+    private javax.swing.JComboBox<String> JcAgente2;
     private javax.swing.JLabel JlEstatus;
     public javax.swing.JTextField JtBanco;
     public javax.swing.JTextField JtCalle;
@@ -716,6 +758,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
