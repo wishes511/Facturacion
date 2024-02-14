@@ -627,7 +627,7 @@ public class sqlfactura {
         return arr;
     }
 
-    public ArrayList<factura> getdocsxmltpu(Connection con, String folio, String serie) {//obtiene datos de la factura recien ingresada
+    public ArrayList<factura> getdocsxmltpu(Connection con, String folio, String serie, String bd) {//obtiene datos de la factura recien ingresada
         ArrayList<factura> arr = new ArrayList<>();
         try {
             PreparedStatement st;
@@ -636,7 +636,7 @@ public class sqlfactura {
                     + " d.estatus, ISNULL(foliofiscal,'') as foliofiscal, d.usocfdi,d.regimen,d.cp,serie,d.Observaciones,moneda,iva,tipocambio,\n"
                     + " dd.cantidad,dd.codigosat,descripcion, unidad,dd.precio,dd.base,dd.descuento as descu,dd.impuestos as impu,tiporelacion, uuidorig\n"
                     + "from documento d\n"
-                    + "join ACobranzaTpu.dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
+                    + "join "+bd+".dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
                     + "join ddocumento dd on dd.Id_Documento=d.Id_documento\n"
                     + "where d.id_documento=" + folio + " and serie='" + serie + "'\n"
                     + "order by d.id_documento desc";

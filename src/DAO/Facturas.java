@@ -129,7 +129,7 @@ public interface Facturas {
     
     public ArrayList<factura> getdocxml(Connection cpt, String fol, String serie, String empcobranza);
     
-    public ArrayList<factura> getdocxmltpu(Connection cpt, String fol, String serie);
+    public ArrayList<factura> getdocxmltpu(Connection cpt, String fol, String serie, String bd);
 
     public boolean Updatesellofiscal(Connection cpt, Sellofiscal s, int id);
 

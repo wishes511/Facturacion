@@ -266,13 +266,13 @@ public class fac1tpu extends javax.swing.JPanel {
     private void JbXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbXmlActionPerformed
         daofactura dfac = new daofactura();
         int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-        arrfacturaxml = dfac.getdocxmltpu(cpt, id + "", "FAC");
+        Formateodedatos fd = new Formateodedatos(); 
+        arrfacturaxml = dfac.getdocxmltpu(cpt, id + "", "FAC", fd.getbd_tocargo(u.getTurno()));
 
         factura f = new factura();
         String condicion;
         java.util.Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Formateodedatos fd = new Formateodedatos();
         ArrayList<Dfactura> arrf = new ArrayList<>();
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
         String im = String.valueOf(formateador.format(arrfacturaxml.get(0).getImpuestos()));

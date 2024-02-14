@@ -95,7 +95,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "0";
+    String prod = "1";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
     boolean adminmod = true;
     Usuarios u = new Usuarios();
@@ -252,6 +252,7 @@ public final class Principal extends javax.swing.JFrame {
         JmProveedor2 = new javax.swing.JMenuItem();
         JmCliente2 = new javax.swing.JMenuItem();
         JmFamilia2 = new javax.swing.JMenuItem();
+        JmAgente1 = new javax.swing.JMenuItem();
         Jmreportes2 = new javax.swing.JMenu();
         JmRepcob2 = new javax.swing.JMenu();
         JmEdocuenta2 = new javax.swing.JMenuItem();
@@ -986,6 +987,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         Catalogos2.add(JmFamilia2);
+
+        JmAgente1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/person_3_icon-icons.com_68899.png"))); // NOI18N
+        JmAgente1.setText("Agentes");
+        JmAgente1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmAgente1ActionPerformed(evt);
+            }
+        });
+        Catalogos2.add(JmAgente1);
 
         JmMaq2.add(Catalogos2);
 
@@ -2374,6 +2384,17 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmAgenteActionPerformed
 
+    private void JmAgente1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAgente1ActionPerformed
+        try {
+            Agentestpu p = new Agentestpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmAgente1ActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -2971,6 +2992,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel JlSerie;
     private javax.swing.JLabel JlUsuario;
     private javax.swing.JMenuItem JmAgente;
+    private javax.swing.JMenuItem JmAgente1;
     private javax.swing.JMenuItem JmAntiguedad;
     private javax.swing.JMenuItem JmAnuncios;
     private javax.swing.JMenuItem JmAuxcliente;

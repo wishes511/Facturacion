@@ -554,9 +554,9 @@ public class daofactura implements Facturas {
     }
 
     @Override
-    public ArrayList<factura> getdocxmltpu(Connection cpt, String fol, String serie) {
+    public ArrayList<factura> getdocxmltpu(Connection cpt, String fol, String serie, String bd) {
         sqlfactura f = new sqlfactura();
-        return f.getdocsxmltpu(cpt, fol, serie);
+        return f.getdocsxmltpu(cpt, fol, serie, bd);
     }
 
     @Override
