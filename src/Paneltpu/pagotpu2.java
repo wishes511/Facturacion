@@ -864,9 +864,12 @@ public class pagotpu2 extends javax.swing.JPanel {
 //                f.setImpiva16(getnewcantidades((total / 1.16) * 0.16, "iva"));// Nodo totales
 //                f.setBaseiva16(getnewcantidades(total / 1.16, "importe"));
 //                f.setTotalpago16(total);
-                f.setImpiva16(formatdecimal(impuestos));// Nodo totales
-                f.setBaseiva16(formatdecimal(subtotal));
-                f.setTotalpago16(formatdecimal(total));
+                f.setImpiva16(formatdecimal(impuestos*f.getTipocambio()));// Nodo totales
+                f.setBaseiva16(formatdecimal(subtotal*f.getTipocambio()));
+                Double au=formatdecimal(total*f.getTipocambio());
+                f.setTotalpago16(au);
+                //Monto del pago
+                f.setMonto(formatdecimal(total));
 //                Fin nodo totales
                 f.setExportacion("01");
                 f.setTiporelacion("");
@@ -1024,7 +1027,7 @@ public class pagotpu2 extends javax.swing.JPanel {
         int punto = 0;
         boolean band = false;
         double resp;
-        String c = String.valueOf(cant);
+        String c = String.valueOf(BigDecimal.valueOf(cant).setScale(3, RoundingMode.HALF_UP));
 //        String cadena = "";
         for (int i = 0; i < c.length(); i++) {
 //            Empieza a tomar datos despues del punto
@@ -1051,10 +1054,10 @@ public class pagotpu2 extends javax.swing.JPanel {
                 punto++;
             }
         }
-        if ((dato <= 5)) {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
+        if ((dato < 5)) {
+            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.FLOOR).doubleValue();
         } else {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
+            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.HALF_UP).doubleValue();
         }
         return resp;
     }
