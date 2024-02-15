@@ -693,7 +693,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtCiudadActionPerformed
 
     private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
-
+        JtNombre.requestFocus();
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void JtRegimenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtRegimenActionPerformed

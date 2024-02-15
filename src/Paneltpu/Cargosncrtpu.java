@@ -279,6 +279,7 @@ public class Cargosncrtpu extends javax.swing.JDialog {
                 String desc = JtCargo.getValueAt(renglon, 4).toString();
                 String saldomx = JtCargo.getValueAt(renglon, 8).toString();
                 String parci = JtCargo.getValueAt(renglon, 9).toString();
+                double saldo=arrcargoseleccion.get(i).getSaldo();
 
                 if (verificaciones(desc)) {
 //                  Verifica el tipo de relacion sea 03 por que es descuento
@@ -287,7 +288,8 @@ public class Cargosncrtpu extends javax.swing.JDialog {
 //                  El descuento no tiene que ser mayor o igual al saldo
 //                        if (Float.parseFloat(desc) == arrcargoseleccion.get(i).getImporte()
 //                                || Float.parseFloat(desc) > arrcargoseleccion.get(i).getImporte()) {
-                    if (Double.parseDouble(desc) > Double.parseDouble(saldomx)) {
+                    if (Double.parseDouble(desc) > Double.parseDouble(saldomx) &&
+                            Double.parseDouble(desc) > saldo) {
                         JOptionPane.showMessageDialog(null, "Introduzca correctamente un numero valido");
                         reset = false;
                         break;
@@ -296,7 +298,8 @@ public class Cargosncrtpu extends javax.swing.JDialog {
                     }
 ////                        System.out.println(Float.parseFloat(desc) + " " + arrcargoseleccion.get(i).getSaldo());
 //                        if (Float.parseFloat(desc) > Float.parseFloat(ars)) {
-                    if (Float.parseFloat(desc) > Float.parseFloat(saldomx)) {
+                    if (Double.parseDouble(desc) > Double.parseDouble(saldomx) &&
+                            Double.parseDouble(desc) > (saldo)) {
                         JOptionPane.showMessageDialog(null, "El valor introducido excede el saldo, intentelo de nuevo");
                         reset = false;
                         break;
