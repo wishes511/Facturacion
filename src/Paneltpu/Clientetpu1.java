@@ -603,6 +603,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
         JtCorreo.setText(c.getCorreo());
         JtBanco.setText(c.getCuenta());
         JtTelefono.setText(c.getTelefono());
+        JtUso.setText(c.getUsocfdi());
     }
 
     /**
