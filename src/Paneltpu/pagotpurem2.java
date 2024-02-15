@@ -551,14 +551,15 @@ public class pagotpurem2 extends javax.swing.JPanel {
         String r = JtCliente.getText();
 //        Se verifica que no entre vacio y ocacione una excepcion de a gratis
         if (!r.isEmpty()) {
+            Formateodedatos fd = new Formateodedatos();
 //            Son dos ya que la bd de pruebas es distinta a el servidor real
             String bdcob;
+            //Es importante hacer diferencia entre los tipos de turno
             if (u.getTipo_usuario().equals("2")) {
-                bdcob = (u.getTurno().equals("5")) ? "RACobranzaTpu" : "RACobranzamaq";
+                bdcob = fd.getbd_tocargo_REM_adm(u.getTurno());
             } else {
-                bdcob = (u.getTurno().equals("5")) ? "[192.168.90.1\\DATOS620].RACobranzaTpu" : "[192.168.90.1\\DATOS620].RACobranzamaq";
+                bdcob = fd.getbd_tocargo_REM(u.getTurno());
             }
-
 //            String bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu";
             daofactura df = new daofactura();
             arrcargo = df.getfactrem(ACobranza, r, bdcob);

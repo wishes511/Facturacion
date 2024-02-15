@@ -189,10 +189,10 @@ public class Formateodedatos {
         return resp;
     }
 
-    public boolean verficafechanula(JDateChooser jt){
-        return (jt.getDate() == null); 
+    public boolean verficafechanula(JDateChooser jt) {
+        return (jt.getDate() == null);
     }
-    
+
     public String formateamesrespaldo(int m) {
         String mes = "";
         switch (m) {
@@ -445,6 +445,51 @@ public class Formateodedatos {
                 break;
             case "7":
                 resp = "ACobranzaMaq2";
+                break;
+        }
+        return resp;
+    }
+
+    /**
+     * Bd para cobranza interna mediante el turno del usuario
+     *
+     * @param turno
+     * @return bd cobranza interna "192.168.90.1\\RACObranza....."
+     */
+    public String getbd_tocargo_REM(String turno) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = "[192.168.90.1\\DATOS620].RACobranzaTpu";
+                break;
+            case "6":
+                resp = "[192.168.90.1\\DATOS620].RACobranzamaq";
+                break;
+            case "7":
+                resp = "[192.168.90.1\\DATOS620].RACobranzamaq2";
+                break;
+        }
+        return resp;
+    }
+
+    /**
+     * Bd para cobranza interna mediante el turno del usuario solo admin y
+     * usuario de prueba
+     *
+     * @param turno
+     * @return bd cobranza interna "RACObranza....."
+     */
+    public String getbd_tocargo_REM_adm(String turno) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = "RACobranzaTpu";
+                break;
+            case "6":
+                resp = "RACobranzamaq";
+                break;
+            case "7":
+                resp = "RACobranzamaq2";
                 break;
         }
         return resp;
