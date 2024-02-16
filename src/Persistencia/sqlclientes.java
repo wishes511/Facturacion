@@ -67,7 +67,8 @@ public class sqlclientes {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select id_cliente,c.nombre as cliente,rfc,cp,calle,usocfdi,regimen,c.id_agente as agente,a.canal,plazo from cliente c\n"
+            String sql = "select id_cliente,c.nombre as cliente,rfc,cp,calle,usocfdi,regimen,c.id_agente as agente,a.canal,c.plazo "
+                    + "from cliente c\n"
                     + "join Agente a on  c.id_agente=a.id_agente\n"
                     + "where c.estatus='1'\n"
                     + "order by c.nombre";
