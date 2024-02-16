@@ -240,7 +240,7 @@ public class sqlclientes {
             cpt.setAutoCommit(false);
             PreparedStatement st;
             String sql = "update cliente set nombre=?,rfc=?,cp=?,usocfdi=?,calle=?,colonia=?,pais=?,"
-                    + "estado=?,regimen=?,ciudad=?,correo=?,cuenta=?,telefono=?, id_agente=?  "
+                    + "estado=?,regimen=?,ciudad=?,correo=?,cuenta=?,telefono=?, id_agente=?, plazo=?  "
                     + "where id_cliente=?";
             st = cpt.prepareStatement(sql);
             st.setString(1, c.getNombre());
@@ -257,7 +257,8 @@ public class sqlclientes {
             st.setString(12, c.getCuenta());
             st.setString(13, c.getTelefono());
             st.setInt(14, c.getAgente());
-            st.setInt(15, c.getCvecliente());
+            st.setInt(15, c.getPlazo());
+            st.setInt(16, c.getCvecliente());
             st.executeUpdate();
 //            System.out.println("mod cliente " + i);
             cpt.commit();
