@@ -12,6 +12,7 @@ import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Paneltpu.Nuevafamilia;
+import Paneltpu.Nuevoagente;
 import java.sql.Connection;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -187,11 +188,11 @@ public class Agentestpu extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-//        Nuevafamilia n = new Nuevafamilia(null, true);
-//        n.cpt = cpt;
-//        n.setVisible(true);
-//        JtMaterial.setText("");
-//        setrows();
+        Nuevoagente n = new Nuevoagente(null, true);
+        n.getconexiones(cobranza, cobb);
+        n.setVisible(true);
+        JtMaterial.setText("");
+        setrows();
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void JtMaterialMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtMaterialMousePressed
