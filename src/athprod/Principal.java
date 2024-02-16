@@ -217,10 +217,11 @@ public final class Principal extends javax.swing.JFrame {
         JmNotascrtpu = new javax.swing.JMenuItem();
         JmPagostpu = new javax.swing.JMenuItem();
         JmPagostpu2 = new javax.swing.JMenuItem();
-        JmInventarios = new javax.swing.JMenuItem();
+        JmVentastpu = new javax.swing.JMenu();
         JtFacturaciontpu = new javax.swing.JMenuItem();
         JtFacturaciontpu1 = new javax.swing.JMenuItem();
         JmRemision = new javax.swing.JMenuItem();
+        JmInventarios = new javax.swing.JMenuItem();
         JmPedimento = new javax.swing.JMenuItem();
         JmEntradasS = new javax.swing.JMenuItem();
         JmDevoluciones = new javax.swing.JMenuItem();
@@ -265,6 +266,7 @@ public final class Principal extends javax.swing.JFrame {
         JmNotascrtpu2 = new javax.swing.JMenuItem();
         JmPagostpu4 = new javax.swing.JMenuItem();
         JmPagostpu5 = new javax.swing.JMenuItem();
+        JmVentastpu1 = new javax.swing.JMenu();
         JtFacturaciontpu2 = new javax.swing.JMenuItem();
         JtFacturaciontpu3 = new javax.swing.JMenuItem();
         JmRemision2 = new javax.swing.JMenuItem();
@@ -681,14 +683,8 @@ public final class Principal extends javax.swing.JFrame {
 
         JmTpu.add(JmCobranzatpu);
 
-        JmInventarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_inventory_maintenance_product_box_boxes_2326.png"))); // NOI18N
-        JmInventarios.setText("Inventarios");
-        JmInventarios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JmInventariosActionPerformed(evt);
-            }
-        });
-        JmTpu.add(JmInventarios);
+        JmVentastpu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495.png"))); // NOI18N
+        JmVentastpu.setText("Ventas");
 
         JtFacturaciontpu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtir.png"))); // NOI18N
         JtFacturaciontpu.setText("Facturacion");
@@ -697,7 +693,7 @@ public final class Principal extends javax.swing.JFrame {
                 JtFacturaciontpuActionPerformed(evt);
             }
         });
-        JmTpu.add(JtFacturaciontpu);
+        JmVentastpu.add(JtFacturaciontpu);
 
         JtFacturaciontpu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirP0.png"))); // NOI18N
         JtFacturaciontpu1.setText("Facturacion pedimento 0");
@@ -706,7 +702,7 @@ public final class Principal extends javax.swing.JFrame {
                 JtFacturaciontpu1ActionPerformed(evt);
             }
         });
-        JmTpu.add(JtFacturaciontpu1);
+        JmVentastpu.add(JtFacturaciontpu1);
 
         JmRemision.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirR.png"))); // NOI18N
         JmRemision.setText("Pedidos");
@@ -715,7 +711,18 @@ public final class Principal extends javax.swing.JFrame {
                 JmRemisionActionPerformed(evt);
             }
         });
-        JmTpu.add(JmRemision);
+        JmVentastpu.add(JmRemision);
+
+        JmTpu.add(JmVentastpu);
+
+        JmInventarios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_inventory_maintenance_product_box_boxes_2326.png"))); // NOI18N
+        JmInventarios.setText("Inventarios");
+        JmInventarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmInventariosActionPerformed(evt);
+            }
+        });
+        JmTpu.add(JmInventarios);
 
         JmPedimento.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/construction_project_plan_building_architect_design_develop-61_icon-icons.com_60253.png"))); // NOI18N
         JmPedimento.setText("Pedimento");
@@ -1090,6 +1097,9 @@ public final class Principal extends javax.swing.JFrame {
 
         JmMaq2.add(JmCobranzatpu2);
 
+        JmVentastpu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495.png"))); // NOI18N
+        JmVentastpu1.setText("Ventas Maquinaria");
+
         JtFacturaciontpu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtir.png"))); // NOI18N
         JtFacturaciontpu2.setText("Facturacion");
         JtFacturaciontpu2.addActionListener(new java.awt.event.ActionListener() {
@@ -1097,7 +1107,7 @@ public final class Principal extends javax.swing.JFrame {
                 JtFacturaciontpu2ActionPerformed(evt);
             }
         });
-        JmMaq2.add(JtFacturaciontpu2);
+        JmVentastpu1.add(JtFacturaciontpu2);
 
         JtFacturaciontpu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirP0.png"))); // NOI18N
         JtFacturaciontpu3.setText("Facturacion pedimento 0");
@@ -1106,7 +1116,7 @@ public final class Principal extends javax.swing.JFrame {
                 JtFacturaciontpu3ActionPerformed(evt);
             }
         });
-        JmMaq2.add(JtFacturaciontpu3);
+        JmVentastpu1.add(JtFacturaciontpu3);
 
         JmRemision2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtirR.png"))); // NOI18N
         JmRemision2.setText("Pedidos");
@@ -1115,7 +1125,9 @@ public final class Principal extends javax.swing.JFrame {
                 JmRemision2ActionPerformed(evt);
             }
         });
-        JmMaq2.add(JmRemision2);
+        JmVentastpu1.add(JmRemision2);
+
+        JmMaq2.add(JmVentastpu1);
 
         JmPedimento2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/construction_project_plan_building_architect_design_develop-61_icon-icons.com_60253.png"))); // NOI18N
         JmPedimento2.setText("Pedimento");
@@ -1736,14 +1748,12 @@ public final class Principal extends javax.swing.JFrame {
     private void JtFacturaciontpuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFacturaciontpuActionPerformed
         try {
             System.out.println("cerrada " + conexion.getCobranzatpu());
-            System.out.println("cerrada " + conexion.getCpttpu().isClosed());
+//            System.out.println("cerrada " + conexion.getCpttpu().isClosed());
             FacturacionTpu p = new FacturacionTpu(conexion, u);
             this.JdPanel.add(p);
             p.setMaximum(true);
             p.show();
         } catch (PropertyVetoException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_JtFacturaciontpuActionPerformed
@@ -3086,6 +3096,8 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmVentaserie2;
     private javax.swing.JMenuItem JmVentaserie3;
     private javax.swing.JMenuItem JmVentaserie4;
+    private javax.swing.JMenu JmVentastpu;
+    private javax.swing.JMenu JmVentastpu1;
     private javax.swing.JMenuItem JmVerfacts;
     private javax.swing.JMenuItem Jmabrir;
     private javax.swing.JMenu Jmreportes;
