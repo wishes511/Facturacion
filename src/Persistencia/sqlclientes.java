@@ -212,10 +212,10 @@ public class sqlclientes {
                 st = c.prepareStatement(sql);
                 st.executeUpdate();
             }
-            sql = "insert into Cliente(id_cliente,id_agente,nombre,rfc,cp,razonsocial,usocfdi,calle,colonia,pais,estado,regimen,estatus,ciudad) "
+            sql = "insert into Cliente(id_cliente,id_agente,nombre,rfc,cp,razonsocial,usocfdi,calle,colonia,pais,estado,regimen,estatus,ciudad,plazo) "
                     + "values(" + cli.getCvecliente() + "," + cli.getAgente() + ",'" + cli.getNombre() + "','" + cli.getRfc() + "','"
                     + cli.getCp() + "','" + cli.getNombre() + "','" + cli.getUsocfdi() + "','" + cli.getCalle() + "','" + cli.getColonia() + "','"
-                    + cli.getPais() + "','" + cli.getEstado() + "','" + cli.getRegimen() + "','1','" + cli.getCiudad() + "')";
+                    + cli.getPais() + "','" + cli.getEstado() + "','" + cli.getRegimen() + "','1','" + cli.getCiudad() + "',30)";
 //            System.out.println(sql);
             st = c.prepareStatement(sql);
             st.executeUpdate();
@@ -278,9 +278,9 @@ public class sqlclientes {
             ResultSet rs;
             String sql = "select max(id_cliente) as cliente from cliente";
             st = cob.prepareStatement(sql);
-            rs=st.executeQuery();
-            while(rs.next()){
-                resp=rs.getInt("cliente");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                resp = rs.getInt("cliente");
             }
             resp++;
         } catch (SQLException ex) {
@@ -295,8 +295,8 @@ public class sqlclientes {
             PreparedStatement st;
             String sql = "insert into cliente(id_cliente,id_agente,nombre,rfc,cp,razonsocial,"
                     + "usocfdi,calle,colonia,pais,estado,regimen,estatus,ciudad,"
-                    + "correo,cuenta,telefono) "
-                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,'1',?,?,?,?)";
+                    + "correo,cuenta,telefono, plazo) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,'1',?,?,?,?,?)";
             cpt.setAutoCommit(false);
             st = cpt.prepareStatement(sql);
             st.setInt(1, c.getCvecliente());
@@ -315,13 +315,14 @@ public class sqlclientes {
             st.setString(14, c.getCorreo());
             st.setString(15, "");
             st.setString(16, c.getTelefono());
+            st.setInt(17, c.getPlazo());
             st.executeUpdate();
             cpt.commit();
             return true;
         } catch (SQLException ex) {
             try {
                 cpt.rollback();
-                JOptionPane.showMessageDialog(null, "Error al agregar cliente llama a sistemas, "+ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Error al agregar cliente llama a sistemas, " + ex.getMessage());
                 Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlclientes.class.getName()).log(Level.SEVERE, null, ex1);

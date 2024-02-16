@@ -344,7 +344,8 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
                 && d.verificaStringsSC(c1.JtTelefono.getText())
                 && d.verificaStringsSC(c1.JtCalle.getText()) && d.verificaStringsSC(c1.JtColonia.getText())
                 && d.verificaStringsSC(c1.JtCp.getText()) && d.verificaStringsSC(c1.JtContacto.getText())
-                && d.verificaStringsSC(c1.JtUso.getText()) && d.verificaStringsSC(c1.JtRegimen.getText()));
+                && d.verificaStringsSC(c1.JtUso.getText()) && d.verificaStringsSC(c1.JtRegimen.getText())
+                && d.verificaint(c1.JtPlazo.getText()));
     }
 
     /**
