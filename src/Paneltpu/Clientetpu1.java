@@ -636,6 +636,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
         JtBanco.setText(c.getCuenta());
         JtTelefono.setText(c.getTelefono());
         JtUso.setText(c.getUsocfdi());
+        JtPlazo.setText(c.getPlazo()+"");
     }
 
     /**

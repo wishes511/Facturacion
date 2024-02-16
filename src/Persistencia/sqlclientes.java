@@ -103,7 +103,9 @@ public class sqlclientes {
         try {
             PreparedStatement st;
             ResultSet rs;
-            String sql = "select id_cliente, id_agente, nombre, rfc, cp, razonsocial, usocfdi, calle, colonia, pais, Estado, regimen, estatus, ciudad,correo,cuenta,telefono \n"
+            String sql = "select id_cliente, id_agente, nombre, rfc, cp, razonsocial, "
+                    + "usocfdi, calle, colonia, pais, Estado, regimen, estatus, ciudad,"
+                    + "correo,cuenta,telefono,plazo \n"
                     + "from cliente c\n"
                     + "where nombre like ? \n"
                     + "order by nombre desc";
@@ -129,6 +131,7 @@ public class sqlclientes {
                 c.setCuenta(rs.getString("cuenta"));
                 c.setTelefono(rs.getString("telefono"));
                 c.setAgente(rs.getInt("id_agente"));
+                c.setPlazo(rs.getInt("plazo"));
                 arr.add(c);
             }
             rs.close();
