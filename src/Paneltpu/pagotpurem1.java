@@ -190,7 +190,7 @@ public class pagotpurem1 extends javax.swing.JPanel {
     
     private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
 //        int input = JOptionPane.showConfirmDialog(null, "Estas seguro que quieres cancelar?, "
-//                + "\n Recuerda que posteriormente debes cancelarla en el SAT", "Selecciona una opcion", JOptionPane.YES_NO_CANCEL_OPTION);
+//                + "\n ", "Selecciona una opcion", JOptionPane.YES_NO_CANCEL_OPTION);
 //        if (input == 0) {
 ////            Obtiene los registros por si las facturas relacionadas tienen algun pago
 //            int folio = arrfactura.get(JtDetalle.getSelectedRow()).getId();
