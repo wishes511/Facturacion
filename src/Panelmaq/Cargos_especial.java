@@ -7,7 +7,6 @@ package Panelmaq;
 
 import DAO.daoAgentes;
 import DAO.daofactura;
-import DAO.daokardexrcpt;
 import Modelo.Agentes;
 import Modelo.Cliente;
 import Modelo.Dfactura;
@@ -22,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
@@ -30,14 +30,16 @@ import javax.swing.JOptionPane;
  */
 public class Cargos_especial extends javax.swing.JPanel {
 
-    public String nombre, empresa, empresarcpt, empresacob;
-    public Connection sqlcfdi, sqlempresa;
-    public Connection ACobranza, rcpt, cpt;
+    public Connection ACobranza, cobB;
     Serverylite slite = new Serverylite();
     Serverprod prod = new Serverprod();
     public ArrayList<Agentes> arragente = new ArrayList<>();
     public ArrayList<Cliente> arrcliente = new ArrayList<>();
     public Usuarios u;
+    int clic = 0;
+    int clic2 = 0;
+    int clic3 = 0;
+    String serie = "A";
 
     /**
      * Creates new form Cargos_especial
@@ -71,6 +73,7 @@ public class Cargos_especial extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         JtCargo = new javax.swing.JTextField();
         jSeparator3 = new javax.swing.JSeparator();
+        JlSerie = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -149,6 +152,18 @@ public class Cargos_especial extends javax.swing.JPanel {
 
         jSeparator3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        JlSerie.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/sticker_120054A.png"))); // NOI18N
+        JlSerie.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JlSerieMousePressed(evt);
+            }
+        });
+        JlSerie.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                JlSerieKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -156,35 +171,37 @@ public class Cargos_especial extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(362, 362, 362)
-                        .addComponent(jLabel2))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(362, 362, 362)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(jLabel12)))
+                        .addGap(0, 367, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(jLabel12)))
-                .addContainerGap(377, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jSeparator3, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
-                            .addComponent(JtCargo)
-                            .addComponent(jSeparator2)
-                            .addComponent(JtCliente))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(JcAgente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JcCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
-                        .addGap(131, 131, 131))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2)
-                        .addContainerGap())))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(10, 10, 10)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jSeparator3, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+                                    .addComponent(JtCargo)
+                                    .addComponent(jSeparator2)
+                                    .addComponent(JtCliente))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(JcAgente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(JcCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
+                                .addGap(89, 89, 89)
+                                .addComponent(JlSerie))
+                            .addComponent(jScrollPane2))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,8 +220,13 @@ public class Cargos_especial extends javax.swing.JPanel {
                             .addComponent(JtCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addComponent(jLabel18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(jLabel18))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(JlSerie)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -283,14 +305,13 @@ public class Cargos_especial extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "Error al realizar factura, intente capturar de nuevo");
                 vaciarcampos();
             } else {
-                int id = dfac.nuevafactpu(cpt, f, ACobranza);
+                int id =3; //dfac.nuevafactpu(cpt, f, ACobranza);
                 Sellofiscal s = new Sellofiscal();
                 if (id != 0) {
 //                        
                     JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
                     vaciarcampos();
                     JtCliente.requestFocus();
-
                 }
             }
 
@@ -314,6 +335,36 @@ public class Cargos_especial extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_JtCargoActionPerformed
 
+    private void JlSerieMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlSerieMousePressed
+        if (evt.getButton() == 1) {
+            clic++;
+        }
+        if (evt.getButton() == 3) {
+            clic3++;
+        }
+        if (evt.getButton() == 2) {
+            clic2++;
+            String combinacion = clic + "" + clic2 + "" + clic3;
+            //            System.out.println(combinacion);
+            if (combinacion.equals("211")) {
+                if (serie.equals("A")) {
+                    serie = "B";
+                    JlSerie.setIcon(new ImageIcon(getClass().getResource("/Recursos/sticker_120054B.png")));// carga de logo
+                } else {
+                    serie = "A";
+                    JlSerie.setIcon(new ImageIcon(getClass().getResource("/Recursos/sticker_120054A.png")));// carga de logo
+                }
+                clic = 0;
+                clic2 = 0;
+                clic3 = 0;
+            }
+        }
+    }//GEN-LAST:event_JlSerieMousePressed
+
+    private void JlSerieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JlSerieKeyPressed
+        
+    }//GEN-LAST:event_JlSerieKeyPressed
+
     private void vaciarcampos() {
         JtObs.setText("");
         JtCliente.setText("");
@@ -323,6 +374,7 @@ public class Cargos_especial extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcAgente;
     private javax.swing.JComboBox<String> JcCliente;
+    private javax.swing.JLabel JlSerie;
     public javax.swing.JTextField JtCargo;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTextArea JtObs;

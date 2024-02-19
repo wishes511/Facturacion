@@ -103,7 +103,7 @@ public class generarXML40ncr {
         //Datos generales
         xml.setVersion("4.0");
         xml.setExportacion(encabezado.getExportacion());
-        xml.setSerie(fd.SerieFiscal_NCR(encabezado.getSerie()));
+        xml.setSerie(fd.SerieFiscal_NCR(encabezado.getTurno()));
         xml.setFolio(encabezado.getFolio());
         xml.setFecha(fecha);
         xml.setFormaPago(encabezado.getFormaP());

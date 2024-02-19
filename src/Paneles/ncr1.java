@@ -16,6 +16,7 @@ import Modelo.Estados;
 import Modelo.Formadepago;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
+import Modelo.Usuarios;
 import Modelo.convertirNumeros;
 import Modelo.factura;
 import Modelo.metodopago;
@@ -69,6 +70,7 @@ public class ncr1 extends javax.swing.JPanel {
     int estado = 0;
     int ciudad = 0;
     int pais = 0;
+    public Usuarios u;
 
     /**
      * Creates new form Cliente1
@@ -271,12 +273,12 @@ public class ncr1 extends javax.swing.JPanel {
         ArrayList<String> arruuid = new ArrayList<>();
         arruuid = formateauuid(arruuid, arrfacturaxml.get(0).getFoliofiscalorig());
         f.setId(id);
-        f.setTurno("0");
         f.setExportacion("01");
         f.setIva(arrfacturaxml.get(0).getIva());
         f.setImpuestos(im);
         f.setFolio(arrfacturaxml.get(0).getFolio());
         f.setSerie("NCR");
+        f.setTurno(u.getTurno());
         f.setFecha(sdf.format(date));
         f.setDescuento(Double.parseDouble(desc));
         f.setSubtotal(Double.parseDouble(sub));

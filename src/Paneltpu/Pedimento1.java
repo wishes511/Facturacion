@@ -173,11 +173,11 @@ public class Pedimento1 extends javax.swing.JPanel {
             pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
         String p = arr.get(JtDetalle.getSelectedRow()).getReferencia();
-//        if (p.equals("0")) {
-//            JmAddmaterial.setVisible(true);
-//        } else {
-//            JmAddmaterial.setVisible(false);
-//        }
+        if (p.equals("0") || u.getTurno().equals("7")) {
+            JmAddmaterial.setVisible(true);
+        } else {
+            JmAddmaterial.setVisible(false);
+        }
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void JmImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmImprimirActionPerformed
@@ -199,7 +199,7 @@ public class Pedimento1 extends javax.swing.JPanel {
 
     private void JmAddmaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAddmaterialActionPerformed
         int row = JtDetalle.getSelectedRow();
-        if (arr.get(row).getReferencia().equals("0") || arr.get(row).getReferencia().equals("1")) {
+        if (arr.get(row).getReferencia().equals("0") || arr.get(row).getReferencia().equals("1") || u.getTurno().equals("7")) {
             NuevomatPedimentoadd n = new NuevomatPedimentoadd(null, true);
             daomateriales am = new daomateriales();
             daoalmacenes da = new daoalmacenes();
