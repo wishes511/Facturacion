@@ -181,7 +181,7 @@ public class Pedimento1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void JmImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmImprimirActionPerformed
-        try {
+        try { 
             Map parametros = new HashMap();
             int ped = arr.get(JtDetalle.getSelectedRow()).getId_pedimento();
 //            System.out.println(ped);
