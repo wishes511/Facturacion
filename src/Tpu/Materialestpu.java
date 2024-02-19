@@ -23,6 +23,7 @@ public class Materialestpu extends javax.swing.JInternalFrame {
     Connection cpt, rcpt, cobranza;
     Connection litecfdi;
     ArrayList<Materiales> arrmat = new ArrayList<>();
+    public Usuarios u;
 
     /**
      * Creates new form Materiales
@@ -36,6 +37,7 @@ public class Materialestpu extends javax.swing.JInternalFrame {
         rcpt = c.getRcpttpu();
         cobranza = c.getCobranzatpu();
         litecfdi = c.getLitecfdi();
+        this.u=u;
     }
 
     /**
@@ -170,7 +172,7 @@ public class Materialestpu extends javax.swing.JInternalFrame {
 
     private void setrows() {
         daomateriales dm = new daomateriales();
-        arrmat = dm.getmateriales(cpt, JtMaterial.getText().toUpperCase());
+        arrmat = dm.getmateriales(cpt, JtMaterial.getText().toUpperCase(),u.getTurno());
         settable();
     }
 

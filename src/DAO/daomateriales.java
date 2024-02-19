@@ -23,9 +23,9 @@ public class daomateriales implements materiales {
     }
 
     @Override
-    public ArrayList<Materiales> getmateriales(Connection rcpt, String mat) {
+    public ArrayList<Materiales> getmateriales(Connection rcpt, String mat,String turno) {
         sqlmaterial s = new sqlmaterial();
-        return s.getallMaterials(rcpt, mat);
+        return s.getallMaterials(rcpt, mat, turno);
     }
 
     @Override

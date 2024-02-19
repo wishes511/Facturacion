@@ -271,7 +271,7 @@ public class Cargos_especial extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-
+        setfactura();
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void setfactura() {
@@ -357,6 +357,7 @@ public class Cargos_especial extends javax.swing.JPanel {
                 clic = 0;
                 clic2 = 0;
                 clic3 = 0;
+                despliegaclientes();
             }
         }
     }//GEN-LAST:event_JlSerieMousePressed
@@ -365,6 +366,21 @@ public class Cargos_especial extends javax.swing.JPanel {
         
     }//GEN-LAST:event_JlSerieKeyPressed
 
+    /**
+     * Despliega los clientes de acuerdo a la serie
+     */
+    private void despliegaclientes(){
+        DefaultComboBoxModel cli = new DefaultComboBoxModel();
+        daoAgentes da = new daoAgentes();
+        //La conexion puede ser entre interna o fiscal
+        Connection c=(serie.equals("A"))?ACobranza:cobB;
+        arragente = da.getAgentes(c);
+        for (Agentes agent : arragente) {
+            cli.addElement(agent.getNombre());
+        }
+        JcAgente.setModel(cli);
+    }
+    
     private void vaciarcampos() {
         JtObs.setText("");
         JtCliente.setText("");

@@ -289,7 +289,7 @@ public class Pedimento2 extends javax.swing.JPanel implements NativeKeyListener 
         daodurezas dd = new daodurezas();
 //        Ejecuta la consulta adecuada al turno
         if(u.getTurno().equals("5")){
-            arrmat = am.getmateriales(c.getCpttpu(), "");
+            arrmat = am.getmateriales(c.getCpttpu(), "", "5");
         }else{
             arrmat=am.getmaterialesmaq(c.getCpttpu(), "");
         }

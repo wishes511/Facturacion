@@ -19,7 +19,7 @@ public interface materiales {
     
     public boolean nuevomatmaq(Connection cpt, Materiales m);
 
-    public ArrayList<Materiales> getmateriales(Connection rcpt, String mat);
+    public ArrayList<Materiales> getmateriales(Connection rcpt, String mat,String turno);
     
     public ArrayList<Materiales> getmaterialesmaq(Connection rcpt, String mat);
 

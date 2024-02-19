@@ -204,9 +204,10 @@ public class Pedimento1 extends javax.swing.JPanel {
             daomateriales am = new daomateriales();
             daoalmacenes da = new daoalmacenes();
             daodurezas dd = new daodurezas();
+            n.u=u;
             n.cpt = c.getCpttpu();
             n.ped = arr.get(row);
-            n.arrmat = am.getmateriales(c.getCpttpu(), "");
+            n.arrmat = am.getmateriales(c.getCpttpu(), "", u.getTurno());
             n.arralm = da.getalmacenescpt(c.getCpttpu());
             n.arrdur = dd.getdurezas(c.getCpttpu());
             n.setcombos();

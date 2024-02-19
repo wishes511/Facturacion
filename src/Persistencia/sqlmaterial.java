@@ -65,7 +65,7 @@ public class sqlmaterial {
     }
 //TPU
 
-    public ArrayList<Materiales> getallMaterials(Connection con, String mat) {
+    public ArrayList<Materiales> getallMaterials(Connection con, String mat, String turno) {
         ArrayList<Materiales> arr = new ArrayList<>();
         try {
             PreparedStatement st;
@@ -81,6 +81,9 @@ public class sqlmaterial {
                 m.setUnidad(rs.getString("unidad"));
                 m.setCodigosat(rs.getString("codigosat"));
                 m.setMoneda(rs.getString("moneda"));
+                if (turno.equals("7")) {
+                    m.setNoserie(rs.getString("noserie"));
+                }
                 arr.add(m);
             }
             rs.close();
