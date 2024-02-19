@@ -254,7 +254,9 @@ public class NuevomatPedimento extends javax.swing.JDialog {
         DefaultComboBoxModel almc = new DefaultComboBoxModel();
         DefaultComboBoxModel dur = new DefaultComboBoxModel();
         for (Materiales arrmat1 : arrmat) {
-            mate.addElement(arrmat1.getDescripcion() + " -  " + arrmat1.getNoserie());
+            String desc = (u.getTurno().equals("5")) ? arrmat1.getDescripcion()
+                    : arrmat1.getDescripcion() + " - " + arrmat1.getNoserie();
+            mate.addElement(desc);
         }
         for (Almacen arrmat1 : arralm) {
             almc.addElement(arrmat1.getNombre());
