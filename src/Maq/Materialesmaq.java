@@ -62,6 +62,11 @@ public class Materialesmaq extends javax.swing.JInternalFrame {
 
         JmBorrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/crosscircleregular_106260.png"))); // NOI18N
         JmBorrar.setText("Borrar material");
+        JmBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmBorrarActionPerformed(evt);
+            }
+        });
         pop.add(JmBorrar);
 
         setBackground(new java.awt.Color(255, 255, 255));
@@ -185,7 +190,7 @@ public class Materialesmaq extends javax.swing.JInternalFrame {
         model.addColumn("Moneda");
         model.setNumRows(arrmat.size());
         for (int i = 0; i < arrmat.size(); i++) {
-            String estado=(arrmat.get(i).getEstatus().equals("1"))?"Activo":"Inactivo";
+            String estado = (arrmat.get(i).getEstatus().equals("1")) ? "Activo" : "Inactivo";
             model.setValueAt(arrmat.get(i).getDescripcion(), i, 0);
             model.setValueAt(arrmat.get(i).getPrecio(), i, 1);
             model.setValueAt(arrmat.get(i).getNoserie(), i, 2);
@@ -202,6 +207,12 @@ public class Materialesmaq extends javax.swing.JInternalFrame {
             pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_JtDetalleMousePressed
+
+    private void JmBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmBorrarActionPerformed
+        daomateriales dm = new daomateriales();
+        dm.deletemat(cpt, arrmat.get(JtDetalle.getSelectedRow()).getId_material());
+        setrows();
+    }//GEN-LAST:event_JmBorrarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

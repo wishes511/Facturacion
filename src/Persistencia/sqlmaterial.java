@@ -184,4 +184,25 @@ public class sqlmaterial {
         return arr;
     }
 
+    public boolean deletematerial(Connection c, int id) {
+        PreparedStatement st;
+        try {
+            c.setAutoCommit(false);
+            String sql = "update materiales set estatus='0' where id_material=?";
+            st = c.prepareStatement(sql);
+            st.setInt(1, id);
+            st.executeUpdate();
+            st.close();
+            c.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                c.rollback();
+                Logger.getLogger(sqlmaterial.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlmaterial.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
 }

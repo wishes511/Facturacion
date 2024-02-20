@@ -29,8 +29,9 @@ public class daomateriales implements materiales {
     }
 
     @Override
-    public boolean deletemat(int material) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean deletemat(Connection cpt, int material) {
+        sqlmaterial s = new sqlmaterial();
+        return s.deletematerial(cpt, material);
     }
 
     @Override

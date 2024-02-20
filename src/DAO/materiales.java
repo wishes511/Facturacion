@@ -23,7 +23,7 @@ public interface materiales {
     
     public ArrayList<Materiales> getmaterialesmaq(Connection rcpt, String mat);
 
-    public boolean deletemat(int material);
+    public boolean deletemat(Connection cpt, int material);
 
     public boolean modmaterial(Connection cpt, Connection rcpt, Materiales m);
 }
