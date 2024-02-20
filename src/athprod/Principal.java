@@ -25,6 +25,7 @@ import Server.Serverprod;
 import Server.Serverylite;
 import Tpu.Agentestpu;
 import Tpu.Antiguedad;
+import Tpu.Cargos_especiales;
 import Tpu.ClientesTpu;
 import Tpu.Devolucionestpu;
 import Tpu.Durezastpu;
@@ -95,7 +96,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
     boolean adminmod = true;
     Usuarios u = new Usuarios();
@@ -266,6 +267,7 @@ public final class Principal extends javax.swing.JFrame {
         JmNotascrtpu2 = new javax.swing.JMenuItem();
         JmPagostpu4 = new javax.swing.JMenuItem();
         JmPagostpu5 = new javax.swing.JMenuItem();
+        JmCargos = new javax.swing.JMenuItem();
         JmVentastpu1 = new javax.swing.JMenu();
         JtFacturaciontpu2 = new javax.swing.JMenuItem();
         JtFacturaciontpu3 = new javax.swing.JMenuItem();
@@ -1095,6 +1097,15 @@ public final class Principal extends javax.swing.JFrame {
         });
         JmCobranzatpu2.add(JmPagostpu5);
 
+        JmCargos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cutomer.png"))); // NOI18N
+        JmCargos.setText("Cargos especiales");
+        JmCargos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmCargosActionPerformed(evt);
+            }
+        });
+        JmCobranzatpu2.add(JmCargos);
+
         JmMaq2.add(JmCobranzatpu2);
 
         JmVentastpu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495.png"))); // NOI18N
@@ -1711,7 +1722,6 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmMaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmMaterialActionPerformed
         try {
-
             Materialestpu c = new Materialestpu(conexion, u);
 //            c.liteusuario = liteusuario;
             this.JdPanel.add(c);
@@ -2406,6 +2416,17 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmAgente1ActionPerformed
 
+    private void JmCargosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCargosActionPerformed
+        try {
+            Cargos_especiales p = new Cargos_especiales(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmCargosActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -3013,6 +3034,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmAvancesPt;
     private javax.swing.JMenuItem JmAvancesprod;
     private javax.swing.JMenuItem JmCES;
+    private javax.swing.JMenuItem JmCargos;
     private javax.swing.JMenuItem JmCatalogoprod;
     private javax.swing.JMenuItem JmCatalogoscmp;
     private javax.swing.JMenuItem JmCerrar;

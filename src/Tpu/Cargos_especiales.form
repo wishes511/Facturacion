@@ -10,7 +10,7 @@
     <Property name="resizable" type="boolean" value="true"/>
     <Property name="title" type="java.lang.String" value="Cargos especiales"/>
     <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-      <Image iconType="3" name="/Recursos/surtir.png"/>
+      <Image iconType="3" name="/Recursos/cutomer.png"/>
     </Property>
   </Properties>
   <SyntheticProperties>

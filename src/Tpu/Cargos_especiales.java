@@ -13,6 +13,7 @@ import Modelo.Formadepago;
 import Modelo.Usuarios;
 import Modelo.metodopago;
 import Modelo.usocfdi;
+import Panelmaq.Cargos_especial;
 import Paneltpu.fac1tpu;
 import Paneltpu.fac2tpu;
 import Server.Serverylite;
@@ -30,15 +31,11 @@ import java.util.logging.Logger;
 public class Cargos_especiales extends javax.swing.JInternalFrame {
 
     fac1tpu c1;
-    fac2tpu c2;
+    Cargos_especial c2;
     String var = "0";
     public String name, empresa, empresarcpt, empresacob;
-    Connection rcpt, litecfdi, liteempresa, cobranza, cpt;
+    Connection rcpt, litecfdi, liteempresa, cobranza, cpt, cobB;
     public Connection liteusuario;
-    ArrayList<usocfdi> arruso = new ArrayList<>();
-    ArrayList<Formadepago> arrforma = new ArrayList<>();
-    ArrayList<metodopago> arrmetodo = new ArrayList<>();
-    ArrayList<Cliente> arrcliente = new ArrayList<>();
     public Conexiones conexion;
     public Usuarios u;
 
@@ -55,13 +52,14 @@ public class Cargos_especiales extends javax.swing.JInternalFrame {
         cpt = cn.getCpttpu();
         rcpt = cn.getRcpttpu();
         cobranza = cn.getCobranzatpu();
+        cobB=cn.getCobranzatpuB();
         empresa="Tpucpt";
         empresarcpt="Tpurcpt";
         empresacob="ACobranzaTpu";
         u=usu;
         liteusuario=cn.getLiteusuario();
         generaciontab();//Tabs de facturacion
-        conexiones();
+        //conexiones();
         setarraylist();
     }
 
@@ -81,36 +79,16 @@ public class Cargos_especiales extends javax.swing.JInternalFrame {
     }
 
     private void setarraylist() {
-        daocfdi d = new daocfdi();
-        daoClientes dc= new daoClientes();
-        arrcliente=dc.getClientestpu(cobranza);
-        arruso = d.getusocfdi(litecfdi);
-        arrmetodo = d.getMetodopago(litecfdi);
-        arrforma = d.getFormadepago(litecfdi);
-        c2.arrcliente=arrcliente;
-        c2.arrfpago = arrforma;
-        c2.arrmetodo = arrmetodo;
-        c2.arruso = arruso;
         //tambien conexiones y variables
         c2.ACobranza = cobranza;
-        c2.rcpt = rcpt;
-        c2.sqlempresa = liteempresa;
-        c2.sqlcfdi = litecfdi;
-        c2.cpt = cpt;
-        c2.empresa=empresa;
-        c2.empresarcpt=empresarcpt;
-        c2.empresacob=empresacob;
+        c2.cobB=cobB;
         c2.u=u;// datos del usuario
+        c2.despliegaclientes();
         
         c1.cpt=cpt;
         c1.ACobranza=cobranza;
         c1.empresa=empresa;
         c1.empresacob=empresacob;
-        c1.arrfpago = arrforma;
-        c1.arrmetodo = arrmetodo;
-        c1.arruso = arruso;
-        c1.sqlcfdi=litecfdi;
-        c1.sqlempresa=liteempresa;
         c1.rcpt=rcpt;
         c1.u=u;
         c1.JtCliente.requestFocus();
@@ -134,7 +112,7 @@ public class Cargos_especiales extends javax.swing.JInternalFrame {
         setIconifiable(true);
         setResizable(true);
         setTitle("Cargos especiales");
-        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtir.png"))); // NOI18N
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/cutomer.png"))); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -169,10 +147,10 @@ public class Cargos_especiales extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
     public final void generaciontab() {//generar tabs
         c1 = new fac1tpu();
-        c2 = new fac2tpu();
-        Tabbed.addTab("Listado de Facturas", c1);
+        c2 = new Cargos_especial();
+        Tabbed.addTab("Listado de Cargos especiales", c1);
         Tabbed.setSelectedComponent(c1);
-        Tabbed.addTab("Nueva Factura", c2);
+        Tabbed.addTab("Nuevo Cargo", c2);
 
     }
 

@@ -227,4 +227,6 @@ public interface Facturas {
     public ArrayList<factura> getregspcancelpagotpu(Connection c, int id);
     
     public boolean execcancelacionPago(Connection c, Connection cob, ArrayList<factura> arr);
+    
+    public boolean nuevocargoespecial(Connection cob, factura f);
 }

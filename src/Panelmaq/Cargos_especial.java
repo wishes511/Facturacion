@@ -6,7 +6,9 @@
 package Panelmaq;
 
 import DAO.daoAgentes;
+import DAO.daoClientes;
 import DAO.daofactura;
+import Dao.Dao_Agente;
 import Modelo.Agentes;
 import Modelo.Cliente;
 import Modelo.Dfactura;
@@ -171,14 +173,9 @@ public class Cargos_especial extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(362, 362, 362)
-                                .addComponent(jLabel2))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(jLabel12)))
-                        .addGap(0, 367, Short.MAX_VALUE))
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel12)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,14 +189,19 @@ public class Cargos_especial extends javax.swing.JPanel {
                                     .addComponent(JtCargo)
                                     .addComponent(jSeparator2)
                                     .addComponent(JtCliente))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(JcAgente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(JcCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
-                                .addGap(89, 89, 89)
-                                .addComponent(JlSerie))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(89, 89, 89)
+                                        .addComponent(JlSerie))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel2))))
                             .addComponent(jScrollPane2))))
                 .addContainerGap())
         );
@@ -230,37 +232,18 @@ public class Cargos_especial extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel20)
-                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(99, 99, 99)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
-                .addComponent(jLabel2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * Se obtienen todos los cliente, se cargan y se busca cual es el agente que
-     * llega con la salida y da la opcion de elegir cualquier otro
-     */
-    private void setAgentes() {
-        DefaultComboBoxModel ag = new DefaultComboBoxModel();
-        daoAgentes da = new daoAgentes();
-        arragente = da.getAgentes(ACobranza);
-        for (Agentes agent : arragente) {
-            ag.addElement(agent.getNombre());
-        }
-        JcAgente.setModel(ag);
-        for (int i = 0; i < arragente.size(); i++) {
-            if (arrcliente.get(JcCliente.getSelectedIndex()).getAg().getIdagente() == arragente.get(i).getIdagente()) {
-                JcAgente.setSelectedIndex(i);
-            }
-        }
-    }
 
     private void JtClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtClienteMousePressed
         JtCliente.setText("");
@@ -271,52 +254,45 @@ public class Cargos_especial extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        setfactura();
+        Formateodedatos fd = new Formateodedatos();
+        //VErfifica que los campos introducidos sean correctos
+        if (fd.verificafloat(JtCargo.getText()) && fd.verificaStringsSC(JtCliente.getText())
+                && fd.verificaStringsSC(JtObs.getText())) {
+            setfactura();
+        } else {
+            JOptionPane.showMessageDialog(null, "Alguno de los valores es incorrecto, corrije e intentalo de nuevo");
+        }
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void setfactura() {
-        Formateodedatos fd = new Formateodedatos();
-        if (1 == 1) {
+        factura f = new factura();
+        java.util.Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        daofactura dfac = new daofactura();
+        // fin setear impuestos
+        int rowc = JcCliente.getSelectedIndex();
+        int rowa = JcAgente.getSelectedIndex();
+        f.setClaveusuario(u.getUsuario());
+        f.setSerie(serie);
+        f.setTurno(u.getTurno());
+        f.setConceptos(6);
+        f.setFecha(sdf.format(date));
+        f.setIdcliente(arrcliente.get(rowc).getCvecliente());
+        f.setNombre(arrcliente.get(rowc).getNombre());
+        f.setPlazo(arrcliente.get(rowc).getPlazo());
+        f.setObservaciones(JtObs.getText().toUpperCase());
+        f.setAgente(arragente.get(rowa).getIdagente());
+        f.setReferencia(JtCliente.getText().toUpperCase());
+        f.setParcialidad(0);
+        f.setImporte(Double.parseDouble(JtCargo.getText()));
+        f.setEmpresa("1");
+        if (dfac.nuevocargoespecial(ACobranza, f)) {
+            JOptionPane.showMessageDialog(null, "Proceso terminado: \n ");
+            vaciarcampos();
+            JtCliente.requestFocus();
         } else {
-            factura f = new factura();
-            java.util.Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            daofactura dfac = new daofactura();
-            ArrayList<Dfactura> arrf = new ArrayList<>();
-            // fin setear impuestos
-            int rowc = JcCliente.getSelectedIndex();
-            f.setExportacion("01");
-            f.setFolio(0);
-            f.setClaveusuario(u.getUsuario());
-//                Obtiene la serie fiscal de acuerdo al turno
-            f.setSerie("FAC");
-            f.setTurno(u.getTurno());
-            f.setConceptos(6);
-            f.setFecha(sdf.format(date));
-            f.setIdcliente(arrcliente.get(rowc).getCvecliente());
-            f.setNombre(arrcliente.get(rowc).getNombre());
-            f.setPlazo(arrcliente.get(rowc).getPlazo());
-            f.setObservaciones(JtObs.getText().toUpperCase());
-//                f.setAgente(k.get(row).getCli().getAgente());
-            f.setAgente(arrcliente.get(rowc).getAg().getIdagente());
-            f.setEmpresa("1");
-            //id del documento recien añadido
-            if (arrf.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Error al realizar factura, intente capturar de nuevo");
-                vaciarcampos();
-            } else {
-                int id =3; //dfac.nuevafactpu(cpt, f, ACobranza);
-                Sellofiscal s = new Sellofiscal();
-                if (id != 0) {
-//                        
-                    JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
-                    vaciarcampos();
-                    JtCliente.requestFocus();
-                }
-            }
-
+            JOptionPane.showMessageDialog(null, "Error al realizar factura, intente capturar de nuevo");
         }
-
     }
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
@@ -332,7 +308,7 @@ public class Cargos_especial extends javax.swing.JPanel {
     }//GEN-LAST:event_JtCargoMousePressed
 
     private void JtCargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCargoActionPerformed
-        // TODO add your handling code here:
+        JtObs.requestFocus();
     }//GEN-LAST:event_JtCargoActionPerformed
 
     private void JlSerieMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlSerieMousePressed
@@ -363,27 +339,44 @@ public class Cargos_especial extends javax.swing.JPanel {
     }//GEN-LAST:event_JlSerieMousePressed
 
     private void JlSerieKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JlSerieKeyPressed
-        
+
     }//GEN-LAST:event_JlSerieKeyPressed
 
     /**
-     * Despliega los clientes de acuerdo a la serie
+     * Despliega los clientes de acuerdo a la serie, este es importante ya que
+     * si hay diferencias entre los clientes internos y fiscales
      */
-    private void despliegaclientes(){
+    public void despliegaclientes() {
         DefaultComboBoxModel cli = new DefaultComboBoxModel();
-        daoAgentes da = new daoAgentes();
+        daoClientes dc = new daoClientes();
         //La conexion puede ser entre interna o fiscal
-        Connection c=(serie.equals("A"))?ACobranza:cobB;
-        arragente = da.getAgentes(c);
-        for (Agentes agent : arragente) {
+        Connection c = (serie.equals("A")) ? ACobranza : cobB;
+        arrcliente = dc.getClientestpu(c);
+        for (Cliente agent : arrcliente) {
             cli.addElement(agent.getNombre());
         }
-        JcAgente.setModel(cli);
+        JcCliente.setModel(cli);
+        setAgentes();
     }
-    
+
+    /**
+     * Se obtienen todos los agentes y se despliegan en el combobox
+     */
+    private void setAgentes() {
+        DefaultComboBoxModel ag = new DefaultComboBoxModel();
+        Dao_Agente da = new Dao_Agente();
+        Connection c = (serie.equals("A")) ? ACobranza : cobB;
+        arragente = da.getagentes_all(c);
+        for (Agentes agent : arragente) {
+            ag.addElement(agent.getNombre());
+        }
+        JcAgente.setModel(ag);
+    }
+
     private void vaciarcampos() {
         JtObs.setText("");
         JtCliente.setText("");
+        JtCargo.setText("");
         JtCliente.requestFocus();
     }
 

@@ -598,4 +598,10 @@ public class daofactura implements Facturas {
         return s.execcancelPago(c, cob, arr);
     }
 
+    @Override
+    public boolean nuevocargoespecial(Connection cob, factura f) {
+        sqlfactura s = new sqlfactura();
+        return s.new_Cargoespecial(cob, f);
+    }
+
 }

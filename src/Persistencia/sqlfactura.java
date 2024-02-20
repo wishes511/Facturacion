@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- * 
+ *
  * @author GATEWAY1-Michel araujo
  */
 public class sqlfactura {
@@ -324,8 +324,8 @@ public class sqlfactura {
             ResultSet rs;
             String sql = "select folio,serie,a.referencia\n"
                     + "from documento d\n"
-                    + "join "+bd+".dbo.cargo c on d.folio=c.referencia\n"
-                    + "join "+bd+".dbo.abono a on c.id_cargo=a.id_cargo\n"
+                    + "join " + bd + ".dbo.cargo c on d.folio=c.referencia\n"
+                    + "join " + bd + ".dbo.abono a on c.id_cargo=a.id_cargo\n"
                     + "where d.id_documento=" + iddoc + " and a.referencia like '%" + serie + "%' and a.estatus='1'";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);
@@ -531,7 +531,7 @@ public class sqlfactura {
             ResultSet rs;
             String sql = "select top(100) id_documento,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,d.nombre,formapago,metodopago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal,d.usocfdi,d.regimen,moneda,cadenaoriginal,descmetodopago,c.id_cliente\n"
                     + "from documento d\n"
-                    + "join "+bd+".dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
+                    + "join " + bd + ".dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
                     + "where (d.id_cliente like '%" + folio + "%') and serie='" + serie + "' order by id_documento desc";
 //            System.out.println(sql);
             st = con.prepareStatement(sql);
@@ -636,7 +636,7 @@ public class sqlfactura {
                     + " d.estatus, ISNULL(foliofiscal,'') as foliofiscal, d.usocfdi,d.regimen,d.cp,serie,d.Observaciones,moneda,iva,tipocambio,\n"
                     + " dd.cantidad,dd.codigosat,descripcion, unidad,dd.precio,dd.base,dd.descuento as descu,dd.impuestos as impu,tiporelacion, uuidorig\n"
                     + "from documento d\n"
-                    + "join "+bd+".dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
+                    + "join " + bd + ".dbo.Cliente c on d.id_cliente=c.id_Cliente\n"
                     + "join ddocumento dd on dd.Id_Documento=d.Id_documento\n"
                     + "where d.id_documento=" + folio + " and serie='" + serie + "'\n"
                     + "order by d.id_documento desc";
@@ -3250,8 +3250,8 @@ public class sqlfactura {
             String sql = "select distinct id_cargo,id_concepto,c.referencia,c.fecha,importe,\n"
                     + "saldo,cli.nombre,sim,c.plazo, c.id_cliente,\n"
                     + " c.referencia as ref, d.FolioFiscal,c.id_agente,d.RFC,cli.cp,cli.regimen,saldomx\n"
-                    + "from "+bd+".dbo.cargo c\n"
-                    + "join "+bd+".dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
+                    + "from " + bd + ".dbo.cargo c\n"
+                    + "join " + bd + ".dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
                     + "join Documento d on c.referencia =d.folio\n"
                     + "where (c.id_cliente = " + nombre + " ) and c.referencia NOT Like '%NCR%' "
                     + "and saldo!=0 and d.Serie='fac' and d.estatus='1' and ISNULL(foliofiscal,'') !='' "
@@ -3299,8 +3299,8 @@ public class sqlfactura {
             String sql = "select distinct id_cargo,id_concepto,c.referencia,c.fecha,importe,\n"
                     + "saldo,cli.nombre,sim,c.plazo, c.id_cliente,\n"
                     + " c.referencia as ref, d.FolioFiscal,c.id_agente,d.RFC,cli.cp,cli.regimen,saldomx,metodopago\n"
-                    + "from "+bd+".dbo.cargo c\n"
-                    + "join "+bd+".dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
+                    + "from " + bd + ".dbo.cargo c\n"
+                    + "join " + bd + ".dbo.cliente cli on c.id_cliente=cli.id_cliente\n"
                     + "join Documento d on c.referencia =d.folio\n"
                     + "where (c.id_cliente = " + nombre + " ) and c.referencia NOT Like '%NCR%' and saldo!=0 and d.Serie='fac' "
                     + "and d.estatus='1' and ISNULL(foliofiscal,'') !='' and foliofiscal!= 'null' order by c.fecha";
@@ -4095,6 +4095,61 @@ public class sqlfactura {
             try {
                 c.rollback();
                 cob.commit();
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
+
+    public boolean new_Cargoespecial(Connection cob, factura f) {
+        try {
+            PreparedStatement st;
+            cob.setAutoCommit(false);
+            int concepto = f.getConceptos();
+            String serie = f.getSerie();
+            String fecha = f.getFecha();
+            double total = f.getImporte();
+            String ref = f.getReferencia();
+            //cliente
+            int idcliente = f.getIdcliente();
+            String nombre = f.getNombre();
+            //fin cliente
+            String obs = f.getObservaciones();
+            int plazo = f.getPlazo();
+            int agente = f.getAgente();
+            String turno = f.getTurno();
+            int parcialidad = 0;
+
+            String sql = "insert into cargoespecial(id_agente,id_concepto,id_cliente,"
+                    + "referencia,fecha,importe,saldo,SIM,saldomx,turno,comision,"
+                    + "plazo,parcialidad,estatus,serie,ncliente, observaciones) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            st = cob.prepareStatement(sql);
+            st.setInt(1, agente);
+            st.setInt(2, concepto);
+            st.setInt(3, idcliente);
+            st.setString(4, ref);
+            st.setString(5, fecha);
+            st.setDouble(6, total);
+            st.setDouble(7, total);
+            st.setDouble(8, total);
+            st.setDouble(9, total);
+            st.setInt(10, Integer.parseInt(turno));
+            st.setDouble(11, 0);
+            st.setInt(12, plazo);
+            st.setInt(13, parcialidad);
+            st.setString(14, "1");
+            st.setString(15, serie);
+            st.setString(16, nombre);
+            st.setString(17, obs);
+            st.executeUpdate();
+            cob.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                cob.rollback();
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
