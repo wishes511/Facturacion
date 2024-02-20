@@ -36,11 +36,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel2" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
+          <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -55,12 +51,12 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="Tabbed" alignment="0" pref="1188" max="32767" attributes="0"/>
+              <Component id="Tabbed" alignment="0" pref="1178" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="Tabbed" alignment="0" pref="677" max="32767" attributes="0"/>
+              <Component id="Tabbed" alignment="1" pref="722" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
