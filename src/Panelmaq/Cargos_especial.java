@@ -5,15 +5,12 @@
  */
 package Panelmaq;
 
-import DAO.daoAgentes;
 import DAO.daoClientes;
 import DAO.daofactura;
 import Dao.Dao_Agente;
 import Modelo.Agentes;
 import Modelo.Cliente;
-import Modelo.Dfactura;
 import Modelo.Formateodedatos;
-import Modelo.Sellofiscal;
 import Modelo.Usuarios;
 import Modelo.factura;
 import Server.Serverprod;

@@ -4157,5 +4157,35 @@ public class sqlfactura {
             return false;
         }
     }
+
+    public ArrayList<cargo> getcargosespecial(Connection c, String var) {
+        ArrayList<cargo> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select id_cargo,referencia,fecha, importe,saldo,ncliente,"
+                    + "serie,observaciones,estatus \n"
+                    + "from cargoespecial\n"
+                    + "where ncliente like '%" + var + "%'";
+            st = c.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                cargo car= new cargo();
+                car.setId_cargo(rs.getInt("id_cargo"));
+                car.setReferencia(rs.getString("referencia"));
+                car.setFecha(rs.getString("fecha"));
+                car.setImporte(rs.getDouble("importe"));
+                car.setSaldo(rs.getDouble("saldo"));
+                car.setNombre(rs.getString("ncliente"));
+                car.setSerie(rs.getString("serie"));
+                car.setObservaciones(rs.getString("observaciones"));
+                car.setEstado(rs.getString("estatus"));
+                arr.add(car);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
     //metodos externos
 }

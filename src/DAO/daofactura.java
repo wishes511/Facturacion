@@ -598,10 +598,31 @@ public class daofactura implements Facturas {
         return s.execcancelPago(c, cob, arr);
     }
 
+    /**
+     * Ingresa un nuevo cargo especial a la bd
+     *
+     * @param cob conexion de cobranza fiscal
+     * @param f objeto de factura con sus datos necesarios
+     * @return boolean
+     */
     @Override
     public boolean nuevocargoespecial(Connection cob, factura f) {
         sqlfactura s = new sqlfactura();
         return s.new_Cargoespecial(cob, f);
+    }
+
+    /**
+     * Obtiene todos los cargos especiales mediante la conexion de cobranza
+     * fiscal y una vaariable que es la del nombre del cliente
+     *
+     * @param cob conexion cobranza
+     * @param var nombre del cliente
+     * @return lista de cargo
+     */
+    @Override
+    public ArrayList<cargo> getcargosespecial(Connection cob, String var) {
+        sqlfactura s = new sqlfactura();
+        return s.getcargosespecial(cob, var);
     }
 
 }

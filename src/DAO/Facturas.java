@@ -229,4 +229,6 @@ public interface Facturas {
     public boolean execcancelacionPago(Connection c, Connection cob, ArrayList<factura> arr);
     
     public boolean nuevocargoespecial(Connection cob, factura f);
+    
+    public ArrayList<cargo> getcargosespecial(Connection cob, String var);
 }

@@ -12,7 +12,23 @@ package Modelo;
 public class cargo {
     private int cuenta,subcuenta,plazo,cliente,cantidad,agente,renglon,id_concepto, id_cargo,parcialidad;
     private String nombre, referencia, fecha, fechav, ref, foliofiscal, sumafolios,rfc,calle,
-            colonia,municipio, estado,pais,cp, regimen, descnota,metodopago;
+            colonia,municipio, estado,pais,cp, regimen, descnota,metodopago, observaciones, serie;
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
+    public String getSerie() {
+        return serie;
+    }
+
+    public void setSerie(String serie) {
+        this.serie = serie;
+    }
 
     public String getMetodopago() {
         return metodopago;

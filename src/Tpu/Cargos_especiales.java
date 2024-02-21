@@ -5,24 +5,11 @@
  */
 package Tpu;
 
-import DAO.daoClientes;
-import DAO.daocfdi;
-import Modelo.Cliente;
 import Modelo.Conexiones;
-import Modelo.Formadepago;
 import Modelo.Usuarios;
-import Modelo.metodopago;
-import Modelo.usocfdi;
 import Panelmaq.Cargos_especial;
-import Paneltpu.fac1tpu;
-import Paneltpu.fac2tpu;
-import Server.Serverylite;
-import java.io.IOException;
+import Panelmaq.Cargos_especial_vista;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -30,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class Cargos_especiales extends javax.swing.JInternalFrame {
 
-    fac1tpu c1;
+    Cargos_especial_vista c1;
     Cargos_especial c2;
     String var = "0";
     public String name, empresa, empresarcpt, empresacob;
@@ -63,20 +50,6 @@ public class Cargos_especiales extends javax.swing.JInternalFrame {
         setarraylist();
     }
 
-    private void conexiones() {//Conexiones a servidor
-        try {
-            Serverylite l = new Serverylite();
-            litecfdi = l.getconexioncfdi();
-            liteempresa = l.getconexionC();
-//            System.out.println("cerrada "+cobranza.isClosed());
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Cargos_especiales.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(Cargos_especiales.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(Cargos_especiales.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     private void setarraylist() {
         //tambien conexiones y variables
@@ -143,7 +116,7 @@ public class Cargos_especiales extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public final void generaciontab() {//generar tabs
-        c1 = new fac1tpu();
+        c1 = new Cargos_especial_vista();
         c2 = new Cargos_especial();
         Tabbed.addTab("Listado de Cargos especiales", c1);
         Tabbed.setSelectedComponent(c1);
