@@ -5,7 +5,6 @@
  */
 package Panelmaq;
 
-import Paneltpu.*;
 import Modelo.Almacen;
 import Modelo.Combinacion;
 import Modelo.Corridas;

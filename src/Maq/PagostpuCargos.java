@@ -1,4 +1,4 @@
-/*
+/* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -51,17 +51,14 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         //tambien conexiones
         c1.empresa = empresa;
         c1.empresacob = empresacob;
-        c1.ACobranza = cobB;
+        c1.ACobranza = cobranza;
         c1.sqlempresa = liteempresa;
         c1.sqlcfdi = litecfdi;
         c1.cpt = cpt;
 
         //tambien conexiones
         c2.empresa = empresa;
-        c2.ACobranza = cobB;
-        c2.sqlempresa = liteempresa;
-        c2.sqlcfdi = litecfdi;
-        c2.cpt = cpt;
+        c2.ACobranza = cobranza;
         c2.u = u;
     }
 

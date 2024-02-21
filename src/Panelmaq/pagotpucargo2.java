@@ -5,57 +5,28 @@
  */
 package Panelmaq;
 
-import Paneltpu.*;
-import Paneles.*;
-import DAO.daocfdi;
 import DAO.daocomisiones;
-import DAO.daoempresa;
 import DAO.daofactura;
 import Modelo.Comision;
 import Modelo.ConceptosES;
 import Modelo.Detpagos;
 import Modelo.Dfactura;
-import Modelo.Empresas;
-import Modelo.Formadepago;
 import Modelo.Formateodedatos;
-import Modelo.Kardexrcpt;
 import Modelo.Usuarios;
 import Modelo.cargo;
-import Modelo.convertnum;
 import Modelo.factura;
-import Modelo.metodopago;
-import Modelo.relacion;
-import Modelo.usocfdi;
 import Server.Serverprod;
-import Server.Serverylite;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Connection;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRExporter;
-import net.sf.jasperreports.engine.JRExporterParameter;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.util.JRLoader;
-import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -64,29 +35,18 @@ import net.sf.jasperreports.view.JasperViewer;
 public class pagotpucargo2 extends javax.swing.JPanel {
 
     public String nombre, empresa;
-    public Connection sqlcfdi, sqlempresa;
 //    ACobranza es la conexion a la bd interna, no hay fiscal
-    public Connection ACobranza, rcpt, cpt;
-    Serverylite slite = new Serverylite();
+    public Connection ACobranza;
     Serverprod prod = new Serverprod();
-    public ArrayList<Formadepago> arrfpago = new ArrayList<>();
-    public ArrayList<usocfdi> arruso = new ArrayList<>();
-    public ArrayList<metodopago> arrmetodo = new ArrayList<>();
     public ArrayList<ConceptosES> arrcuentas = new ArrayList<>();
-    public ArrayList<relacion> arrrelacion = new ArrayList<>();
     ArrayList<cargo> arrcargo = new ArrayList<>();
     ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
-    daocfdi dcfdi = new daocfdi();
 
     double descuentos;
     double impuestos;
     double subtotal;
     double total;
     public Usuarios u;
-
-    //kardex para fac
-    ArrayList<Kardexrcpt> k = new ArrayList<>();
-    ArrayList<Kardexrcpt> k0 = new ArrayList<>();
 
     /**
      * Creates new form Cliente1
@@ -97,6 +57,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         JlTcambio.setVisible(false);
         JtTCambio.setVisible(false);
         JtCliente.requestFocus();
+        jPanel2.setVisible(false);
 //        iniciarconexiones();  Solo si se usa solo la clase si no se pasan directamente desde facturacion
 // carga en combos los catalogos del sat
 
@@ -524,16 +485,11 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-//    private void cargatabla() {
-//        model.addColumn("Descripcion");
-//        model.addColumn("Clave sat");
-//        model.addColumn("Descuento");
-//        model.addColumn("Cantidad");
-//        JtDetalle.setModel(model);
-//    }
+    /**
+     * Obtiene las cuentas de cobranza y las despliega en un combobox
+     */
     public void cargacombos() {//catalogos de Sat
         DefaultComboBoxModel cuentas = new DefaultComboBoxModel();
-//        JtRelacion.setModel(relacion);
         // Cuentas
         daofactura d = new daofactura();
         arrcuentas = d.getalcuentastpu(ACobranza, "50");
@@ -626,13 +582,11 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         }
     }
 
-    private void actualizaempresa() {
-        arrcargoseleccion.clear();
-        JtCliente.setText("");
-        JtCliente.requestFocus();
-        llenalistafac();
-    }
-
+    /**
+     * Manda llamar una interfaz para seleccionar y capturar importes a pagar Al
+     * final regresa una lista con los cargos seleccionados al igual que sus
+     * pagos
+     */
     private void cargacargos() {
         if (!arrcargo.isEmpty()) {
             Cargos_especialtpu p = new Cargos_especialtpu(null, true);
@@ -655,14 +609,15 @@ public class pagotpucargo2 extends javax.swing.JPanel {
 
     private void llenalistafac() {
         DefaultListModel<String> model = new DefaultListModel<>();
-        DecimalFormat formateador = new DecimalFormat("####.##");
+        Formateodedatos fd = new Formateodedatos();
         for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-            model.addElement("REM " + arrcargoseleccion1.getReferencia() + " - " + formateador.format(arrcargoseleccion1.getDescuento()));
+            model.addElement("REM " + arrcargoseleccion1.getReferencia() + " - " + fd.formatdecimal(arrcargoseleccion1.getDescuento()));
         }
         Jlcargofac.setModel(model);
     }
 
     private void setfactura() {
+        Formateodedatos fd = new Formateodedatos();
         if (arrcargoseleccion.isEmpty()) {
             JtCliente.requestFocus();
         } else {
@@ -670,13 +625,13 @@ public class pagotpucargo2 extends javax.swing.JPanel {
             //Se obtiene el total de las facturas que anter se capturaron
             for (int i = 0; i < arrcargoseleccion.size(); i++) {
 //                totalrev += Double.parseDouble(formateador.format(arrcargoseleccion.get(i).getDescuento()));
-                totalrev += formatdecimal(arrcargoseleccion.get(i).getDescuento());
+                totalrev += fd.formatdecimal(arrcargoseleccion.get(i).getDescuento());
             }
 //            System.out.println(total + " " + totalrev);
 //            System.out.println(total + " " + formateador.format(totalrev));
 //            if (totalrev != total) {
 //            System.out.println(formatdecimal(total) + " ** " + formatdecimal(totalrev));
-            if (formatdecimal(total) != formatdecimal(totalrev)) {
+            if (fd.formatdecimal(total) != fd.formatdecimal(totalrev)) {
                 JOptionPane.showMessageDialog(null, "El total de las lineas debe de ser igual al seleccionado en las facturas");
                 JtDetalle.requestFocus();
             } else {
@@ -685,8 +640,6 @@ public class pagotpucargo2 extends javax.swing.JPanel {
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 daofactura dfac = new daofactura();
-//                Nocolisionncr n = new Nocolisionncr();
-                f.setFolio(dfac.getmaxfoliotpu(cpt, "RPAG"));//Obtiene y setea el foliomaximo de *documentos
                 if (JcUsd.isSelected()) {
                     f.setMoneda("USD");
                     f.setTipocambio(Float.parseFloat(JtTCambio.getText()));
@@ -694,39 +647,17 @@ public class pagotpucargo2 extends javax.swing.JPanel {
                     f.setMoneda("MXN");
                     f.setTipocambio(1);
                 }
-                // fin setear impuestos
-//                f.setImpiva16(impuestos);// Nodo totales
-//                f.setBaseiva16(subtotal);
-//                f.setTotalpago16(total);
-//                Fin nodo totales
-                f.setExportacion("01");
-                f.setTiporelacion("");
-                f.setEmpresa("1");
                 f.setClaveusuario(u.getUsuario());
                 f.setSerie("RPAG");
                 f.setFecha(sdf.format(date));
-                f.setDescuento(0);
-                f.setPedido("");
-                f.setFechasolicitado(sdf.format(date));
                 f.setTurno(u.getTurno());
                 f.setFechapago(sdf.format(JtFecha.getDate()));
                 f.setSubtotal(0);
                 f.setTotal(total);
                 f.setIdcliente(arrcargoseleccion.get(0).getCliente());
                 f.setNombre(arrcargoseleccion.get(0).getNombre());
-                f.setRfc(arrcargoseleccion.get(0).getRfc());
-                f.setCp(arrcargoseleccion.get(0).getCp());
-                f.setRegimen(arrcargoseleccion.get(0).getRegimen());
-                f.setTotalcajas(0);
-                f.setTiposerie("PAGO");
-                f.setMetodopago("PUE");
-                f.setDescmetodop("PAGO EN UNA SOLA EXHIBICION");
-                f.setUsocfdi("CP01");
-                f.setCondicion("Contado");
                 f.setAgente(arrcargoseleccion.get(0).getAgente());
                 f.setPlazo(arrcargoseleccion.get(0).getPlazo());
-                f.setMarca(arrcargoseleccion.get(0).getRef());
-                f.setLugarexpedicion("36400");
                 //concepto
                 f.setCuentaabono(arrcuentas.get(JcCuenta.getSelectedIndex()).getId_concepto() + "");
                 f.setDesccuenta(arrcuentas.get(JcCuenta.getSelectedIndex()).getNombre());
@@ -735,7 +666,6 @@ public class pagotpucargo2 extends javax.swing.JPanel {
                 //Mandar un string con los folios fiscales
                 ArrayList<Detpagos> arrdetpago = new ArrayList<>();
                 ArrayList<Dfactura> arrdet = new ArrayList<>();
-                ArrayList<Detpagos> arrdetpago17 = new ArrayList<>();
                 //Detallado del pago
                 for (int i = 0; i < arrcargoseleccion.size(); i++) {
                     Detpagos d = new Detpagos();
@@ -764,9 +694,9 @@ public class pagotpucargo2 extends javax.swing.JPanel {
                     d.setSaldo(sa - arrcargoseleccion.get(i).getDescuento());
                     pa = arrcargoseleccion.get(i).getDescuento();
                     sal = sa - pa;
-                    d.setImportesaldoant(getcant16(sa));
-                    d.setImportepagado(getcant16(pa));
-                    d.setImpsaldoinsoluto(getcant16(sal));
+                    d.setImportesaldoant(fd.formatdecimal(sa));
+                    d.setImportepagado(fd.formatdecimal(pa));
+                    d.setImpsaldoinsoluto(fd.formatdecimal(sal));
                     arrdetpago.add(d);
                 }
 //                Solo 1 renglon para el cuerpo de la factura
@@ -781,13 +711,12 @@ public class pagotpucargo2 extends javax.swing.JPanel {
                 arrdet.add(df);
                 f.setArr(arrdet);
                 f.setArrpagos(arrdetpago);
-                f.setArrpagos17(arrdetpago17);
                 f.setRefncredito(facturas);
                 f.setObservaciones(JtObs.getText().toUpperCase());
                 f.setFoliofiscalorig(folios);
 //                int verifica = dfac.getbuscafoliotpu(cpt, "PAG", f.getFolio() + "");
 //                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
-                int id = dfac.insertpagotpu(cpt, ACobranza, f);
+                int id = dfac.insertpagotpu(ACobranza, ACobranza, f);
                 if (id != 0) {
                     setcomisiones(f);
 //                    System.out.println("Exito");
@@ -802,53 +731,13 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         }
     }
 
-    private double formatdecimal(double cant) {
-        int dato = 0;
-        int punto = 0;
-        boolean band = false;
-        double resp;
-        String c = String.valueOf(cant);
-//        String cadena = "";
-        for (int i = 0; i < c.length(); i++) {
-//            Empieza a tomar datos despues del punto
-            if (c.charAt(i) == '.') {
-                band = true;
-            }
-            if (band) {
-//                3 digitos de decimal para saber qe hacer con los decimales
-                if (punto == 3) {
-                    dato = Integer.parseInt(c.charAt(i) + "");
-//                    i = c.length();
-                    break;
-                }
-//                Para un cuarto decimal, si es mayor a
-//                if (punto == 4) {
-//                    int datoaux = Integer.parseInt(c.charAt(i) + "");
-//                    if (datoaux > 5) {
-//                        dato += 1;
-//                    }
-//                    i = c.length();
-//                    break;
-//                }
-//                cadena += c.charAt(i);
-                punto++;
-            }
-        }
-        if ((dato < 5)) {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
-        } else {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        }
-        return resp;
-    }
-
     public ArrayList<cargo> getcargosfacs() {
         ArrayList<cargo> arr = new ArrayList<>();
-        DecimalFormat formateador = new DecimalFormat("####.##");
+        Formateodedatos fd = new Formateodedatos();
         for (int y = 0; y < arrcargoseleccion.size(); y++) {
             cargo car = new cargo();
-            double desc = Double.parseDouble(formateador.format(arrcargoseleccion.get(y).getDescuento()));
-            car.setDescuento(Double.parseDouble(formateador.format(desc)));
+            double desc = fd.formatdecimal(arrcargoseleccion.get(y).getDescuento());
+            car.setDescuento(desc);
             car.setFoliofiscal(arrcargoseleccion.get(y).getFoliofiscal());
             car.setCuenta(arrcargoseleccion.get(y).getCuenta());
             car.setSubcuenta(arrcargoseleccion.get(y).getSubcuenta());
@@ -892,7 +781,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
             arrcomision.set(i, comi);
         }
 //        Se realiza la insercion de cada de los folios validos en la bd
-        dc.newcomision(cpt, arrcomision);
+        //dc.newcomision(cpt, arrcomision);
     }
 
     /**
@@ -938,61 +827,6 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         return resp;
     }
 
-    /**
-     *
-     * @param folio Folio de la factura
-     * @param arrmetodo Array que contiene el metodo de pago
-     * @param arruso Array que contiene el uso de cfdi
-     * @see Despliegue y creacion del archivo pdf con los datos previamente
-     * creados El reporte fue previamente creado en un modulo anterior que solo
-     * creaba el pdf el proyecto se llama "Facturas"
-     *
-     */
-    private void setreport(int folio, String regimen, String moneda) {
-        try {
-            String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
-                    + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
-                    + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
-                    + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
-                    + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
-            daoempresa d = new daoempresa();
-//            Identificar si es de ath o uptown
-            String n = "1";
-            String logo = "AF.png";
-            Empresas e = d.getempresarfc(sqlempresa, n);
-//             fin identificar empresa
-            Map parametros = new HashMap();
-//            Clase que contiene el numero convertido a caracter
-            convertnum conv = new convertnum();
-//            Agregar parametros al reporte
-            parametros.put("folio", folio);
-            parametros.put("totalletra", conv.controlconversion(total).toUpperCase());
-            parametros.put("nombre", e.getNombre());
-            parametros.put("rfc", e.getRfc());
-            parametros.put("regimen", e.getRegimen());
-            parametros.put("lugar", e.getCp());
-            parametros.put("comprobante", e.getNumcertificado());
-            parametros.put("logo", "C:\\af\\bin\\" + logo);// direcion predefinida, posible cambiar en un futuro
-            parametros.put("serie", "PAG");
-            parametros.put("regimencliente", regimen);
-            parametros.put("confo", conformidad);
-
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/index_ptpu.jasper"));
-            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
-            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
-            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-            ver.setTitle("PAG " + folio);
-            ver.setVisible(true);
-//            Exportacion al archivo pdf
-            JRExporter exporter = new JRPdfExporter();
-            exporter.setParameter(JRExporterParameter.JASPER_PRINT, print);
-            exporter.setParameter(JRExporterParameter.OUTPUT_FILE, new java.io.File(e.getXml() + "\\PAG_" + folio + ".pdf"));
-            exporter.exportReport();
-        } catch (JRException ex) {
-            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     private void vaciarcampos() {
         arrcargoseleccion.clear();
         JtTCambio.setText("");
@@ -1010,6 +844,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
     }
 
     private void actualizaimportes() {
+        Formateodedatos fd = new Formateodedatos();
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Factura");
         model.addColumn("Pago");
@@ -1037,10 +872,10 @@ public class pagotpucargo2 extends javax.swing.JPanel {
             JtDetalle.setModel(model);
             total = subtotal + impuestos;
             //Solo para despliqgue de informacion
-            JlIva.setText(getcant(impuestos) + "");
-            Jlsub.setText(getcant(subtotal) + "");
+            JlIva.setText((impuestos) + "");
+            Jlsub.setText(fd.formatdecimal(subtotal) + "");
             JlDesc.setText(descuentos + "");
-            JlTotal.setText(getcant(total) + "");
+            JlTotal.setText(fd.formatdecimal(total) + "");
         } else {
             JtCliente.requestFocus();// regresa al campo inicial del cliente
         }
@@ -1051,27 +886,6 @@ public class pagotpucargo2 extends javax.swing.JPanel {
 
     }
 
-    private double getcant16(double a) {
-        double cant = BigDecimal.valueOf(a).setScale(6, RoundingMode.HALF_UP).doubleValue();
-        return cant;
-    }
-
-    private double getcant(double a) {
-        double cant = BigDecimal.valueOf(a).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        return cant;
-    }
-
-    private boolean verificaint(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
-    }
-
     private boolean verificafloat(String cad) {
         boolean resp = false;
         String patt = "[0-9]+||[0-9]+.[0-9]+";
@@ -1079,39 +893,6 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         Matcher match = pat.matcher(cad);
         if (match.matches()) {
             resp = true;
-        }
-        return resp;
-    }
-
-    private boolean verificaflotante(String cad) {
-        boolean check = true;
-        Character c;
-        int control = 0;
-        String cadena = cad;
-        for (int i = 0; i < cad.length(); i++) {
-            c = cadena.charAt(i);
-            if (!Character.isDigit(c)) {
-                if (c.equals('.') && control == 0) {
-                    control++;
-                } else if (control == 1) {
-                    check = false;
-                    break;
-                }
-                check = false;
-                break;
-            }
-        }
-        return check;
-    }
-
-    private boolean verificadetalle() {
-        boolean resp = true;
-        for (int i = 0; i < k.size(); i++) {
-            String precio = JtDetalle.getValueAt(i, 3).toString();
-            if (!verificafloat(precio)) {
-                resp = false;
-                break;
-            }
         }
         return resp;
     }

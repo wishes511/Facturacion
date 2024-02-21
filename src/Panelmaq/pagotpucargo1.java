@@ -5,7 +5,6 @@
  */
 package Panelmaq;
 
-import Paneltpu.*;
 import DAO.daocfdi;
 import DAO.daofactura;
 import Modelo.Ciudades;

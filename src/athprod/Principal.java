@@ -8,6 +8,7 @@ import Avances.Avancesprod;
 import Avances.Pantallas;
 import DAO.daoPrincipal;
 import Maq.Materialesmaq;
+import Maq.PagostpuCargos;
 import Modelo.Conexiones;
 import Modelo.Formateodedatos;
 import Modelo.Procserie;
@@ -2439,7 +2440,7 @@ public final class Principal extends javax.swing.JFrame {
 
     private void JmPagoespecialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagoespecialActionPerformed
         try {//Fala por cambiar a que sean pagos
-            Cargos_especiales p = new Cargos_especiales(conexion, u);
+            PagostpuCargos p = new PagostpuCargos(conexion, u);
             this.JdPanel.add(p);
             p.setMaximum(true);
             p.show();
