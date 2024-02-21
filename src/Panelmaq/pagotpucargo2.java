@@ -525,7 +525,13 @@ public class pagotpucargo2 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        setfactura();
+        Formateodedatos fd = new Formateodedatos();
+        if(!fd.verficafechanula(JtFecha)){
+            setfactura();
+        }else{
+            JOptionPane.showMessageDialog(null, "La fecha de pago no puede ir vacia");
+        }
+        
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
