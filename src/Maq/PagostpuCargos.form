@@ -8,9 +8,9 @@
     <Property name="closable" type="boolean" value="true"/>
     <Property name="iconifiable" type="boolean" value="true"/>
     <Property name="resizable" type="boolean" value="true"/>
-    <Property name="title" type="java.lang.String" value="Pagos remision"/>
+    <Property name="title" type="java.lang.String" value="Pagos Cargos especiales"/>
     <Property name="frameIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-      <Image iconType="3" name="/Recursos/business_table_order_report_history_2332B.png"/>
+      <Image iconType="3" name="/Recursos/labelprint.png"/>
     </Property>
   </Properties>
   <SyntheticProperties>
