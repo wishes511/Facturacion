@@ -233,4 +233,6 @@ public interface Facturas {
     public ArrayList<cargo> getcargosespecial(Connection cob, String var);
     
     public ArrayList<cargo> getcargos_especialwithcliente(Connection cob, String cliente);
+    
+    public int insertpagotpu_especial(Connection cpt, Connection cob, factura f);
 }

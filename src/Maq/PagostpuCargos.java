@@ -59,6 +59,7 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         //tambien conexiones
         c2.empresa = empresa;
         c2.ACobranza = cobranza;
+        c2.cpt=cpt;
         c2.u = u;
     }
 

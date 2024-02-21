@@ -4222,5 +4222,123 @@ public class sqlfactura {
         }
         return arr;
     }
+
+    public int insertpagostpu_especial(Connection con, factura f, Connection cob) {//Rcpt y cpt
+        PreparedStatement st = null;
+        ResultSet rs;
+        int resp = 0;
+        try {
+            DecimalFormat formateador = new DecimalFormat("####.##");
+            con.setAutoCommit(false);
+            cob.setAutoCommit(false);
+            String sql;
+            String usuario = f.getClaveusuario();
+            String serie = "PAGOE";
+            int fol = 0;
+            String fecha = f.getFecha();
+            String fechap = f.getFechapago();
+            String turno = f.getTurno();
+            double Total = Double.parseDouble(formateador.format(getcant(f.getTotal())));
+            String metodo = "";
+            String formap = "";
+            //cliente
+            int idcliente = f.getIdcliente();
+            String nombre = f.getNombre();
+            String rfc = "";
+            String regimen = "";
+            String cp = "";
+            int ag = f.getAgente();
+            //fin cliente
+            String obs = f.getObservaciones();
+            String mon = "MXN";
+            double tipoc = 1;
+            String Lugar = "";
+            String uso = "";
+            sql = "insert into Doctospagotpu_especial(id_cliente,id_agente,usuario,folio,serie,fecha,fechapago,condicion,"
+                    + "tipodoc,descuento,subtotal,impuestos,total,nombre,rfc,cp,regimen,metodopago,formapago,lugarexp,observaciones,moneda,tipocambio,usocfdi,estatus) "
+                    + "values(" + idcliente + "," + ag + ",'" + usuario + "'," + fol + ",'" + serie + "','" + fecha + "','" + fechap + "','contado','PAGOS',0,0,0," + Total + ",'"
+                    + nombre + "','" + rfc + "','" + cp + "','" + regimen + "','" + metodo + "','" + formap + "','" + Lugar + "','" + obs + "','" + mon + "'," + tipoc + ",'" + uso + "','1')";
+//            System.out.println("EncPago " + sql);
+            st = con.prepareStatement(sql);
+            st.executeUpdate();
+
+//          Obtiene el ultimo registro insertado
+            st = con.prepareStatement("SELECT max(id_doctopago) as id from doctospagotpu_especial");
+            rs = st.executeQuery();
+            while (rs.next()) {
+                resp = rs.getInt("id");
+            }
+            rs.close();
+
+//            resp = f.getFolio();
+            for (Detpagos arr : f.getArrpagos()) {
+                //Inserta en detallado de detallado pago
+                double cant = arr.getCantidad();
+                String de = arr.getDescripcion();
+                String co ="";
+                String umed = "";
+                String fp = "";
+                String moneda = arr.getMoneda();
+                double mo = getcant(arr.getMonto());
+                String uuid = "";
+                String fo = "";
+                double sald = arr.getSaldo();
+                int par = 0;
+                double salant = 0;
+                double salpag = 0;
+                double salin = 0;
+                int idcargo = arr.getIdcargo();
+                sql = "insert into Ddoctospagotpu_especial(id_doctopago,cantidad,descripcion,codigosat,unidad,precio,formapagop,monedap,"
+                        + "monto,rfcctaemisora,ctaemisora,rfcctareceptora,ctareceptora,uuid,foliorel,moneda,metodopago,"
+                        + "noparcialidad,importesdoant,importepagado,impsaldoinsoluto) "
+                        + "values(" + resp + "," + cant + ",'" + de + " " + fo + "','" + co + "','" + umed + "',0,'" + fp + "','" + mon + "'," + mo + ",'','','','','"
+                        + uuid + "','" + idcargo + "','" + moneda + "','" + metodo + "'," + par + "," + salant + "," + salpag + "," + salin + ")";
+//                System.out.println("d pagos " + sql);
+                st = con.prepareStatement(sql);
+                st.executeUpdate();
+
+                sql = "update cargoespecial set saldo=" + formateador.format(sald) + " where id_cargo=" + idcargo;
+
+//                System.out.println("cargos " + sql);
+                st = cob.prepareStatement(sql);
+                st.executeUpdate();
+
+//                if (salant == mo) {
+                if (sald == 0) {
+                    sql = "update cargoespecial set saldo=0, saldomx=0  where id_cargo=" + idcargo;
+//                    System.out.println("cargos0 " + sql);
+                    st = cob.prepareStatement(sql);
+                    st.executeUpdate();
+                }
+
+                sql = "insert into abonoespecial(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
+                        + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
+                        + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + resp + "','" + idcargo + "','" 
+                        + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + idcargo + "','" + usuario + "','1')";
+                System.out.println("abonos  " + sql);
+                st = cob.prepareStatement(sql);
+                st.executeUpdate();
+
+            }
+            // Fin detallado de documento
+            con.commit();
+            cob.commit();
+//            cobranza.commit();
+//            con.rollback();
+//            cobranza.rollback();
+        } catch (Exception ex) {
+            try {
+                resp = 0;
+                con.rollback();
+                cob.rollback();
+//                cobranza.rollback();
+                JOptionPane.showMessageDialog(null, "actualizar fac -" + ex);
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(Procesoserie.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+        }
+        return resp;
+    }
     //metodos externos
 }

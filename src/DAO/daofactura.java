@@ -631,4 +631,10 @@ public class daofactura implements Facturas {
         return s.getcargos_especialwithcliente(cob, cliente);
     }
 
+    @Override
+    public int insertpagotpu_especial(Connection cpt, Connection cob, factura f) {
+        sqlfactura s = new sqlfactura();
+        return s.insertpagostpu_especial(cpt, f, cob);
+    }
+
 }

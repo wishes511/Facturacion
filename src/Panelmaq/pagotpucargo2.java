@@ -36,7 +36,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
 
     public String nombre, empresa;
 //    ACobranza es la conexion a la bd interna, no hay fiscal
-    public Connection ACobranza;
+    public Connection ACobranza,cpt;
     Serverprod prod = new Serverprod();
     public ArrayList<ConceptosES> arrcuentas = new ArrayList<>();
     ArrayList<cargo> arrcargo = new ArrayList<>();
@@ -682,15 +682,15 @@ public class pagotpucargo2 extends javax.swing.JPanel {
                     d.setRfcctareceptora("BC");
                     d.setCtareceptora("34");
                     d.setUuid(arrcargoseleccion.get(i).getReferencia());
-                    d.setFolio(arrcargoseleccion.get(i).getReferencia());
-                    d.setMetodopago("PUE");
+                    d.setFolio(arrcargoseleccion.get(i).getId_cargo()+"");
+                    d.setMetodopago("");
                     d.setParcialidad(arrcargoseleccion.get(i).getParcialidad());
                     d.setIdcargo(arrcargoseleccion.get(i).getId_cargo());
 
                     double sa;
                     double pa;
                     double sal;
-                    sa = (f.getMoneda().equals("MXN")) ? arrcargoseleccion.get(i).getSaldomx() : arrcargoseleccion.get(i).getSaldo();
+                    sa = arrcargoseleccion.get(i).getSaldo();
                     d.setSaldo(sa - arrcargoseleccion.get(i).getDescuento());
                     pa = arrcargoseleccion.get(i).getDescuento();
                     sal = sa - pa;
@@ -716,12 +716,11 @@ public class pagotpucargo2 extends javax.swing.JPanel {
                 f.setFoliofiscalorig(folios);
 //                int verifica = dfac.getbuscafoliotpu(cpt, "PAG", f.getFolio() + "");
 //                    int id = dfac.nuevancrtpu(cpt, f, ACobranza, rcpt);
-                int id = dfac.insertpagotpu(ACobranza, ACobranza, f);
+                int id = dfac.insertpagotpu_especial(cpt, ACobranza, f);
                 if (id != 0) {
-                    setcomisiones(f);
 //                    System.out.println("Exito");
 //                        setreport(f.getFolio(), f.getRegimen(), f.getMoneda());
-                    JOptionPane.showMessageDialog(null, "Proceso terminado- ");
+                    JOptionPane.showMessageDialog(null, "Proceso terminado ");
                     vaciarcampos();
                     JtCliente.requestFocus();
                 }

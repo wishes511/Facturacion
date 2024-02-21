@@ -216,6 +216,13 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel3MousePressed
 
     private void JtCargoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtCargoMousePressed
+        selecciondecargos();
+    }//GEN-LAST:event_JtCargoMousePressed
+    /**
+     * Es una funcion que su deber es saber que cargo va a ser utilizado y cual
+     * no, para esto se utiliza el arrya arrcardoseleccion
+     */
+    private void selecciondecargos() {
         String active = JtCargo.getValueAt(JtCargo.getSelectedRow(), 7).toString();
         int row = JtCargo.getSelectedRow();
         if (active.equals("")) {
@@ -231,12 +238,7 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
                 }
             }
         }
-//        System.out.println("---------");
-        for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-//            System.out.println(arrcargoseleccion1.getReferencia());
-        }
-//        System.out.println("---------");
-    }//GEN-LAST:event_JtCargoMousePressed
+    }
 
     public void desplieguecargos() {
         DefaultTableModel model = new DefaultTableModel();
@@ -248,9 +250,6 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
         model.addColumn("Plazo");
         model.addColumn("Saldo");
         model.addColumn("");
-        model.addColumn("Saldo mx");
-        model.addColumn("Parcialidad");
-        model.addColumn("Metodo de pago");
         model.setNumRows(arrcargo.size());
         //Carga las facturas registyradas en cargos
         for (int i = 0; i < arrcargo.size(); i++) {
@@ -262,24 +261,19 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
             model.setValueAt(arrcargo.get(i).getPlazo(), i, 5);
             model.setValueAt(arrcargo.get(i).getSaldo(), i, 6);
             model.setValueAt("", i, 7);
-            model.setValueAt(arrcargo.get(i).getSaldomx(), i, 8);
-            model.setValueAt("1", i, 9);
-            model.setValueAt(arrcargo.get(i).getMetodopago(), i, 10);
         }
         JtCargo.setModel(model);
     }
 
     private void setearfacs() throws ParseException {
-
         boolean reset = true;
         if (!arrcargoseleccion.isEmpty()) {
             //Verificar renglon por renglon el dato del descuento y asignarselo al arreglo
             for (int i = 0; i < arrcargoseleccion.size(); i++) {
                 int renglon = arrcargoseleccion.get(i).getRenglon();
                 String desc = JtCargo.getValueAt(renglon, 4).toString();
-                String saldomx = JtCargo.getValueAt(renglon, 8).toString();
-                String parci = JtCargo.getValueAt(renglon, 9).toString();
-                double saldo=arrcargoseleccion.get(i).getSaldo();
+                String parci = "0";
+                double saldo = arrcargoseleccion.get(i).getSaldo();
 
                 if (verificaciones(desc)) {
 //                  Verifica el tipo de relacion sea 03 por que es descuento
@@ -288,8 +282,7 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
 //                  El descuento no tiene que ser mayor o igual al saldo
 //                        if (Float.parseFloat(desc) == arrcargoseleccion.get(i).getImporte()
 //                                || Float.parseFloat(desc) > arrcargoseleccion.get(i).getImporte()) {
-                    if (Double.parseDouble(desc) > Double.parseDouble(saldomx) &&
-                            Double.parseDouble(desc) > saldo) {
+                    if (Double.parseDouble(desc) > saldo) {
                         JOptionPane.showMessageDialog(null, "Introduzca correctamente un numero valido");
                         reset = false;
                         break;
@@ -298,8 +291,7 @@ public class Cargos_especialtpu extends javax.swing.JDialog {
                     }
 ////                        System.out.println(Float.parseFloat(desc) + " " + arrcargoseleccion.get(i).getSaldo());
 //                        if (Float.parseFloat(desc) > Float.parseFloat(ars)) {
-                    if (Double.parseDouble(desc) > Double.parseDouble(saldomx) &&
-                            Double.parseDouble(desc) > (saldo)) {
+                    if (Double.parseDouble(desc) > (saldo)) {
                         JOptionPane.showMessageDialog(null, "El valor introducido excede el saldo, intentelo de nuevo");
                         reset = false;
                         break;
