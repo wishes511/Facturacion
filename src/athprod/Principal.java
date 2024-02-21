@@ -268,6 +268,7 @@ public final class Principal extends javax.swing.JFrame {
         JmPagostpu4 = new javax.swing.JMenuItem();
         JmPagostpu5 = new javax.swing.JMenuItem();
         JmCargos = new javax.swing.JMenuItem();
+        JmPagoespecial = new javax.swing.JMenuItem();
         JmVentastpu1 = new javax.swing.JMenu();
         JtFacturaciontpu2 = new javax.swing.JMenuItem();
         JtFacturaciontpu3 = new javax.swing.JMenuItem();
@@ -1105,6 +1106,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmCobranzatpu2.add(JmCargos);
+
+        JmPagoespecial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/labelprint.png"))); // NOI18N
+        JmPagoespecial.setText("Pagos Cargo especial");
+        JmPagoespecial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmPagoespecialActionPerformed(evt);
+            }
+        });
+        JmCobranzatpu2.add(JmPagoespecial);
 
         JmMaq2.add(JmCobranzatpu2);
 
@@ -2427,6 +2437,17 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmCargosActionPerformed
 
+    private void JmPagoespecialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagoespecialActionPerformed
+        try {//Fala por cambiar a que sean pagos
+            Cargos_especiales p = new Cargos_especiales(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmPagoespecialActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -3081,6 +3102,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmNotascrtpu1;
     private javax.swing.JMenuItem JmNotascrtpu2;
     private javax.swing.JMenuItem JmOut;
+    private javax.swing.JMenuItem JmPagoespecial;
     private javax.swing.JMenuItem JmPagos;
     private javax.swing.JMenuItem JmPagostpu;
     private javax.swing.JMenuItem JmPagostpu1;
