@@ -5,22 +5,11 @@
  */
 package Maq;
 
-import DAO.daocfdi;
 import Modelo.Conexiones;
-import Modelo.Formadepago;
 import Modelo.Usuarios;
-import Modelo.metodopago;
-import Modelo.relacion;
-import Modelo.usocfdi;
-import Paneltpu.pagotpurem1;
-import Paneltpu.pagotpurem2;
-import Server.Serverylite;
-import java.io.IOException;
+import Panelmaq.pagotpucargo1;
+import Panelmaq.pagotpucargo2;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -28,20 +17,19 @@ import java.util.logging.Logger;
  */
 public class PagostpuCargos extends javax.swing.JInternalFrame {
 
-    pagotpurem1 c1;
-    pagotpurem2 c2;
+    pagotpucargo1 c1;
+    pagotpucargo2 c2;
     String var = "0";
     public String name, empresa, empresacob;
     Connection rcpt, litecfdi, liteempresa, cobranza, cpt, cobB;
-    ArrayList<usocfdi> arruso = new ArrayList<>();
-    ArrayList<Formadepago> arrforma = new ArrayList<>();
-    ArrayList<metodopago> arrmetodo = new ArrayList<>();
-    ArrayList<relacion> arrrelacion = new ArrayList<>();
     public Conexiones conexion;
     public Usuarios u;
 
     /**
-     * Creates new form Clientes
+     * Creates new form Clientes Hay que recordar que todos los registros estan
+     * almacenados en la tabla fiscal de cargos especiales, por lo tanto no hay
+     * que ingresar en el servidor interno para esta cuestion, se maneja por la
+     * serie.
      *
      * @param cn
      * @param u
@@ -53,29 +41,13 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         cobranza = cn.getCobranzatpu();
         empresa = cn.getEmpresa();
         empresacob = cn.getEmpresacob();
-        cobB=cn.getCobranzatpuB();
-        this.u=u;
+        cobB = cn.getCobranzatpuB();
+        this.u = u;
         generaciontab();//Tabs de facturacion
-        conexiones();
         setarraylist();
     }
 
-    private void conexiones() {//Conexiones a servidor
-        try {
-            Serverylite l = new Serverylite();
-            litecfdi = l.getconexioncfdi();
-            liteempresa = l.getconexionC();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PagostpuCargos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(PagostpuCargos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(PagostpuCargos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
     private void setarraylist() {
-        daocfdi d = new daocfdi();
         //tambien conexiones
         c1.empresa = empresa;
         c1.empresacob = empresacob;
@@ -84,16 +56,13 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         c1.sqlcfdi = litecfdi;
         c1.cpt = cpt;
 
-        c2.arrfpago = arrforma;
-        c2.arrmetodo = arrmetodo;
-        c2.arruso = arruso;
         //tambien conexiones
         c2.empresa = empresa;
         c2.ACobranza = cobB;
         c2.sqlempresa = liteempresa;
         c2.sqlcfdi = litecfdi;
         c2.cpt = cpt;
-        c2.u=u;
+        c2.u = u;
     }
 
     /**
@@ -147,10 +116,10 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public final void generaciontab() {//generar tabs
-        c1 = new pagotpurem1();
-        c2 = new pagotpurem2();
-        Tabbed.addTab("Ver Pagos", c1);
-        Tabbed.addTab("Nuevo pago", c2);
+        c1 = new pagotpucargo1();
+        c2 = new pagotpucargo2();
+        Tabbed.addTab("Ver Pagos especiales", c1);
+        Tabbed.addTab("Nuevo pago especial", c2);
         Tabbed.setSelectedComponent(c1);
         c2.JtCliente.requestFocus();
         c1.JtCliente.requestFocus();

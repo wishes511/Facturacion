@@ -625,4 +625,10 @@ public class daofactura implements Facturas {
         return s.getcargosespecial(cob, var);
     }
 
+    @Override
+    public ArrayList<cargo> getcargos_especialwithcliente(Connection cob, String cliente) {
+        sqlfactura s = new sqlfactura();
+        return s.getcargos_especialwithcliente(cob, cliente);
+    }
+
 }

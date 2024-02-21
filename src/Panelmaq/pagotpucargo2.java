@@ -552,18 +552,8 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         String r = JtCliente.getText();
 //        Se verifica que no entre vacio y ocacione una excepcion de a gratis
         if (!r.isEmpty()) {
-            Formateodedatos fd = new Formateodedatos();
-//            Son dos ya que la bd de pruebas es distinta a el servidor real
-            String bdcob;
-            //Es importante hacer diferencia entre los tipos de turno
-            if (u.getTipo_usuario().equals("2")) {
-                bdcob = fd.getbd_tocargo_REM_adm(u.getTurno());
-            } else {
-                bdcob = fd.getbd_tocargo_REM(u.getTurno());
-            }
-//            String bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu";
             daofactura df = new daofactura();
-            arrcargo = df.getfactrem(ACobranza, r, bdcob);
+            arrcargo = df.getcargos_especialwithcliente(ACobranza, JtCliente.getText());
             if (arrcargo.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
                 JtCliente.setText("");
@@ -614,16 +604,16 @@ public class pagotpucargo2 extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel3MouseReleased
 
-    private void JcUsdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsdActionPerformed
-        setdolar();
-    }//GEN-LAST:event_JcUsdActionPerformed
-
     private void JtTCambioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtTCambioActionPerformed
         if (!verificafloat(JtTCambio.getText().toUpperCase())) {
             JOptionPane.showMessageDialog(null, "Error, Introduce un valor valido en el tipo de cambio");
             JtTCambio.requestFocus();
         }
     }//GEN-LAST:event_JtTCambioActionPerformed
+
+    private void JcUsdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsdActionPerformed
+        setdolar();
+    }//GEN-LAST:event_JcUsdActionPerformed
 
     private void setdolar() {
         if (JcUsd.isSelected()) {

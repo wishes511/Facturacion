@@ -231,4 +231,6 @@ public interface Facturas {
     public boolean nuevocargoespecial(Connection cob, factura f);
     
     public ArrayList<cargo> getcargosespecial(Connection cob, String var);
+    
+    public ArrayList<cargo> getcargos_especialwithcliente(Connection cob, String cliente);
 }

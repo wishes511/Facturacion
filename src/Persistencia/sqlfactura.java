@@ -4170,7 +4170,7 @@ public class sqlfactura {
             st = c.prepareStatement(sql);
             rs = st.executeQuery();
             while (rs.next()) {
-                cargo car= new cargo();
+                cargo car = new cargo();
                 car.setId_cargo(rs.getInt("id_cargo"));
                 car.setReferencia(rs.getString("referencia"));
                 car.setFecha(rs.getString("fecha"));
@@ -4184,6 +4184,41 @@ public class sqlfactura {
             }
         } catch (SQLException ex) {
             Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public ArrayList<cargo> getcargos_especialwithcliente(Connection con, String cliente) {
+        ArrayList<cargo> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select distinct id_cargo,id_concepto,referencia,fecha,importe,"
+                    + "saldo,ncliente,plazo,id_cliente,saldomx,id_agente\n"
+                    + "from cargoespecial\n"
+                    + "where (id_cliente =" + cliente + ") and saldo!=0 and estatus='1' order by fecha";
+//            System.out.println("get clientencr " + sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                cargo c = new cargo();
+                c.setId_cargo(rs.getInt("id_cargo"));
+                c.setCuenta(rs.getInt("id_concepto"));
+                c.setReferencia(rs.getString("referencia"));
+                c.setFecha(rs.getString("fecha"));
+                c.setImporte(rs.getDouble("importe"));
+                c.setSaldo(rs.getDouble("saldo"));
+                c.setNombre(rs.getString("ncliente"));
+                c.setCliente(rs.getInt("id_cliente"));
+                c.setPlazo(rs.getInt("plazo"));
+                c.setAgente(rs.getInt("id_agente"));
+                c.setSaldomx(rs.getDouble("saldomx"));
+                arr.add(c);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return arr;
     }
