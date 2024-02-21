@@ -625,16 +625,45 @@ public class daofactura implements Facturas {
         return s.getcargosespecial(cob, var);
     }
 
+    /**
+     * Trae los cargos especiales de acuerdo al cliente
+     *
+     * @param cob conexion a cobranza
+     * @param cliente id del cliente
+     * @return Lista de cargos
+     */
     @Override
     public ArrayList<cargo> getcargos_especialwithcliente(Connection cob, String cliente) {
         sqlfactura s = new sqlfactura();
         return s.getcargos_especialwithcliente(cob, cliente);
     }
 
+    /**
+     * Agrega un nuevo pago a la bd, esto inserta campos en doctospago, abonos y
+     * afecto el saldo del cargo
+     *
+     * @param cpt conexion hacia cpt ya que necesita hacer consultos a doctos
+     * @param cob conexion a cobranza
+     * @param f El pago
+     * @return int
+     */
     @Override
     public int insertpagotpu_especial(Connection cpt, Connection cob, factura f) {
         sqlfactura s = new sqlfactura();
         return s.insertpagostpu_especial(cpt, f, cob);
+    }
+
+    /**
+     * Busca los pagos realizados de acuerdo al nombre del cliente
+     *
+     * @param cpt conexion a cpt
+     * @param cliente nombre del cliente
+     * @return Lista de pagos realizados
+     */
+    @Override
+    public ArrayList<factura> getpagostpu_especial(Connection cpt, String cliente) {
+        sqlfactura s = new sqlfactura();
+        return s.getpagos_especial(cpt, cliente);
     }
 
 }

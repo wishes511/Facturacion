@@ -4275,7 +4275,7 @@ public class sqlfactura {
                 //Inserta en detallado de detallado pago
                 double cant = arr.getCantidad();
                 String de = arr.getDescripcion();
-                String co ="";
+                String co = "";
                 String umed = "";
                 String fp = "";
                 String moneda = arr.getMoneda();
@@ -4313,7 +4313,7 @@ public class sqlfactura {
 
                 sql = "insert into abonoespecial(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
                         + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
-                        + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + resp + "','" + idcargo + "','" 
+                        + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + resp + "','" + idcargo + "','"
                         + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + idcargo + "','" + usuario + "','1')";
                 System.out.println("abonos  " + sql);
                 st = cob.prepareStatement(sql);
@@ -4339,6 +4339,37 @@ public class sqlfactura {
             }
         }
         return resp;
+    }
+
+    public ArrayList<factura> getpagos_especial(Connection con, String cliente) {
+        ArrayList<factura> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select nombre,total, convert(date,fecha) as fecha,usuario,convert(date,fechapago) as fpago, id_doctopago,observaciones,estatus\n"
+                    + "from doctospagotpu_especial\n"
+                    + "where nombre like '%" + cliente + "%'";
+//            System.out.println("get clientencr " + sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                factura f = new factura();
+                f.setNombre(rs.getString("nombre"));
+                f.setTotal(rs.getDouble("total"));
+                f.setFecha(rs.getString("fecha"));
+                f.setClaveusuario(rs.getString("usuario"));
+                f.setFechapago(rs.getString("fpago"));
+                f.setId(rs.getInt("id_doctopago"));
+                f.setObservaciones(rs.getString("Observaciones"));
+                f.setEstado(rs.getString("estatus"));
+                arr.add(f);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
     }
     //metodos externos
 }

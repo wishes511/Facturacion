@@ -8,7 +8,7 @@ package Panelmaq;
 import DAO.daocfdi;
 import DAO.daofactura;
 import Modelo.Usuarios;
-import Modelo.cargo;
+import Modelo.factura;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
     public String nombre, empresa, empresacob;
     public Connection sqlcfdi, sqlempresa, liteusuario;
     public Connection ACobranza, cpt, rcpt;
-    ArrayList<cargo> arrfactura = new ArrayList<>();
+    ArrayList<factura> arrfactura = new ArrayList<>();
     daocfdi dcfdi = new daocfdi();
     int estado = 0;
     int ciudad = 0;
@@ -164,36 +164,35 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
 
     private void respcancela() {
 
-
     }
 
 //    Busca las facturas que encuentre
     private void Buscanotas() {
         daofactura df = new daofactura();
-        arrfactura = df.getcargosespecial(ACobranza,JtCliente.getText());
+        arrfactura = df.getpagostpu_especial(cpt, JtCliente.getText());
         generatabla();
     }
 
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Referencia");
+        model.addColumn("Folio");
+        model.addColumn("Nombre");
+        model.addColumn("Monto");
         model.addColumn("Fecha");
-        model.addColumn("Importe");
-        model.addColumn("Saldo");
-        model.addColumn("Cliente");
-        model.addColumn("Serie");
+        model.addColumn("Usuario");
+        model.addColumn("Fecha pago");
         model.addColumn("Observaciones");
         model.addColumn("Estado");
         model.setNumRows(arrfactura.size());
         DecimalFormat formateador = new DecimalFormat("####.##");
         for (int i = 0; i < arrfactura.size(); i++) {
             String estat = (arrfactura.get(i).getEstado().equals("1")) ? "ACTIVA" : "CANCELADO";
-            model.setValueAt(arrfactura.get(i).getReferencia(), i, 0);
-            model.setValueAt(arrfactura.get(i).getFecha(), i, 1);
-            model.setValueAt(formateador.format(arrfactura.get(i).getImporte()), i, 2);
-            model.setValueAt(formateador.format(arrfactura.get(i).getSaldo()), i, 3);
-            model.setValueAt(arrfactura.get(i).getNombre(), i, 4);
-            model.setValueAt(arrfactura.get(i).getSerie(), i, 5);
+            model.setValueAt(arrfactura.get(i).getId(), i, 0);
+            model.setValueAt(arrfactura.get(i).getNombre(), i, 1);
+            model.setValueAt(formateador.format(arrfactura.get(i).getTotal()), i, 2);
+            model.setValueAt(arrfactura.get(i).getFecha(), i, 3);
+            model.setValueAt(arrfactura.get(i).getClaveusuario(), i, 4);
+            model.setValueAt(arrfactura.get(i).getFechapago(), i, 5);
             model.setValueAt(arrfactura.get(i).getObservaciones(), i, 6);
             model.setValueAt(estat, i, 7);
         }
