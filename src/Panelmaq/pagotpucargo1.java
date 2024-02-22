@@ -208,6 +208,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
                 arrfactura.get(row).getId(), fd.getbd_tocargo(u.getTurno()));
         if (df.Cancela_pagoespecial(cpt, ACobranza, arrabono)) {
             JOptionPane.showMessageDialog(null, "Exito al cancelar el pago");
+            Buscanotas();
         } else {
             JOptionPane.showMessageDialog(null,
                     "Ocurrio un error al momento de procesar la cancelacion del pago,"

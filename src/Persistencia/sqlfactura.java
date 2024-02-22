@@ -4200,6 +4200,7 @@ public class sqlfactura {
 //            System.out.println("get clientencr " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
+            int ren=0;
             while (rs.next()) {
                 cargo c = new cargo();
                 c.setId_cargo(rs.getInt("id_cargo"));
@@ -4213,7 +4214,9 @@ public class sqlfactura {
                 c.setPlazo(rs.getInt("plazo"));
                 c.setAgente(rs.getInt("id_agente"));
                 c.setSaldomx(rs.getDouble("saldomx"));
+                c.setRenglon(ren);
                 arr.add(c);
+                ren++;
             }
             rs.close();
             st.close();
@@ -4315,7 +4318,7 @@ public class sqlfactura {
                         + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
                         + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + resp + "','" + idcargo + "','"
                         + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + idcargo + "','" + usuario + "','1')";
-                System.out.println("abonos  " + sql);
+                //System.out.println("abonos  " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
 
@@ -4413,7 +4416,7 @@ public class sqlfactura {
             st.executeUpdate();
 
             for (abono arr1 : arr) {
-                sql = "update cargoespecial set saldo=? where idcargo=?";
+                sql = "update cargoespecial set saldo=? where id_cargo=?";
                 st = cob.prepareStatement(sql);
                 st.setDouble(1, arr1.getSaldo());
                 st.setInt(2, arr1.getId_cargo());
