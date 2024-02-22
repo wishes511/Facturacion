@@ -180,7 +180,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        
+
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
@@ -195,7 +195,10 @@ public class pagotpucargo1 extends javax.swing.JPanel {
 
 
     private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
-        respcancela();
+        int resp = JOptionPane.showConfirmDialog(null, "Estas seguro de cancelar el cargo?");
+        if (resp == 0) {
+            respcancela();
+        }
     }//GEN-LAST:event_JtCancelarActionPerformed
 
     private void respcancela() {
@@ -215,7 +218,6 @@ public class pagotpucargo1 extends javax.swing.JPanel {
                     + " intentelo de neuvo o llame a sistemas");
         }
     }
-
 
 // Obtiene todas las notas de acuerdo a lo que se introduzca en el campo
     private void Buscanotas() {
