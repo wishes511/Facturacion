@@ -440,6 +440,9 @@ public class Formateodedatos {
     public String getbd_tocargo(String turno) {
         String resp = "";
         switch (turno) {
+            case "0":
+                resp = "ACobranza";
+                break;
             case "5":
                 resp = "ACobranzaTpu";
                 break;

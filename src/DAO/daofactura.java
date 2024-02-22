@@ -666,4 +666,34 @@ public class daofactura implements Facturas {
         return s.getpagos_especial(cpt, cliente);
     }
 
+    /**
+     * Obtiene los registros del cargo y abono para poder darlos de baja y
+     * ademas regresar el saldo del pago a cada cargo
+     *
+     * @param con conexion de cpt
+     * @param pago id del documento de pago
+     * @param bd String de la bd de cobranza
+     * @return lista de abonos
+     */
+    @Override
+    public ArrayList<abono> getpagos_especial_tocancel(Connection con, int pago, String bd) {
+        sqlfactura s = new sqlfactura();
+        return s.getpagos_especial_tocancel(con, pago, bd);
+    }
+
+    /**
+     * Cancela el documento y abonos ademas de regresar los saldos pertinentes
+     * tras la cancelacion de dicho movimiento
+     *
+     * @param cpt Conexion de cpt
+     * @param cob COnexion de cobranza
+     * @param arr Lista de abonos con cargos y saldos
+     * @return booleano
+     */
+    @Override
+    public boolean Cancela_pagoespecial(Connection cpt, Connection cob, ArrayList<abono> arr) {
+        sqlfactura s = new sqlfactura();
+        return s.Cancela_pagoespecial(cpt, cob, arr);
+    }
+
 }

@@ -11,9 +11,33 @@ package Modelo;
  */
 public class abono {
     private String ref, referencia,ordenpago, nombre, folio,fechapago;
-    private int cliente, cuenta, subcuenta, parcialidad;
+    private int cliente, cuenta, subcuenta, parcialidad, id_cargo, id_abono, id_docto;
     private double total,totalpago, pago, saldo, anterior;
     private Cliente c;
+
+    public int getId_cargo() {
+        return id_cargo;
+    }
+
+    public void setId_cargo(int id_cargo) {
+        this.id_cargo = id_cargo;
+    }
+
+    public int getId_docto() {
+        return id_docto;
+    }
+
+    public void setId_docto(int id_docto) {
+        this.id_docto = id_docto;
+    }
+
+    public int getId_abono() {
+        return id_abono;
+    }
+
+    public void setId_abono(int id_abono) {
+        this.id_abono = id_abono;
+    }
 
     public String getFechapago() {
         return fechapago;

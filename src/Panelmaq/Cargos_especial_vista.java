@@ -7,11 +7,14 @@ package Panelmaq;
 
 import DAO.daocfdi;
 import DAO.daofactura;
+import Modelo.Formateodedatos;
 import Modelo.Usuarios;
+import Modelo.abono;
 import Modelo.factura;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -159,11 +162,24 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel6MousePressed
 
     private void JmCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCancelarActionPerformed
-        // TODO add your handling code here:
+        respcancela();
     }//GEN-LAST:event_JmCancelarActionPerformed
 
     private void respcancela() {
-
+        daofactura df = new daofactura();
+        Formateodedatos fd = new Formateodedatos();
+        int row = JtDetalle.getSelectedRow();
+        //Se obtienen los registro del pago con sus Id´s pertenecientes
+        //para proceder a hacer la cancelacion y su regreso de saldos
+        ArrayList<abono> arrabono = df.getpagos_especial_tocancel(cpt,
+                arrfactura.get(row).getId(), fd.getbd_tocargo(u.getTurno()));
+        if (df.Cancela_pagoespecial(cpt, ACobranza, arrabono)) {
+            JOptionPane.showMessageDialog(null, "Exito al cancelar el pago");
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Ocurrio un error al momento de procesar la cancelacion del pago,"
+                    + " intentelo de neuvo o llame a sistemas");
+        }
     }
 
 //    Busca las facturas que encuentre

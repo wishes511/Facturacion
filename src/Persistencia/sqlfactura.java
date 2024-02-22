@@ -4371,5 +4371,72 @@ public class sqlfactura {
         }
         return arr;
     }
+
+    public ArrayList<abono> getpagos_especial_tocancel(Connection con, int pago, String bd) {
+        ArrayList<abono> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select foliorel,monto,id_abono,c.saldo,monto+c.saldo as saldor\n"
+                    + "from ddoctospagotpu_especial dd\n"
+                    + "join " + bd + ".dbo.cargoespecial c on dd.foliorel=c.id_cargo\n"
+                    + "join " + bd + ".dbo.abonoespecial a on dd.foliorel=a.id_cargo and dd.id_doctopago=substring(a.referencia,4,5)\n"
+                    + "where id_doctopago=" + pago;
+//            System.out.println("get clientencr " + sql);
+            st = con.prepareStatement(sql);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                abono a = new abono();
+                a.setId_cargo(rs.getInt("foliorel"));
+                a.setId_abono(rs.getInt("id_abono"));
+                a.setId_docto(pago);
+                a.setTotal(rs.getDouble("monto"));
+                a.setSaldo(rs.getDouble("saldor"));
+                arr.add(a);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
+
+    public boolean Cancela_pagoespecial(Connection cpt, Connection cob, ArrayList<abono> arr) {
+        try {
+            cpt.setAutoCommit(false);
+            cob.setAutoCommit(false);
+            PreparedStatement st;
+            String sql = "update doctospagotpu_especial set estatus='0' where id_doctopago=?";
+            st = cpt.prepareStatement(sql);
+            st.setInt(1, arr.get(0).getId_docto());
+            st.executeUpdate();
+
+            for (abono arr1 : arr) {
+                sql = "update cargoespecial set saldo=? where idcargo=?";
+                st = cob.prepareStatement(sql);
+                st.setDouble(1, arr1.getSaldo());
+                st.setInt(2, arr1.getId_cargo());
+                st.executeUpdate();
+
+                sql = "update abonoespecial set estatus='0' where id_abono=?";
+                st = cob.prepareStatement(sql);
+                st.setInt(1, arr1.getId_abono());
+                st.executeUpdate();
+            }
+            cob.commit();
+            cpt.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                cob.rollback();
+                cpt.rollback();
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            return false;
+        }
+    }
     //metodos externos
 }

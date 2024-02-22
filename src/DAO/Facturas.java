@@ -237,4 +237,8 @@ public interface Facturas {
     public int insertpagotpu_especial(Connection cpt, Connection cob, factura f);
     
     public ArrayList<factura> getpagostpu_especial(Connection cpt, String cliente);
+    
+    public ArrayList<abono> getpagos_especial_tocancel(Connection con, int pago, String bd);
+    
+    public boolean Cancela_pagoespecial(Connection cpt, Connection cob, ArrayList<abono> arr);
 }
