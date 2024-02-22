@@ -682,7 +682,7 @@ public class pagotpucargo2 extends javax.swing.JPanel {
                     d.setUmedida("ACT");
                     d.setPrecio(0);
                     d.setMoneda("MXN");
-                    d.setMonto(total);
+                    d.setMonto(arrcargoseleccion.get(i).getDescuento());
                     d.setRfcctaemisora("AB");
                     d.setCtaemisora("12");
                     d.setRfcctareceptora("BC");

@@ -7,15 +7,11 @@ package Panelmaq;
 
 import DAO.daocfdi;
 import DAO.daofactura;
-import Modelo.Formateodedatos;
 import Modelo.Usuarios;
-import Modelo.abono;
 import Modelo.cargo;
-import Modelo.factura;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**

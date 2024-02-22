@@ -4200,7 +4200,7 @@ public class sqlfactura {
 //            System.out.println("get clientencr " + sql);
             st = con.prepareStatement(sql);
             rs = st.executeQuery();
-            int ren=0;
+            int ren = 0;
             while (rs.next()) {
                 cargo c = new cargo();
                 c.setId_cargo(rs.getInt("id_cargo"));
@@ -4317,7 +4317,7 @@ public class sqlfactura {
                 sql = "insert into abonoespecial(id_cargo,id_agente,id_concepto,id_cliente,referencia,referenciac,fecha,"
                         + "fechapago,turno,parcialidad,importe,pago,saldo,comision,observaciones,usuario,estatus) "
                         + "values(" + idcargo + "," + ag + ",3," + idcliente + ",'PAG " + resp + "','" + idcargo + "','"
-                        + fecha + "','" + fechap + "'," + turno + "," + par + "," + mo + "," + salpag + "," + salin + ",0,'" + de + " " + idcargo + "','" + usuario + "','1')";
+                        + fecha + "','" + fechap + "'," + turno + "," + par + "," + Total + "," + mo + "," + salin + ",0,'" + de + " " + idcargo + "','" + usuario + "','1')";
                 //System.out.println("abonos  " + sql);
                 st = cob.prepareStatement(sql);
                 st.executeUpdate();
@@ -4442,5 +4442,27 @@ public class sqlfactura {
             return false;
         }
     }
+
+    public boolean checkcargoespecial_tocancel(Connection cob, int cargo) {
+        boolean resp = false;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select id_abono\n"
+                    + "from abonoespecial\n"
+                    + "where id_cargo=? and estatus='1'";
+            st = cob.prepareStatement(sql);
+            st.setInt(1, cargo);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                resp = true;
+            }
+        } catch (SQLException ex) {
+            resp = false;
+            Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
+    }
+
     //metodos externos
 }
