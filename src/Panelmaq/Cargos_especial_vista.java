@@ -10,6 +10,7 @@ import DAO.daofactura;
 import Modelo.Formateodedatos;
 import Modelo.Usuarios;
 import Modelo.abono;
+import Modelo.cargo;
 import Modelo.factura;
 import java.sql.Connection;
 import java.text.DecimalFormat;
@@ -26,7 +27,7 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
     public String nombre, empresa, empresacob;
     public Connection sqlcfdi, sqlempresa, liteusuario;
     public Connection ACobranza, cpt, rcpt;
-    ArrayList<factura> arrfactura = new ArrayList<>();
+    ArrayList<cargo> arrfactura = new ArrayList<>();
     daocfdi dcfdi = new daocfdi();
     int estado = 0;
     int ciudad = 0;
@@ -154,7 +155,7 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
         } else {
             JmCancelar.setEnabled(false);
         }
-        JmCancelar.setEnabled(false);
+        //JmCancelar.setEnabled(false);
     }//GEN-LAST:event_JtDetalleMousePressed
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
@@ -162,53 +163,38 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel6MousePressed
 
     private void JmCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCancelarActionPerformed
-        respcancela();
+        
     }//GEN-LAST:event_JmCancelarActionPerformed
 
-    private void respcancela() {
-        daofactura df = new daofactura();
-        Formateodedatos fd = new Formateodedatos();
-        int row = JtDetalle.getSelectedRow();
-        //Se obtienen los registro del pago con sus Id´s pertenecientes
-        //para proceder a hacer la cancelacion y su regreso de saldos
-        ArrayList<abono> arrabono = df.getpagos_especial_tocancel(cpt,
-                arrfactura.get(row).getId(), fd.getbd_tocargo(u.getTurno()));
-        if (df.Cancela_pagoespecial(cpt, ACobranza, arrabono)) {
-            JOptionPane.showMessageDialog(null, "Exito al cancelar el pago");
-        } else {
-            JOptionPane.showMessageDialog(null,
-                    "Ocurrio un error al momento de procesar la cancelacion del pago,"
-                    + " intentelo de neuvo o llame a sistemas");
-        }
-    }
+
 
 //    Busca las facturas que encuentre
     private void Buscanotas() {
         daofactura df = new daofactura();
-        arrfactura = df.getpagostpu_especial(cpt, JtCliente.getText());
+        arrfactura = df.getcargosespecial(ACobranza, JtCliente.getText());
         generatabla();
     }
 
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Folio");
+        model.addColumn("Cargo");
         model.addColumn("Nombre");
         model.addColumn("Monto");
         model.addColumn("Fecha");
-        model.addColumn("Usuario");
-        model.addColumn("Fecha pago");
+        model.addColumn("Serie");
+        model.addColumn("Saldo");
         model.addColumn("Observaciones");
         model.addColumn("Estado");
         model.setNumRows(arrfactura.size());
         DecimalFormat formateador = new DecimalFormat("####.##");
         for (int i = 0; i < arrfactura.size(); i++) {
             String estat = (arrfactura.get(i).getEstado().equals("1")) ? "ACTIVA" : "CANCELADO";
-            model.setValueAt(arrfactura.get(i).getId(), i, 0);
+            model.setValueAt(arrfactura.get(i).getId_cargo(), i, 0);
             model.setValueAt(arrfactura.get(i).getNombre(), i, 1);
-            model.setValueAt(formateador.format(arrfactura.get(i).getTotal()), i, 2);
+            model.setValueAt(formateador.format(arrfactura.get(i).getImporte()), i, 2);
             model.setValueAt(arrfactura.get(i).getFecha(), i, 3);
-            model.setValueAt(arrfactura.get(i).getClaveusuario(), i, 4);
-            model.setValueAt(arrfactura.get(i).getFechapago(), i, 5);
+            model.setValueAt(arrfactura.get(i).getSerie(), i, 4);
+            model.setValueAt(arrfactura.get(i).getSaldo(), i, 5);
             model.setValueAt(arrfactura.get(i).getObservaciones(), i, 6);
             model.setValueAt(estat, i, 7);
         }

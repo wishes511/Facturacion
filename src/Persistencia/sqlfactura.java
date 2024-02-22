@@ -4435,6 +4435,7 @@ public class sqlfactura {
             } catch (SQLException ex1) {
                 Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
             }
+            JOptionPane.showMessageDialog(null, ex.getMessage());
             return false;
         }
     }

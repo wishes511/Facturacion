@@ -8,6 +8,7 @@ package Maq;
 import Modelo.Conexiones;
 import Modelo.Usuarios;
 import Panelmaq.Cargos_especial_vista;
+import Panelmaq.pagotpucargo1;
 import Panelmaq.pagotpucargo2;
 import java.sql.Connection;
 
@@ -17,7 +18,7 @@ import java.sql.Connection;
  */
 public class PagostpuCargos extends javax.swing.JInternalFrame {
 
-    Cargos_especial_vista c1;
+    pagotpucargo1 c1;
     pagotpucargo2 c2;
     String var = "0";
     public String name, empresa, empresacob;
@@ -55,6 +56,7 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         c1.sqlempresa = liteempresa;
         c1.sqlcfdi = litecfdi;
         c1.cpt = cpt;
+        c1.u=u;
 
         //tambien conexiones
         c2.empresa = empresa;
@@ -114,7 +116,7 @@ public class PagostpuCargos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public final void generaciontab() {//generar tabs
-        c1 = new Cargos_especial_vista();
+        c1 = new pagotpucargo1();
         c2 = new pagotpucargo2();
         Tabbed.addTab("Ver Pagos especiales", c1);
         Tabbed.addTab("Nuevo pago especial", c2);

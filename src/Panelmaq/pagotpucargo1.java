@@ -10,16 +10,21 @@ import DAO.daofactura;
 import Modelo.Ciudades;
 import Modelo.Estados;
 import Modelo.Formadepago;
+import Modelo.Formateodedatos;
 import Modelo.Paises;
+import Modelo.Usuarios;
+import Modelo.abono;
 import Modelo.factura;
 import Modelo.metodopago;
 import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
 import java.sql.Connection;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -45,6 +50,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
     int estado = 0;
     int ciudad = 0;
     int pais = 0;
+    public Usuarios u;
 
     /**
      * Creates new form Cliente1
@@ -174,7 +180,7 @@ public class pagotpucargo1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        setreport();
+        
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
@@ -184,97 +190,61 @@ public class pagotpucargo1 extends javax.swing.JPanel {
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
         if (evt.getButton() == 3) {// activar con clic derecho
             pop.show(evt.getComponent(), evt.getX(), evt.getY());
-        }    
+        }
     }//GEN-LAST:event_JtDetalleMousePressed
 
-    
-    private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
-//        int input = JOptionPane.showConfirmDialog(null, "Estas seguro que quieres cancelar?, "
-//                + "\n ", "Selecciona una opcion", JOptionPane.YES_NO_CANCEL_OPTION);
-//        if (input == 0) {
-////            Obtiene los registros por si las facturas relacionadas tienen algun pago
-//            int folio = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-//            daofactura df = new daofactura();
-//            ArrayList<factura> arr = df.getdocvspago(cpt, folio + "");
-//            String fol = "";
-////            Si obtiene registros manda error
-//            if (!arr.isEmpty()) {
-//                for (int i = 0; i < arr.size(); i++) { // solo guarda las 
-//                    fol = arr.get(i).getFolio() + " ";
-//                }
-//                JOptionPane.showMessageDialog(null, "No puedes cancelar una NCR si tienes un pago hecho con las facturas: \n" + fol);
-//            } else {// Si no Si efectua la cancelacion de la NCR
-//                int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-//                arr = df.getdocvspagoall(cpt, id);
-//                if (df.Cancelancr(cpt, ACobranza, arr)) {
-//                    JOptionPane.showMessageDialog(null, "Exito al cancelar NCR, recuerda que solo se cancela en el sistema y no en el SAT");
-//                    Buscanotas();
-//                } else {
-//                    JOptionPane.showMessageDialog(null, "Error al cancelar NCR, contacta a sistemas");
-//                }
-//            }
-//        }
 
+    private void JtCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCancelarActionPerformed
+        respcancela();
     }//GEN-LAST:event_JtCancelarActionPerformed
 
-    private void setreport() {
-//        try {
-//            String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
-//
-//            daoempresa d = new daoempresa();
-//            String n = "1";
-//            String logo = "AF.png";
-////            Obtiene los datos del emisor que en este caso en ath
-//            Empresas e = d.getempresarfc(sqlempresa, n);
-//            Map parametros = new HashMap();
-//            convertnum conv = new convertnum();
-//            int folio = arrfactura.get(JtDetalle.getSelectedRow()).getFolio();
-//            parametros.put("folio", folio);
-//            parametros.put("nombre", e.getNombre());
-//            parametros.put("rfc", e.getRfc());
-//            parametros.put("regimen", e.getRegimen());
-//            parametros.put("lugar", e.getCp());
-//            parametros.put("serie", "NCR");
-//            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/indexncrtpu.jasper"));
-//            JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
-//            JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
-//            ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-//            ver.setTitle("NCR " + folio);
-//            ver.setVisible(true);
-//        } catch (JRException ex) {
-//            Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+    private void respcancela() {
+        daofactura df = new daofactura();
+        Formateodedatos fd = new Formateodedatos();
+        int row = JtDetalle.getSelectedRow();
+        //Se obtienen los registro del pago con sus Id´s pertenecientes
+        //para proceder a hacer la cancelacion y su regreso de saldos
+        ArrayList<abono> arrabono = df.getpagos_especial_tocancel(cpt,
+                arrfactura.get(row).getId(), fd.getbd_tocargo(u.getTurno()));
+        if (df.Cancela_pagoespecial(cpt, ACobranza, arrabono)) {
+            JOptionPane.showMessageDialog(null, "Exito al cancelar el pago");
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Ocurrio un error al momento de procesar la cancelacion del pago,"
+                    + " intentelo de neuvo o llame a sistemas");
+        }
     }
+
 
 // Obtiene todas las notas de acuerdo a lo que se introduzca en el campo
     private void Buscanotas() {
-//        daofactura df = new daofactura();
-//        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "NCR");
+        daofactura df = new daofactura();
+        arrfactura = df.getpagostpu_especial(cpt, JtCliente.getText());
         generatabla();
     }
-    
+
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Pago");
-        model.addColumn("Cliente");
-        model.addColumn("Total pago");
-        model.addColumn("fecha");
-        model.addColumn("fecha pago");
-        model.addColumn("observaciones");
-        model.addColumn("Estado sat");
-        daofactura d = new daofactura();
-        arrfactura = d.getdocspagosremi(cpt, JtCliente.getText());
-        int tamaño = arrfactura.size();
-        model.setRowCount(tamaño);
+        model.addColumn("Folio");
+        model.addColumn("Nombre");
+        model.addColumn("Monto");
+        model.addColumn("Fecha");
+        model.addColumn("Usuario");
+        model.addColumn("Fecha pago");
+        model.addColumn("Observaciones");
+        model.addColumn("Estado");
+        model.setNumRows(arrfactura.size());
+        DecimalFormat formateador = new DecimalFormat("####.##");
         for (int i = 0; i < arrfactura.size(); i++) {
-            String a = (arrfactura.get(i).getEstatus() == 1) ? "Activo" : "Inactivo";
-            model.setValueAt(arrfactura.get(i).getFolio(), i, 0);
+            String estat = (arrfactura.get(i).getEstado().equals("1")) ? "ACTIVA" : "CANCELADO";
+            model.setValueAt(arrfactura.get(i).getId(), i, 0);
             model.setValueAt(arrfactura.get(i).getNombre(), i, 1);
-            model.setValueAt(arrfactura.get(i).getTotal(), i, 2);
+            model.setValueAt(formateador.format(arrfactura.get(i).getTotal()), i, 2);
             model.setValueAt(arrfactura.get(i).getFecha(), i, 3);
-            model.setValueAt(arrfactura.get(i).getFechapago(), i, 4);
-            model.setValueAt(arrfactura.get(i).getObservaciones(), i, 5);
-            model.setValueAt(a, i, 6);
+            model.setValueAt(arrfactura.get(i).getClaveusuario(), i, 4);
+            model.setValueAt(arrfactura.get(i).getFechapago(), i, 5);
+            model.setValueAt(arrfactura.get(i).getObservaciones(), i, 6);
+            model.setValueAt(estat, i, 7);
         }
         JtDetalle.setModel(model);
     }
