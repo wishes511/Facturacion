@@ -12,6 +12,7 @@ import Modelo.cargo;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -159,10 +160,43 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel6MousePressed
 
     private void JmCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCancelarActionPerformed
-        
+        int row = JtDetalle.getSelectedRow();
+        int resp = JOptionPane.showConfirmDialog(null, "Estas seguro de cancelar el cargo?");
+        if (resp == 0) {
+            if (checkcargos(row)) {
+                JOptionPane.showMessageDialog(null, "NO SE PUEDE DAR DE BAJA UN CARGO QUE TIENE UN PAGO REALIZADO", "ERROR", JOptionPane.ERROR_MESSAGE);
+            } else {
+                cancelacargo(row);
+            }
+        }
+
     }//GEN-LAST:event_JmCancelarActionPerformed
 
+    /**
+     * Funcion para verificar que el cargo seleccionado no tenga algun pago
+     * realizado
+     *
+     * @return boolean
+     */
+    private boolean checkcargos(int row) {
+        daofactura df = new daofactura();
+        return df.checkcargoespecial_tocancel(ACobranza, arrfactura.get(row).getId_cargo());
+    }
 
+    /**
+     * LLeva a cabo a dar de baja el estatus del cargo especial
+     *
+     * @param row
+     */
+    private void cancelacargo(int row) {
+        daofactura df = new daofactura();
+        if (df.Cancela_cargoespecial(ACobranza, arrfactura.get(row).getId_cargo())) {
+            JOptionPane.showMessageDialog(null, "Cargo cancelado con exito");
+            Buscanotas();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error al cancelar cargo, intentelo de nuevo");
+        }
+    }
 
 //    Busca las facturas que encuentre
     private void Buscanotas() {

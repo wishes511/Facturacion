@@ -241,4 +241,8 @@ public interface Facturas {
     public ArrayList<abono> getpagos_especial_tocancel(Connection con, int pago, String bd);
     
     public boolean Cancela_pagoespecial(Connection cpt, Connection cob, ArrayList<abono> arr);
+    
+    public boolean checkcargoespecial_tocancel(Connection cob, int cargo);
+    
+    public boolean Cancela_cargoespecial(Connection cob, int cargo);
 }

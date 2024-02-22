@@ -4464,5 +4464,26 @@ public class sqlfactura {
         return resp;
     }
 
+    public boolean Cancela_cargoespecial(Connection cob, int cargo) {
+        try {
+            cob.setAutoCommit(false);
+            PreparedStatement st;
+            String sql = "update cargoespecial set estatus='0' where id_cargo=?";
+            st = cob.prepareStatement(sql);
+            st.setInt(1, cargo);
+            st.executeUpdate();
+            cob.commit();
+            return true;
+        } catch (SQLException ex) {
+            try {
+                cob.rollback();
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex1) {
+                Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            return false;
+        }
+    }
     //metodos externos
 }

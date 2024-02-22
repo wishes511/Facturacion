@@ -696,4 +696,30 @@ public class daofactura implements Facturas {
         return s.Cancela_pagoespecial(cpt, cob, arr);
     }
 
+    /**
+     * Verifica que el cargo no tenga abonos realizados
+     *
+     * @param cob conexion de cobranza
+     * @param cargo id del cargo
+     * @return booelano
+     */
+    @Override
+    public boolean checkcargoespecial_tocancel(Connection cob, int cargo) {
+        sqlfactura s = new sqlfactura();
+        return s.checkcargoespecial_tocancel(cob, cargo);
+    }
+
+    /**
+     * Cancela el cargo especial seleccionado
+     *
+     * @param cob conexion de cobranza
+     * @param cargo id del cargo
+     * @return booelano
+     */
+    @Override
+    public boolean Cancela_cargoespecial(Connection cob, int cargo) {
+        sqlfactura s = new sqlfactura();
+        return s.Cancela_cargoespecial(cob, cargo);
+    }
+
 }
