@@ -14,6 +14,7 @@ import Modelo.Formateodedatos;
 import Modelo.Procserie;
 import Modelo.Usuarios;
 import Paneles.pago1;
+import Panelmaq.Rep_Cargosespeciales;
 import Panelmaq.ReporteInventario;
 import Paneltpu.Kardexprod;
 import Paneltpu.RepSaldosV;
@@ -97,7 +98,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
     boolean adminmod = true;
     Usuarios u = new Usuarios();
@@ -264,6 +265,7 @@ public final class Principal extends javax.swing.JFrame {
         JmVentaserie3 = new javax.swing.JMenuItem();
         JmKardexprod2 = new javax.swing.JMenuItem();
         JmVentaserie4 = new javax.swing.JMenuItem();
+        JmCargosEspeciales = new javax.swing.JMenuItem();
         JmCobranzatpu2 = new javax.swing.JMenu();
         JmNotascrtpu2 = new javax.swing.JMenuItem();
         JmPagostpu4 = new javax.swing.JMenuItem();
@@ -1066,6 +1068,14 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         Jmreportes2.add(JmVentaserie4);
+
+        JmCargosEspeciales.setText("Reporte de cargos especiales");
+        JmCargosEspeciales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmCargosEspecialesActionPerformed(evt);
+            }
+        });
+        Jmreportes2.add(JmCargosEspeciales);
 
         JmMaq2.add(Jmreportes2);
 
@@ -2449,6 +2459,13 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmPagoespecialActionPerformed
 
+    private void JmCargosEspecialesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmCargosEspecialesActionPerformed
+        Rep_Cargosespeciales n = new Rep_Cargosespeciales(null, true);
+        n.u = conexion;
+        n.setconexiones(u);
+        n.setVisible(true);
+    }//GEN-LAST:event_JmCargosEspecialesActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -3057,6 +3074,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmAvancesprod;
     private javax.swing.JMenuItem JmCES;
     private javax.swing.JMenuItem JmCargos;
+    private javax.swing.JMenuItem JmCargosEspeciales;
     private javax.swing.JMenuItem JmCatalogoprod;
     private javax.swing.JMenuItem JmCatalogoscmp;
     private javax.swing.JMenuItem JmCerrar;
