@@ -98,6 +98,7 @@ public class daopedimentos implements pedimentos {
      * Es el mismo proposito que la original ADV, solo que esta trae 3 columnas
      * mas e ignora la dureza ya que es para las maquinas, de ahi en mas es la
      * misma consulta base.
+     *
      * @param cpt
      * @param referencias
      * @return Pedimento junto su detalle
@@ -106,6 +107,19 @@ public class daopedimentos implements pedimentos {
     public ArrayList<pedimento> getpedimentoaadvMAQ(Connection cpt, String referencias) {
         sqlpedimentos s = new sqlpedimentos();
         return s.getpedimentoadvMaquina(cpt, referencias);
+    }
+
+    /**
+     * Obtiene la cantidad restante de un producto mediante el kardex
+     *
+     * @param cpt conexion de cpt
+     * @param kardex id del kardex
+     * @return cantidad en stock
+     */
+    @Override
+    public double getStockwithkardex(Connection cpt, int kardex) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.getStockwithkardex(cpt, kardex);
     }
 
 }

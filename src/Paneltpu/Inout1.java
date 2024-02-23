@@ -9,6 +9,7 @@ import DAO.daoConceptos;
 import Paneles.*;
 import DAO.daocfdi;
 import DAO.daokardexrcpt;
+import DAO.daopedimentos;
 import Modelo.ConceptosES;
 import Modelo.Formadepago;
 import Modelo.Formateodedatos;
@@ -276,24 +277,20 @@ public class Inout1 extends javax.swing.JPanel {
 
     private void JbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelarActionPerformed
         int row = JtDetalle.getSelectedRow();
-        daokardexrcpt dk = new daokardexrcpt();
-        daoConceptos d = new daoConceptos();
-        java.util.Date date = new Date();
-//        Se obtiene un nuevo folio
-        int folio = dk.maxkardexsincuenta(cpt);
-//        Se obtiene el id del concepto de cancelacion
-        ConceptosES e = d.getConceptos(cpt, 20, 1);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        KardexCmp kar = k.get(row);
-        kar.setId_concepto(e.getId_concepto());
-        kar.setFolio(folio);
-        kar.setFechadoc(sdf.format(date));
-        kar.setFechamov(sdf.format(date));
-        kar.setNombreusuario(u.getUsuario());
-        if (dk.deleterow(cpt, kar)) {
-            JOptionPane.showMessageDialog(null, "Proceso completo, REVISA TU REPORTE DE KARDEX");
-            Buscanotas();
+        if (iscancel()) {
+            daopedimentos dp = new daopedimentos();
+            double stock = dp.getStockwithkardex(cpt, k.get(row).getId_kardex());
+            //Verifica que la cantidad de la entrada no se mayor al stock del pedimento
+            //ademas de que sea si o si una entrada, que no afecte las salidas
+            if (k.get(row).getCantidad() >= stock && Be.isSelected()) {
+                JOptionPane.showMessageDialog(null,
+                        "NO SE PUEDE CANCELAR ENTRADA YA QUE EXCEDE EL STOCK DEL PEDIMENTO",
+                        "ERROR", JOptionPane.ERROR_MESSAGE);
+            } else {
+                setcancelar(row);
+            }
         }
+
     }//GEN-LAST:event_JbCancelarActionPerformed
 
     private void JlSerieMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlSerieMousePressed
@@ -338,6 +335,42 @@ public class Inout1 extends javax.swing.JPanel {
     }//GEN-LAST:event_BsActionPerformed
 
     /**
+     * Cuestion antes de ejecutar la cancelacion
+     *
+     * @return boleano , true si acepta la cancelacion
+     */
+    private boolean iscancel() {
+        int resp = JOptionPane.showConfirmDialog(null, "Estas seguro de cancelar el movimiento?");
+        return (resp == 0);
+    }
+
+    /**
+     * Ejecuta la cancelacion del movimiento
+     *
+     * @param row linea del arraylist
+     */
+    private void setcancelar(int row) {
+        daokardexrcpt dk = new daokardexrcpt();
+        daoConceptos d = new daoConceptos();
+        java.util.Date date = new Date();
+//        Se obtiene un nuevo folio
+        int folio = dk.maxkardexsincuenta(cpt);
+//        Se obtiene el id del concepto de cancelacion
+        ConceptosES e = d.getConceptos(cpt, 20, 1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        KardexCmp kar = k.get(row);
+        kar.setId_concepto(e.getId_concepto());
+        kar.setFolio(folio);
+        kar.setFechadoc(sdf.format(date));
+        kar.setFechamov(sdf.format(date));
+        kar.setNombreusuario(u.getUsuario());
+        if (dk.deleterow(cpt, kar)) {
+            JOptionPane.showMessageDialog(null, "Proceso completo, REVISA TU REPORTE DE KARDEX");
+            Buscanotas();
+        }
+    }
+
+    /**
      * Despliega reporte del pedido individual
      *
      * @param folio
@@ -366,9 +399,9 @@ public class Inout1 extends javax.swing.JPanel {
 
 //  Importante ya que es donde se usara la base de datos con clientes fiscales o internos
     private void Buscanotas() {
-        Formateodedatos fd= new Formateodedatos();
+        Formateodedatos fd = new Formateodedatos();
 //        obtiene la bd a usar mediante los datos del usuario y lo que se quiere buscar
-        String cob=fd.getB_or_Amovs(u.getTipo_usuario(), u.getTurno(), serie);
+        String cob = fd.getB_or_Amovs(u.getTipo_usuario(), u.getTurno(), serie);
 //        if (u.getTipo_usuario().equals("2")) {
 //            cob = (serie.equals("B")) ? "RACobranzaTpu" : "ACobranzaTpu";
 //        } else {
@@ -400,7 +433,7 @@ public class Inout1 extends javax.swing.JPanel {
         model.setNumRows(k.size());
         DecimalFormat formateador = new DecimalFormat("####.##");
         for (int i = 0; i < k.size(); i++) {
-            String estat="0";
+            String estat = "0";
             switch (k.get(i).getStatus()) {
                 case "0":
                     estat = "NO ACTIVA";

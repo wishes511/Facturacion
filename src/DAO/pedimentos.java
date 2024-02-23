@@ -33,4 +33,6 @@ public interface pedimentos {
     public ArrayList<pedimento> getpedimentoinv(Connection cpt);
     
     public boolean checkmatdureza(Connection cpt, int mat, String dur, int ped);
+    
+    public double getStockwithkardex(Connection cpt, int kardex);
 }

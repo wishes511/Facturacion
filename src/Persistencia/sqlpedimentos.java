@@ -186,7 +186,7 @@ public class sqlpedimentos {
                 dp.setId_material(rs.getInt("mat"));
                 dp.setMatped(rs.getString("matpedimento"));
                 if (turno.equals("7")) {
-                    dp.setMatped(rs.getString("matpedimento") +" "
+                    dp.setMatped(rs.getString("matpedimento") + " "
                             + rs.getString("noserie"));
                 }
                 p.setFechapedimento(rs.getString("fechaped"));
@@ -324,6 +324,30 @@ public class sqlpedimentos {
         } catch (SQLException ex) {
             Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
             resp = false;
+        }
+        return resp;
+    }
+
+    public double getStockwithkardex(Connection cpt, int kardex) {
+        double resp = 0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select cantidadrestante\n"
+                    + "from dpedimentos dp\n"
+                    + "join kardex k on dp.id_pedimento=k.id_pedimento and "
+                    + "dp.id_material=k.id_material and dp.dureza=k.dureza\n"
+                    + "where id_kardex=?";
+            st = cpt.prepareStatement(sql);
+            st.setInt(1, kardex);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                resp = rs.getInt("cantidadrestante");
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return resp;
     }
