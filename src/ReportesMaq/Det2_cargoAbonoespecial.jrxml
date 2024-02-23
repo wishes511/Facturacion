@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="612" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5085a538-1fa6-4b64-b5e1-6072be0e9e7a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cliente" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="cargo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select id_abono,referencia,importe,pago,fecha,fechapago
+from abonoespecial
+where estatus='1' and id_cliente=$P{cliente} and id_cargo=$P{cargo}]]>
+	</queryString>
+	<field name="id_abono" class="java.lang.Integer"/>
+	<field name="referencia" class="java.lang.String"/>
+	<field name="importe" class="java.lang.Double"/>
+	<field name="pago" class="java.lang.Double"/>
+	<field name="fecha" class="java.sql.Timestamp"/>
+	<field name="fechapago" class="java.sql.Timestamp"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="57" height="15" uuid="8af21dd4-480a-47b3-8852-927e48214fc9"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{id_abono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="0" width="100" height="15" uuid="1b2fb543-b731-4bb6-bfc9-a2303a2154dd"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="157" y="0" width="100" height="15" uuid="6bd9627d-5c93-4565-aa1d-c8cc61d6df3a"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="257" y="0" width="100" height="15" uuid="25f92dc6-7ef7-41ea-82d6-da12936abfec"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fechapago}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="0" width="84" height="15" uuid="58e8bcb9-f0ec-4404-bb3c-d027fdd21309"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

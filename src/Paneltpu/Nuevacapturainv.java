@@ -9,6 +9,7 @@ import DAO.daoInventarios;
 import DAO.daopedimentos;
 import Modelo.Formateodedatos;
 import Modelo.Inventario;
+import Modelo.Usuarios;
 import Modelo.pedimento;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -24,9 +25,10 @@ public class Nuevacapturainv extends javax.swing.JDialog {
 
     public Connection cob, cpt;
     public Connection liteusuario;
-    ArrayList<pedimento> arr = new ArrayList<>();
-    ArrayList<pedimento> arrdet = new ArrayList<>();
-    ArrayList<Inventario> arrlite = new ArrayList<>();
+    private ArrayList<pedimento> arr = new ArrayList<>();
+    private ArrayList<pedimento> arrdet = new ArrayList<>();
+    private ArrayList<Inventario> arrlite = new ArrayList<>();
+    Usuarios u;
 
     /**
      * Creates new form Modinventarios
@@ -207,7 +209,7 @@ public class Nuevacapturainv extends javax.swing.JDialog {
 
     private void buscaregistros() {
         daopedimentos d = new daopedimentos();
-        arrdet = d.getpedimentoaadv(cpt, "referencia='" + arr.get(JcPed.getSelectedIndex()).getReferencia() + "'");
+        arrdet = d.getpedimentoaadv(cpt, "referencia='" + arr.get(JcPed.getSelectedIndex()).getReferencia() + "'",u.getTurno());
         settabla();
     }
 
@@ -282,6 +284,10 @@ public class Nuevacapturainv extends javax.swing.JDialog {
 
     }
 
+    public void cargausuario(Usuarios u){
+    this.u=u;
+    }
+    
     /**
      * Verifica el array principal para elegir solo los pedimentos disponibles,
      * por lo tanto si encuentra el id del pedimento en el array de la bdlite lo

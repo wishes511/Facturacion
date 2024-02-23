@@ -157,13 +157,14 @@ public class sqlpedimentos {
         return arr;
     }
 
-    public ArrayList<pedimento> getpedimentoadv(Connection cpt, String referencias) {
+    public ArrayList<pedimento> getpedimentoadv(Connection cpt, String referencias, String turno) {
         ArrayList<pedimento> arr = new ArrayList<>();
         try {
+            String noserie = (turno.equals("7")) ? ",noserie" : "";
             PreparedStatement st;
             ResultSet rs;
             String sql = "select p.id_pedimento as ped,id_dpedimento,referencia,matpedimento,cantidadrestante,unidad,dp.precio as precio,"
-                    + "codigosat,dureza,dp.id_material as mat, convert(date,fechapedimento) as fechaped"
+                    + "codigosat,dureza,dp.id_material as mat, convert(date,fechapedimento) as fechaped" + noserie
                     + "  from pedimentos p\n"
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
@@ -177,13 +178,17 @@ public class sqlpedimentos {
                 p.setId_pedimento(rs.getInt("ped"));
                 p.setReferencia(rs.getString("referencia"));
                 dp.setId_dpedimento(rs.getInt("id_dpedimento"));
-                dp.setMatped(rs.getString("matpedimento"));
                 dp.setCantrestante(rs.getDouble("cantidadrestante"));
                 dp.setUnidad(rs.getString("unidad"));
                 dp.setPrecio(rs.getDouble("precio"));
                 dp.setCodigosat(rs.getString("codigosat"));
                 dp.setDureza(rs.getString("dureza"));
                 dp.setId_material(rs.getInt("mat"));
+                dp.setMatped(rs.getString("matpedimento"));
+                if (turno.equals("7")) {
+                    dp.setMatped(rs.getString("matpedimento") +" "
+                            + rs.getString("noserie"));
+                }
                 p.setFechapedimento(rs.getString("fechaped"));
                 p.setDp(dp);
                 arr.add(p);
@@ -211,8 +216,8 @@ public class sqlpedimentos {
             while (rs.next()) {
                 pedimento p = new pedimento();
                 Dpedimento dp = new Dpedimento();
-                String desc=rs.getString("modelo")+" "+rs.getString("descripcion")+" "
-                        +rs.getString("noserie");
+                String desc = rs.getString("modelo") + " " + rs.getString("descripcion") + " "
+                        + rs.getString("noserie");
                 p.setId_pedimento(rs.getInt("ped"));
                 p.setReferencia(rs.getString("referencia"));
                 dp.setId_dpedimento(rs.getInt("id_dpedimento"));

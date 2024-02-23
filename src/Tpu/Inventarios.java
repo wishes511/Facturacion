@@ -45,6 +45,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
     ArrayList<pedimento> arr = new ArrayList<>();
     Controlinventario inv = new Controlinventario();
     double diferencias;
+    private Usuarios u;
 
     /**
      * Creates new form Materiales
@@ -59,6 +60,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
         cobranza = c.getCobranzatpu();
         litecfdi = c.getLitecfdi();
         liteusuario = c.getLiteusuario();
+        this.u=u;
     }
 
     /**
@@ -264,6 +266,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
         Nuevacapturainv n = new Nuevacapturainv(null, true);
         n.cpt = cpt;
+        n.cargausuario(u);
         n.liteusuario = liteusuario;
         n.setcombo();
         n.setVisible(true);

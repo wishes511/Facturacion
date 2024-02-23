@@ -52,12 +52,13 @@ public class daopedimentos implements pedimentos {
      *
      * @param cpt
      * @param referencias
+     * @param turno
      * @return
      */
     @Override
-    public ArrayList<pedimento> getpedimentoaadv(Connection cpt, String referencias) {
+    public ArrayList<pedimento> getpedimentoaadv(Connection cpt, String referencias, String turno) {
         sqlpedimentos s = new sqlpedimentos();
-        return s.getpedimentoadv(cpt, referencias);
+        return s.getpedimentoadv(cpt, referencias, turno);
     }
 
     @Override
