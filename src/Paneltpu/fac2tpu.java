@@ -1327,7 +1327,7 @@ public class fac2tpu extends javax.swing.JPanel {
 //        Hace la consulta distinta de acuerdo a si es de maquinaria o tpu
         switch (u.getTurno()) {
             case "5":
-                k2 = dk1.getpedimentoaadv(cpt, folios);
+                k2 = dk1.getpedimentoaadv(cpt, folios,u.getTurno());
                 break;
             case "6":
             case "7":

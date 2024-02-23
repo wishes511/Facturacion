@@ -1271,7 +1271,7 @@ public class fac3tpu extends javax.swing.JPanel {
     private void seleccionfolio(String folios) {
 //        cpt de tpu
         daopedimentos dk1 = new daopedimentos();
-        k2 = dk1.getpedimentoaadv(cpttpu, folios);
+        k2 = dk1.getpedimentoaadv(cpttpu, folios,u.getTurno());
 //        String r = k0.get(JtFolio1.getSelectedIndex()).getFolio() + "";
 //        k = dk.getkardexfac(rcpt, r, empresacob);// nueva carga de datos
 //        k = dk.getkardexfacMulti(rcpt, empresacob, folios);

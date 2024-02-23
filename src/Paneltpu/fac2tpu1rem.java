@@ -836,7 +836,7 @@ public class fac2tpu1rem extends javax.swing.JPanel {
 
     private void seleccionfolio(String folios) {
         daopedimentos dk1 = new daopedimentos();
-        k2 = dk1.getpedimentoaadv(cpt, folios);
+        k2 = dk1.getpedimentoaadv(cpt, folios, u.getTurno());
         generatabla();
     }
 
