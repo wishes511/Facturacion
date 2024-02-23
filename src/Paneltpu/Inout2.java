@@ -87,7 +87,7 @@ public class Inout2 extends javax.swing.JPanel {
         jRadioButton1.setSelected(true);
         grupo.add(jRadioButton1);
         grupo.add(jRadioButton2);
-        
+
     }
 
     /**
@@ -425,6 +425,9 @@ public class Inout2 extends javax.swing.JPanel {
         k1 = dk1.getpedimentosimple(cpt, empresacob, r);
         llenalistasalida();
         cargacombos();
+        if (!k1.isEmpty()) {
+            JlCliente1.setSelectedIndex(0);
+        }
     }//GEN-LAST:event_JtClienteActionPerformed
 
     private void JtFolio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtFolio1ActionPerformed
@@ -435,7 +438,9 @@ public class Inout2 extends javax.swing.JPanel {
         if (!k2.isEmpty() && !JtReferencia.getText().isEmpty()) {
             boolean a1 = verificadetalle();
             if (!a1) {
-                JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
+                JOptionPane.showMessageDialog(null,
+                        "Error, Verifica los precios y cantidades",
+                        "ERROR", JOptionPane.ERROR_MESSAGE);
             }
 //            System.out.println(" - " + a1);
             if (!a1) {
@@ -456,12 +461,12 @@ public class Inout2 extends javax.swing.JPanel {
                         KardexCmp kar = new KardexCmp();
                         double precio = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString())));
                         double cant = Double.parseDouble(formateador.format(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString())));
-                        int cue=Integer.parseInt(arrcuentas.get(JcConceptos.getSelectedIndex()).getCuenta());
+                        int cue = Integer.parseInt(arrcuentas.get(JcConceptos.getSelectedIndex()).getCuenta());
                         double stock;
-                        if(cue==1 || cue==10){
-                            stock=k2.get(i).getDp().getCantrestante()+cant;
-                        }else{
-                            stock=k2.get(i).getDp().getCantrestante()-cant;
+                        if (cue == 1 || cue == 10) {
+                            stock = k2.get(i).getDp().getCantrestante() + cant;
+                        } else {
+                            stock = k2.get(i).getDp().getCantrestante() - cant;
                         }
                         kar.setCantrestante(stock);
                         kar.setCuenta(arrcuentas.get(JcConceptos.getSelectedIndex()).getId_concepto());
@@ -492,7 +497,7 @@ public class Inout2 extends javax.swing.JPanel {
                 }
 
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "El campo de referencia no puede ir vacio o no se ha seleccionado");
         }
     }//GEN-LAST:event_jLabel2MousePressed
@@ -505,45 +510,6 @@ public class Inout2 extends javax.swing.JPanel {
         }
         JcCliente.setModel(cliente);
         getconceptos();
-    }
-
-    /**
-     * Funcion para determinar si la cantidad decimal es redondeada o truncada
-     * ya que el sat maneja ambos y no solo uno porque si no aveces saldran mal
-     * los calculos de los centavos
-     *
-     * @param cant cantidad en decimal
-     * @return Cantidad redondeada o truncada
-     */
-    private double formatdecimal(double cant) {
-        int dato = 0;
-        int punto = 0;
-        boolean band = false;
-        double resp;
-        String c = String.valueOf(cant);
-//        String cadena = "";
-        for (int i = 0; i < c.length(); i++) {
-//            Empieza a tomar datos despues del punto
-            if (c.charAt(i) == '.') {
-                band = true;
-            }
-            if (band) {
-//                3 digitos de decimal para saber qe hacer con los decimales
-                if (punto == 3) {
-                    dato = Integer.parseInt(c.charAt(i) + "");
-                    i = c.length();
-                    break;
-                }
-//                cadena += c.charAt(i);
-                punto++;
-            }
-        }
-        if ((dato <= 5)) {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
-        } else {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        }
-        return resp;
     }
 
     /**
@@ -717,7 +683,7 @@ public class Inout2 extends javax.swing.JPanel {
         model.addColumn("Unidad");//8
         model.addColumn("Pedimento");//9
         model.addColumn("Total actual");//9
-        
+
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
         if (!k2.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
             model.setRowCount(k2.size());
@@ -828,16 +794,37 @@ public class Inout2 extends javax.swing.JPanel {
         return resp;
     }
 
+    /**
+     * Es importante verificar cada uno de los datos capturados, y mas
+     * cuestiones numericas ya que afectan directo a stock
+     *
+     * @return
+     */
     private boolean verificadetalle() {
         boolean resp = true;
         for (int i = 0; i < k2.size(); i++) {
-            String precio = JtDetalle.getValueAt(i, 3).toString();
-            if (!verificafloat(precio)) {
-                resp = false;
-                break;
+            if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
+                String precio = JtDetalle.getValueAt(i, 3).toString();
+                String cantidad = JtDetalle.getValueAt(i, 2).toString();
+                //Se verifica cada uno de los renglones seleccionados
+                if ((!verificafloat(precio) && !verificafloat(cantidad))
+                        && verificacant_precio(precio) || verificacant_precio(cantidad)) {
+                    resp = false;
+                    break;
+                }
             }
         }
         return resp;
+    }
+
+    /**
+     * Verifica informacion valida dentro de los campos del precio y cantidad
+     *
+     * @param var Cualquier string, priorizando precio y cantidad de la tabla
+     * @return boolean, TRUE si el dato es invalido
+     */
+    private boolean verificacant_precio(String var) {
+        return (var.isEmpty() || var.equals("") || var.equals(" ") || var.equals("0"));
     }
 
     private boolean verificaregimen(Connection cfdi, String regimen, String uso) {
