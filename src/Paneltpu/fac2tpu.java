@@ -7,6 +7,7 @@ package Paneltpu;
 
 import Paneles.*;
 import DAO.daoAgentes;
+import DAO.daoConceptos;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
@@ -1066,18 +1067,21 @@ public class fac2tpu extends javax.swing.JPanel {
                     vaciarcampos();
                 } else {
                     int id = dfac.nuevafactpu(cpt, f, ACobranza);
-                    Sellofiscal s = new Sellofiscal();
+                    Sellofiscal s;
                     if (id != 0) {
 //                        System.out.println("Exito");
                         daoxmltpu dx = new daoxmltpu();
                         f.setId(id);
                         dx.generarfac(f, cpt, sqlempresa);
                         timbrarXML tim = new timbrarXML();
+                        // Una ves generado el xml se manda al sat y obtener los sellos
                         s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
                         dfac.Updatesellofiscaltpu(cpt, s, id);
                         setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
                         if (traslado.equals("0")) {
                             JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
+                            //verifica y hace funcion de cargo a remision con n cantidad
+                            iscargo(f);
                             vaciarcampos();
                             JtCliente.requestFocus();
                         }
@@ -1109,6 +1113,19 @@ public class fac2tpu extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Es una funcion que agrega un cargo extra a la cobranza interna haciendo
+     * referencia a la factura, esto es para que sea una factura con remision,
+     * no se hace ningun calculo con porcentajes es directo con la cantidad
+     * deseada en el cargo interno y ademas haciendo referencia
+     * @param f 
+     */
+    private void iscargo(factura f){
+        if(JcNcargo.isSelected()){
+            daoConceptos dc;
+        }
+    }
+    
     /**
      * Funcion para determinar si la cantidad decimal es redondeada o truncada
      * ya que el sat maneja ambos y no solo uno porque si no aveces saldran mal

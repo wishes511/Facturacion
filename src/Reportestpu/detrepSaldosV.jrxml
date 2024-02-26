@@ -44,14 +44,17 @@ where fechavencimiento<=$P{fechah}  and (saldo!=0 and saldomx!=0) and c.id_agent
 			</textField>
 			<subreport>
 				<reportElement x="0" y="12" width="612" height="5" uuid="e285038c-bd7e-4abe-8afa-0c9cd4f93ea3"/>
-				<subreportParameter name="f2">
-					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
-				</subreportParameter>
 				<subreportParameter name="cliente">
 					<subreportParameterExpression><![CDATA[$F{id_cliente}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="agente">
 					<subreportParameterExpression><![CDATA[$P{cliente}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechah">
+					<subreportParameterExpression><![CDATA[$P{fechah}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="f2">
+					<subreportParameterExpression><![CDATA[$P{f2}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<returnValue subreportVariable="saldo" toVariable="saldo"/>
