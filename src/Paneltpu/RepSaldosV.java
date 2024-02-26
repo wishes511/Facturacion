@@ -212,11 +212,12 @@ public class RepSaldosV extends javax.swing.JDialog {
         java.util.Date date = new Date();
         String f1 = sdf.format(Fecha.getDate());
         String f2 = sdf.format(Fecha1.getDate());
+        String fechahoy=sdf.format(date);
         String cliente = JtNombre.getText();
-        setreport(f1, f2, cliente);
+        setreport(f1, f2, cliente, fechahoy);
     }//GEN-LAST:event_jLabel1MousePressed
 
-    private void setreport(String f1, String f2, String n) {
+    private void setreport(String f1, String f2, String n, String fechahoy) {
         try {
             Connection con = (user.getTurno().equals("5")) ? u.getCobranzatpu() : u.getCobranzatpuB();
             Formateodedatos fd = new Formateodedatos();
@@ -224,6 +225,7 @@ public class RepSaldosV extends javax.swing.JDialog {
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
+            parametros.put("fechah", fechahoy);
             parametros.put("cliente", n);
             parametros.put("imag", fd.getimagenreporte(user));
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/IndexrepSaldosV.jasper"));
