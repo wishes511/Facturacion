@@ -105,12 +105,15 @@ public class fac2tpu extends javax.swing.JPanel {
         JtCliente.requestFocus();
         JcPublico.setVisible(false);
         setdolar();
+
+//        iniciarconexiones();  Solo si se usa solo la clase si no se pasan directamente desde facturacion
+// carga en combos los catalogos del sat
+    }
+
+    public void ncargo() {
         if (u.getTurno().equals("7")) {
             setncargo();
         }
-//        iniciarconexiones();  Solo si se usa solo la clase si no se pasan directamente desde facturacion
-// carga en combos los catalogos del sat
-
     }
 
     /**
@@ -1118,14 +1121,15 @@ public class fac2tpu extends javax.swing.JPanel {
      * referencia a la factura, esto es para que sea una factura con remision,
      * no se hace ningun calculo con porcentajes es directo con la cantidad
      * deseada en el cargo interno y ademas haciendo referencia
-     * @param f 
+     *
+     * @param f
      */
-    private void iscargo(factura f){
-        if(JcNcargo.isSelected()){
+    private void iscargo(factura f) {
+        if (JcNcargo.isSelected()) {
             daoConceptos dc;
         }
     }
-    
+
     /**
      * Funcion para determinar si la cantidad decimal es redondeada o truncada
      * ya que el sat maneja ambos y no solo uno porque si no aveces saldran mal

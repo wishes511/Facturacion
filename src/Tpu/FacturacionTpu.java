@@ -101,6 +101,7 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
         c2.empresarcpt=empresarcpt;
         c2.empresacob=empresacob;
         c2.u=u;// datos del usuario
+        c2.ncargo();
         
         c1.cpt=cpt;
         c1.ACobranza=cobranza;

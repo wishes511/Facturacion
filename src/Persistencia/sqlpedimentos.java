@@ -141,7 +141,7 @@ public class sqlpedimentos {
 //                    + "join proveedores prov on p.id_proveedor=prov.id_proveedor\n"
 //                    + "where nombre like '%"+cliente+"%' and id_pedimento in (select id_pedimento from DPedimentos where cantidadrestante>0)";
             st = cpt.prepareStatement(sql);
-////            System.out.println(sql);
+//            System.out.println(sql);
             rs = st.executeQuery();
             while (rs.next()) {
                 pedimento p = new pedimento();
