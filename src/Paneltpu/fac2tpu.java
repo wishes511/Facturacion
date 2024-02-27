@@ -34,8 +34,6 @@ import Modelo.pedimento;
 import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -113,6 +111,9 @@ public class fac2tpu extends javax.swing.JPanel {
     public void ncargo() {
         if (u.getTurno().equals("7")) {
             setncargo();
+        }
+        if (u.getTurno().equals("5")) {
+            jPanel6.setVisible(false);
         }
     }
 
@@ -744,17 +745,6 @@ public class fac2tpu extends javax.swing.JPanel {
         JcCliente.setModel(cliente);
     }
 
-    private void setcombos() {
-        boolean band = false;
-        boolean band1 = false;
-        if (!band) {
-            Jlfp.setText("No se encontro la forma de pago");
-        }
-        if (!band1) {
-            JlUso.setText("No se encontro el uso cfdi");
-        }
-    }
-
     /**
      * Se obtienen todos los cliente, se cargan y se busca cual es el agente que
      * llega con la salida y da la opcion de elegir cualquier otro
@@ -964,18 +954,18 @@ public class fac2tpu extends javax.swing.JPanel {
                     iva = 0.16;
                 }
                 int totalpares = 0;// Se usa para la tabla facturas
-                impuestos = 0;
-                descuentos = 0;
-                subtotal = 0;
+//                impuestos = 0;
+//                descuentos = 0;
+//                subtotal = 0;
 //                Detallado de productos selecionados
                 for (int i = 0; i < k2.size(); i++) {
                     Dfactura df = new Dfactura();
                     if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
                         String sodigosat = JtDetalle.getValueAt(i, 1).toString();
-                        double precio = fd.formatdecimal(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString()));
-                        double tpares = fd.formatdecimal(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()));
+                        double precio = fd.formatdecimalv2(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString()));
+                        double tpares = fd.formatdecimalv2(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()));
                         double desc = Double.parseDouble(JtDescuento.getText()) / 100;
-                        double descuento = fd.formatdecimal((tpares * precio) * desc);
+                        double descuento = fd.formatdecimalv2((tpares * precio) * desc);
                         if (k2.get(i).getReferencia().equals("0")) {
                             df.setDescripcion(k2.get(i).getDp().getMatped());
                         } else {
@@ -983,6 +973,8 @@ public class fac2tpu extends javax.swing.JPanel {
                         }
                         df.setRenglon(i + 1);
                         df.setProducto(k2.get(i).getDp().getId_material());
+                        //Formatea cantidad y no en la consulta
+                        df.setCantrestante(fd.formatdecimaltruncado(k2.get(i).getDp().getCantrestante()-tpares));
                         df.setCantidadfloat(tpares);
 //                        df.setCodigo(k2.get(i).getDp().getCodigosat());
                         df.setCodigo(sodigosat);
@@ -991,33 +983,34 @@ public class fac2tpu extends javax.swing.JPanel {
                         df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
                         df.setId_pedimento(k2.get(i).getId_pedimento());
                         df.setDescumedida("");
-                        df.setPrecio(fd.formatdecimal(precio));
-                        df.setBase(fd.formatdecimal(precio * tpares));
+                        df.setPrecio(fd.formatdecimalv2(precio));
+                        df.setBase(fd.formatdecimalv2(precio * tpares));
                         df.setImpuesto("002");
                         df.setTipofactor("Tasa");
 //                        Este en especial por cuestion de centavos
-                        String as = String.valueOf(fd.formatdecimal((tpares * precio) - descuento) * iva);
-                        df.setImporta(Double.parseDouble(as));
+                        String as = String.valueOf(fd.formatdecimalv2((tpares * precio) - descuento) * iva);
+                        double dimpu=((tpares * precio) - descuento) * iva;
+                        df.setImporta(fd.formatdecimalv2(dimpu));
 //                        df.setImporta(Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva)));
 //                        df.setDescuento(Double.parseDouble(formateador.format(descuento)));
-                        String as1 = String.valueOf(fd.formatdecimal(descuento));
+                        String as1 = String.valueOf(fd.formatdecimalv2(descuento));
                         df.setDescuento(Double.parseDouble(as1));
                         df.setTasaocuota(iva + "");
 
                         arrf.add(df);
                         totalpares += tpares;
-                        subtotal += df.getBase();
-                        impuestos += Double.parseDouble(as);
-                        descuentos += Double.parseDouble(as1);
+//                        subtotal += df.getBase();
+//                        impuestos += Double.parseDouble(as);
+//                        descuentos += Double.parseDouble(as1);
                     }
                 }
-                total = subtotal - descuentos + impuestos;
+//                total = subtotal - descuentos + impuestos;
                 f.setTotalpares(totalpares);
                 f.setArr(arrf);
-                f.setImpuestos(formatdecimal(impuestos));
-                f.setDescuento(formatdecimal(descuentos));
-                f.setSubtotal(formatdecimal(subtotal));
-                f.setTotal(formatdecimal(total));
+                f.setImpuestos(fd.formatdecimalv2(impuestos));
+                f.setDescuento(fd.formatdecimalv2(descuentos));
+                f.setSubtotal(fd.formatdecimalv2(subtotal));
+                f.setTotal(fd.formatdecimalv2(total));
                 //id del documento recien añadido
 
                 ArrayList<Poliza> arrpoliza = dfac.getasientoscontable(ACobranza);
@@ -1048,15 +1041,15 @@ public class fac2tpu extends javax.swing.JPanel {
                     }
                     switch (conta) {
                         case 0:
-                            p.setImporte(fd.ftotal(String.valueOf(formatdecimal(total))));
+                            p.setImporte(fd.ftotal(String.valueOf(fd.formatdecimalv2(total))));
                             conta++;
                             break;
                         case 1:
-                            p.setImporte(fd.ftotal(String.valueOf(formatdecimal(impuestos))));
+                            p.setImporte(fd.ftotal(String.valueOf(fd.formatdecimalv2(impuestos))));
                             conta++;
                             break;
                         case 2:
-                            p.setImporte(fd.ftotal(String.valueOf(formatdecimal(subtotal - descuentos))));
+                            p.setImporte(fd.ftotal(String.valueOf(fd.formatdecimalv2(subtotal - descuentos))));
                             conta = 0;
                             break;
                     }
@@ -1128,45 +1121,6 @@ public class fac2tpu extends javax.swing.JPanel {
         if (JcNcargo.isSelected()) {
             daoConceptos dc;
         }
-    }
-
-    /**
-     * Funcion para determinar si la cantidad decimal es redondeada o truncada
-     * ya que el sat maneja ambos y no solo uno porque si no aveces saldran mal
-     * los calculos de los centavos
-     *
-     * @param cant cantidad en decimal
-     * @return Cantidad redondeada o truncada
-     */
-    private double formatdecimal(double cant) {
-        int dato = 0;
-        int punto = 0;
-        boolean band = false;
-        double resp;
-        String c = String.valueOf(cant);
-//        String cadena = "";
-        for (int i = 0; i < c.length(); i++) {
-//            Empieza a tomar datos despues del punto
-            if (c.charAt(i) == '.') {
-                band = true;
-            }
-            if (band) {
-//                3 digitos de decimal para saber qe hacer con los decimales
-                if (punto == 3) {
-                    dato = Integer.parseInt(c.charAt(i) + "");
-                    i = c.length();
-                    break;
-                }
-//                cadena += c.charAt(i);
-                punto++;
-            }
-        }
-        if ((dato <= 5)) {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
-        } else {
-            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        }
-        return resp;
     }
 
     /**
@@ -1419,6 +1373,7 @@ public class fac2tpu extends javax.swing.JPanel {
         subtotal = 0;
         impuestos = 0;
         descuentos = 0;
+        Formateodedatos fd = new Formateodedatos();
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Material");//0  estilo combinacion corrida
         model.addColumn("Clave SAT");//1
@@ -1431,7 +1386,6 @@ public class fac2tpu extends javax.swing.JPanel {
         model.addColumn("Unidad");//8
         model.addColumn("Pedimento");//9
         double iva = 0;
-        DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
         if (!JcPublico.isSelected()) {// verifica 
             iva = 0.16;
         }
@@ -1446,27 +1400,38 @@ public class fac2tpu extends javax.swing.JPanel {
                 model.setValueAt(k2.get(i).getDp().getMatped(), i, 0);
                 model.setValueAt(k2.get(i).getDp().getCodigosat(), i, 1);
                 model.setValueAt(tpares, i, 2);
-                model.setValueAt(formateador.format(precio), i, 3);
-                model.setValueAt(formateador.format(descuento), i, 4);
-                model.setValueAt(formateador.format(((tpares * precio) - descuento) * iva), i, 5);
-                model.setValueAt(formateador.format((tpares * precio) - descuento), i, 6);
+                model.setValueAt(fd.formatdecimalv2(precio), i, 3);
+                model.setValueAt(fd.formatdecimalv2(descuento), i, 4);
+                model.setValueAt(fd.formatdecimalv2(((tpares * precio) - descuento) * iva), i, 5);
+                model.setValueAt(fd.formatdecimalv2((tpares * precio) - descuento), i, 6);
                 model.setValueAt("", i, 7);
                 model.setValueAt(k2.get(i).getDp().getUnidad(), i, 8);
                 model.setValueAt(k2.get(i).getReferencia(), i, 9);
                 //suma de totales
-                subtotal += tpares * precio;
+                descuentos += fd.formatdecimalv2(descuento);
+//                        subtotal += Double.parseDouble(formateador.format((tpares * precio)));
+                subtotal += fd.formatdecimalv2(tpares * precio);
+//                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
+                double imp = ((tpares * precio) - descuento) * iva;
+                impuestos += fd.formatdecimalv2(imp);
+
             }
         }
         //Variables para manejo de totales
-        descuentos = subtotal * Double.parseDouble(JtDescuento.getText()) / 100;
-        impuestos = ((subtotal - descuentos) * iva);
-        total = subtotal - descuentos + impuestos;
-        //Solo para despliqgue de informacion
-        JlIva.setText(formateador.format(impuestos));
-        Jlsub.setText(formateador.format(subtotal));
-        JlDesc.setText(formateador.format(descuentos));
-        JlTotal.setText(formateador.format(total));
+        despliegaimportes(fd);
         JtDetalle.setModel(model);
+    }
+
+    private void despliegaimportes(Formateodedatos fd) {
+        double desc = Double.parseDouble(JtDescuento.getText()) / 100;
+        descuentos = subtotal * desc;
+        impuestos = fd.formatdecimalv2(impuestos);
+        //impuestos = (subtotal - descuentos) * iva;
+        total = impuestos + subtotal - descuentos;
+        JlIva.setText(impuestos + "");
+        Jlsub.setText(fd.formatdecimalv2(subtotal) + "");
+        JlDesc.setText(fd.formatdecimalv2(descuentos) + "");
+        JlTotal.setText(fd.formatdecimalv2(total) + "");
     }
 
     private void actualizaimportes() {
@@ -1478,7 +1443,7 @@ public class fac2tpu extends javax.swing.JPanel {
         if (!JcPublico.isSelected()) {// verifica 
             iva = 0.16;
         }
-        DecimalFormat formateador = new DecimalFormat("####.##");
+        Formateodedatos fd = new Formateodedatos();
         if (!k2.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
             for (int i = 0; i < k2.size(); i++) {
                 String act = JtDetalle.getValueAt(i, 7).toString();// Se obtiene el valor del activo
@@ -1497,15 +1462,16 @@ public class fac2tpu extends javax.swing.JPanel {
                             double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
                             double descuento = (tpares * precio) * desc;
                             JtDetalle.setValueAt(precio, i, 3);
-                            JtDetalle.setValueAt(formateador.format(descuento), i, 4);
-                            JtDetalle.setValueAt(formateador.format(((tpares * precio) - descuento) * iva), i, 5);
-                            JtDetalle.setValueAt(formateador.format((tpares * precio)), i, 6);
+                            JtDetalle.setValueAt(fd.formatdecimalv2(descuento), i, 4);
+                            JtDetalle.setValueAt(fd.formatdecimalv2(((tpares * precio) - descuento) * iva), i, 5);
+                            JtDetalle.setValueAt(fd.formatdecimalv2((tpares * precio)), i, 6);
                             //suma de totales
-                            descuentos += Double.parseDouble(formateador.format(descuento));
+                            descuentos += fd.formatdecimalv2(descuento);
 //                        subtotal += Double.parseDouble(formateador.format((tpares * precio)));
-                            subtotal += tpares * precio;
+                            subtotal += fd.formatdecimalv2(tpares * precio);
 //                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
-                            impuestos += ((tpares * precio) - descuento) * iva;
+                            double imp = ((tpares * precio) - descuento) * iva;
+                            impuestos += fd.formatdecimalv2(imp);
                         }
 
                     }
@@ -1514,20 +1480,8 @@ public class fac2tpu extends javax.swing.JPanel {
             }
             if (resp) {// Si, y solo si es un entero o decimal
                 //Variables para manejo de totales
-//                descuentos = subtotal * Float.parseFloat(JtDescuento.getText()) / 100;
-                //impuestos =(float) ((subtotal - descuentos) * iva);
-                double desc = Double.parseDouble(JtDescuento.getText()) / 100;
-                descuentos = subtotal * desc;
-                impuestos = (subtotal - descuentos) * iva;
-                total = impuestos + subtotal - descuentos;
-//                total = subtotal - descuentos + impuestos;
-//                System.out.println(total + " -- " + impuestos + " -- " + subtotal + " -- " + descuentos+" --"+tot);
-//                System.out.println(impuestos);
-                //Solo para despliqgue de informacion
-                JlIva.setText(formateador.format(impuestos));
-                Jlsub.setText(formateador.format(subtotal));
-                JlDesc.setText(formateador.format(descuentos));
-                JlTotal.setText(formateador.format(total));
+                despliegaimportes(fd);
+
             }
         }
         //Tambien verificar el clave del proveedor al momento de actualizar valores
@@ -1556,17 +1510,6 @@ public class fac2tpu extends javax.swing.JPanel {
             JlNcargo.setVisible(false);
             JtNcargo.setVisible(false);
         }
-    }
-
-    private boolean verificaint(String cad) {
-        boolean resp = false;
-        String patt = "[0-9]+";
-        Pattern pat = Pattern.compile(patt);
-        Matcher match = pat.matcher(cad);
-        if (match.matches()) {
-            resp = true;
-        }
-        return resp;
     }
 
     private boolean verificafloat(String cad) {

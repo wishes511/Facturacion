@@ -15,10 +15,18 @@ public class Dfactura implements java.io.Serializable{
     private int id, idoc, producto,talla,cantidad,renglon,id_dpedimento,id_pedimento, years;
     private int c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,c11,c12,c13,c14, almacen,linea,corrida,estilo,combinacion, foliokardex;
     private String factura,descripcion, codigo, umedida, descripcionprov,impuesto, tasaocuota,tipofactor,uuid, stock, descumedida,dureza,fecha;
-    private double base,  importa, descuento,precio,  cantidadfloat, precioant,costo;
+    private double base,  importa, descuento,precio,  cantidadfloat, precioant,costo, cantrestante;
     private int kardex, cargo;
     private String pedido;
     ArrayList<String> arruuid = new ArrayList<>();
+
+    public double getCantrestante() {
+        return cantrestante;
+    }
+
+    public void setCantrestante(double cantrestante) {
+        this.cantrestante = cantrestante;
+    }
 
     public int getCargo() {
         return cargo;

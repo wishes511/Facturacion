@@ -1068,6 +1068,7 @@ public class sqlfactura {
                 double descu = arr.getDescuento();
                 String dur = arr.getDureza();
                 int id_dped = arr.getId_dpedimento();
+                double crestante=arr.getCantrestante();
 
                 sql = "insert into Ddocumento(id_documento,id_material,descripcion,cantidad,precio,base,impuestos,descuento,iva,unidad,codigosat) "
                         + "values(" + docu + "," + prod + ",'" + des + "'," + c + "," + precio + "," + b + "," + impo + "," + descu + ",'16','" + med + "','" + cod + "')";
@@ -1081,7 +1082,7 @@ public class sqlfactura {
                 st = con.prepareStatement(sql);
                 st.executeUpdate();
 
-                sql = "update dpedimentos set cantidadrestante=cantidadrestante-" + c + " where id_dpedimento=" + id_dped;
+                sql = "update dpedimentos set cantidadrestante=" + crestante + " where id_dpedimento=" + id_dped;
 //                System.out.println("actualiza pedimento " + sql);
                 st = con.prepareStatement(sql);
                 st.executeUpdate();

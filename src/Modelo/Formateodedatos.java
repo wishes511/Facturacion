@@ -8,7 +8,6 @@ package Modelo;
 import com.toedter.calendar.JDateChooser;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Connection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -146,6 +145,55 @@ public class Formateodedatos {
         } else {
             resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
         }
+        return resp;
+    }
+
+    /**
+     * Formatea las cantidades a 2 digitos y revisa si se redondea o se trunca.
+     * * por revisar mas a fondo, una variante de la rimer funcion
+     *
+     * @param cant
+     * @return
+     */
+    public double formatdecimalv2(double cant) {
+        int dato = 0;
+        int punto = 0;
+        boolean band = false;
+        double resp;
+        String c = String.valueOf(BigDecimal.valueOf(cant).setScale(3, RoundingMode.HALF_UP));
+//        String cadena = "";
+        for (int i = 0; i < c.length(); i++) {
+//            Empieza a tomar datos despues del punto
+            if (c.charAt(i) == '.') {
+                band = true;
+            }
+            if (band) {
+//                3 digitos de decimal para saber qe hacer con los decimales
+                if (punto == 3) {
+                    dato = Integer.parseInt(c.charAt(i) + "");
+                    break;
+                }
+//                cadena += c.charAt(i);
+                punto++;
+            }
+        }
+        if ((dato <= 5)) {
+            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.FLOOR).doubleValue();
+        } else {
+            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        }
+        return resp;
+    }
+
+    /**
+     * Utilizado para manejo de cantidades en inventarios o movimientos de almacen
+     * @param cant
+     * @return 
+     */
+    public double formatdecimaltruncado(double cant) {
+        double resp;
+        String c = String.valueOf(BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR));
+        resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.FLOOR).doubleValue();
         return resp;
     }
 
@@ -500,8 +548,9 @@ public class Formateodedatos {
 
     /**
      * Obtiene la ruta y nombre del reporte de inventario
+     *
      * @param turno
-     * @return  Ruta reporte
+     * @return Ruta reporte
      */
     public String getReporte_inv(String turno) {
         String resp = "";
@@ -518,9 +567,10 @@ public class Formateodedatos {
         }
         return resp;
     }
-    
+
     /**
      * Obtiene la descripcion del material de acuerdo al dpedimento y turno
+     *
      * @param turno
      * @param dp
      * @return Nombre dle material
@@ -529,7 +579,7 @@ public class Formateodedatos {
         String resp = "";
         switch (turno) {
             case "5":
-                resp = dp.getMatped()+" "+dp.getDureza();
+                resp = dp.getMatped() + " " + dp.getDureza();
                 break;
             case "6":
                 resp = dp.getMatped();
@@ -540,5 +590,5 @@ public class Formateodedatos {
         }
         return resp;
     }
-    
+
 }
