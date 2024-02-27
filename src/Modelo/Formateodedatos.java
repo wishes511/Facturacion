@@ -255,7 +255,7 @@ public class Formateodedatos {
      */
     public boolean verificaStringsSC(String cad) {
         boolean resp = false;
-        String patt = "[\\s\\w@#.-]*";
+        String patt = "[\\s\\w@#.,-]*";
         Pattern pat = Pattern.compile(patt);
         Matcher match = pat.matcher(cad);
         if (match.matches()) {
@@ -497,4 +497,48 @@ public class Formateodedatos {
         }
         return resp;
     }
+
+    /**
+     * Obtiene la ruta y nombre del reporte de inventario
+     * @param turno
+     * @return  Ruta reporte
+     */
+    public String getReporte_inv(String turno) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = "/Reportestpu/Invsiscap_1";
+                break;
+            case "6":
+                resp = "RACobranzamaq";
+                break;
+            case "7":
+                resp = "/ReportesMaq/Invsiscap_M";
+                break;
+        }
+        return resp;
+    }
+    
+    /**
+     * Obtiene la descripcion del material de acuerdo al dpedimento y turno
+     * @param turno
+     * @param dp
+     * @return Nombre dle material
+     */
+    public String getnuevoinv(String turno, Dpedimento dp) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = dp.getMatped()+" "+dp.getDureza();
+                break;
+            case "6":
+                resp = dp.getMatped();
+                break;
+            case "7":
+                resp = dp.getMatped();
+                break;
+        }
+        return resp;
+    }
+    
 }

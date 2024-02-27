@@ -98,7 +98,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
     boolean adminmod = true;
     Usuarios u = new Usuarios();
@@ -276,6 +276,7 @@ public final class Principal extends javax.swing.JFrame {
         JtFacturaciontpu2 = new javax.swing.JMenuItem();
         JtFacturaciontpu3 = new javax.swing.JMenuItem();
         JmRemision2 = new javax.swing.JMenuItem();
+        JmInventarios1 = new javax.swing.JMenuItem();
         JmPedimento2 = new javax.swing.JMenuItem();
         JmEntradasS2 = new javax.swing.JMenuItem();
         JmDevoluciones2 = new javax.swing.JMenuItem();
@@ -1160,6 +1161,15 @@ public final class Principal extends javax.swing.JFrame {
         JmVentastpu1.add(JmRemision2);
 
         JmMaq2.add(JmVentastpu1);
+
+        JmInventarios1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_inventory_maintenance_product_box_boxes_2326.png"))); // NOI18N
+        JmInventarios1.setText("Inventarios");
+        JmInventarios1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmInventarios1ActionPerformed(evt);
+            }
+        });
+        JmMaq2.add(JmInventarios1);
 
         JmPedimento2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/construction_project_plan_building_architect_design_develop-61_icon-icons.com_60253.png"))); // NOI18N
         JmPedimento2.setText("Pedimento");
@@ -2466,6 +2476,18 @@ public final class Principal extends javax.swing.JFrame {
         n.setVisible(true);
     }//GEN-LAST:event_JmCargosEspecialesActionPerformed
 
+    private void JmInventarios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmInventarios1ActionPerformed
+        try {
+            Inventarios p = new Inventarios(conexion, u);
+            p.getfecha();
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_JmInventarios1ActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -2689,6 +2711,7 @@ public final class Principal extends javax.swing.JFrame {
                 setconexionesglobal();//provicional
                 setmaq2();
                 conexion.setLitecfdi(litecfdi);
+                conexion.setLiteusuario(liteusuario);
                 conexion.setEmpresa(empresa);
                 conexion.setCpt(concpt);
                 conexion.setRcpt(conrcpt);
@@ -3107,6 +3130,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmFamilia2;
     private javax.swing.JMenuItem JmFicha;
     private javax.swing.JMenuItem JmInventarios;
+    private javax.swing.JMenuItem JmInventarios1;
     private javax.swing.JMenuItem JmKardexprod;
     private javax.swing.JMenuItem JmKardexprod1;
     private javax.swing.JMenuItem JmKardexprod2;

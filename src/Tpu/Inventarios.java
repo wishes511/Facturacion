@@ -10,6 +10,7 @@ import DAO.daoInventarios;
 import DAO.daopedimentos;
 import Modelo.Conexiones;
 import Modelo.Controlinventario;
+import Modelo.Formateodedatos;
 import Modelo.Inventario;
 import Modelo.Usuarios;
 import Modelo.pedimento;
@@ -385,8 +386,9 @@ public class Inventarios extends javax.swing.JInternalFrame {
 
     private void vermat_sinpedimento() {
         try {
+            Formateodedatos fd = new Formateodedatos();
             Map parametros = new HashMap();
-            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Invsiscap_1.jasper"));
+            JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource(fd.getReporte_inv(u.getTurno())+".jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, cpt);
             JasperViewer ver = new JasperViewer(print, false); //despliegue de reporte
             ver.setDefaultCloseOperation(DISPOSE_ON_CLOSE);

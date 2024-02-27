@@ -109,7 +109,7 @@ public class sqlclientes {
                     + "correo,cuenta,telefono,plazo \n"
                     + "from cliente c\n"
                     + "where nombre like ? \n"
-                    + "order by nombre desc";
+                    + "order by id_cliente desc";
             st = cob.prepareStatement(sql);
             st.setString(1, "%" + cli + "%");
 //            System.out.println(sql);

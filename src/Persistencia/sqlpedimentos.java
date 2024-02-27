@@ -186,7 +186,7 @@ public class sqlpedimentos {
                 dp.setId_material(rs.getInt("mat"));
                 dp.setMatped(rs.getString("matpedimento"));
                 if (turno.equals("7")) {
-                    dp.setMatped(rs.getString("matpedimento") + " "
+                    dp.setMatped(rs.getString("matpedimento") + " - "
                             + rs.getString("noserie"));
                 }
                 p.setFechapedimento(rs.getString("fechaped"));

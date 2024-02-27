@@ -126,6 +126,12 @@ public class Cargos_especial extends javax.swing.JPanel {
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel20.setText("Cliente");
 
+        JcCliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JcClienteItemStateChanged(evt);
+            }
+        });
+
         jLabel11.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel11.setText("Cargo");
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -216,25 +222,25 @@ public class Cargos_especial extends javax.swing.JPanel {
                         .addGap(51, 51, 51)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel11)
-                            .addComponent(JtCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(JtCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(jLabel18))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(JlSerie)))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(JlSerie)
+                            .addComponent(jLabel20))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel20)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(99, 99, 99)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(104, 104, 104)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -339,6 +345,10 @@ public class Cargos_especial extends javax.swing.JPanel {
 
     }//GEN-LAST:event_JlSerieKeyPressed
 
+    private void JcClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcClienteItemStateChanged
+        setagenteBy();
+    }//GEN-LAST:event_JcClienteItemStateChanged
+
     /**
      * Despliega los clientes de acuerdo a la serie, este es importante ya que
      * si hay diferencias entre los clientes internos y fiscales
@@ -357,7 +367,8 @@ public class Cargos_especial extends javax.swing.JPanel {
     }
 
     /**
-     * Se obtienen todos los agentes y se despliegan en el combobox
+     * Se obtienen todos los agentes y se despliegan en el combobox, ademas de
+     * que se hace referencia al cliente
      */
     private void setAgentes() {
         DefaultComboBoxModel ag = new DefaultComboBoxModel();
@@ -368,6 +379,21 @@ public class Cargos_especial extends javax.swing.JPanel {
             ag.addElement(agent.getNombre());
         }
         JcAgente.setModel(ag);
+    }
+
+    /**
+     *Funcion solo para seleccionar el agente de acuerdo al cliente
+     */
+    private void setagenteBy() {
+        int rowc = JcCliente.getSelectedIndex();
+        for (int i = 0; i < arragente.size(); i++) {
+            int cli = arrcliente.get(rowc).getAg().getIdagente();
+            int ag = arragente.get(i).getIdagente();
+            if (cli == ag) {
+                JcAgente.setSelectedIndex(i);
+                break;
+            }
+        }
     }
 
     private void vaciarcampos() {

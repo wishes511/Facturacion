@@ -327,7 +327,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (Cliente arr1 : arr) {
-            model.addElement(arr1.getNombre());
+            model.addElement(arr1.getCvecliente()+" - "+arr1.getNombre());
         }
         JlCliente.setModel(model);
     }
