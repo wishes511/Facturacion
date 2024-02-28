@@ -150,7 +150,9 @@ public class Formateodedatos {
 
     /**
      * Formatea las cantidades a 2 digitos y revisa si se redondea o se trunca.
-     * * por revisar mas a fondo, una variante de la rimer funcion
+     * * por revisar mas a fondo, una variante de la primer funcion, lo
+     * cambiante es que al inicio de la funcion se redondea a 3 digitos y de ahi
+     * se procede a verificar sus decimales
      *
      * @param cant
      * @return
@@ -186,9 +188,11 @@ public class Formateodedatos {
     }
 
     /**
-     * Utilizado para manejo de cantidades en inventarios o movimientos de almacen
+     * Utilizado para manejo de cantidades en inventarios o movimientos de
+     * almacen
+     *
      * @param cant
-     * @return 
+     * @return
      */
     public double formatdecimaltruncado(double cant) {
         double resp;
@@ -226,6 +230,11 @@ public class Formateodedatos {
         return resp;
     }
 
+    /**
+     * Verifica la variable que sea un numero decimal
+     * @param cad
+     * @return 
+     */
     public boolean verificafloat(String cad) {
         boolean resp = false;
         String patt = "[0-9]+||[0-9]+.[0-9]+";
@@ -237,6 +246,11 @@ public class Formateodedatos {
         return resp;
     }
 
+    /**
+     * Verifica que el objeto de seleccion de fechas sea nulo
+     * @param jt
+     * @return 
+     */
     public boolean verficafechanula(JDateChooser jt) {
         return (jt.getDate() == null);
     }

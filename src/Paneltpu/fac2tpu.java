@@ -7,6 +7,7 @@ package Paneltpu;
 
 import Paneles.*;
 import DAO.daoAgentes;
+import DAO.daoCargos;
 import DAO.daoConceptos;
 import DAO.daocfdi;
 import DAO.daoempresa;
@@ -17,6 +18,7 @@ import DAO.daoxmltpu;
 import Dao.Dao_Catalogo;
 import Modelo.Agentes;
 import Modelo.Cliente;
+import Modelo.ConceptosES;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
@@ -69,7 +71,7 @@ public class fac2tpu extends javax.swing.JPanel {
 
     public String nombre, empresa, empresarcpt, empresacob;
     public Connection sqlcfdi, sqlempresa;
-    public Connection ACobranza, rcpt, cpt;
+    public Connection ACobranza, rcpt, cpt, cobB;
     Serverylite slite = new Serverylite();
     Serverprod prod = new Serverprod();
     public ArrayList<Formadepago> arrfpago = new ArrayList<>();
@@ -815,9 +817,14 @@ public class fac2tpu extends javax.swing.JPanel {
     }//GEN-LAST:event_JcPublicoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        if (checkclvprov()) {
+        if (checkclvprov() || (JcNcargo.isSelected() && verificafloat(JtNcargo.getText()))) {
             setfactura();
         } else {
+            if (!verificafloat(JtNcargo.getText()) && JcNcargo.isSelected()) {
+                JOptionPane.showMessageDialog(null, "Error al ingresar nota de cargo, verifique su importe");
+                JtNcargo.requestFocus();
+                JtNcargo.setText("");
+            }
             JOptionPane.showMessageDialog(null, "Error al verificar la clave de producto, intentalo de nuevo");
         }
     }//GEN-LAST:event_jLabel2MousePressed
@@ -872,7 +879,6 @@ public class fac2tpu extends javax.swing.JPanel {
                     f.setIva(0);
                     f.setImpuestos(0);
                 } else {
-//                    f.setImpuestos(Double.parseDouble(formateador.format(impuestos)));
                     f.setIva(16);
                 }
                 // fin setear impuestos
@@ -892,7 +898,6 @@ public class fac2tpu extends javax.swing.JPanel {
                 f.setClaveusuario(u.getUsuario());
 //                Obtiene la serie fiscal de acuerdo al turno
                 f.setSerie("FAC");
-//                f.setFolio(dfac.getmaxfolio(rcpt, "FAC"));//Obtiene y setea el foliomaximo de *documentos
                 f.setTurno(u.getTurno());
                 f.setConceptos(15);
                 f.setFecha(sdf.format(date));
@@ -919,7 +924,6 @@ public class fac2tpu extends javax.swing.JPanel {
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
                 f.setLugarexpedicion("36350");
-//                f.setAgente(k.get(row).getCli().getAgente());
                 f.setAgente(arrcliente.get(rowc).getAg().getIdagente());
 
                 if (JcUsd1.isSelected()) {
@@ -974,7 +978,7 @@ public class fac2tpu extends javax.swing.JPanel {
                         df.setRenglon(i + 1);
                         df.setProducto(k2.get(i).getDp().getId_material());
                         //Formatea cantidad y no en la consulta
-                        df.setCantrestante(fd.formatdecimaltruncado(k2.get(i).getDp().getCantrestante()-tpares));
+                        df.setCantrestante(fd.formatdecimaltruncado(k2.get(i).getDp().getCantrestante() - tpares));
                         df.setCantidadfloat(tpares);
 //                        df.setCodigo(k2.get(i).getDp().getCodigosat());
                         df.setCodigo(sodigosat);
@@ -989,7 +993,7 @@ public class fac2tpu extends javax.swing.JPanel {
                         df.setTipofactor("Tasa");
 //                        Este en especial por cuestion de centavos
                         String as = String.valueOf(fd.formatdecimalv2((tpares * precio) - descuento) * iva);
-                        double dimpu=((tpares * precio) - descuento) * iva;
+                        double dimpu = ((tpares * precio) - descuento) * iva;
                         df.setImporta(fd.formatdecimalv2(dimpu));
 //                        df.setImporta(Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva)));
 //                        df.setDescuento(Double.parseDouble(formateador.format(descuento)));
@@ -1119,7 +1123,20 @@ public class fac2tpu extends javax.swing.JPanel {
      */
     private void iscargo(factura f) {
         if (JcNcargo.isSelected()) {
-            daoConceptos dc;
+            Formateodedatos fd = new Formateodedatos();
+            daoConceptos dc = new daoConceptos();
+            daoCargos dcar = new daoCargos();
+            int cuenta = dc.getConceptos_cob(cobB, 10, 25);
+            factura notacargo = f;
+            String fechav = dcar.get_Fechavencimiento(ACobranza, f.getFolio());
+            //Carga la referencia hacia la factura FAC_0165
+            notacargo.setReferencia(notacargo.getSerie() + "_" + notacargo.getFolio());
+            notacargo.setTotal(Double.valueOf(JtNcargo.getText()));
+            notacargo.setConceptos(cuenta);
+            notacargo.setFechasolicitado(fd.ffecha(fechav));
+            if (!dcar.new_Notacargo(cobB, f)) {
+                JOptionPane.showMessageDialog(null, "Error al procesar Nota cargo ");
+            }
         }
     }
 
@@ -1335,6 +1352,8 @@ public class fac2tpu extends javax.swing.JPanel {
             arrcargoseleccion.clear();
         }
         JcUsd1.setSelected(false);
+        JcNcargo.setSelected(false);
+        setncargo();
         setdolar();
         relacion = "";
         JtDescuento.setText("0");

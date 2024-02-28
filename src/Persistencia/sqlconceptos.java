@@ -96,7 +96,6 @@ public class sqlconceptos {
             st.setInt(2, subcuenta);
             rs = st.executeQuery();
             while (rs.next()) {
-
                 c.setId_concepto(rs.getInt("id_concepto"));
                 c.setCuenta(rs.getString("cuenta"));
                 c.setSubcuenta(rs.getString("subcuenta"));
@@ -108,6 +107,27 @@ public class sqlconceptos {
             Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return c;
+    }
+        public int getConceptosES_cob(Connection con, int cuenta, int subcuenta) {//cobranza
+        int resp=0;
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            st = con.prepareStatement("select id_concepto "
+                    + "from catcuenta "
+                    + "where cuenta=? and subcuenta=? order by cuenta");
+            st.setInt(1, cuenta);
+            st.setInt(2, subcuenta);
+            rs = st.executeQuery();
+            while (rs.next()) {
+               resp=rs.getInt("id_concepto");
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlcolor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return resp;
     }
 
 }

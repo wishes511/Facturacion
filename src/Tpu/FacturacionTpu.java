@@ -33,7 +33,7 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
     fac2tpu c2;
     String var = "0";
     public String name, empresa, empresarcpt, empresacob;
-    Connection rcpt, litecfdi, liteempresa, cobranza, cpt;
+    Connection rcpt, litecfdi, liteempresa, cobranza, cpt, cobB;
     public Connection liteusuario;
     ArrayList<usocfdi> arruso = new ArrayList<>();
     ArrayList<Formadepago> arrforma = new ArrayList<>();
@@ -55,6 +55,7 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
         cpt = cn.getCpttpu();
         rcpt = cn.getRcpttpu();
         cobranza = cn.getCobranzatpu();
+        cobB=cn.getCobranzatpuB();
         empresa="Tpucpt";
         empresarcpt="Tpurcpt";
         empresacob="ACobranzaTpu";
@@ -93,6 +94,7 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
         c2.arruso = arruso;
         //tambien conexiones y variables
         c2.ACobranza = cobranza;
+        c2.cobB=cobB;
         c2.rcpt = rcpt;
         c2.sqlempresa = liteempresa;
         c2.sqlcfdi = litecfdi;

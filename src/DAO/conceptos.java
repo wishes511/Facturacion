@@ -20,5 +20,6 @@ public interface conceptos {
     public ArrayList<ConceptosES> getConceptos(Connection c, int cuenta);
 
     public ConceptosES getConceptos(Connection c, int cuenta, int subcuenta);
-
+    
+    public int getConceptos_cob(Connection c, int cuenta, int subcuenta);
 }
