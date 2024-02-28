@@ -1230,9 +1230,10 @@ public class fac2tpu extends javax.swing.JPanel {
         if (k1.isEmpty()) {
 
         } else {
+            Formateodedatos fd= new Formateodedatos();
             FactsReltpu f = new FactsReltpu(null, true);
             daofactura df = new daofactura();
-            arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", empresacob);
+            arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
             f.arrcargo = arrcargo;
             f.setVisible(true);
             arrcargoseleccion = f.arrcargoseleccion;
