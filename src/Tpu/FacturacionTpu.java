@@ -15,6 +15,7 @@ import Modelo.metodopago;
 import Modelo.usocfdi;
 import Paneltpu.fac1tpu;
 import Paneltpu.fac2tpu;
+import Paneltpu.facEtpu;
 import Server.Serverylite;
 import java.io.IOException;
 import java.sql.Connection;
@@ -31,6 +32,7 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
 
     fac1tpu c1;
     fac2tpu c2;
+    facEtpu c3;
     String var = "0";
     public String name, empresa, empresarcpt, empresacob;
     Connection rcpt, litecfdi, liteempresa, cobranza, cpt, cobB;
@@ -45,22 +47,20 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
     /**
      * Creates new form Clientes
      *
-     * @param cn
-     * Lista de conexiones
-     * @param usu
-     * datos de usuario
+     * @param cn Lista de conexiones
+     * @param usu datos de usuario
      */
     public FacturacionTpu(Conexiones cn, Usuarios usu) {
         initComponents();
         cpt = cn.getCpttpu();
         rcpt = cn.getRcpttpu();
         cobranza = cn.getCobranzatpu();
-        cobB=cn.getCobranzatpuB();
-        empresa="Tpucpt";
-        empresarcpt="Tpurcpt";
-        empresacob="ACobranzaTpu";
-        u=usu;
-        liteusuario=cn.getLiteusuario();
+        cobB = cn.getCobranzatpuB();
+        empresa = "Tpucpt";
+        empresarcpt = "Tpurcpt";
+        empresacob = "ACobranzaTpu";
+        u = usu;
+        liteusuario = cn.getLiteusuario();
         generaciontab();//Tabs de facturacion
         conexiones();
         setarraylist();
@@ -83,41 +83,61 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
 
     private void setarraylist() {
         daocfdi d = new daocfdi();
-        daoClientes dc= new daoClientes();
-        arrcliente=dc.getClientestpu(cobranza);
+        daoClientes dc = new daoClientes();
+        arrcliente = dc.getClientestpu(cobranza);
         arruso = d.getusocfdi(litecfdi);
         arrmetodo = d.getMetodopago(litecfdi);
         arrforma = d.getFormadepago(litecfdi);
-        c2.arrcliente=arrcliente;
+        //Facturacion normal
+        c2.arrcliente = arrcliente;
         c2.arrfpago = arrforma;
         c2.arrmetodo = arrmetodo;
         c2.arruso = arruso;
         //tambien conexiones y variables
         c2.ACobranza = cobranza;
-        c2.cobB=cobB;
+        c2.cobB = cobB;
         c2.rcpt = rcpt;
         c2.sqlempresa = liteempresa;
         c2.sqlcfdi = litecfdi;
         c2.cpt = cpt;
-        c2.empresa=empresa;
-        c2.empresarcpt=empresarcpt;
-        c2.empresacob=empresacob;
-        c2.u=u;// datos del usuario
+        c2.empresa = empresa;
+        c2.empresarcpt = empresarcpt;
+        c2.empresacob = empresacob;
+        c2.u = u;// datos del usuario
         c2.ncargo();
-        
-        c1.cpt=cpt;
-        c1.ACobranza=cobranza;
-        c1.empresa=empresa;
-        c1.empresacob=empresacob;
+
+        //Vista de documentos
+        c1.cpt = cpt;
+        c1.ACobranza = cobranza;
+        c1.empresa = empresa;
+        c1.empresacob = empresacob;
         c1.arrfpago = arrforma;
         c1.arrmetodo = arrmetodo;
         c1.arruso = arruso;
-        c1.sqlcfdi=litecfdi;
-        c1.sqlempresa=liteempresa;
-        c1.rcpt=rcpt;
-        c1.u=u;
+        c1.sqlcfdi = litecfdi;
+        c1.sqlempresa = liteempresa;
+        c1.rcpt = rcpt;
+        c1.u = u;
         c1.JtCliente.requestFocus();
-        c1.liteusuario=liteusuario;
+        c1.liteusuario = liteusuario;
+        if (u.getTurno().equals("7")) {
+            //Facturacion especial
+            c3.arrcliente = arrcliente;
+            c3.arrfpago = arrforma;
+            c3.arrmetodo = arrmetodo;
+            c3.arruso = arruso;
+            //tambien conexiones y variables
+            c3.ACobranza = cobranza;
+            c3.cobB = cobB;
+            c3.rcpt = rcpt;
+            c3.sqlempresa = liteempresa;
+            c3.sqlcfdi = litecfdi;
+            c3.cpt = cpt;
+            c3.empresa = empresa;
+            c3.empresarcpt = empresarcpt;
+            c3.empresacob = empresacob;
+            c3.u = u;// datos del usuario
+        }
     }
 
     /**
@@ -173,10 +193,13 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
     public final void generaciontab() {//generar tabs
         c1 = new fac1tpu();
         c2 = new fac2tpu();
+        c3 = new facEtpu();
         Tabbed.addTab("Listado de Facturas", c1);
         Tabbed.setSelectedComponent(c1);
         Tabbed.addTab("Nueva Factura", c2);
-
+        if (u.getTurno().equals("7")) {
+            Tabbed.addTab("Facturacion especial", c3);
+        }
     }
 
 //    private void generarfac() {// solo genera xml
