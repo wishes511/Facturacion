@@ -102,21 +102,11 @@ public class facEtpu extends javax.swing.JPanel {
      */
     public facEtpu() {
         initComponents();
-        JtCliente.requestFocus();
         JcPublico.setVisible(false);
         setdolar();
 
 //        iniciarconexiones();  Solo si se usa solo la clase si no se pasan directamente desde facturacion
 // carga en combos los catalogos del sat
-    }
-
-    public void ncargo() {
-        if (u.getTurno().equals("7")) {
-            setncargo();
-        }
-        if (u.getTurno().equals("5")) {
-            jPanel6.setVisible(false);
-        }
     }
 
     /**
@@ -131,10 +121,7 @@ public class facEtpu extends javax.swing.JPanel {
         grupo = new javax.swing.ButtonGroup();
         JtDescuento = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        JtCliente = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jSeparator2 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
         JcMetodo = new javax.swing.JComboBox<>();
@@ -166,8 +153,6 @@ public class facEtpu extends javax.swing.JPanel {
         JlRel = new javax.swing.JList<>();
         JlTcambio1 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        JsRel1 = new javax.swing.JScrollPane();
-        JlCliente1 = new javax.swing.JList<>();
         JcAgente = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
@@ -179,10 +164,6 @@ public class facEtpu extends javax.swing.JPanel {
         JcUsd1 = new javax.swing.JCheckBox();
         JtTCambio1 = new javax.swing.JTextField();
         JlTcambio2 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
-        JcNcargo = new javax.swing.JCheckBox();
-        JtNcargo = new javax.swing.JTextField();
-        JlNcargo = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -199,32 +180,7 @@ public class facEtpu extends javax.swing.JPanel {
         jLabel11.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel11.setText("Descuento");
 
-        JtCliente.setFont(new java.awt.Font("Calibri", 0, 15)); // NOI18N
-        JtCliente.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        JtCliente.setBorder(null);
-        JtCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        JtCliente.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                JtClienteMousePressed(evt);
-            }
-        });
-        JtCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JtClienteActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
-        jLabel6.setText("Pedimento");
-        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                jLabel6MousePressed(evt);
-            }
-        });
-
         jSeparator1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jSeparator2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -464,23 +420,6 @@ public class facEtpu extends javax.swing.JPanel {
             }
         });
 
-        JlCliente1.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
-        JlCliente1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        JlCliente1.setAutoscrolls(false);
-        JlCliente1.setValueIsAdjusting(true);
-        JlCliente1.setVisibleRowCount(10);
-        JlCliente1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                JlCliente1MousePressed(evt);
-            }
-        });
-        JlCliente1.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
-            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
-                JlCliente1ValueChanged(evt);
-            }
-        });
-        JsRel1.setViewportView(JlCliente1);
-
         jLabel18.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel18.setText("Agentes");
 
@@ -496,6 +435,12 @@ public class facEtpu extends javax.swing.JPanel {
 
         jLabel20.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel20.setText("Cliente");
+
+        JcCliente.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JcClienteItemStateChanged(evt);
+            }
+        });
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/Recursos/bordemorado4x4.png")))); // NOI18N
@@ -541,52 +486,6 @@ public class facEtpu extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel6.setBorder(new javax.swing.border.MatteBorder(new javax.swing.ImageIcon(getClass().getResource("/Recursos/bordeazul4x4.png")))); // NOI18N
-
-        JcNcargo.setBackground(new java.awt.Color(255, 255, 255));
-        JcNcargo.setText("Nota Cargo");
-        JcNcargo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JcNcargoActionPerformed(evt);
-            }
-        });
-
-        JtNcargo.setFont(new java.awt.Font("Calibri", 0, 12)); // NOI18N
-        JtNcargo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JtNcargoActionPerformed(evt);
-            }
-        });
-
-        JlNcargo.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        JlNcargo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        JlNcargo.setText("Cargo");
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JcNcargo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(JtNcargo)
-                    .addComponent(JlNcargo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(19, Short.MAX_VALUE))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(JcNcargo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addComponent(JlNcargo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(JtNcargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -614,18 +513,18 @@ public class facEtpu extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(JtCliente)
-                            .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JsRel1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(JcAgente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -637,14 +536,7 @@ public class facEtpu extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(JcTraslado))
@@ -659,43 +551,36 @@ public class facEtpu extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(8, 8, 8)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JsRel1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(40, 40, 40)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(JtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(6, 6, 6))
+                        .addGroup(layout.createSequentialGroup()
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(65, 65, 65))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGap(69, 69, 69)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JcTraslado)
-                            .addComponent(jLabel19)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel18)
-                        .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel20)
-                        .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(50, 50, 50)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel13)
+                                    .addComponent(jLabel2)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel20)
+                                    .addComponent(JcCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel18)
+                                    .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(21, 21, 21)))
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(JcTraslado)
+                    .addComponent(jLabel19))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
@@ -718,7 +603,7 @@ public class facEtpu extends javax.swing.JPanel {
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -730,9 +615,8 @@ public class facEtpu extends javax.swing.JPanel {
         for (Formadepago arrfpago1 : arrfpago) {
             forma.addElement(arrfpago1.getFormapago() + " - " + arrfpago1.getConcepto());
         }
-        for (metodopago arrmetodo1 : arrmetodo) {
-            metodo.addElement(arrmetodo1.getMetodopago() + " - " + arrmetodo1.getDescripcion());
-        }
+        metodo.addElement("PUE - PAGO EN UNA EXHIBICION");
+
         for (usocfdi arruso1 : arruso) {
             uso.addElement(arruso1.getusocfdi() + " - " + arruso1.getDescripcion());
         }
@@ -743,6 +627,7 @@ public class facEtpu extends javax.swing.JPanel {
         JcMetodo.setModel(metodo);
         JcUso.setModel(uso);
         JcCliente.setModel(cliente);
+        setAgentes();
     }
 
     /**
@@ -757,6 +642,13 @@ public class facEtpu extends javax.swing.JPanel {
             ag.addElement(agent.getNombre());
         }
         JcAgente.setModel(ag);
+        setagenteindividual();
+    }
+
+    /**
+     * Autoselecciona el agente predeterminado del cliente
+     */
+    private void setagenteindividual() {
         for (int i = 0; i < arragente.size(); i++) {
             if (arrcliente.get(JcCliente.getSelectedIndex()).getAg().getIdagente() == arragente.get(i).getIdagente()) {
                 JcAgente.setSelectedIndex(i);
@@ -771,30 +663,6 @@ public class facEtpu extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Error, solo colocar numeros enteros en el descuento");
         }
     }//GEN-LAST:event_JtDescuentoActionPerformed
-
-    private void JtClienteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtClienteMousePressed
-        JtCliente.setText("");
-    }//GEN-LAST:event_JtClienteMousePressed
-
-    private void JtClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtClienteActionPerformed
-        String r = JtCliente.getText();
-        //daokardexrcpt dk = new daokardexrcpt();
-        daopedimentos dk1 = new daopedimentos();
-        //k0 = dk.getkardexfacsimple(rcpt, r, empresacob);
-        k1 = dk1.getpedimentosimple(cpt, empresacob, r);
-//        DefaultComboBoxModel model = new DefaultComboBoxModel();
-//        int folio = 0;
-//        for (int i = 0; i < k0.size(); i++) {
-//            if (folio != k0.get(i).getFolio()) {
-//                model.addElement(k0.get(i).getFolio() + " - " + k0.get(i).getCli().getNombre());
-//            }
-//            folio = k0.get(i).getFolio();
-//        }
-//        JtFolio1.setModel(model);
-//        JtFolio1.requestFocus();
-        llenalistasalida();
-        cargacombos();
-    }//GEN-LAST:event_JtClienteActionPerformed
 
     private void JcMetodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcMetodoActionPerformed
         // TODO add your handling code here:
@@ -815,14 +683,9 @@ public class facEtpu extends javax.swing.JPanel {
     }//GEN-LAST:event_JcPublicoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        if (checkclvprov() || (JcNcargo.isSelected() && verificafloat(JtNcargo.getText()))) {
+        if (checkclvprov()) {
             setfactura();
         } else {
-            if (!verificafloat(JtNcargo.getText()) && JcNcargo.isSelected()) {
-                JOptionPane.showMessageDialog(null, "Error al ingresar nota de cargo, verifique su importe");
-                JtNcargo.requestFocus();
-                JtNcargo.setText("");
-            }
             JOptionPane.showMessageDialog(null, "Error al verificar la clave de producto, intentalo de nuevo");
         }
     }//GEN-LAST:event_jLabel2MousePressed
@@ -896,6 +759,7 @@ public class facEtpu extends javax.swing.JPanel {
                 f.setClaveusuario(u.getUsuario());
 //                Obtiene la serie fiscal de acuerdo al turno
                 f.setSerie("FAC");
+                f.setTipofac("E");
                 f.setTurno(u.getTurno());
                 f.setConceptos(15);
                 f.setFecha(sdf.format(date));
@@ -916,12 +780,12 @@ public class facEtpu extends javax.swing.JPanel {
                 f.setTotalcajas(0);
                 f.setCantidadxcaja(0);
                 f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
-                f.setMetodopago(arrmetodo.get(JcMetodo.getSelectedIndex()).getMetodopago());
-                f.setDescmetodop(arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
+                f.setMetodopago("PUE");
+                f.setDescmetodop("PAGO EN UNA SOLA EXHIBICION");
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
-                f.setLugarexpedicion("36350");
+                f.setLugarexpedicion(fd.Lugarexp());
                 f.setAgente(arrcliente.get(rowc).getAg().getIdagente());
 
                 if (JcUsd1.isSelected()) {
@@ -960,51 +824,46 @@ public class facEtpu extends javax.swing.JPanel {
 //                descuentos = 0;
 //                subtotal = 0;
 //                Detallado de productos selecionados
-                for (int i = 0; i < k2.size(); i++) {
+                for (int i = 0; i < JtDetalle.getRowCount(); i++) {
                     Dfactura df = new Dfactura();
-                    if (JtDetalle.getValueAt(i, 7).toString().equals("*")) {
-                        String sodigosat = JtDetalle.getValueAt(i, 1).toString();
-                        double precio = fd.formatdecimalv2(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString()));
-                        double tpares = fd.formatdecimalv2(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()));
-                        double desc = Double.parseDouble(JtDescuento.getText()) / 100;
-                        double descuento = fd.formatdecimalv2((tpares * precio) * desc);
-                        if (k2.get(i).getReferencia().equals("0")) {
-                            df.setDescripcion(k2.get(i).getDp().getMatped());
-                        } else {
-                            df.setDescripcion(k2.get(i).getDp().getMatped() + " (PEDIMENTO: " + k2.get(i).getReferencia() + ", ADUANA: 160 MANZANILLO COLIMA," + k2.get(i).getFechapedimento() + ")");
-                        }
-                        df.setRenglon(i + 1);
-                        df.setProducto(k2.get(i).getDp().getId_material());
-                        //Formatea cantidad y no en la consulta
-                        df.setCantrestante(fd.formatdecimaltruncado(k2.get(i).getDp().getCantrestante() - tpares));
-                        df.setCantidadfloat(tpares);
+                    String sodigosat = JtDetalle.getValueAt(i, 1).toString();
+                    double precio = fd.formatdecimalv2(Double.parseDouble(JtDetalle.getValueAt(i, 3).toString()));
+                    double tpares = fd.formatdecimalv2(Double.parseDouble(JtDetalle.getValueAt(i, 2).toString()));
+                    double desc = Double.parseDouble(JtDescuento.getText()) / 100;
+                    String maq = JtDetalle.getValueAt(i, 0).toString();
+                    double descuento = fd.formatdecimalv2((tpares * precio) * desc);
+                    df.setDescripcion(maq);
+                    df.setRenglon(i + 1);
+                    df.setProducto(k2.get(i).getDp().getId_material());
+                    //Formatea cantidad y no en la consulta
+                    df.setCantrestante(fd.formatdecimaltruncado(k2.get(i).getDp().getCantrestante() - tpares));
+                    df.setCantidadfloat(tpares);
 //                        df.setCodigo(k2.get(i).getDp().getCodigosat());
-                        df.setCodigo(sodigosat);
-                        df.setUmedida(k2.get(i).getDp().getUnidad());
-                        df.setDureza(k2.get(i).getDp().getDureza());
-                        df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
-                        df.setId_pedimento(k2.get(i).getId_pedimento());
-                        df.setDescumedida("");
-                        df.setPrecio(fd.formatdecimalv2(precio));
-                        df.setBase(fd.formatdecimalv2(precio * tpares));
-                        df.setImpuesto("002");
-                        df.setTipofactor("Tasa");
+                    df.setCodigo(sodigosat);
+                    df.setUmedida(k2.get(i).getDp().getUnidad());
+                    df.setDureza(k2.get(i).getDp().getDureza());
+                    df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
+                    df.setId_pedimento(k2.get(i).getId_pedimento());
+                    df.setDescumedida("");
+                    df.setPrecio(fd.formatdecimalv2(precio));
+                    df.setBase(fd.formatdecimalv2(precio * tpares));
+                    df.setImpuesto("002");
+                    df.setTipofactor("Tasa");
 //                        Este en especial por cuestion de centavos
-                        String as = String.valueOf(fd.formatdecimalv2((tpares * precio) - descuento) * iva);
-                        double dimpu = ((tpares * precio) - descuento) * iva;
-                        df.setImporta(fd.formatdecimalv2(dimpu));
+                    String as = String.valueOf(fd.formatdecimalv2((tpares * precio) - descuento) * iva);
+                    double dimpu = ((tpares * precio) - descuento) * iva;
+                    df.setImporta(fd.formatdecimalv2(dimpu));
 //                        df.setImporta(Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva)));
 //                        df.setDescuento(Double.parseDouble(formateador.format(descuento)));
-                        String as1 = String.valueOf(fd.formatdecimalv2(descuento));
-                        df.setDescuento(Double.parseDouble(as1));
-                        df.setTasaocuota(iva + "");
+                    String as1 = String.valueOf(fd.formatdecimalv2(descuento));
+                    df.setDescuento(Double.parseDouble(as1));
+                    df.setTasaocuota(iva + "");
 
-                        arrf.add(df);
-                        totalpares += tpares;
+                    arrf.add(df);
+                    totalpares += tpares;
 //                        subtotal += df.getBase();
 //                        impuestos += Double.parseDouble(as);
 //                        descuentos += Double.parseDouble(as1);
-                    }
                 }
 //                total = subtotal - descuentos + impuestos;
                 f.setTotalpares(totalpares);
@@ -1078,10 +937,7 @@ public class facEtpu extends javax.swing.JPanel {
                         setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
                         if (traslado.equals("0")) {
                             JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
-                            //verifica y hace funcion de cargo a remision con n cantidad
-                            iscargo(f);
                             vaciarcampos();
-                            JtCliente.requestFocus();
                         }
                     }
 //                    if (traslado.equals("1")) {
@@ -1107,33 +963,6 @@ public class facEtpu extends javax.swing.JPanel {
 //                    }
                 }
 
-            }
-        }
-    }
-
-    /**
-     * Es una funcion que agrega un cargo extra a la cobranza interna haciendo
-     * referencia a la factura, esto es para que sea una factura con remision,
-     * no se hace ningun calculo con porcentajes es directo con la cantidad
-     * deseada en el cargo interno y ademas haciendo referencia
-     *
-     * @param f
-     */
-    private void iscargo(factura f) {
-        if (JcNcargo.isSelected()) {
-            Formateodedatos fd = new Formateodedatos();
-            daoConceptos dc = new daoConceptos();
-            daoCargos dcar = new daoCargos();
-            int cuenta = dc.getConceptos_cob(cobB, 10, 25);
-            factura notacargo = f;
-            String fechav = dcar.get_Fechavencimiento(ACobranza, f.getFolio());
-            //Carga la referencia hacia la factura FAC_0165
-            notacargo.setReferencia(notacargo.getSerie() + "_" + notacargo.getFolio());
-            notacargo.setTotal(Double.valueOf(JtNcargo.getText()));
-            notacargo.setConceptos(cuenta);
-            notacargo.setFechasolicitado(fd.ffecha(fechav));
-            if (!dcar.new_Notacargo(cobB, f)) {
-                JOptionPane.showMessageDialog(null, "Error al procesar Nota cargo ");
             }
         }
     }
@@ -1222,15 +1051,20 @@ public class facEtpu extends javax.swing.JPanel {
     private void jLabel3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MousePressed
         actualizaimportes();
     }//GEN-LAST:event_jLabel3MousePressed
-
+    /**
+     * carga de facturas para relacion
+     *
+     * @param evt
+     */
     private void jLabel13MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MousePressed
         int row = JcCliente.getSelectedIndex();
         if (k1.isEmpty()) {
 
         } else {
-            Formateodedatos fd= new Formateodedatos();
+            Formateodedatos fd = new Formateodedatos();
             FactsReltpu f = new FactsReltpu(null, true);
             daofactura df = new daofactura();
+            //Busca las facturas disponibles con el cliente y turno
             arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
             f.arrcargo = arrcargo;
             f.setVisible(true);
@@ -1247,10 +1081,6 @@ public class facEtpu extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jLabel13MousePressed
 
-    private void jLabel6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MousePressed
-
-    }//GEN-LAST:event_jLabel6MousePressed
-
     private void JlRelValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_JlRelValueChanged
 
     }//GEN-LAST:event_JlRelValueChanged
@@ -1258,29 +1088,6 @@ public class facEtpu extends javax.swing.JPanel {
     private void JlRelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlRelMousePressed
 
     }//GEN-LAST:event_JlRelMousePressed
-
-    private void JlCliente1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlCliente1MousePressed
-        int ind[] = JlCliente1.getSelectedIndices();
-        String folios = "";
-        if (ind.length == 1) {
-            folios = "referencia ='" + k1.get(JlCliente1.getSelectedIndex()).getReferencia() + "'";
-        } else {
-            for (int i = 0; i < ind.length; i++) {
-//                System.out.println(ind[i]);
-                if (i == 0) {
-                    folios = "referencia ='" + k1.get(ind[i]).getReferencia() + "'";
-                } else {
-                    folios += " or referencia ='" + k1.get(ind[i]).getReferencia() + "'";
-                }
-            }
-        }
-        seleccionfolio(folios);
-
-    }//GEN-LAST:event_JlCliente1MousePressed
-
-    private void JlCliente1ValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_JlCliente1ValueChanged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JlCliente1ValueChanged
 
     private void JcTrasladoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcTrasladoActionPerformed
         if (JcTraslado.isSelected()) {
@@ -1301,13 +1108,9 @@ public class facEtpu extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_JtTCambio1ActionPerformed
 
-    private void JcNcargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcNcargoActionPerformed
-        setncargo();
-    }//GEN-LAST:event_JcNcargoActionPerformed
-
-    private void JtNcargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtNcargoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JtNcargoActionPerformed
+    private void JcClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcClienteItemStateChanged
+        setagenteindividual();
+    }//GEN-LAST:event_JcClienteItemStateChanged
 
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
@@ -1315,26 +1118,6 @@ public class facEtpu extends javax.swing.JPanel {
             model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
         }
         JlRel.setModel(model);
-    }
-
-//    Llena la lista con todos los folios de acuerdo al cliente
-    private void llenalistasalida() {
-        DefaultListModel<String> model = new DefaultListModel<>();
-        int folio = 0;
-        for (int i = 0; i < k1.size(); i++) {
-            if (k1.get(i).getReferencia().equals("0")) {
-                k1.remove(i);
-                break;
-            }
-        }
-        for (int i = 0; i < k1.size(); i++) {
-            if (folio != k1.get(i).getId_pedimento()) {
-                model.addElement(k1.get(i).getReferencia() + " - " + k1.get(i).getNprov());
-            }
-//            folio = k1.get(i).getId_pedimento();
-        }
-        JlCliente1.setModel(model);
-        JlCliente1.requestFocus();
     }
 
     private void vaciarcampos() {
@@ -1351,40 +1134,13 @@ public class facEtpu extends javax.swing.JPanel {
             arrcargoseleccion.clear();
         }
         JcUsd1.setSelected(false);
-        JcNcargo.setSelected(false);
-        setncargo();
         setdolar();
         relacion = "";
         JtDescuento.setText("0");
         JtObs.setText("");
         cargacombos();
         generatabla();
-        JtCliente.setText("");
-        JtCliente.requestFocus();
         llenalista();
-        llenalistasalida();
-    }
-
-    private void seleccionfolio(String folios) {
-//        daokardexrcpt dk = new daokardexrcpt();
-        daopedimentos dk1 = new daopedimentos();
-//        Hace la consulta distinta de acuerdo a si es de maquinaria o tpu
-        switch (u.getTurno()) {
-            case "5":
-                k2 = dk1.getpedimentoaadv(cpt, folios, u.getTurno());
-                break;
-            case "6":
-            case "7":
-                k2 = dk1.getpedimentoaadvMAQ(cpt, folios);
-                break;
-        }
-        //k2 = dk1.getpedimentoaadv(cpt, folios);
-//        String r = k0.get(JtFolio1.getSelectedIndex()).getFolio() + "";
-//        k = dk.getkardexfac(rcpt, r, empresacob);// nueva carga de datos
-//        k = dk.getkardexfacMulti(rcpt, empresacob, folios);
-//        System.out.println(k.size());
-        generatabla();
-//        setAgentes();
     }
 
     public final void generatabla() {//Tabla actualizable con respecto al descuento e iva
@@ -1432,7 +1188,6 @@ public class facEtpu extends javax.swing.JPanel {
 //                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
                 double imp = ((tpares * precio) - descuento) * iva;
                 impuestos += fd.formatdecimalv2(imp);
-
             }
         }
         //Variables para manejo de totales
@@ -1452,6 +1207,10 @@ public class facEtpu extends javax.swing.JPanel {
         JlTotal.setText(fd.formatdecimalv2(total) + "");
     }
 
+    /**
+     * Actualiza precio, cantidades, importes y totales dentro de la tabla Y
+     * desplegado el subtotal, iva y total de todos los campos seleccionados
+     */
     private void actualizaimportes() {
         subtotal = 0;
         impuestos = 0;
@@ -1499,7 +1258,6 @@ public class facEtpu extends javax.swing.JPanel {
             if (resp) {// Si, y solo si es un entero o decimal
                 //Variables para manejo de totales
                 despliegaimportes(fd);
-
             }
         }
         //Tambien verificar el clave del proveedor al momento de actualizar valores
@@ -1516,17 +1274,6 @@ public class facEtpu extends javax.swing.JPanel {
         } else {
             JlTcambio2.setVisible(false);
             JtTCambio1.setVisible(false);
-        }
-    }
-
-    private void setncargo() {
-        if (JcNcargo.isSelected()) {
-            JlNcargo.setVisible(true);
-            JtNcargo.setVisible(true);
-            JtNcargo.requestFocus();
-        } else {
-            JlNcargo.setVisible(false);
-            JtNcargo.setVisible(false);
         }
     }
 
@@ -1569,15 +1316,12 @@ public class facEtpu extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> JcCliente;
     private javax.swing.JComboBox<String> JcForma;
     private javax.swing.JComboBox<String> JcMetodo;
-    private javax.swing.JCheckBox JcNcargo;
     private javax.swing.JCheckBox JcPublico;
     private javax.swing.JCheckBox JcTraslado;
     private javax.swing.JCheckBox JcUsd1;
     private javax.swing.JComboBox<String> JcUso;
-    private javax.swing.JList<String> JlCliente1;
     private javax.swing.JLabel JlDesc;
     private javax.swing.JLabel JlIva;
-    private javax.swing.JLabel JlNcargo;
     private javax.swing.JList<String> JlRel;
     private javax.swing.JLabel JlTcambio1;
     private javax.swing.JLabel JlTcambio2;
@@ -1586,11 +1330,8 @@ public class facEtpu extends javax.swing.JPanel {
     private javax.swing.JLabel Jlfp;
     private javax.swing.JLabel Jlsub;
     private javax.swing.JScrollPane JsRel;
-    private javax.swing.JScrollPane JsRel1;
-    public javax.swing.JTextField JtCliente;
     private javax.swing.JTextField JtDescuento;
     private javax.swing.JTable JtDetalle;
-    private javax.swing.JTextField JtNcargo;
     private javax.swing.JTextArea JtObs;
     private javax.swing.JTextField JtTCambio1;
     private javax.swing.ButtonGroup grupo;
@@ -1607,7 +1348,6 @@ public class facEtpu extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -1615,10 +1355,8 @@ public class facEtpu extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
 }

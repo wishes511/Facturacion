@@ -137,6 +137,7 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
             c3.empresarcpt = empresarcpt;
             c3.empresacob = empresacob;
             c3.u = u;// datos del usuario
+            c3.cargacombos();
         }
     }
 
@@ -197,8 +198,9 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
         Tabbed.addTab("Listado de Facturas", c1);
         Tabbed.setSelectedComponent(c1);
         Tabbed.addTab("Nueva Factura", c2);
+        //Por ahora solo aplica para
         if (u.getTurno().equals("7")) {
-            Tabbed.addTab("Facturacion especial", c3);
+            Tabbed.addTab("Facturacion especial, AUn no usar", c3);
         }
     }
 

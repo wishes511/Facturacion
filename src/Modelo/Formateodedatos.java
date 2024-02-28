@@ -18,6 +18,15 @@ import java.util.regex.Pattern;
 public class Formateodedatos {
 
     /**
+     * Obtiene el codigo postal de expedicion
+     *
+     * @return
+     */
+    public String Lugarexp() {
+        return "36350";
+    }
+
+    /**
      * Formateo de fechas al tomarla de la bd
      *
      * @param fecha
@@ -232,8 +241,9 @@ public class Formateodedatos {
 
     /**
      * Verifica la variable que sea un numero decimal
+     *
      * @param cad
-     * @return 
+     * @return
      */
     public boolean verificafloat(String cad) {
         boolean resp = false;
@@ -248,8 +258,9 @@ public class Formateodedatos {
 
     /**
      * Verifica que el objeto de seleccion de fechas sea nulo
+     *
      * @param jt
-     * @return 
+     * @return
      */
     public boolean verficafechanula(JDateChooser jt) {
         return (jt.getDate() == null);

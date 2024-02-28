@@ -562,7 +562,7 @@ public class pagotpurem2 extends javax.swing.JPanel {
             }
 //            String bdcob = "[192.168.90.1\\DATOS620].RACobranzaTpu";
             daofactura df = new daofactura();
-            arrcargo = df.getfactrem(ACobranza, r, bdcob);
+            arrcargo = df.getfactrem(cpt, r, bdcob);
             if (arrcargo.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "No hay cargos con ese cliente");
                 JtCliente.setText("");

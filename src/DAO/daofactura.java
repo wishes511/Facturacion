@@ -722,4 +722,19 @@ public class daofactura implements Facturas {
         return s.Cancela_cargoespecial(cob, cargo);
     }
 
+    /**
+     * Ingresa al sistema una nueva factura pero especial, significa que
+     * no afecta a stock pero si genera un cargo en cargoespecial, por lo tanto
+     * su pago seria en abonos especiales
+     * @param cpt conexion de cpt
+     * @param f factura
+     * @param cob conexion de cobranza
+     * @return Id del documento
+     */
+    @Override
+    public int nuevafactpu_Especial(Connection cpt, factura f, Connection cob) {
+        sqlfactura s = new sqlfactura();
+        return s.insertfacturatpu_Especial(cpt, f, cob);
+    }
+
 }

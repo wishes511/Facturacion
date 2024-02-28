@@ -377,16 +377,21 @@ public class fac1tpu extends javax.swing.JPanel {
         int row = JtDetalle.getSelectedRow();
         int e = arrfactura.get(row).getEstatus();
         String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
+        String tipo=arrfactura.get(row).getTipofac();
+        //Verifica si esta timbrada
         if (e == 1 && tim.equals("N")) {
             JbXml.setEnabled(true);
         } else {
             JbXml.setEnabled(false);
         }
-        if (e == 1) {
+        //Verifica el status sea 1
+        if (e == 1 && tipo.equals("N")) {
             JbCancelar.setEnabled(true);
+            JbCancelar.setToolTipText("Puedes realizar la cancelacion");
             JmPedfac.setEnabled(true);
         } else {
             JbCancelar.setEnabled(false);
+            JbCancelar.setToolTipText("No puedes cancelar una factura especial, ve a cargos especiales o dada de baja");
             JmPedfac.setEnabled(false);
         }
         if (arrfactura.get(row).getNombre().equals("COPPEL") && tim.equals("T")) {
@@ -754,10 +759,12 @@ public class fac1tpu extends javax.swing.JPanel {
         model.addColumn("Uso cfdi");
         model.addColumn("Moneda");
         model.addColumn("Estado");
+        model.addColumn("Tipo");
         model.setNumRows(arrfactura.size());
         DecimalFormat formateador = new DecimalFormat("####.##");
         for (int i = 0; i < arrfactura.size(); i++) {
             String estat = (arrfactura.get(i).getEstatus() == 1) ? "ACTIVA" : "CANCELADO";
+            String tipo = (arrfactura.get(i).getTipofac().equals("N")) ? "NORMAL" : "ESPECIAL";
             String estatfac = (arrfactura.get(i).getFoliofiscal().equals("")) ? "NO TIMBRADO" : "TIMBRADO";
 ////            System.out.println(arrfactura.get(i).getTotal());
             model.setValueAt(arrfactura.get(i).getFolio(), i, 0);
@@ -772,6 +779,7 @@ public class fac1tpu extends javax.swing.JPanel {
             model.setValueAt(arrfactura.get(i).getUsocfdi(), i, 9);
             model.setValueAt(arrfactura.get(i).getMoneda(), i, 10);
             model.setValueAt(estat, i, 11);
+            model.setValueAt(tipo, i, 12);
         }
         JtDetalle.setModel(model);
     }

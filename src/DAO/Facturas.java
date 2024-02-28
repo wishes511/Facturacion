@@ -35,6 +35,8 @@ public interface Facturas {
      */
     public int nuevafactpu(Connection cpt, factura f, Connection cob);
     
+    public int nuevafactpu_Especial(Connection cpt, factura f, Connection cob);
+    
     public int nuevafactpuATH(Connection cpt, factura f, Connection cob, Connection cpttpu, Connection rcpt);
 
     public int nuevaremtpu(Connection cpt, factura f, Connection cob);
