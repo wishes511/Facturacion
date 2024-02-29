@@ -88,14 +88,10 @@ public class facEtpu extends javax.swing.JPanel {
     String relacion = "";
     String traslado = "1";
 
-    //kardex para fac
-//    ArrayList<Kardexrcpt> k = new ArrayList<>();
-//    ArrayList<Kardexrcpt> k0 = new ArrayList<>();
-    ArrayList<pedimento> k1 = new ArrayList<>();
-    ArrayList<pedimento> k2 = new ArrayList<>();
     //para factura relacionada
     ArrayList<cargo> arrcargo = new ArrayList<>();
     ArrayList<cargo> arrcargoseleccion = new ArrayList<>();//cargos seleccionados
+    DefaultTableModel model = new DefaultTableModel();
 
     /**
      * Creates new form Cliente1
@@ -104,6 +100,7 @@ public class facEtpu extends javax.swing.JPanel {
         initComponents();
         JcPublico.setVisible(false);
         setdolar();
+        generatabla();
 
 //        iniciarconexiones();  Solo si se usa solo la clase si no se pasan directamente desde facturacion
 // carga en combos los catalogos del sat
@@ -119,6 +116,8 @@ public class facEtpu extends javax.swing.JPanel {
     private void initComponents() {
 
         grupo = new javax.swing.ButtonGroup();
+        pop = new javax.swing.JPopupMenu();
+        JmEliminarren = new javax.swing.JMenuItem();
         JtDescuento = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -155,8 +154,6 @@ public class facEtpu extends javax.swing.JPanel {
         jLabel13 = new javax.swing.JLabel();
         JcAgente = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        JcTraslado = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         JcCliente = new javax.swing.JComboBox<>();
@@ -164,6 +161,16 @@ public class facEtpu extends javax.swing.JPanel {
         JcUsd1 = new javax.swing.JCheckBox();
         JtTCambio1 = new javax.swing.JTextField();
         JlTcambio2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+
+        JmEliminarren.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/eraser_icon-icons.com_60679.png"))); // NOI18N
+        JmEliminarren.setText("Eliminar linea");
+        JmEliminarren.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmEliminarrenActionPerformed(evt);
+            }
+        });
+        pop.add(JmEliminarren);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -235,7 +242,7 @@ public class facEtpu extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(JlUso, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(JcUso, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -423,16 +430,6 @@ public class facEtpu extends javax.swing.JPanel {
         jLabel18.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel18.setText("Agentes");
 
-        jLabel19.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
-        jLabel19.setText("Traslado");
-
-        JcTraslado.setToolTipText("Genera una factura extra para el transporte de mercancia");
-        JcTraslado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JcTrasladoActionPerformed(evt);
-            }
-        });
-
         jLabel20.setFont(new java.awt.Font("Arial", 0, 16)); // NOI18N
         jLabel20.setText("Cliente");
 
@@ -486,6 +483,16 @@ public class facEtpu extends javax.swing.JPanel {
                 .addContainerGap())
         );
 
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/new.png"))); // NOI18N
+        jLabel5.setToolTipText("Añadir Renglones");
+        jLabel5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jLabel5MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -532,20 +539,14 @@ public class facEtpu extends javax.swing.JPanel {
                         .addComponent(jLabel13)
                         .addGap(34, 34, 34)
                         .addComponent(jLabel2)
-                        .addGap(48, 48, 48))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(JcTraslado))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(6, 6, 6)
-                .addComponent(jLabel3)
-                .addContainerGap())
+                        .addGap(48, 48, 48))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel3)
+                        .addContainerGap())
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -577,14 +578,12 @@ public class facEtpu extends javax.swing.JPanel {
                                     .addComponent(jLabel18)
                                     .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(21, 21, 21)))
-                .addGap(22, 22, 22)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JcTraslado)
-                    .addComponent(jLabel19))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -603,7 +602,7 @@ public class facEtpu extends javax.swing.JPanel {
                         .addComponent(jLabel12)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -683,7 +682,7 @@ public class facEtpu extends javax.swing.JPanel {
     }//GEN-LAST:event_JcPublicoActionPerformed
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
-        if (checkclvprov()) {
+        if (checkclvprov() && checkunidad()) {
             setfactura();
         } else {
             JOptionPane.showMessageDialog(null, "Error al verificar la clave de producto, intentalo de nuevo");
@@ -699,37 +698,55 @@ public class facEtpu extends javax.swing.JPanel {
         boolean resp = true;
         Dao_Catalogo dc = new Dao_Catalogo();
         for (int i = 0; i < JtDetalle.getRowCount(); i++) {
-            String selec = JtDetalle.getValueAt(i, 3).toString();
-            if (selec.equals("*")) {
-                String cv = JtDetalle.getValueAt(i, 1).toString();
-                if (!dc.getClaveprod_Var(cv)) {
-                    resp = false;
-                    JtDetalle.setValueAt("", i, 1);
-                    break;
-                }
+            String cv = JtDetalle.getValueAt(i, 1).toString();
+            if (!dc.getClaveprod_Var(cv)) {
+                resp = false;
+                JtDetalle.setValueAt("", i, 1);
+                break;
             }
+        }
+        return resp;
+    }
 
+    /**
+     * Verifica que exista la unidad en lo que se introducjo en la tabla
+     *
+     * @return
+     */
+    private boolean checkunidad() {
+        boolean resp = true;
+        Dao_Catalogo dc = new Dao_Catalogo();
+        for (int i = 0; i < JtDetalle.getRowCount(); i++) {
+            String cv = JtDetalle.getValueAt(i, 7).toString();
+            if (!dc.getUnidad_Var(cv)) {
+                resp = false;
+                JtDetalle.setValueAt("", i, 7);
+                break;
+            }
+        }
+        if (!resp) {
+            JOptionPane.showMessageDialog(null,
+                    "ERROR AL VALIDAR LA UNIDAD DEL PRODUCTO, INTENTE DE NEUVO",
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         return resp;
     }
 
     private void setfactura() {
-        if (!k2.isEmpty()) {
+        if (JtDetalle.getRowCount() != 0) {
             boolean a = verificafloat(JtDescuento.getText());
             boolean a1 = verificadetalle();
             if (!a) {
                 JOptionPane.showMessageDialog(null, "Error, solo colocar numeros enteros en el descuento");
             }
             if (!a1) {
-                JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
+                JOptionPane.showMessageDialog(null, "Error, Verifica los precios y cantidades");
             }
 //            System.out.println(a + " - " + a1);
             if (!a && !a1) {
                 JtDescuento.requestFocus();
             } else {
-                traslado = (JcTraslado.isSelected()) ? "1" : "0";
                 factura f = new factura();
-                int row = 0;
                 String condicion;
                 java.util.Date date = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -832,18 +849,19 @@ public class facEtpu extends javax.swing.JPanel {
                     double desc = Double.parseDouble(JtDescuento.getText()) / 100;
                     String maq = JtDetalle.getValueAt(i, 0).toString();
                     double descuento = fd.formatdecimalv2((tpares * precio) * desc);
+                    String unidad = "";
                     df.setDescripcion(maq);
                     df.setRenglon(i + 1);
-                    df.setProducto(k2.get(i).getDp().getId_material());
+                    df.setProducto(0);
                     //Formatea cantidad y no en la consulta
-                    df.setCantrestante(fd.formatdecimaltruncado(k2.get(i).getDp().getCantrestante() - tpares));
+                    df.setCantrestante(0);
                     df.setCantidadfloat(tpares);
 //                        df.setCodigo(k2.get(i).getDp().getCodigosat());
                     df.setCodigo(sodigosat);
-                    df.setUmedida(k2.get(i).getDp().getUnidad());
-                    df.setDureza(k2.get(i).getDp().getDureza());
-                    df.setId_dpedimento(k2.get(i).getDp().getId_dpedimento());
-                    df.setId_pedimento(k2.get(i).getId_pedimento());
+                    df.setUmedida(unidad);
+                    df.setDureza("N/A");
+                    df.setId_dpedimento(0);
+                    df.setId_pedimento(0);
                     df.setDescumedida("");
                     df.setPrecio(fd.formatdecimalv2(precio));
                     df.setBase(fd.formatdecimalv2(precio * tpares));
@@ -923,7 +941,7 @@ public class facEtpu extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(null, "Error al realizar factura, intente capturar de nuevo");
                     vaciarcampos();
                 } else {
-                    int id = dfac.nuevafactpu(cpt, f, ACobranza);
+                    int id = dfac.nuevafactpu_Especial(cpt, f, ACobranza);
                     Sellofiscal s;
                     if (id != 0) {
 //                        System.out.println("Exito");
@@ -940,29 +958,7 @@ public class facEtpu extends javax.swing.JPanel {
                             vaciarcampos();
                         }
                     }
-//                    if (traslado.equals("1")) {
-//                        int nfolio = dfac.getmaxtraslado(cpt) + 1;
-//                        f.setFolio(nfolio);
-//                        f.setSerie("T");
-//                        f.setTiporelacion("05");
-//                        f.setFoliofiscalorig(s.getUuid());
-//                        id = dfac.nuevafacTraslado(cpt, rcpt, f);
-//                        if (id != 0) {
-//                            System.out.println("Exito traslado");
-//                            daoxmlTraslado dx = new daoxmlTraslado();
-//                            f.setId(id);
-//                            dx.generarfac(f, cpt, sqlempresa);
-//                            timbrarXML tim = new timbrarXML();
-//                            s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
-//                            dfac.Updatesellofiscal(cpt, s, id);
-//                            setreport(f.getFolio(), f.getRegimen(), "XXX", "T");
-//                            JOptionPane.showMessageDialog(null, "Proceso de facturacion y traslado terminado: \n " + s.getEstado());
-//                            vaciarcampos();
-//                            JtCliente.requestFocus();
-//                        }
-//                    }
                 }
-
             }
         }
     }
@@ -1037,14 +1033,8 @@ public class facEtpu extends javax.swing.JPanel {
     }
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
-        String active = JtDetalle.getValueAt(JtDetalle.getSelectedRow(), 7).toString();
-        if (active.equals("")) {
-            JtDetalle.setValueAt("*", JtDetalle.getSelectedRow(), 7);
-        } else {
-            JtDetalle.setValueAt("", JtDetalle.getSelectedRow(), 7);
-        }
-        if (!k2.isEmpty()) {
-            actualizaimportes();
+        if (evt.getButton() == 3) {// activar con clic derecho
+            pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
     }//GEN-LAST:event_JtDetalleMousePressed
 
@@ -1058,26 +1048,22 @@ public class facEtpu extends javax.swing.JPanel {
      */
     private void jLabel13MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MousePressed
         int row = JcCliente.getSelectedIndex();
-        if (k1.isEmpty()) {
-
-        } else {
-            Formateodedatos fd = new Formateodedatos();
-            FactsReltpu f = new FactsReltpu(null, true);
-            daofactura df = new daofactura();
-            //Busca las facturas disponibles con el cliente y turno
-            arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
-            f.arrcargo = arrcargo;
-            f.setVisible(true);
-            arrcargoseleccion = f.arrcargoseleccion;
-            if (!arrcargoseleccion.isEmpty()) {
+        Formateodedatos fd = new Formateodedatos();
+        FactsReltpu f = new FactsReltpu(null, true);
+        daofactura df = new daofactura();
+        //Busca las facturas disponibles con el cliente y turno
+        arrcargo = df.getfactstoFACReltpu(cpt, arrcliente.get(row).getCvecliente() + "", fd.getbd_tocargo(u.getTurno()));
+        f.arrcargo = arrcargo;
+        f.setVisible(true);
+        arrcargoseleccion = f.arrcargoseleccion;
+        if (!arrcargoseleccion.isEmpty()) {
 //            DefaultListModel<String> model = new DefaultListModel<>();
 //            for (cargo arrcargoseleccion1 : arrcargoseleccion) {
 //                model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
 //            }
 //            JlRel.setModel(model);
-                llenalista();
-                relacion = "07";
-            }
+            llenalista();
+            relacion = "07";
         }
     }//GEN-LAST:event_jLabel13MousePressed
 
@@ -1088,14 +1074,6 @@ public class facEtpu extends javax.swing.JPanel {
     private void JlRelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JlRelMousePressed
 
     }//GEN-LAST:event_JlRelMousePressed
-
-    private void JcTrasladoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcTrasladoActionPerformed
-        if (JcTraslado.isSelected()) {
-            JOptionPane.showMessageDialog(null, "El traslado de productos esta activado, 1");
-        } else {
-            JOptionPane.showMessageDialog(null, "El traslado esta deesactivado, 0");
-        }
-    }//GEN-LAST:event_JcTrasladoActionPerformed
 
     private void JcUsd1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JcUsd1ActionPerformed
         setdolar();
@@ -1112,6 +1090,16 @@ public class facEtpu extends javax.swing.JPanel {
         setagenteindividual();
     }//GEN-LAST:event_JcClienteItemStateChanged
 
+    private void jLabel5MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MousePressed
+        String[] rowt = {"", "", "", "", "", "", "", ""};
+        model.addRow(rowt);
+    }//GEN-LAST:event_jLabel5MousePressed
+
+    private void JmEliminarrenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEliminarrenActionPerformed
+        int row = JtDetalle.getSelectedRow();
+        eliniarrenglon(row);
+    }//GEN-LAST:event_JmEliminarrenActionPerformed
+
     private void llenalista() {
         DefaultListModel<String> model = new DefaultListModel<>();
         for (cargo arrcargoseleccion1 : arrcargoseleccion) {
@@ -1121,12 +1109,6 @@ public class facEtpu extends javax.swing.JPanel {
     }
 
     private void vaciarcampos() {
-        if (!k1.isEmpty()) {
-            k1.clear();
-        }
-        if (!k2.isEmpty()) {
-            k2.clear();
-        }
         if (!arrcargo.isEmpty()) {
             arrcargo.clear();
         }
@@ -1139,16 +1121,18 @@ public class facEtpu extends javax.swing.JPanel {
         JtDescuento.setText("0");
         JtObs.setText("");
         cargacombos();
-        generatabla();
         llenalista();
+        for (int i = 0; i < JtDetalle.getRowCount(); i++) {
+            model.removeRow(i);
+        }
+        model.setNumRows(0);
     }
 
+    /**
+     * En esta ocasion solo se cargará una ves esta funcion, ya que lo que se
+     * moverá es el modelo.
+     */
     public final void generatabla() {//Tabla actualizable con respecto al descuento e iva
-        subtotal = 0;
-        impuestos = 0;
-        descuentos = 0;
-        Formateodedatos fd = new Formateodedatos();
-        DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Material");//0  estilo combinacion corrida
         model.addColumn("Clave SAT");//1
         model.addColumn("Cantidad");//2
@@ -1156,42 +1140,7 @@ public class facEtpu extends javax.swing.JPanel {
         model.addColumn("Descuento");//4
         model.addColumn("Impuestos");//5
         model.addColumn("Importe");//6
-        model.addColumn("Activo");//7
-        model.addColumn("Unidad");//8
-        model.addColumn("Pedimento");//9
-        double iva = 0;
-        if (!JcPublico.isSelected()) {// verifica 
-            iva = 0.16;
-        }
-        if (!k2.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
-            model.setRowCount(k2.size());
-
-            for (int i = 0; i < k2.size(); i++) {
-                double tpares = k2.get(i).getDp().getCantrestante();
-                double desc = Double.parseDouble(JtDescuento.getText()) / 100;
-                double precio = k2.get(i).getDp().getPrecio();
-                double descuento = (tpares * precio) * desc;
-                model.setValueAt(k2.get(i).getDp().getMatped(), i, 0);
-                model.setValueAt(k2.get(i).getDp().getCodigosat(), i, 1);
-                model.setValueAt(tpares, i, 2);
-                model.setValueAt(fd.formatdecimalv2(precio), i, 3);
-                model.setValueAt(fd.formatdecimalv2(descuento), i, 4);
-                model.setValueAt(fd.formatdecimalv2(((tpares * precio) - descuento) * iva), i, 5);
-                model.setValueAt(fd.formatdecimalv2((tpares * precio) - descuento), i, 6);
-                model.setValueAt("", i, 7);
-                model.setValueAt(k2.get(i).getDp().getUnidad(), i, 8);
-                model.setValueAt(k2.get(i).getReferencia(), i, 9);
-                //suma de totales
-                descuentos += fd.formatdecimalv2(descuento);
-//                        subtotal += Double.parseDouble(formateador.format((tpares * precio)));
-                subtotal += fd.formatdecimalv2(tpares * precio);
-//                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
-                double imp = ((tpares * precio) - descuento) * iva;
-                impuestos += fd.formatdecimalv2(imp);
-            }
-        }
-        //Variables para manejo de totales
-        despliegaimportes(fd);
+        model.addColumn("Unidad");//7
         JtDetalle.setModel(model);
     }
 
@@ -1221,44 +1170,33 @@ public class facEtpu extends javax.swing.JPanel {
             iva = 0.16;
         }
         Formateodedatos fd = new Formateodedatos();
-        if (!k2.isEmpty()) {// rellena de datos de acuerdo a las lineas que se capturen
-            for (int i = 0; i < k2.size(); i++) {
-                String act = JtDetalle.getValueAt(i, 7).toString();// Se obtiene el valor del activo
-                if (!verificafloat(JtDetalle.getValueAt(i, 3).toString())) {// que no se pase algo que no sea un numero
-                    JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
-                    JtDetalle.setValueAt("0", i, 3);
-                    resp = false;
-                    break;
-                } else {
-                    if (act.equals("*")) {// tomara en cuanta solo los que estan activos
-                        double tpares = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
-                        if (tpares > k2.get(i).getDp().getCantrestante()) {
-                            JOptionPane.showMessageDialog(null, "Error, El valor introducido en cantidad no puede ser mayor a la cantidad restante del material");
-                        } else {
-                            double desc = Double.parseDouble(JtDescuento.getText()) / 100;
-                            double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
-                            double descuento = (tpares * precio) * desc;
-                            JtDetalle.setValueAt(precio, i, 3);
-                            JtDetalle.setValueAt(fd.formatdecimalv2(descuento), i, 4);
-                            JtDetalle.setValueAt(fd.formatdecimalv2(((tpares * precio) - descuento) * iva), i, 5);
-                            JtDetalle.setValueAt(fd.formatdecimalv2((tpares * precio)), i, 6);
-                            //suma de totales
-                            descuentos += fd.formatdecimalv2(descuento);
-//                        subtotal += Double.parseDouble(formateador.format((tpares * precio)));
-                            subtotal += fd.formatdecimalv2(tpares * precio);
-//                        impuestos += Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva));
-                            double imp = ((tpares * precio) - descuento) * iva;
-                            impuestos += fd.formatdecimalv2(imp);
-                        }
-
-                    }
-                }
-
+        for (int i = 0; i < JtDetalle.getRowCount(); i++) {
+            if (!verificafloat(JtDetalle.getValueAt(i, 3).toString())
+                    || !verificafloat(JtDetalle.getValueAt(i, 2).toString())) {// que no se pase algo que no sea un numero
+                JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
+                JtDetalle.setValueAt("0", i, 3);
+                JtDetalle.setValueAt("0", i, 2);
+                resp = false;
+                break;
+            } else {
+                double tpares = Double.parseDouble(JtDetalle.getValueAt(i, 2).toString());
+                double desc = Double.parseDouble(JtDescuento.getText()) / 100;
+                double precio = Double.parseDouble(JtDetalle.getValueAt(i, 3).toString());
+                double descuento = (tpares * precio) * desc;
+                JtDetalle.setValueAt(precio, i, 3);
+                JtDetalle.setValueAt(fd.formatdecimalv2(descuento), i, 4);
+                JtDetalle.setValueAt(fd.formatdecimalv2(((tpares * precio) - descuento) * iva), i, 5);
+                JtDetalle.setValueAt(fd.formatdecimalv2((tpares * precio)), i, 6);
+                //suma de totales
+                descuentos += fd.formatdecimalv2(descuento);
+                subtotal += fd.formatdecimalv2(tpares * precio);
+                double imp = ((tpares * precio) - descuento) * iva;
+                impuestos += fd.formatdecimalv2(imp);
             }
-            if (resp) {// Si, y solo si es un entero o decimal
-                //Variables para manejo de totales
-                despliegaimportes(fd);
-            }
+        }
+        if (resp) {// Si, y solo si es un entero o decimal
+            //Variables para manejo de totales
+            despliegaimportes(fd);
         }
         //Tambien verificar el clave del proveedor al momento de actualizar valores
         if (!checkclvprov()) {
@@ -1290,9 +1228,12 @@ public class facEtpu extends javax.swing.JPanel {
 
     private boolean verificadetalle() {
         boolean resp = true;
-        for (int i = 0; i < k2.size(); i++) {
+        for (int i = 0; i < JtDetalle.getRowCount(); i++) {
             String precio = JtDetalle.getValueAt(i, 3).toString();
-            if (!verificafloat(precio)) {
+            String cant = JtDetalle.getValueAt(i, 2).toString();
+            if (!verificafloat(precio) || !verificafloat(cant)) {
+                JtDetalle.setValueAt("", i, 2);
+                JtDetalle.setValueAt("", i, 3);
                 resp = false;
                 break;
             }
@@ -1300,6 +1241,13 @@ public class facEtpu extends javax.swing.JPanel {
         return resp;
     }
 
+    /**
+     * Verifica el regimen de acuerdo al uso de cfdi seleccionado
+     * @param cfdi
+     * @param regimen
+     * @param uso
+     * @return 
+     */
     private boolean verificaregimen(Connection cfdi, String regimen, String uso) {
         daocfdi df = new daocfdi();
         boolean a = true;
@@ -1311,13 +1259,29 @@ public class facEtpu extends javax.swing.JPanel {
         return a;
     }
 
+    /**
+     * Eliminar renglon de la tabla
+     *
+     * @param row
+     */
+    private void eliniarrenglon(int row) {
+        JtDetalle.setValueAt("", row, 0);
+        JtDetalle.setValueAt("", row, 1);
+        JtDetalle.setValueAt("", row, 2);
+        JtDetalle.setValueAt("", row, 3);
+        JtDetalle.setValueAt("", row, 4);
+        JtDetalle.setValueAt("", row, 5);
+        JtDetalle.setValueAt("", row, 6);
+        JtDetalle.setValueAt("", row, 7);
+        model.removeRow(JtDetalle.getSelectedRow());
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> JcAgente;
     private javax.swing.JComboBox<String> JcCliente;
     private javax.swing.JComboBox<String> JcForma;
     private javax.swing.JComboBox<String> JcMetodo;
     private javax.swing.JCheckBox JcPublico;
-    private javax.swing.JCheckBox JcTraslado;
     private javax.swing.JCheckBox JcUsd1;
     private javax.swing.JComboBox<String> JcUso;
     private javax.swing.JLabel JlDesc;
@@ -1329,6 +1293,7 @@ public class facEtpu extends javax.swing.JPanel {
     private javax.swing.JLabel JlUso;
     private javax.swing.JLabel Jlfp;
     private javax.swing.JLabel Jlsub;
+    private javax.swing.JMenuItem JmEliminarren;
     private javax.swing.JScrollPane JsRel;
     private javax.swing.JTextField JtDescuento;
     private javax.swing.JTable JtDetalle;
@@ -1344,10 +1309,10 @@ public class facEtpu extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -1358,5 +1323,6 @@ public class facEtpu extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPopupMenu pop;
     // End of variables declaration//GEN-END:variables
 }
