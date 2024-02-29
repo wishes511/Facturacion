@@ -127,7 +127,7 @@ public interface Facturas {
 
     public ArrayList<factura> getdocpagos(Connection cpt, String fol, String serie, String empcobranza);
     
-    public ArrayList<factura> getdocpagostpu(Connection cpt, String fol, String serie);
+    public ArrayList<factura> getdocpagostpu(Connection cpt, String fol, String serie, String bd);
     
     public ArrayList<factura> getdocxml(Connection cpt, String fol, String serie, String empcobranza);
     

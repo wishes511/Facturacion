@@ -1226,6 +1226,12 @@ public class facEtpu extends javax.swing.JPanel {
         return resp;
     }
 
+    /**
+     * Verifica precio y cantidad de cada renglon de la tabla, si los campos no
+     * son validaos regresa un false
+     *
+     * @return
+     */
     private boolean verificadetalle() {
         boolean resp = true;
         for (int i = 0; i < JtDetalle.getRowCount(); i++) {
@@ -1243,10 +1249,11 @@ public class facEtpu extends javax.swing.JPanel {
 
     /**
      * Verifica el regimen de acuerdo al uso de cfdi seleccionado
+     *
      * @param cfdi
      * @param regimen
      * @param uso
-     * @return 
+     * @return
      */
     private boolean verificaregimen(Connection cfdi, String regimen, String uso) {
         daocfdi df = new daocfdi();

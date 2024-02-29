@@ -90,6 +90,7 @@ public class Pagostpu extends javax.swing.JInternalFrame {
         c1.sqlempresa = liteempresa;
         c1.sqlcfdi = litecfdi;
         c1.cpt = cpt;
+        c1.u=u;
 
         c2.arrfpago = arrforma;
         c2.arrmetodo = arrmetodo;

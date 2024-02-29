@@ -515,9 +515,9 @@ public class daofactura implements Facturas {
     }
 
     @Override
-    public ArrayList<factura> getdocpagostpu(Connection cpt, String fol, String serie) {
+    public ArrayList<factura> getdocpagostpu(Connection cpt, String fol, String serie, String bd) {
         sqlfactura s = new sqlfactura();
-        return s.getdocspagostpu(cpt, fol, serie);
+        return s.getdocspagostpu(cpt, fol, serie, bd);
     }
 
     /**

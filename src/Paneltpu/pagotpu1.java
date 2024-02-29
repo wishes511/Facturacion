@@ -16,8 +16,10 @@ import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Estados;
 import Modelo.Formadepago;
+import Modelo.Formateodedatos;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
+import Modelo.Usuarios;
 import Modelo.convertnum;
 import Modelo.factura;
 import Modelo.metodopago;
@@ -71,6 +73,7 @@ public class pagotpu1 extends javax.swing.JPanel {
     int estado = 0;
     int ciudad = 0;
     int pais = 0;
+    public Usuarios u;
 
     /**
      * Creates new form Cliente1
@@ -437,8 +440,9 @@ public class pagotpu1 extends javax.swing.JPanel {
 
     private void Buscanotas() {
         daofactura df = new daofactura();
+        Formateodedatos fd = new Formateodedatos();
 //        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "FAC");
-        arrfactura = df.getdocpagostpu(cpt, JtCliente.getText(), "PAG");
+        arrfactura = df.getdocpagostpu(cpt, JtCliente.getText(), "PAG",fd.getbd_tocargo(u.getTurno()));
         generatabla();
     }
 
@@ -509,8 +513,6 @@ public class pagotpu1 extends javax.swing.JPanel {
         model.addColumn("Metodo de pago");
         model.addColumn("Estado");
         model.addColumn("Estado sat");
-        daofactura d = new daofactura();
-        arrfactura = d.getdocpagostpu(cpt, JtCliente.getText(), "PAG");
         int tamaño = arrfactura.size();
         model.setRowCount(tamaño);
         for (int i = 0; i < arrfactura.size(); i++) {

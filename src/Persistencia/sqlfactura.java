@@ -449,7 +449,7 @@ public class sqlfactura {
         return arr;
     }
 
-    public ArrayList<factura> getdocspagostpu(Connection con, String folio, String serie) {
+    public ArrayList<factura> getdocspagostpu(Connection con, String folio, String serie, String bd) {
         ArrayList<factura> arr = new ArrayList<>();
         try {
             PreparedStatement st;
@@ -457,7 +457,7 @@ public class sqlfactura {
             String sql = "select top(400) id_doctopago,folio,subtotal,impuestos,total,convert(date,fecha) as fecha,convert(date,fechapago) as fechap,d.nombre,\n"
                     + "formapago,metodopago, d.estatus, ISNULL(foliofiscal,'') as foliofiscal, d.usocfdi,d.regimen, d.moneda,cadenaoriginal,c.id_cliente as cli\n"
                     + "from Doctospagotpu d\n"
-                    + "join ACobranzaTpu.dbo.Cliente c on d.id_cliente=c.id_cliente\n"
+                    + "join "+bd+".dbo.Cliente c on d.id_cliente=c.id_cliente\n"
                     + "where (d.id_cliente like '%" + folio + "%' or d.nombre like '%" + folio + "%') and serie='" + serie + "'\n"
                     + "order by id_doctopago desc";
 //            System.out.println(sql);
