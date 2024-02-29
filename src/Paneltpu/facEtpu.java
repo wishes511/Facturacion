@@ -7,18 +7,13 @@ package Paneltpu;
 
 import Paneles.*;
 import DAO.daoAgentes;
-import DAO.daoCargos;
-import DAO.daoConceptos;
 import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
-import DAO.daokardexrcpt;
-import DAO.daopedimentos;
 import DAO.daoxmltpu;
 import Dao.Dao_Catalogo;
 import Modelo.Agentes;
 import Modelo.Cliente;
-import Modelo.ConceptosES;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
@@ -32,7 +27,6 @@ import Modelo.convertirNumeros;
 import Modelo.convertnum;
 import Modelo.factura;
 import Modelo.metodopago;
-import Modelo.pedimento;
 import Modelo.usocfdi;
 import Server.Serverprod;
 import Server.Serverylite;
@@ -771,8 +765,7 @@ public class facEtpu extends javax.swing.JPanel {
                 int rowc = JcCliente.getSelectedIndex();
                 f.setExportacion("01");
                 f.setFolio(n.getfolio());
-                daokardexrcpt dk = new daokardexrcpt();
-                f.setFoliokardex(dk.maxkardexsincuenta(cpt));// folio del kardex
+                f.setFoliokardex(0);// folio del kardex
                 f.setClaveusuario(u.getUsuario());
 //                Obtiene la serie fiscal de acuerdo al turno
                 f.setSerie("FAC");
@@ -856,7 +849,6 @@ public class facEtpu extends javax.swing.JPanel {
                     //Formatea cantidad y no en la consulta
                     df.setCantrestante(0);
                     df.setCantidadfloat(tpares);
-//                        df.setCodigo(k2.get(i).getDp().getCodigosat());
                     df.setCodigo(sodigosat);
                     df.setUmedida(unidad);
                     df.setDureza("N/A");
@@ -890,8 +882,8 @@ public class facEtpu extends javax.swing.JPanel {
                 f.setDescuento(fd.formatdecimalv2(descuentos));
                 f.setSubtotal(fd.formatdecimalv2(subtotal));
                 f.setTotal(fd.formatdecimalv2(total));
-                //id del documento recien añadido
-
+                //Obtiene los asientos contable de cobranza
+                //Todo este bloque es para la realizacion de las polizas
                 ArrayList<Poliza> arrpoliza = dfac.getasientoscontable(ACobranza);
                 ArrayList<Poliza> arrpolizas = new ArrayList<>();
                 int conta = 0;
@@ -935,7 +927,7 @@ public class facEtpu extends javax.swing.JPanel {
                     arrpolizas.add(p);
                 }
                 f.setArrpolizas(arrpolizas);
-
+//              Aqui termina el bloque de las polizas    
 //                Tiene 3 procesos de commit, 1. la fatura. 2. los sellos y cadena original, 3. sellos fiscales
                 if (arrf.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Error al realizar factura, intente capturar de nuevo");
@@ -943,8 +935,8 @@ public class facEtpu extends javax.swing.JPanel {
                 } else {
                     int id = dfac.nuevafactpu_Especial(cpt, f, ACobranza);
                     Sellofiscal s;
+                    //Si hay algun error en la insercion que no se ejecute
                     if (id != 0) {
-//                        System.out.println("Exito");
                         daoxmltpu dx = new daoxmltpu();
                         f.setId(id);
                         dx.generarfac(f, cpt, sqlempresa);
@@ -953,10 +945,8 @@ public class facEtpu extends javax.swing.JPanel {
                         s = tim.timbrar(f.getSerie() + "_" + f.getFolio(), nombre, sqlempresa, f.getEmpresa());
                         dfac.Updatesellofiscaltpu(cpt, s, id);
                         setreport(f.getFolio(), f.getRegimen(), f.getMoneda(), "FAC");
-                        if (traslado.equals("0")) {
-                            JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
-                            vaciarcampos();
-                        }
+                        JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
+                        vaciarcampos();
                     }
                 }
             }
@@ -1057,11 +1047,6 @@ public class facEtpu extends javax.swing.JPanel {
         f.setVisible(true);
         arrcargoseleccion = f.arrcargoseleccion;
         if (!arrcargoseleccion.isEmpty()) {
-//            DefaultListModel<String> model = new DefaultListModel<>();
-//            for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-//                model.addElement(arrcargoseleccion1.getReferencia() + " - " + arrcargoseleccion1.getDescuento());
-//            }
-//            JlRel.setModel(model);
             llenalista();
             relacion = "07";
         }
