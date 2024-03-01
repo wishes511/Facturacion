@@ -12,7 +12,16 @@ package Modelo;
 public class cargo {
     private int cuenta,subcuenta,plazo,cliente,cantidad,agente,renglon,id_concepto, id_cargo,parcialidad;
     private String nombre, referencia, fecha, fechav, ref, foliofiscal, sumafolios,rfc,calle,
-            colonia,municipio, estado,pais,cp, regimen, descnota,metodopago, observaciones, serie;
+            colonia,municipio, estado,pais,cp, regimen, descnota,metodopago, observaciones,
+            serie, fechacargo;
+
+    public String getFechacargo() {
+        return fechacargo;
+    }
+
+    public void setFechacargo(String fechacargo) {
+        this.fechacargo = fechacargo;
+    }
 
     public String getObservaciones() {
         return observaciones;

@@ -210,11 +210,12 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
         model.addColumn("Cargo");
         model.addColumn("Nombre");
         model.addColumn("Monto");
-        model.addColumn("Fecha");
+        model.addColumn("Fecha captura");
         model.addColumn("Serie");
         model.addColumn("Saldo");
         model.addColumn("Observaciones");
         model.addColumn("Estado");
+        model.addColumn("Fecha Cargo");
         model.setNumRows(arrfactura.size());
         DecimalFormat formateador = new DecimalFormat("####.##");
         for (int i = 0; i < arrfactura.size(); i++) {
@@ -227,6 +228,7 @@ public class Cargos_especial_vista extends javax.swing.JPanel {
             model.setValueAt(arrfactura.get(i).getSaldo(), i, 5);
             model.setValueAt(arrfactura.get(i).getObservaciones(), i, 6);
             model.setValueAt(estat, i, 7);
+            model.setValueAt(arrfactura.get(i).getFechacargo(), i, 8);
         }
         JtDetalle.setModel(model);
     }

@@ -4171,7 +4171,7 @@ public class sqlfactura {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select id_cargo,referencia,fecha, importe,saldo,ncliente,"
-                    + "serie,observaciones,estatus \n"
+                    + "serie,observaciones,estatus,convert(date,fechacargo) as fechacargo \n"
                     + "from cargoespecial\n"
                     + "where ncliente like '%" + var + "%'";
             st = c.prepareStatement(sql);
@@ -4187,6 +4187,7 @@ public class sqlfactura {
                 car.setSerie(rs.getString("serie"));
                 car.setObservaciones(rs.getString("observaciones"));
                 car.setEstado(rs.getString("estatus"));
+                car.setFechacargo(rs.getString("fechacargo"));
                 arr.add(car);
             }
         } catch (SQLException ex) {

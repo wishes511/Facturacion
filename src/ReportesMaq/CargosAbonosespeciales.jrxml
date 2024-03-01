@@ -72,7 +72,7 @@ where convert(date,fecha) between $P{f1} and $P{f2} and saldo!=0 and estatus='1'
 	<detail>
 		<band height="47" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="159" height="20" uuid="3aadb4f4-5179-4016-9725-145c4f565304"/>
+				<reportElement x="0" y="0" width="356" height="20" uuid="3aadb4f4-5179-4016-9725-145c4f565304"/>
 				<textElement>
 					<font size="11" isBold="true"/>
 				</textElement>
