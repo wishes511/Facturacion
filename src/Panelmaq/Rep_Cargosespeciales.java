@@ -34,7 +34,7 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
 
     public Conexiones u;
     public Connection litecfdi;
-    String serie="A";
+    String serie = "A";
     private Usuarios user;
 
     /**
@@ -48,10 +48,10 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
 
     }
 
-    public void setconexiones(Usuarios user){
-        this.user=user;
+    public void setconexiones(Usuarios user) {
+        this.user = user;
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -71,6 +71,8 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
         Fecha = new com.toedter.calendar.JDateChooser();
         jLabel7 = new javax.swing.JLabel();
         Fecha1 = new com.toedter.calendar.JDateChooser();
+        JcSerie = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -120,6 +122,12 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
         jLabel7.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jLabel7.setText("Fecha inicial");
 
+        JcSerie.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        JcSerie.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "A", "B", "AMBOS" }));
+
+        jLabel4.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jLabel4.setText("Serie");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -144,17 +152,23 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
                         .addComponent(jLabel7)
                         .addGap(19, 19, 19)))
                 .addGap(47, 47, 47))
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(JcSerie, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(137, 137, 137))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(163, 163, 163)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(227, 227, 227)
-                        .addComponent(jLabel1)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(JtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(167, 167, 167))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(229, 229, 229))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,13 +184,17 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(Fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Fecha1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(JcSerie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addComponent(JtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(38, 38, 38))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -212,20 +230,21 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            java.util.Date date = new Date();
-            String f1 = sdf.format(Fecha.getDate());
-            String f2 = sdf.format(Fecha1.getDate());
-            setreport(f1,f2);
+        java.util.Date date = new Date();
+        String f1 = sdf.format(Fecha.getDate());
+        String f2 = sdf.format(Fecha1.getDate());
+
+        setreport(f1, f2);
     }//GEN-LAST:event_jLabel1MousePressed
 
-        private void setreport(String f1, String f2) {
+    private void setreport(String f1, String f2) {
         try {
             Map parametros = new HashMap();
             Formateodedatos fd = new Formateodedatos();
 //            Agregar parametros al reporte
             parametros.put("f1", f1);
             parametros.put("f2", f2);
-            parametros.put("serie", serie);
+            parametros.put("serie", getserie());
             parametros.put("imag", fd.getimagenreporte(user));
             JasperReport jasper = (JasperReport) JRLoader.loadObject(getClass().getResource("/ReportesMaq/CargosAbonosespeciales.jasper"));
             JasperPrint print = JasperFillManager.fillReport(jasper, parametros, u.getCobranzatpu());
@@ -238,10 +257,22 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
             Logger.getLogger(fac1.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     private void vaciarcampos() {
         JtNombre.setText("");
         JtNombre.requestFocus();
+    }
+
+    /**
+     * Funcion que obtiene el tipo de serie, se separo por la cuestion de que
+     * para el reporte se usará like y evaluar la serie si esta vacia o si es A
+     * o B
+     *
+     * @return
+     */
+    private String getserie() {
+        String var = JcSerie.getSelectedItem().toString();
+        return (var.equals("AMBOS")) ? "" : var;
     }
 
     /**
@@ -380,9 +411,11 @@ public class Rep_Cargosespeciales extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser Fecha;
     private com.toedter.calendar.JDateChooser Fecha1;
+    private javax.swing.JComboBox<String> JcSerie;
     public javax.swing.JTextField JtNombre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;

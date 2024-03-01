@@ -262,10 +262,10 @@ public final class Principal extends javax.swing.JFrame {
         JmEdocuenta2 = new javax.swing.JMenuItem();
         JmAuxcliente2 = new javax.swing.JMenuItem();
         JmSaldosvencidos2 = new javax.swing.JMenuItem();
+        JmCargosEspeciales = new javax.swing.JMenuItem();
         JmVentaserie3 = new javax.swing.JMenuItem();
         JmKardexprod2 = new javax.swing.JMenuItem();
         JmVentaserie4 = new javax.swing.JMenuItem();
-        JmCargosEspeciales = new javax.swing.JMenuItem();
         JmCobranzatpu2 = new javax.swing.JMenu();
         JmNotascrtpu2 = new javax.swing.JMenuItem();
         JmPagostpu4 = new javax.swing.JMenuItem();
@@ -1043,6 +1043,14 @@ public final class Principal extends javax.swing.JFrame {
         });
         JmRepcob2.add(JmSaldosvencidos2);
 
+        JmCargosEspeciales.setText("Reporte de cargos especiales");
+        JmCargosEspeciales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmCargosEspecialesActionPerformed(evt);
+            }
+        });
+        JmRepcob2.add(JmCargosEspeciales);
+
         Jmreportes2.add(JmRepcob2);
 
         JmVentaserie3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/Documents_43884.png"))); // NOI18N
@@ -1069,14 +1077,6 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         Jmreportes2.add(JmVentaserie4);
-
-        JmCargosEspeciales.setText("Reporte de cargos especiales");
-        JmCargosEspeciales.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JmCargosEspecialesActionPerformed(evt);
-            }
-        });
-        Jmreportes2.add(JmCargosEspeciales);
 
         JmMaq2.add(Jmreportes2);
 

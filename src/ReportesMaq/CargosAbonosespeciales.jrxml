@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c1dcf74f-a28f-4605-8927-6de67ac891f2">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="1.8150000000000004"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="f1" class="java.lang.String">
@@ -12,14 +12,27 @@
 	<parameter name="imag" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="serie" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
-		<![CDATA[select id_cliente, ncliente
+		<![CDATA[select distinct id_cliente, ncliente, sum(importe) as importe, sum(saldo) as saldo
 from cargoespecial
-where convert(date,fecha) between $P{f1} and $P{f2} and saldo!=0 and estatus='1']]>
+where convert(date,fechacargo) between $P{f1} and $P{f2} and serie like '%$P!{serie}%' and estatus='1'
+group by id_cliente,ncliente
+order by ncliente]]>
 	</queryString>
 	<field name="id_cliente" class="java.lang.Integer"/>
 	<field name="ncliente" class="java.lang.String"/>
+	<field name="importe" class="java.lang.Double"/>
+	<field name="saldo" class="java.lang.Double"/>
 	<variable name="tcant" class="java.lang.Double"/>
+	<variable name="importes" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{importe}]]></variableExpression>
+	</variable>
+	<variable name="saldos" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -72,7 +85,7 @@ where convert(date,fecha) between $P{f1} and $P{f2} and saldo!=0 and estatus='1'
 	<detail>
 		<band height="47" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="356" height="20" uuid="3aadb4f4-5179-4016-9725-145c4f565304"/>
+				<reportElement x="0" y="0" width="532" height="20" uuid="3aadb4f4-5179-4016-9725-145c4f565304"/>
 				<textElement>
 					<font size="11" isBold="true"/>
 				</textElement>
@@ -132,6 +145,9 @@ where convert(date,fecha) between $P{f1} and $P{f2} and saldo!=0 and estatus='1'
 				<subreportParameter name="cliente">
 					<subreportParameterExpression><![CDATA[$F{id_cliente}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="serie">
+					<subreportParameterExpression><![CDATA[$P{serie}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="f1">
 					<subreportParameterExpression><![CDATA[$P{f1}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -142,7 +158,7 @@ where convert(date,fecha) between $P{f1} and $P{f2} and saldo!=0 and estatus='1'
 				<subreportExpression><![CDATA["C:\\af\\prod\\reportesmaq\\Det_CargoAbonoEspecial.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
-		<band height="19"/>
+		<band height="2"/>
 	</detail>
 	<columnFooter>
 		<band height="24" splitType="Stretch"/>
@@ -166,6 +182,28 @@ where convert(date,fecha) between $P{f1} and $P{f2} and saldo!=0 and estatus='1'
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="10" splitType="Stretch"/>
+		<band height="36" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="157" y="0" width="100" height="12" uuid="62c30534-6c97-40b8-98fd-73d0d14b7808"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{importes}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="257" y="0" width="99" height="12" uuid="6c885495-ab55-4c67-ad94-04cbb398695f"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{saldos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="57" y="0" width="100" height="12" uuid="cb7d384c-6a56-4eb5-a203-8f9044ecb242"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Totales]]></text>
+			</staticText>
+		</band>
 	</summary>
 </jasperReport>
