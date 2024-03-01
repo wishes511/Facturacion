@@ -773,6 +773,7 @@ public class fac2 extends javax.swing.JPanel {
                 f.setCp(k.get(row).getCli().getCp());
                 f.setRegimen(k.get(row).getCli().getRegimen());
                 f.setObservaciones(JtObs.getText().toUpperCase());
+                f.setTurno(u.getTurno());
                 f.setTotalcajas(0);
                 f.setCantidadxcaja(0);
                 f.setTiposerie("FACTURA");

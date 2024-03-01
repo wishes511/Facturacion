@@ -2562,8 +2562,10 @@ public final class Principal extends javax.swing.JFrame {
 //                        checkempresa();
 //                        Si es administracion usaria tpu y maq
                         if (u.getTipo_usuario().equals("1")) {
+                            setconexionesglobal();
                             setTpucon();
                             setTpumaq();
+                            setmaq2();
                             modoadmin();
                             JmOut.setVisible(true);
                             JmSesion.setEnabled(false);

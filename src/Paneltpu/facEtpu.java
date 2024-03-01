@@ -11,6 +11,7 @@ import DAO.daocfdi;
 import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daoxmltpu;
+import Dao.Dao_Agente;
 import Dao.Dao_Catalogo;
 import Modelo.Agentes;
 import Modelo.Cliente;
@@ -629,8 +630,10 @@ public class facEtpu extends javax.swing.JPanel {
      */
     private void setAgentes() {
         DefaultComboBoxModel ag = new DefaultComboBoxModel();
-        daoAgentes da = new daoAgentes();
-        arragente = da.getAgentes(ACobranza);
+        //daoAgentes da = new daoAgentes();
+        Dao_Agente da1 = new Dao_Agente();
+        arragente = da1.getagentes_all(ACobranza);
+        //arragente = da.getAgentes(ACobranza);
         for (Agentes agent : arragente) {
             ag.addElement(agent.getNombre());
         }
@@ -860,7 +863,6 @@ public class facEtpu extends javax.swing.JPanel {
                     df.setImpuesto("002");
                     df.setTipofactor("Tasa");
 //                        Este en especial por cuestion de centavos
-                    String as = String.valueOf(fd.formatdecimalv2((tpares * precio) - descuento) * iva);
                     double dimpu = ((tpares * precio) - descuento) * iva;
                     df.setImporta(fd.formatdecimalv2(dimpu));
 //                        df.setImporta(Double.parseDouble(formateador.format(((tpares * precio) - descuento) * iva)));
@@ -1032,7 +1034,7 @@ public class facEtpu extends javax.swing.JPanel {
         actualizaimportes();
     }//GEN-LAST:event_jLabel3MousePressed
     /**
-     * carga de facturas para relacion
+     * carga de facturas para relacion, por default es relacion "07"
      *
      * @param evt
      */
@@ -1156,8 +1158,7 @@ public class facEtpu extends javax.swing.JPanel {
         }
         Formateodedatos fd = new Formateodedatos();
         for (int i = 0; i < JtDetalle.getRowCount(); i++) {
-            if (!verificafloat(JtDetalle.getValueAt(i, 3).toString())
-                    || !verificafloat(JtDetalle.getValueAt(i, 2).toString())) {// que no se pase algo que no sea un numero
+            if (verificacantidades(i) && verificacampotexto(i)) {// que no se pase algo que no sea un numero
                 JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
                 JtDetalle.setValueAt("0", i, 3);
                 JtDetalle.setValueAt("0", i, 2);
@@ -1187,6 +1188,41 @@ public class facEtpu extends javax.swing.JPanel {
         if (!checkclvprov()) {
             JOptionPane.showMessageDialog(null, "Verifica la clave del SAT");
         }
+        checkunidad();
+    }
+
+    private boolean verificacampotexto(int i) {
+        boolean resp = true;
+        Formateodedatos fd = new Formateodedatos();
+        String cad = JtDetalle.getValueAt(i, 0).toString();
+        if (fd.verificaStringsSC(cad) && !cad.equals("") && !cad.isEmpty()) {
+            JtDetalle.setValueAt("", i, 0);
+            JOptionPane.showMessageDialog(null,
+                    "Error al validar el producto, tiene caracteres invalidos o esta vacio");
+            resp = false;
+        }
+        return resp;
+    }
+
+    /**
+     * Verifica los campos de cantidades que cumplan que sean enteros o
+     * decimales, que no sea cero, y que no esten vacioas
+     *
+     * @param i
+     * @return
+     */
+    private boolean verificacantidades(int i) {
+        boolean resp = true;
+        String cant = JtDetalle.getValueAt(i, 2).toString();
+        String precio = JtDetalle.getValueAt(i, 3).toString();
+//        System.out.println(cant + " --- " + precio);
+        if (verificafloat(cant) && verificafloat(precio)
+                && !cant.isEmpty() && !precio.isEmpty()
+                && (!cant.equals("0") && !precio.equals("0"))
+                && (!cant.equals("") && !precio.equals(""))) {
+            return false;
+        }
+        return resp;
     }
 
     private void setdolar() {
