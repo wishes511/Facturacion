@@ -200,7 +200,7 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
         Tabbed.addTab("Nueva Factura", c2);
         //Por ahora solo aplica para
         if (u.getTurno().equals("7")) {
-            Tabbed.addTab("Facturacion especial, AUn no usar", c3);
+            Tabbed.addTab("Facturacion Especial", c3);
         }
     }
 

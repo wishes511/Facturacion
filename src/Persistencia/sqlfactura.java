@@ -4117,6 +4117,7 @@ public class sqlfactura {
             String fecha = f.getFecha();
             double total = f.getImporte();
             String ref = f.getReferencia();
+            String fechacargo=f.getFechaentrega();
             //cliente
             int idcliente = f.getIdcliente();
             String nombre = f.getNombre();
@@ -4129,8 +4130,8 @@ public class sqlfactura {
 
             String sql = "insert into cargoespecial(id_agente,id_concepto,id_cliente,"
                     + "referencia,fecha,importe,saldo,SIM,saldomx,turno,comision,"
-                    + "plazo,parcialidad,estatus,serie,ncliente, observaciones) "
-                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                    + "plazo,parcialidad,estatus,serie,ncliente, observaciones,fechacargo) "
+                    + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             st = cob.prepareStatement(sql);
             st.setInt(1, agente);
             st.setInt(2, concepto);
@@ -4149,6 +4150,7 @@ public class sqlfactura {
             st.setString(15, serie);
             st.setString(16, nombre);
             st.setString(17, obs);
+            st.setString(18, fechacargo);
             st.executeUpdate();
             cob.commit();
             return true;

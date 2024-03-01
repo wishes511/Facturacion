@@ -607,7 +607,10 @@ public class facEtpu extends javax.swing.JPanel {
         DefaultComboBoxModel uso = new DefaultComboBoxModel();
         DefaultComboBoxModel cliente = new DefaultComboBoxModel();
         for (Formadepago arrfpago1 : arrfpago) {
-            forma.addElement(arrfpago1.getFormapago() + " - " + arrfpago1.getConcepto());
+            //Cualquier forma de pago excepto la 99
+            if (!arrfpago1.getFormapago().equals("99")) {
+                forma.addElement(arrfpago1.getFormapago() + " - " + arrfpago1.getConcepto());
+            }
         }
         metodo.addElement("PUE - PAGO EN UNA EXHIBICION");
 
@@ -682,6 +685,7 @@ public class facEtpu extends javax.swing.JPanel {
         if (checkclvprov() && checkunidad()) {
             setfactura();
         } else {
+            importes_a_cero();
             JOptionPane.showMessageDialog(null, "Error al verificar la clave de producto, intentalo de nuevo");
         }
     }//GEN-LAST:event_jLabel2MousePressed
@@ -722,6 +726,7 @@ public class facEtpu extends javax.swing.JPanel {
             }
         }
         if (!resp) {
+            importes_a_cero();
             JOptionPane.showMessageDialog(null,
                     "ERROR AL VALIDAR LA UNIDAD DEL PRODUCTO, INTENTE DE NEUVO",
                     "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -845,7 +850,7 @@ public class facEtpu extends javax.swing.JPanel {
                     double desc = Double.parseDouble(JtDescuento.getText()) / 100;
                     String maq = JtDetalle.getValueAt(i, 0).toString();
                     double descuento = fd.formatdecimalv2((tpares * precio) * desc);
-                    String unidad = "";
+                    String unidad = JtDetalle.getValueAt(i, 7).toString();
                     df.setDescripcion(maq);
                     df.setRenglon(i + 1);
                     df.setProducto(0);
@@ -1113,6 +1118,7 @@ public class facEtpu extends javax.swing.JPanel {
             model.removeRow(i);
         }
         model.setNumRows(0);
+        importes_a_cero();
     }
 
     /**
@@ -1153,12 +1159,15 @@ public class facEtpu extends javax.swing.JPanel {
         descuentos = 0;
         double iva = 0;
         boolean resp = true;
+        boolean resp2 = true;
         if (!JcPublico.isSelected()) {// verifica 
             iva = 0.16;
         }
         Formateodedatos fd = new Formateodedatos();
         for (int i = 0; i < JtDetalle.getRowCount(); i++) {
-            if (verificacantidades(i) && verificacampotexto(i)) {// que no se pase algo que no sea un numero
+            boolean texto = verificacampotexto(i);
+            resp2 = texto;
+            if (verificacantidades(i) && !texto) {// que no se pase algo que no sea un numero
                 JOptionPane.showMessageDialog(null, "Error, Verifica los precios");
                 JtDetalle.setValueAt("0", i, 3);
                 JtDetalle.setValueAt("0", i, 2);
@@ -1186,9 +1195,13 @@ public class facEtpu extends javax.swing.JPanel {
         }
         //Tambien verificar el clave del proveedor al momento de actualizar valores
         if (!checkclvprov()) {
+            importes_a_cero();
             JOptionPane.showMessageDialog(null, "Verifica la clave del SAT");
         }
         checkunidad();
+        if (!resp2) {
+            importes_a_cero();
+        }
     }
 
     /**
@@ -1202,10 +1215,12 @@ public class facEtpu extends javax.swing.JPanel {
         boolean resp = true;
         Formateodedatos fd = new Formateodedatos();
         String cad = JtDetalle.getValueAt(i, 0).toString();
-        if (fd.verificaStringsSC(cad) && !cad.equals("") && !cad.isEmpty()) {
+        System.out.println(fd.verificaStringsSC(cad) + " " + cad.equals("") + " " + cad.isEmpty() + " -" + cad + "-");
+        if (!fd.verificaStringsSC(cad) || (cad.equals("") || cad.isEmpty())) {
             JtDetalle.setValueAt("", i, 0);
             JOptionPane.showMessageDialog(null,
                     "Error al validar el producto, tiene caracteres invalidos o esta vacio");
+            importes_a_cero();
             resp = false;
         }
         return resp;
@@ -1309,6 +1324,21 @@ public class facEtpu extends javax.swing.JPanel {
         JtDetalle.setValueAt("", row, 6);
         JtDetalle.setValueAt("", row, 7);
         model.removeRow(JtDetalle.getSelectedRow());
+    }
+
+    /**
+     * Funcion que iguala todos los importes a cero al igual que las etiqeutas
+     * en la interfaz
+     */
+    private void importes_a_cero() {
+        subtotal = 0;
+        impuestos = 0;
+        descuentos = 0;
+        total = 0;
+        JlIva.setText("0");
+        Jlsub.setText("0");
+        JlDesc.setText("0");
+        JlTotal.setText("0");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

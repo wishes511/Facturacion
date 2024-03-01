@@ -73,6 +73,8 @@ public class Cargos_especial extends javax.swing.JPanel {
         JtCargo = new javax.swing.JTextField();
         jSeparator3 = new javax.swing.JSeparator();
         JlSerie = new javax.swing.JLabel();
+        JtFecha = new com.toedter.calendar.JDateChooser();
+        jLabel13 = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -169,6 +171,9 @@ public class Cargos_especial extends javax.swing.JPanel {
             }
         });
 
+        jLabel13.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel13.setText("Fecha Cargo");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,7 +187,8 @@ public class Cargos_especial extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                            .addComponent(jScrollPane2)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -193,19 +199,23 @@ public class Cargos_especial extends javax.swing.JPanel {
                                     .addComponent(jSeparator2)
                                     .addComponent(JtCliente))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 149, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(JcAgente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(JcCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel13)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(JtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(JcAgente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(JcCliente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(89, 89, 89)
                                         .addComponent(JlSerie))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel2))))
-                            .addComponent(jScrollPane2))))
+                                        .addComponent(jLabel2)))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -240,7 +250,11 @@ public class Cargos_especial extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(JcAgente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(104, 104, 104)
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(JtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addGap(58, 58, 58)
                 .addComponent(jLabel12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -259,12 +273,19 @@ public class Cargos_especial extends javax.swing.JPanel {
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         Formateodedatos fd = new Formateodedatos();
         //VErfifica que los campos introducidos sean correctos
-        if (fd.verificafloat(JtCargo.getText()) && fd.verificaStringsSC(JtCliente.getText())
-                && fd.verificaStringsSC(JtObs.getText())) {
-            setfactura();
+        //Verifica que la fecha del cargo no este vacia
+        if (!fd.verficafechanula(JtFecha)) {
+            if (fd.verificafloat(JtCargo.getText()) && fd.verificaStringsSC(JtCliente.getText())
+                    && fd.verificaStringsSC(JtObs.getText())) {
+                setfactura();
+            } else {
+                JOptionPane.showMessageDialog(null, "Alguno de los valores es incorrecto, corrije e intentalo de nuevo");
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Alguno de los valores es incorrecto, corrije e intentalo de nuevo");
+            JOptionPane.showMessageDialog(null, "La fecha del cargo no puede ir vacia",
+                     "Error fecha cargo", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void setfactura() {
@@ -289,6 +310,7 @@ public class Cargos_especial extends javax.swing.JPanel {
         f.setParcialidad(0);
         f.setImporte(Double.parseDouble(JtCargo.getText()));
         f.setEmpresa("1");
+        f.setFechaentrega(sdf.format(JtFecha.getDate()));
         if (dfac.nuevocargoespecial(ACobranza, f)) {
             JOptionPane.showMessageDialog(null, "Proceso terminado: \n ");
             vaciarcampos();
@@ -382,7 +404,7 @@ public class Cargos_especial extends javax.swing.JPanel {
     }
 
     /**
-     *Funcion solo para seleccionar el agente de acuerdo al cliente
+     * Funcion solo para seleccionar el agente de acuerdo al cliente
      */
     private void setagenteBy() {
         int rowc = JcCliente.getSelectedIndex();
@@ -409,10 +431,12 @@ public class Cargos_especial extends javax.swing.JPanel {
     private javax.swing.JLabel JlSerie;
     public javax.swing.JTextField JtCargo;
     public javax.swing.JTextField JtCliente;
+    private com.toedter.calendar.JDateChooser JtFecha;
     private javax.swing.JTextArea JtObs;
     private javax.swing.ButtonGroup grupo;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
