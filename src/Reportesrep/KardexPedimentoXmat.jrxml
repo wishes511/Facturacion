@@ -16,7 +16,7 @@
 		<![CDATA[select p.referencia,k.id_pedimento
 from kardex k
 join Pedimentos p on k.id_pedimento=p.id_pedimento
-where k.fecha between $P{f1} and $P{f2} and k.estatus !='0' and p.estatus='1'
+where convert(date,k.fecha) between $P{f1} and $P{f2} and k.estatus !='0' and p.estatus='1'
 group by k.id_pedimento,p.referencia]]>
 	</queryString>
 	<field name="referencia" class="java.lang.String"/>

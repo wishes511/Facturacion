@@ -23,7 +23,7 @@
 from kardex k
 join materiales mat on k.id_material=mat.id_material
 join Pedimentos p on k.id_pedimento=p.id_pedimento
-where k.fecha between $P{f1} and $P{f2} and k.id_pedimento=$P{idpedimento} and k.estatus !='0'
+where convert(date,k.fecha) between $P{f1} and $P{f2} and k.id_pedimento=$P{idpedimento} and k.estatus !='0'
 group by k.id_material, k.dureza, mat.descripcion
 order by mat.descripcion]]>
 	</queryString>

@@ -26,7 +26,7 @@ join Conceptos c on k.id_concepto=c.id_concepto
 join materiales mat on k.id_material=mat.id_material
 join Pedimentos p on k.id_pedimento=p.id_pedimento
 left join Pedido ped on k.id_kardex=ped.id_kardex
-where k.fecha between $P{f1} and $P{f2} and k.id_material=$P{idmat} and dureza=$P{dureza} and k.estatus!='0' and k.id_pedimento=$P{idpedimento}
+where convert(date,k.fecha) between $P{f1} and $P{f2} and k.id_material=$P{idmat} and dureza=$P{dureza} and k.estatus!='0' and k.id_pedimento=$P{idpedimento}
 order by k.id_pedimento,k.fecha]]>
 	</queryString>
 	<field name="id_kardex" class="java.lang.Integer"/>
