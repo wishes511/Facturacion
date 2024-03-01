@@ -1120,7 +1120,7 @@ public class facEtpu extends javax.swing.JPanel {
      * moverá es el modelo.
      */
     public final void generatabla() {//Tabla actualizable con respecto al descuento e iva
-        model.addColumn("Material");//0  estilo combinacion corrida
+        model.addColumn("Producto");//0  estilo combinacion corrida
         model.addColumn("Clave SAT");//1
         model.addColumn("Cantidad");//2
         model.addColumn("Precio");//3
@@ -1191,6 +1191,13 @@ public class facEtpu extends javax.swing.JPanel {
         checkunidad();
     }
 
+    /**
+     * Verifica que el campo del producto, que cumpla con los caracteres
+     * permitidos y que no este vacio.
+     *
+     * @param i
+     * @return
+     */
     private boolean verificacampotexto(int i) {
         boolean resp = true;
         Formateodedatos fd = new Formateodedatos();
