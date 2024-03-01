@@ -382,7 +382,7 @@ public class Cargos_especial extends javax.swing.JPanel {
         Connection c = (serie.equals("A")) ? ACobranza : cobB;
         arrcliente = dc.getClientestpu(c);
         for (Cliente agent : arrcliente) {
-            cli.addElement(agent.getNombre());
+            cli.addElement(agent.getCvecliente()+" - "+agent.getNombre());
         }
         JcCliente.setModel(cli);
         setAgentes();
