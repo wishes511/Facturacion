@@ -113,7 +113,7 @@ order by ncliente]]>
 				<text><![CDATA[Referencia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="257" y="25" width="23" height="15" uuid="c436e010-fbf2-4a56-82b5-09bab1e7f26c"/>
+				<reportElement x="257" y="25" width="25" height="15" uuid="c436e010-fbf2-4a56-82b5-09bab1e7f26c"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -143,13 +143,6 @@ order by ncliente]]>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["C:\\af\\prod\\reportesmaq\\Det_CargoAbonoEspecial.jasper"]]></subreportExpression>
 			</subreport>
-			<staticText>
-				<reportElement x="532" y="25" width="40" height="15" uuid="49685806-00da-41ac-8aaf-bbc76402c1fe"/>
-				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Serie]]></text>
-			</staticText>
 			<staticText>
 				<reportElement x="282" y="25" width="100" height="15" uuid="b5cf1c72-ebe2-49d9-92eb-60ba41776af8"/>
 				<textElement textAlignment="Center">
