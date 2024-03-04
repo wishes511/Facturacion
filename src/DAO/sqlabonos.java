@@ -46,8 +46,8 @@ public class sqlabonos {
             st = cobranza.prepareStatement(sql);
             st.setInt(1, cargo);
             st.setInt(2, agente);
-            st.setInt(3, cliente);
-            st.setInt(4, cuenta1);
+            st.setInt(3, cuenta1);
+            st.setInt(4, cliente);
             st.setString(5, referencia);
             st.setString(6, ref);
             st.setString(7, fecha);
@@ -67,8 +67,8 @@ public class sqlabonos {
             st = cobranza.prepareStatement(sql);
             st.setInt(1, cargo);
             st.setInt(2, agente);
-            st.setInt(3, cliente);
-            st.setInt(4, cuenta2);
+            st.setInt(3, cuenta2);
+            st.setInt(4, cliente);
             st.setString(5, referencia);
             st.setString(6, ref);
             st.setString(7, fecha);

@@ -284,7 +284,7 @@ public class fac1tpurem extends javax.swing.JPanel {
             JmAddprecios.setVisible(false);
         }
         //Refacturacion
-        if (u.getTurno().equals("7")) {
+        if (u.getTurno().equals("7") && serie.equals("B")) {
             JmRefacturacion.setVisible(true);
         } else {
             JmRefacturacion.setVisible(false);
