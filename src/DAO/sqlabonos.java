@@ -80,6 +80,12 @@ public class sqlabonos {
             st.setString(13, obs2);
             st.setString(14, usuario);
             st.executeUpdate();
+            sql = "update cargo set saldo=?,saldomx=? where id_cargo=?";
+            st = cobranza.prepareStatement(sql);
+            st.setDouble(1, importe);
+            st.setDouble(2, importe);
+            st.setInt(3, cargo);
+            st.executeUpdate();
             cobranza.commit();
             return true;
         } catch (SQLException ex) {
