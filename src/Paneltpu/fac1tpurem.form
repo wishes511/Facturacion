@@ -47,7 +47,7 @@
         <MenuItem class="javax.swing.JMenuItem" name="JmRefacturacion">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Recursos/move_23058.png"/>
+              <Image iconType="3" name="/Recursos/pay_per_click_16331.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Refacturacion"/>
             <Property name="toolTipText" type="java.lang.String" value=""/>

@@ -6,7 +6,6 @@
 package Paneltpu;
 
 import DAO.daoAbonos;
-import DAO.daoAgentes;
 import DAO.daoCargos;
 import DAO.daoConceptos;
 import DAO.daoDevolucion;
@@ -135,7 +134,7 @@ public class fac1tpurem extends javax.swing.JPanel {
         });
         Pop.add(JmAddprecios);
 
-        JmRefacturacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/move_23058.png"))); // NOI18N
+        JmRefacturacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/pay_per_click_16331.png"))); // NOI18N
         JmRefacturacion.setText("Refacturacion");
         JmRefacturacion.setToolTipText("");
         JmRefacturacion.addActionListener(new java.awt.event.ActionListener() {
@@ -451,6 +450,7 @@ public class fac1tpurem extends javax.swing.JPanel {
         car.setId_concepto2(dconcepto.getConceptos_cob(cobB, 60, 40));
         car.setFecha(sdf.format(date));
         car.setTurno(Integer.parseInt(u.getTurno()));
+        car.setUsuario(u.getUsuario());
         if (da.new_Refacturacion(cobB, car)) {
             JOptionPane.showMessageDialog(null, "Proceso completado");
             Buscanotas();
