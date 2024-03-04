@@ -5,6 +5,7 @@
  */
 package Persistencia;
 
+import Modelo.cargo;
 import Modelo.factura;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -79,6 +80,33 @@ public class sqlcargos {
             Logger.getLogger(sqlcargos.class.getName()).log(Level.SEVERE, null, ex);
         }
         return fecha;
+    }
+
+    public cargo getcargowith_pedido(Connection cob, factura p) {
+        cargo c = new cargo();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select id_cargo,id_agente,id_cliente,importe\n"
+                    + "from cargo\n"
+                    + "where referencia=? and estatus ='1'";
+            st = cob.prepareStatement(sql);
+            st.setString(1, p.getPedido());
+            rs = st.executeQuery();
+            while (rs.next()) {
+                c.setId_cargo(rs.getInt("id_cargo"));
+                c.setAgente(rs.getInt("id_agente"));
+                c.setCliente(rs.getInt("id_cliente"));
+                c.setImporte(rs.getDouble("importe"));
+                //referencia completa
+                c.setReferencia(p.getPedido());
+                //numero de pedido
+                c.setRef(p.getReferencia());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlfactura.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return c;
     }
 
 }

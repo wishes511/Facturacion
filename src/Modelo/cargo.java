@@ -10,10 +10,35 @@ package Modelo;
  * @author GATEWAY1-
  */
 public class cargo {
-    private int cuenta,subcuenta,plazo,cliente,cantidad,agente,renglon,id_concepto, id_cargo,parcialidad;
+    private int cuenta,subcuenta,plazo,cliente,cantidad,agente,renglon,id_concepto,
+            id_cargo,parcialidad, id_concepto2, turno;
     private String nombre, referencia, fecha, fechav, ref, foliofiscal, sumafolios,rfc,calle,
             colonia,municipio, estado,pais,cp, regimen, descnota,metodopago, observaciones,
-            serie, fechacargo;
+            serie, fechacargo, usuario;
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public int getTurno() {
+        return turno;
+    }
+
+    public void setTurno(int turno) {
+        this.turno = turno;
+    }
+
+    public int getId_concepto2() {
+        return id_concepto2;
+    }
+
+    public void setId_concepto2(int id_concepto2) {
+        this.id_concepto2 = id_concepto2;
+    }
 
     public String getFechacargo() {
         return fechacargo;

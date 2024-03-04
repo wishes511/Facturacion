@@ -6,6 +6,7 @@
 package Paneltpu;
 
 import DAO.daoAgentes;
+import DAO.daoCargos;
 import DAO.daoConceptos;
 import DAO.daoDevolucion;
 import Paneles.*;
@@ -19,6 +20,7 @@ import Modelo.Formadepago;
 import Modelo.Formateodedatos;
 import Modelo.KardexCmp;
 import Modelo.Usuarios;
+import Modelo.cargo;
 import Modelo.convertirNumeros;
 import Modelo.factura;
 import Modelo.metodopago;
@@ -50,7 +52,7 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author GATEWAY1-
  */
 public class fac1tpurem extends javax.swing.JPanel {
-    
+
     public String nombre, empresa, empresacob;
     public Connection sqlcfdi, sqlempresa, liteusuario;
     public Connection ACobranza, cpt, rcpt, cobB;
@@ -93,6 +95,7 @@ public class fac1tpurem extends javax.swing.JPanel {
         JbCancelar1 = new javax.swing.JMenuItem();
         Cancelamiento = new javax.swing.JMenuItem();
         JmAddprecios = new javax.swing.JMenuItem();
+        JmRefacturacion = new javax.swing.JMenuItem();
         JtCliente = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -130,6 +133,16 @@ public class fac1tpurem extends javax.swing.JPanel {
             }
         });
         Pop.add(JmAddprecios);
+
+        JmRefacturacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/move_23058.png"))); // NOI18N
+        JmRefacturacion.setText("Refacturacion");
+        JmRefacturacion.setToolTipText("");
+        JmRefacturacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmRefacturacionActionPerformed(evt);
+            }
+        });
+        Pop.add(JmRefacturacion);
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -237,7 +250,7 @@ public class fac1tpurem extends javax.swing.JPanel {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
         daoAgentes a = new daoAgentes();
-        
+
         int row = JtDetalle.getSelectedRow();
         int folio = arrfactura.get(row).getId_pedido();
         String ser = arrfactura.get(row).getSerie();
@@ -255,7 +268,7 @@ public class fac1tpurem extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void JtDetalleMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtDetalleMousePressed
-        
+
         int row = JtDetalle.getSelectedRow();
         String estados = arrfactura.get(row).getEstatus() + "";
         if (arrfactura.get(row).getSerie().equals("B") && estados.equals("1")) {
@@ -265,12 +278,18 @@ public class fac1tpurem extends javax.swing.JPanel {
             JbCancelar1.setVisible(false);
             Cancelamiento.setVisible(false);
         }
+        //Maquinaria
         if (u.getTurno().equals("6") && arrfactura.get(row).getSerie().equals("B")) {
             JmAddprecios.setVisible(true);
         } else {
             JmAddprecios.setVisible(false);
         }
-        
+        //Refacturacion
+        if (u.getTurno().equals("7")) {
+            JmRefacturacion.setVisible(true);
+        } else {
+            JmRefacturacion.setVisible(false);
+        }
         if (evt.getButton() == 3) {// activar con clic derecho
             Pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
@@ -321,7 +340,7 @@ public class fac1tpurem extends javax.swing.JPanel {
             can.cpt = cpt;
             can.cob = cobB;
             can.u = u;
-            
+
             can.muestradatos(arrfactura.get(row).getNombrecliente(), arrfactura.get(row).getPedido(), arrfactura.get(row).getId_pedido(), arrfactura.get(row).getIdcliente());
             can.setVisible(true);
             Buscanotas();
@@ -341,7 +360,7 @@ public class fac1tpurem extends javax.swing.JPanel {
             ArrayList<Ddevolucion> arrd = new ArrayList<>();
             ArrayList<Ddevolucion> arrdevpedimento = new ArrayList();
             Devolucion dev = new Devolucion();
-            Formateodedatos fd= new Formateodedatos();
+            Formateodedatos fd = new Formateodedatos();
 //            Obtiene la direcion con la bd correcta de acuerdo al turno del usuario
             String bdcob = fd.getBDcob_REMinterna(u.getTurno());
 //            if (u.getTurno().equals("5")) {
@@ -402,11 +421,26 @@ public class fac1tpurem extends javax.swing.JPanel {
     private void JmAddpreciosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAddpreciosActionPerformed
         cargadpedidos();
     }//GEN-LAST:event_JmAddpreciosActionPerformed
-    
+
+    private void JmRefacturacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmRefacturacionActionPerformed
+        if (u.getTurno().equals("7")) {
+            int row=JtDetalle.getSelectedRow();
+            daoCargos dc = new daoCargos();
+            daoConceptos dconcepto= new daoConceptos();
+            cargo car=dc.getCargowith_pedido(cobB, arrfactura.get(row));
+            car.setId_concepto(dconcepto.getConceptos_cob(cobB, 10, 25));
+            car.setId_concepto2(dconcepto.getConceptos_cob(cobB, 60, 40));
+        }
+    }//GEN-LAST:event_JmRefacturacionActionPerformed
+
+    private void refacturacion() {
+
+    }
+
     private void cargadpedidos() {
         int row = JtDetalle.getSelectedRow();
         Modificaprecio_pedido mp = new Modificaprecio_pedido(null, true);
-        mp.setconections(cpt, cobB, arrfactura.get(row),u);
+        mp.setconections(cpt, cobB, arrfactura.get(row), u);
         mp.llenatabla();
         mp.setVisible(true);
         Buscanotas();
@@ -481,13 +515,13 @@ public class fac1tpurem extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
         }
     }
-    
+
     private void Buscanotas() {
         daofactura df = new daofactura();
         arrfactura = df.getpedidos(cpt, JtCliente.getText(), serie);
         generatabla();
     }
-    
+
     private void generatabla() {
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Pedido");
@@ -525,6 +559,7 @@ public class fac1tpurem extends javax.swing.JPanel {
     private javax.swing.JMenuItem JbCancelar1;
     private javax.swing.JLabel JlSerie;
     private javax.swing.JMenuItem JmAddprecios;
+    private javax.swing.JMenuItem JmRefacturacion;
     public javax.swing.JTextField JtCliente;
     private javax.swing.JTable JtDetalle;
     private javax.swing.JPopupMenu Pop;

@@ -3778,7 +3778,7 @@ public class sqlfactura {
             PreparedStatement st;
             ResultSet rs;
             String sql = "select id_pedido,pedido,id_kardex,fecha,total,subtotal,impuestos,"
-                    + "serie,estatus as estatus,nombre,id_cliente,c.descripcion as concepto\n"
+                    + "serie,estatus as estatus,nombre,id_cliente,c.descripcion as concepto, pedidonumero\n"
                     + "from pedido p\n"
                     + "join Conceptos c on c.id_concepto=(select distinct k.id_concepto "
                     + "from kardex k where id_kardex=p.id_kardex)\n"
@@ -3801,6 +3801,7 @@ public class sqlfactura {
                 f.setSerie(rs.getString("serie"));
                 f.setEstatus(rs.getInt("estatus"));
                 f.setDesccuenta(rs.getString("concepto"));
+                f.setReferencia(rs.getString("pedidonumero"));
                 arr.add(f);
             }
 

@@ -6,18 +6,13 @@
 package DAO;
 
 import Modelo.cargo;
-import Modelo.factura;
 import java.sql.Connection;
 
 /**
  *
  * @author GATEWAY1-
  */
-public interface Cargos {
+public interface Int_abonos {
     
-    public boolean new_Notacargo(Connection c, factura f);
-    
-    public String get_Fechavencimiento(Connection c, int folio);
-    
-    public cargo getCargowith_pedido(Connection c, factura pedido);
+    public boolean new_Refacturacion(Connection cobranza, cargo c);
 }

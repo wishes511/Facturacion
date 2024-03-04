@@ -5,6 +5,7 @@
  */
 package DAO;
 
+import Modelo.cargo;
 import Modelo.factura;
 import Persistencia.sqlcargos;
 import java.sql.Connection;
@@ -40,6 +41,20 @@ public class daoCargos implements Cargos {
     @Override
     public String get_Fechavencimiento(Connection c, int folio) {
         return S.get_Fechavencimiento(c, folio);
+    }
+
+    /**
+     * Obtiene el cargo de acuerdo al pedido, se necesita el id del cargo, lo
+     * demas se puede obtener del pedido pero para no moverle a la consulta del
+     * pedido se obtendra el cliente, y agente ademas del importe
+     *
+     * @param c conexion acobranza
+     * @param pedido Referencia del pedido
+     * @return objeto tipo cargo
+     */
+    @Override
+    public cargo getCargowith_pedido(Connection c, factura pedido) {
+        return S.getcargowith_pedido(c, pedido);
     }
 
 }
