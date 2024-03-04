@@ -764,9 +764,9 @@ public class sqlfactura {
 //            System.out.println("rcpt documentos " + sql + "\n");
 
 //            Insercio a tabla facturas
-            sql = "insert into facturas(factura,fecha,pedido,numcliente,plazo,totalpares,descuento,subtotal,IDesc,"
+            sql = "insert into facturas(factura,fecha,pedido,salida,numcliente,plazo,totalpares,descuento,subtotal,IDesc,"
                     + "iva,total,cveagente,fechaembarque,estatus,observaciones,NOentrega,serie,Marca,usuario,registro) "
-                    + "values ('" + fol + "','" + fecha + "','" + ped + "'," + idcliente + "," + plazo + "," + totalparesf + ",0,"
+                    + "values ('" + fol + "','" + fecha + "','" + ped + "','"+turno+"'," + idcliente + "," + plazo + "," + totalparesf + ",0,"
                     + subtotal + ", " + desc + "," + imp + "," + total + "," + agente + ",'" + fecha + "','F','" + obs + "',1,'A',' " + f.getMarca() + "','" + usuario + "','" + fecha + "')";
 //            System.out.println("facturas " + sql);
             st = con.prepareStatement(sql);
