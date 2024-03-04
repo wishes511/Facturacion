@@ -38,16 +38,9 @@ order by fechacargo]]>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="14" splitType="Stretch">
+		<band height="15" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="57" height="12" uuid="b3a22a90-c404-4dd1-9a08-7c3c2c059d05"/>
-				<textElement textAlignment="Center">
-					<font size="9" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{id_cargo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="57" y="0" width="100" height="12" uuid="254cba8d-a7b3-4f69-933c-94177dc8bb52"/>
+				<reportElement x="84" y="0" width="73" height="12" uuid="254cba8d-a7b3-4f69-933c-94177dc8bb52"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="false"/>
 				</textElement>
@@ -60,29 +53,15 @@ order by fechacargo]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.00">
-				<reportElement x="257" y="0" width="100" height="12" uuid="f3680c91-f5a6-4039-91bf-bba4c652024d"/>
-				<textElement textAlignment="Center">
-					<font size="9" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
-			</textField>
 			<textField>
-				<reportElement x="357" y="0" width="42" height="12" uuid="bea5deb8-cc92-4abe-9ba9-eb5993898b2c"/>
-				<textElement textAlignment="Center">
-					<font size="9" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{plazo}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="483" y="0" width="48" height="12" uuid="19379e31-5551-4910-b221-d8424816e60d"/>
+				<reportElement x="257" y="0" width="27" height="12" uuid="19379e31-5551-4910-b221-d8424816e60d"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{serie}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="399" y="0" width="84" height="12" uuid="1941e47b-641b-42d9-9b85-1f55eb990780"/>
+				<reportElement x="0" y="0" width="84" height="12" uuid="1941e47b-641b-42d9-9b85-1f55eb990780"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="false"/>
 				</textElement>
@@ -99,6 +78,20 @@ order by fechacargo]]>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["C:\\af\\prod\\reportesmaq\\Det2_cargoAbonoespecial.jasper"]]></subreportExpression>
 			</subreport>
+			<textField pattern="#,##0.00">
+				<reportElement x="457" y="0" width="75" height="12" uuid="f3680c91-f5a6-4039-91bf-bba4c652024d"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{saldo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="284" y="0" width="98" height="12" uuid="9bf2a723-a947-4cbd-9ef8-c79148d5ae7f"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<summary>
@@ -111,7 +104,7 @@ order by fechacargo]]>
 				<textFieldExpression><![CDATA[$V{importes}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="257" y="3" width="100" height="12" uuid="63008511-f6e3-4c86-96c5-23c168059ddf"/>
+				<reportElement x="446" y="3" width="98" height="12" uuid="63008511-f6e3-4c86-96c5-23c168059ddf"/>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="9" isBold="true"/>
 				</textElement>

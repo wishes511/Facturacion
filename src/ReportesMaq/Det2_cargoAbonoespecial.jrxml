@@ -28,13 +28,6 @@ where estatus='1' and id_cliente=$P{cliente} and id_cargo=$P{cargo}]]>
 	</background>
 	<detail>
 		<band height="15" splitType="Stretch">
-			<textField>
-				<reportElement x="57" y="1" width="100" height="12" uuid="1b2fb543-b731-4bb6-bfc9-a2303a2154dd"/>
-				<textElement textAlignment="Center">
-					<font fontName="Calibri" size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
-			</textField>
 			<textField pattern="#,##0.00">
 				<reportElement x="157" y="1" width="100" height="12" uuid="6bd9627d-5c93-4565-aa1d-c8cc61d6df3a"/>
 				<textElement textAlignment="Center">
@@ -43,18 +36,25 @@ where estatus='1' and id_cliente=$P{cliente} and id_cargo=$P{cargo}]]>
 				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="257" y="1" width="100" height="12" uuid="25f92dc6-7ef7-41ea-82d6-da12936abfec"/>
+				<reportElement x="84" y="1" width="73" height="12" uuid="25f92dc6-7ef7-41ea-82d6-da12936abfec"/>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fechapago}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="399" y="1" width="84" height="12" uuid="58e8bcb9-f0ec-4404-bb3c-d027fdd21309"/>
+				<reportElement x="0" y="0" width="84" height="12" uuid="58e8bcb9-f0ec-4404-bb3c-d027fdd21309"/>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{referencia}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="382" y="1" width="75" height="12" uuid="40697b91-81d7-4e62-9efd-a182d3717b28"/>
+				<textElement textAlignment="Center">
+					<font fontName="Calibri" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

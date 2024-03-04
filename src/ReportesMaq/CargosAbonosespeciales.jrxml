@@ -92,13 +92,6 @@ order by ncliente]]>
 				<textFieldExpression><![CDATA[$F{ncliente}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="25" width="57" height="15" uuid="8d0889fa-3b89-492a-a171-c42f9309a5fe"/>
-				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Cargo]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="157" y="25" width="100" height="15" uuid="bafeeb58-a8f6-40a7-9fb4-147f4632f23a"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
@@ -106,35 +99,28 @@ order by ncliente]]>
 				<text><![CDATA[Importe]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="257" y="25" width="100" height="15" uuid="0a4d20b0-8fbe-46bc-8040-6f351cac4ac8"/>
+				<reportElement x="457" y="25" width="75" height="15" uuid="0a4d20b0-8fbe-46bc-8040-6f351cac4ac8"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Saldo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="399" y="25" width="84" height="15" uuid="2076faaf-6b85-443c-803d-84ae8981daf7"/>
+				<reportElement x="0" y="25" width="84" height="15" uuid="2076faaf-6b85-443c-803d-84ae8981daf7"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Referencia]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="483" y="25" width="49" height="15" uuid="c436e010-fbf2-4a56-82b5-09bab1e7f26c"/>
+				<reportElement x="257" y="25" width="23" height="15" uuid="c436e010-fbf2-4a56-82b5-09bab1e7f26c"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Serie]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="356" y="25" width="43" height="15" uuid="37c7105f-c2c3-44ca-8622-cba3bb324186"/>
-				<textElement textAlignment="Center">
-					<font size="9" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Plazo]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="57" y="25" width="100" height="15" uuid="1c456b14-737c-4228-bc4f-420f343f7200"/>
+				<reportElement x="84" y="25" width="73" height="15" uuid="1c456b14-737c-4228-bc4f-420f343f7200"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -157,6 +143,27 @@ order by ncliente]]>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 				<subreportExpression><![CDATA["C:\\af\\prod\\reportesmaq\\Det_CargoAbonoEspecial.jasper"]]></subreportExpression>
 			</subreport>
+			<staticText>
+				<reportElement x="532" y="25" width="40" height="15" uuid="49685806-00da-41ac-8aaf-bbc76402c1fe"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Serie]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="25" width="100" height="15" uuid="b5cf1c72-ebe2-49d9-92eb-60ba41776af8"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cargo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="25" width="75" height="15" uuid="8549543d-61aa-408b-8c31-ff45e565fb0b"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Abono]]></text>
+			</staticText>
 		</band>
 		<band height="2"/>
 	</detail>
@@ -191,7 +198,7 @@ order by ncliente]]>
 				<textFieldExpression><![CDATA[$V{importes}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="257" y="0" width="99" height="12" uuid="6c885495-ab55-4c67-ad94-04cbb398695f"/>
+				<reportElement x="457" y="0" width="75" height="12" uuid="6c885495-ab55-4c67-ad94-04cbb398695f"/>
 				<textElement textAlignment="Center">
 					<font size="9" isBold="true"/>
 				</textElement>
