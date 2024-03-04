@@ -173,7 +173,7 @@ public class Pedimento1 extends javax.swing.JPanel {
             pop.show(evt.getComponent(), evt.getX(), evt.getY());
         }
         String p = arr.get(JtDetalle.getSelectedRow()).getReferencia();
-        if (p.equals("0") || u.getTurno().equals("7")) {
+        if (p.equals("0") || u.getTurno().equals("7") || u.getTurno().equals("6")) {
             JmAddmaterial.setVisible(true);
         } else {
             JmAddmaterial.setVisible(false);

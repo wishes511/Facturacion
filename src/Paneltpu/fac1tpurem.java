@@ -5,6 +5,7 @@
  */
 package Paneltpu;
 
+import DAO.daoAbonos;
 import DAO.daoAgentes;
 import DAO.daoCargos;
 import DAO.daoConceptos;
@@ -249,8 +250,6 @@ public class fac1tpurem extends javax.swing.JPanel {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
-        daoAgentes a = new daoAgentes();
-
         int row = JtDetalle.getSelectedRow();
         int folio = arrfactura.get(row).getId_pedido();
         String ser = arrfactura.get(row).getSerie();
@@ -340,7 +339,6 @@ public class fac1tpurem extends javax.swing.JPanel {
             can.cpt = cpt;
             can.cob = cobB;
             can.u = u;
-
             can.muestradatos(arrfactura.get(row).getNombrecliente(), arrfactura.get(row).getPedido(), arrfactura.get(row).getId_pedido(), arrfactura.get(row).getIdcliente());
             can.setVisible(true);
             Buscanotas();
@@ -424,17 +422,42 @@ public class fac1tpurem extends javax.swing.JPanel {
 
     private void JmRefacturacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmRefacturacionActionPerformed
         if (u.getTurno().equals("7")) {
-            int row=JtDetalle.getSelectedRow();
-            daoCargos dc = new daoCargos();
-            daoConceptos dconcepto= new daoConceptos();
-            cargo car=dc.getCargowith_pedido(cobB, arrfactura.get(row));
-            car.setId_concepto(dconcepto.getConceptos_cob(cobB, 10, 25));
-            car.setId_concepto2(dconcepto.getConceptos_cob(cobB, 60, 40));
+            //Confirmar si es quiere refacturar
+            int input = JOptionPane.showConfirmDialog(null,
+                     "Estas seguro que quieres Refacturar?",
+                     "Selecciona una opcion", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (input == 0) {
+                int row = JtDetalle.getSelectedRow();
+                refacturacion(row);
+            }
         }
     }//GEN-LAST:event_JmRefacturacionActionPerformed
 
-    private void refacturacion() {
-
+    /**
+     * LLeva a cabo el proceso de refacturacion, que son dos movimientos en
+     * cobranza mediante el cargo seleccionado
+     *
+     * @param row linea de la tabla a utilizar
+     */
+    private void refacturacion(int row) {
+        daoCargos dc = new daoCargos();
+        daoConceptos dconcepto = new daoConceptos();
+        daoAbonos da = new daoAbonos();
+        java.util.Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        cargo car = dc.getCargowith_pedido(cobB, arrfactura.get(row));
+        car.setId_concepto(dconcepto.getConceptos_cob(cobB, 10, 25));
+        car.setId_concepto2(dconcepto.getConceptos_cob(cobB, 60, 40));
+        car.setFecha(sdf.format(date));
+        car.setTurno(Integer.parseInt(u.getTurno()));
+        if (da.new_Refacturacion(cobB, car)) {
+            JOptionPane.showMessageDialog(null, "Proceso completado");
+            Buscanotas();
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Error al completar, intentelo de nuevo o llame a sistemas",
+                    "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void cargadpedidos() {
