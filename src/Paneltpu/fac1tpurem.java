@@ -320,6 +320,7 @@ public class fac1tpurem extends javax.swing.JPanel {
                 clic = 0;
                 clic2 = 0;
                 clic3 = 0;
+                Buscanotas();
             }
         }
     }//GEN-LAST:event_JlSerieMousePressed
