@@ -16,6 +16,7 @@ import Modelo.Cliente;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
 import Modelo.factura;
@@ -292,6 +293,7 @@ public class cfditransportetpu extends javax.swing.JPanel {
         if (!a1 || !a2) {
             JOptionPane.showMessageDialog(null, "Error: Verifica que las claves de prod o Unidad. esten bien");
         } else {
+            Formateo_Nempresas fn= new Formateo_Nempresas();
             factura f = new factura();
             String condicion;
             java.util.Date date = new Date();
@@ -325,10 +327,10 @@ public class cfditransportetpu extends javax.swing.JPanel {
             f.setCantidadxcaja(0);
             f.setUsocfdi("S01");
             f.setCondicion("contado");
-            f.setLugarexpedicion("36400");
+            f.setLugarexpedicion(fn.getLugar_exp());
             f.setAgente(arrcliente.get(rowc).getAgente());
             f.setTiporelacion("");
-            f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
+            f.setEmpresa(fn.getEmpresa(u.getTurno(), empresa));
             f.setMetodopago("");
             f.setPedido("");
             f.setTiposerie("TRANSPORTE");
@@ -387,10 +389,11 @@ public class cfditransportetpu extends javax.swing.JPanel {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void setreport(int folio, String regimen, String moneda, String serie) {
+        Formateo_Nempresas fn= new Formateo_Nempresas();
         try {
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
-            String n = (empresa.equals("UptownCPT")) ? "2" : "1";
+            String n = fn.getEmpresa(u.getTurno(), empresa);
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
             String ser;
             String report;

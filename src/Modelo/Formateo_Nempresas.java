@@ -64,7 +64,8 @@ public class Formateo_Nempresas {
      * certificado llave y contraseña
      *
      * @param turno turno del usuario
-     * @param cpt nombre de la bd de Athletic, cpt o uptown
+     * @param cpt nombre de la bd de Athletic, cpt o uptown, Este solo aplica
+     * para athletic o uptown, no aplica para tpu o maquinarias
      * @return
      */
     public String getEmpresa(String turno, String cpt) {
