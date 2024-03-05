@@ -13,7 +13,7 @@
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[select c.id_cargo,a.referencia,cu.cuenta,cu.subcuenta,cu.descripcion,convert(date,c.fecha) as fecha,c.id_cliente,cli.nombre,a.importe,a.saldo,saldomx
+		<![CDATA[select c.id_cargo,a.referencia,cu.cuenta,cu.subcuenta,cu.descripcion,convert(date,c.fecha) as fecha,c.id_cliente,cli.nombre,a.importe,a.saldo,saldomx,convert(date,fechapago) as fechap
 from cargo c
 join cliente cli on c.id_cliente=cli.id_cliente
 join abono a on a.id_cargo=c.id_cargo
@@ -32,6 +32,7 @@ order by cli.nombre]]>
 	<field name="importe" class="java.lang.Double"/>
 	<field name="saldo" class="java.lang.Double"/>
 	<field name="saldomx" class="java.lang.Double"/>
+	<field name="fechap" class="java.lang.String"/>
 	<variable name="saldo" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{saldo}]]></variableExpression>
 	</variable>
@@ -76,7 +77,7 @@ order by cli.nombre]]>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fechap}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="354" y="0" width="70" height="12" uuid="161ea049-7cc3-430f-931a-433983ba6016"/>

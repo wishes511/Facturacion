@@ -16,6 +16,7 @@ import Modelo.Agentes;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
 import Modelo.Nocolision;
@@ -722,6 +723,7 @@ public class fac2 extends javax.swing.JPanel {
             if (!a && !a1) {
                 JtDescuento.requestFocus();
             } else {
+                Formateo_Nempresas fn= new Formateo_Nempresas();
                 traslado = (JcTraslado.isSelected()) ? "1" : "0";
                 factura f = new factura();
                 int row = 0;
@@ -749,7 +751,6 @@ public class fac2 extends javax.swing.JPanel {
                 do {
 
                 } while (n.isAlive());
-
                 f.setExportacion("01");
                 f.setFolio(n.getfolio());
                 f.setClaveusuario(u.getUsuario());
@@ -785,13 +786,13 @@ public class fac2 extends javax.swing.JPanel {
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
-                f.setLugarexpedicion("36350");
+                f.setLugarexpedicion(fn.getLugar_exp());
 //                f.setAgente(k.get(row).getCli().getAgente());
                 f.setAgente(arragente.get(JcAgente.getSelectedIndex()).getIdagente());
                 f.setPlazo(k.get(row).getCli().getPlazo());
                 f.setMarca((k.get(row).getCli().getMarca().equals("1")) ? "O" : "T");
                 f.setTiporelacion(relacion);
-                f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
+                f.setEmpresa(fn.getEmpresa(u.getTurno(), empresa));
                 String folios = "";
                 String facturas = "";
                 ArrayList<String> arruuid = new ArrayList<>();

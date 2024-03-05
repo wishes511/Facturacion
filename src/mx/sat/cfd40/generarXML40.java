@@ -3,6 +3,7 @@ package mx.sat.cfd40;
 import DAO.daoempresa;
 import DAO.daofactura;
 import Modelo.Empresas;
+import Modelo.Formateo_Nempresas;
 import Modelo.factura;
 import com.sun.xml.bind.marshaller.NamespacePrefixMapper;
 import java.io.ByteArrayOutputStream;
@@ -172,33 +173,34 @@ public class generarXML40 {
 //            xml.setTipoDeComprobante(CTipoDeComprobante.P);
 //            xml.setComplemento(createcomplemento(of, data, fecha));
         }
-
+        
         //Agregar certificado y no. de certificado al comprobante por medio del archivo .cer del contribuyente
-        X509Certificate x509Cer = getX509Certificate(cer);// Metodo de sellado
-        String certificado = getCertificadoBase64(x509Cer);
-        String noCertificado = getNoCertificado(x509Cer);
+        Formateo_Nempresas fn = new Formateo_Nempresas();
+        X509Certificate x509Cer = fn.getX509Certificate(cer);// Metodo de sellado
+        String certificado =fn.getCertificadoBase64(x509Cer);
+        String noCertificado = fn.getNoCertificado(x509Cer);
         xml.setCertificado(certificado);//añadir al comprobante
         xml.setNoCertificado(noCertificado);
 
         //Despues de asignar los valores al xml, guardar el comprobante y realizar el sellado digital
-        String cadenaXML = jaxbObjectToXML(xml);
+        String cadenaXML = fn.jaxbObjectToXML(xml);
 
         String cadenaOriginal = "";
         PrivateKey llavePrivada = null;
         String selloDigital = "";
 
         try {
-            cadenaOriginal = generarCadenaOriginal(cadenaXML);
+            cadenaOriginal = fn.generarCadenaOriginal(cadenaXML);
         } catch (TransformerException ex) {
             JOptionPane.showMessageDialog(null, "generarxml -" + ex);
             Logger.getLogger(generarXML40.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         //Utilizar el archivo .key del contribuyente, ademas de la contraseña correspondiente
-        llavePrivada = getPrivateKey(key, password);
+        llavePrivada = fn.getPrivateKey(key, password);
 
         //Asignar el sello digital como texto
-        selloDigital = generarSelloDigital(llavePrivada, cadenaOriginal);
+        selloDigital = fn.generarSelloDigital(llavePrivada, cadenaOriginal);
 
         //Agregar el sello digital al xml
         xml.setSello(selloDigital);
@@ -235,7 +237,7 @@ public class generarXML40 {
 
     private void getempresa(Connection c, String n) {
         daoempresa d = new daoempresa();
-        System.out.println(c.toString() + " " + n);
+        //System.out.println(c.toString() + " " + n);
         Empresas e = d.getempresarfc(c, n);
         password = e.getPass();
         RZ = e.getNombre();
@@ -267,117 +269,6 @@ public class generarXML40 {
     }
 //Falta Setear correctamente el prefijo antes de cada tag
 // Nodos implementados manualmente a la clase COmprobante falta por implementar
-
-    private Comprobante.Complemento createcomplemento(ObjectFactory of, ArrayList<xmlDAO> des, XMLGregorianCalendar fecha) {//Complemento
-        Comprobante.Complemento comp = of.createComprobanteComplemento();// Complemento Base
-        Comprobante.Complemento.Pagos p = of.createComprobanteComplementoPago();
-        Comprobante.Complemento.Pagos.Totales totales = of.createComprobanteComplementoPagosTotales();
-        Comprobante.Complemento.Pagos.Pago pago = of.createComprobanteComplementoPagosPago();
-        //Totales
-        totales.setMontoTotalPagos(BigDecimal.ONE);
-        totales.setTotalTrasladosImpuestoIVA16(BigDecimal.ONE);
-        totales.setTotalTrasladosBaseIVA16(BigDecimal.ONE);
-        //pago
-        // usar por si no funciona la funcion de la linea 273 pago.getDoctoRelacionado().add(doc);
-//        List<Comprobante.Complemento.Pagos.Pago> arr = p.getPago();
-        pago.setFechaPago(fecha);
-        pago.setFormaDePagoP("99");
-        pago.setMonedaP(CMoneda.MXN);
-        pago.setMonto(BigDecimal.ONE);
-        pago.setTipoCambioP(BigDecimal.valueOf(1));
-//        List<Comprobante.Complemento.Pagos.Pago.DoctoRelacionado> arrrel = pago.getDoctoRelacionado();
-//  Lista de documentos relacionados Arraylist de documentos
-//        for (int i = 0; i < des.size(); i++) {
-        for (int i = 0; i < 1; i++) {// prueba con 1 elemento random
-            Comprobante.Complemento.Pagos.Pago.DoctoRelacionado doc = of.createComprobanteComplementoPagosPagoDocs();
-            doc.setFolio("1025");
-            doc.setIdDocumento("65654-45645654654-5466-56854");
-            doc.setMonedaDR(CMoneda.MXN);
-            doc.setImpSaldoInsoluto(BigDecimal.ONE);
-            doc.setImpSaldoAnt(BigDecimal.ONE);
-            doc.setImpPagado(BigDecimal.ONE);
-            doc.setEquivalenciaDR(BigDecimal.ONE);
-            //Impuestos por documento
-            //Crear ImpuestosDR, TrasladosDR y TrasladoDR
-            Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR impdr = of.createComprobanteComplementoPagosPagoDocsImpuestoDR();
-            Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR trasladosdr = of.createComprobanteComplementoPagosPagoDocsImpuestoDRTrasladosDR();
-            Comprobante.Complemento.Pagos.Pago.DoctoRelacionado.ImpuestosDR.TrasladosDR.TrasladoDR tr = of.createComprobanteComplementoPagosPagoDocsImpuestoDRTrasladosDRTrasladoDR();
-            tr.setTipoFactorDR(CTipoFactor.TASA);
-            tr.setTasaOCuotaDR(BigDecimal.ONE);
-            tr.setImpuestoDR("002");
-            tr.setImporteDR(BigDecimal.ONE);
-            tr.setBaseDR(BigDecimal.ONE);
-            trasladosdr.getTrasladoDR().add(tr);
-            impdr.setTrasladosDR(trasladosdr);//traslado
-            doc.setImpuestosDR(impdr);//Nodo con valor de ImpuestoDR
-            pago.getDoctoRelacionado().add(doc);//agregar objeto al pago
-        }
-        //Fin de documentos relacionados e impuestos DR
-        //Final del documento impuestoP
-        //Crear ImpuestosP, TrasladosP y Traslado
-        Comprobante.Complemento.Pagos.Pago.ImpuestosP impuestos = of.createComprobanteComplementoPagosPagoImpuestoP();
-        Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP trasladosp = of.createComprobanteComplementoPagosPagoImpuestoPTrasladosP();
-        Comprobante.Complemento.Pagos.Pago.ImpuestosP.TrasladosP.TrasladoP trasladop = of.createComprobanteComplementoPagosPagoImpuestoPTrasladosPTrasladoP();
-        trasladop.setTipoFactorP(CTipoFactor.TASA);
-        trasladop.setTasaOCuotaP(BigDecimal.ONE);
-        trasladop.setImpuestoP("002");
-        trasladop.setImporteP(BigDecimal.ONE);
-        trasladop.setBaseP(BigDecimal.ONE);
-        trasladosp.getTrasladoP().add(trasladop);
-        impuestos.setTrasladosP(trasladosp);
-        //Termino de impuestosP
-        //setear impuestos a pago
-        pago.setImpuestosP(impuestos);
-        p.setVersion("2.0");
-        p.setTotales(totales);// seteo de totales
-        p.getPago().add(pago);
-        comp.setPagos(p);
-
-        //Cosas de prueba :v
-//        mx.sat.pagos.ObjectFactory of2 = new mx.sat.pagos.ObjectFactory();
-//        mx.sat.pagos.Pagos pagos = of2.createPagos();
-//        pagos.setVersion("2.0");
-//        mx.sat.pagos.Pagos.Pago pago = of2.createPagosPago();
-//        
-////        
-//        mx.sat.pagos.Pagos.Pago.DoctoRelacionado rel = of2.createPagosPagoDoctoRelacionado();
-//        rel.setSerie("PAG");
-//        rel.setFolio("4654654-5464-1315-6548987");
-//        rel.setNumParcialidad(BigInteger.valueOf(1));
-//        rel.setImpSaldoAnt(BigDecimal.valueOf(1205));
-//        rel.setImpPagado(BigDecimal.valueOf(1205));
-//        rel.setImpSaldoInsoluto(BigDecimal.valueOf(0));
-//        rel.setMonedaDR(mx.sat.pagos.CMoneda.MXN);
-//        rel.setIdDocumento("4654654-5464-1315-6548987");
-//        pago.getDoctoRelacionado().add(rel);
-//        
-//        mx.sat.pagos.Pagos.Totales t = of2.createPagosTotales();
-//        t.setMontoTotalPagos(BigDecimal.ONE);
-//        mx.sat.pagos.Pagos.Pago.ImpuestosP imp = of2.createPagosPagoImpuestosP();
-//        mx.sat.pagos.Pagos.Pago.ImpuestosP.TrasladosP traslados = of2.createPagosPagoImpuestosPTrasladosP();
-//        mx.sat.pagos.Pagos.Pago.ImpuestosP.TrasladosP.TrasladoP traslado = of2.createPagosPagoImpuestosPTrasladosPTrasladoP();
-//        traslado.setBaseP(BigDecimal.ONE);
-//        traslado.setImporteP(BigDecimal.ONE);
-//        traslado.setImpuestoP(urlCER);
-//        traslado.setTasaOCuotaP(BigDecimal.ONE);
-//        traslado.setTipoFactorP(mx.sat.pagos.CTipoFactor.TASA);
-//        traslados.getTrasladoP().add(traslado);
-//        imp.setTrasladosP(traslados);
-//        pago.setImpuestosP(imp);
-//
-////        
-////        rel= of2.createPagosPagoDoctoRelacionado();
-////        rel.setFolio("4654654-5464-1315-6548987");
-////        rel.setNumParcialidad(BigInteger.valueOf(1));
-////        rel.setImpSaldoAnt(BigDecimal.valueOf(1205));
-////        rel.setImpPagado(BigDecimal.valueOf(1205));
-////        rel.setImpSaldoInsoluto(BigDecimal.valueOf(0));
-////        pago.getDoctoRelacionado().add(rel);
-//
-//        comp.setPagos(pagos);
-////        
-        return comp;
-    }
 
     //Relaciones NCR Y FACTURAS :D
     private List<Comprobante.CfdiRelacionados> createrelacionados(ObjectFactory of, ArrayList<String> data, String relacion) {
@@ -514,106 +405,103 @@ public class generarXML40 {
         return impus;
     }
 
-    //Metodos de sellado
-    private X509Certificate getX509Certificate(final File certificateFile) throws CertificateException, IOException {
-        FileInputStream is = null;
-
-        try {
-            is = new FileInputStream(certificateFile);
-            CertificateFactory of = CertificateFactory.getInstance("X.509");
-            return (X509Certificate) of.generateCertificate(is);
-        } finally {
-            if (is != null) {
-                is.close();
-            }
-        }
-    }
-
-    private String getCertificadoBase64(final X509Certificate cert) throws CertificateEncodingException {
-        return new String(Base64.encode(cert.getEncoded()));
-    }
-
-    private String getNoCertificado(final X509Certificate cert) {
-        BigInteger serial = cert.getSerialNumber();
-        byte[] sArr = serial.toByteArray();
-        StringBuilder buffer = new StringBuilder();
-
-        for (int i = 0; i < sArr.length; i++) {
-            buffer.append((char) sArr[i]);
-        }
-
-        return buffer.toString();
-    }
-
-    private String jaxbObjectToXML(Comprobante xml) {
-        String xmlString = "";
-
-        try {
-            JAXBContext context = JAXBContext.newInstance(Comprobante.class);
-            Marshaller m = context.createMarshaller();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-
-            StringWriter sw = new StringWriter();
-            m.marshal(xml, sw);
-            xmlString = sw.toString();
-
-        } catch (JAXBException ex) {
-            ex.printStackTrace();
-            System.out.println(ex.getMessage());
-        }
-        return xmlString;
-    }
-
-    private String generarCadenaOriginal(final String xml) throws TransformerException {
-        StreamSource streamS = new StreamSource("C:/af/filesfac/cadenaoriginal_4_0.xslt");
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer xlsTransformer = transformerFactory.newTransformer(streamS);
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        xlsTransformer.transform(new StreamSource(new StringReader(xml)), new StreamResult(output));
-
-        String resultado = "";
-
-        try {
-            resultado = output.toString("UTF-8");
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(generarXML40.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return resultado;
-    }
-
-    private PrivateKey getPrivateKey(final File keyFile, final String password) throws GeneralSecurityException, IOException {
-
-        FileInputStream in = new FileInputStream(keyFile);
-        org.apache.commons.ssl.PKCS8Key pkcs8 = new org.apache.commons.ssl.PKCS8Key(in, password.toCharArray());
-
-        byte[] decrypted = pkcs8.getDecryptedBytes();
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decrypted);
-        PrivateKey pk;
-
-        if (pkcs8.isDSA()) {
-            pk = KeyFactory.getInstance("DSA").generatePrivate(spec);
-        } else if (pkcs8.isRSA()) {
-            pk = KeyFactory.getInstance("RSA").generatePrivate(spec);
-        }
-
-        pk = pkcs8.getPrivateKey();
-        return pk;
-    }
-
-    private String generarSelloDigital(final PrivateKey key, final String cadenaOriginal)
-            throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
-
-        Signature sing = Signature.getInstance("SHA256withRSA");
-        sing.initSign(key, new SecureRandom());
-
-        try {
-            sing.update(cadenaOriginal.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(generarXML40.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        byte[] signature = sing.sign();
-        return new String(Base64.encode(signature));
-    }
+    //Metodos de sellado se remplazo por lo de la clase Formateo_Nempresas
+//    private X509Certificate getX509Certificate(final File certificateFile) throws CertificateException, IOException {
+//        FileInputStream is = null;
+//
+//        try {
+//            is = new FileInputStream(certificateFile);
+//            CertificateFactory of = CertificateFactory.getInstance("X.509");
+//            return (X509Certificate) of.generateCertificate(is);
+//        } finally {
+//            if (is != null) {
+//                is.close();
+//            }
+//        }
+//    }
+//
+//    private String getCertificadoBase64(final X509Certificate cert) throws CertificateEncodingException {
+//        return new String(Base64.encode(cert.getEncoded()));
+//    }
+//
+//    private String getNoCertificado(final X509Certificate cert) {
+//        BigInteger serial = cert.getSerialNumber();
+//        byte[] sArr = serial.toByteArray();
+//        StringBuilder buffer = new StringBuilder();
+//
+//        for (int i = 0; i < sArr.length; i++) {
+//            buffer.append((char) sArr[i]);
+//        }
+//
+//        return buffer.toString();
+//    }
+//
+//    private String jaxbObjectToXML(Comprobante xml) {
+//        String xmlString = "";
+//        try {
+//            JAXBContext context = JAXBContext.newInstance(Comprobante.class);
+//            Marshaller m = context.createMarshaller();
+//            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+//            StringWriter sw = new StringWriter();
+//            m.marshal(xml, sw);
+//            xmlString = sw.toString();
+//        } catch (JAXBException ex) {
+//            ex.printStackTrace();
+//            System.out.println(ex.getMessage());
+//        }
+//        return xmlString;
+//    }
+//
+//    private String generarCadenaOriginal(final String xml) throws TransformerException {
+//        StreamSource streamS = new StreamSource("C:/af/filesfac/cadenaoriginal_4_0.xslt");
+//        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//        Transformer xlsTransformer = transformerFactory.newTransformer(streamS);
+//        ByteArrayOutputStream output = new ByteArrayOutputStream();
+//        xlsTransformer.transform(new StreamSource(new StringReader(xml)), new StreamResult(output));
+//
+//        String resultado = "";
+//
+//        try {
+//            resultado = output.toString("UTF-8");
+//        } catch (UnsupportedEncodingException ex) {
+//            Logger.getLogger(generarXML40.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        return resultado;
+//    }
+//
+//    private PrivateKey getPrivateKey(final File keyFile, final String password) throws GeneralSecurityException, IOException {
+//
+//        FileInputStream in = new FileInputStream(keyFile);
+//        org.apache.commons.ssl.PKCS8Key pkcs8 = new org.apache.commons.ssl.PKCS8Key(in, password.toCharArray());
+//
+//        byte[] decrypted = pkcs8.getDecryptedBytes();
+//        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decrypted);
+//        PrivateKey pk;
+//
+//        if (pkcs8.isDSA()) {
+//            pk = KeyFactory.getInstance("DSA").generatePrivate(spec);
+//        } else if (pkcs8.isRSA()) {
+//            pk = KeyFactory.getInstance("RSA").generatePrivate(spec);
+//        }
+//
+//        pk = pkcs8.getPrivateKey();
+//        return pk;
+//    }
+//
+//    private String generarSelloDigital(final PrivateKey key, final String cadenaOriginal)
+//            throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException {
+//
+//        Signature sing = Signature.getInstance("SHA256withRSA");
+//        sing.initSign(key, new SecureRandom());
+//
+//        try {
+//            sing.update(cadenaOriginal.getBytes("UTF-8"));
+//        } catch (UnsupportedEncodingException ex) {
+//            Logger.getLogger(generarXML40.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//        byte[] signature = sing.sign();
+//        return new String(Base64.encode(signature));
+//    }
 }
