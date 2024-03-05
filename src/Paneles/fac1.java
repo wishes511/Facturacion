@@ -18,6 +18,7 @@ import Modelo.Destinoscoppel;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.NAddenda;
 import Modelo.Sellofiscal;
 import Modelo.Setaddenda;
@@ -308,6 +309,7 @@ public class fac1 extends javax.swing.JPanel {
         daofactura dfac = new daofactura();
         int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
         arrfacturaxml = dfac.getdocxml(cpt, id + "", "FAC", empresacob);
+        Formateo_Nempresas fd= new Formateo_Nempresas();
 
         factura f = new factura();
         String condicion;
@@ -377,9 +379,9 @@ public class fac1 extends javax.swing.JPanel {
         f.setUsocfdi(arrfacturaxml.get(0).getUsocfdi());
         condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
         f.setCondicion(condicion);
-        f.setLugarexpedicion("36400");
+        f.setLugarexpedicion(fd.getLugar_exp());
         f.setTiporelacion("");
-        f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
+        f.setEmpresa(fd.getEmpresa(u.getTurno(), empresa));
         double iva = arrfacturaxml.get(0).getIva();
         for (int i = 0; i < arrfacturaxml.size(); i++) {
             Dfactura df = new Dfactura();
@@ -402,9 +404,8 @@ public class fac1 extends javax.swing.JPanel {
         //Se utiliza el generar factura especial por los decimales
         daoxmlE dx = new daoxmlE();
         dx.generarfac(f, cpt, sqlempresa);
-
         timbrarXML t = new timbrarXML();
-        String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
+        String e = f.getEmpresa();
         String fac = String.valueOf(arrfacturaxml.get(0).getFolio());
         Sellofiscal s = t.timbrar("FAC_" + fac, "", sqlempresa, e);
         dfac.Updatesellofiscal(cpt, s, id);
@@ -438,6 +439,7 @@ public class fac1 extends javax.swing.JPanel {
 
     private void JbCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbCancelarActionPerformed
         if (!arrfactura.isEmpty()) {
+            Formateo_Nempresas fd = new Formateo_Nempresas();
             String botones[] = {"Aceptar", ""
                 + ""
                 + "Cancelar"};
@@ -458,7 +460,7 @@ public class fac1 extends javax.swing.JPanel {
                 String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
 //                Aplica solo si esta timbrada sino solo se da de baja en la bd
                 if (tim.equals("T")) {
-                    String n = (empresa.equals("UptownCPT")) ? "2" : "1";
+                    String n = fd.getEmpresa(u.getTurno(), empresa);
                     timbrarXML t = new timbrarXML();
                     resp = t.cancelarfolio("FAC_" + arrfactura.get(row).getFolio(), sqlempresa, n, arrfactura.get(row).getFoliofiscal());
                 }
@@ -541,8 +543,9 @@ public class fac1 extends javax.swing.JPanel {
     }//GEN-LAST:event_JmNombreActionPerformed
 
     private void JmBorraadendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmBorraadendaActionPerformed
+        Formateo_Nempresas fn= new Formateo_Nempresas();
         if (!arrfactura.isEmpty()) {
-            String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
+            String e = fn.getEmpresa(u.getTurno(), empresa);
             int row = JtDetalle.getSelectedRow();
             String archivo = getempresa(sqlempresa, e) + "\\FAC_" + arrfactura.get(row).getFolio() + ".xml";
 ////            System.out.println("arch "+archivo);
@@ -576,8 +579,9 @@ public class fac1 extends javax.swing.JPanel {
     }
 
     private void generaradenda() {
+        Formateo_Nempresas fn= new Formateo_Nempresas();
         if (!arrfactura.isEmpty()) {
-            String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
+            String e = fn.getEmpresa(u.getTurno(), empresa);
             int row = JtDetalle.getSelectedRow();
             String archivo = getempresa(sqlempresa, e) + "\\FAC_" + arrfactura.get(row).getFolio() + ".xml";
 //            System.out.println(archivo);
@@ -643,6 +647,7 @@ public class fac1 extends javax.swing.JPanel {
 
     private void setreport(String tipo) {
         String moneda = arrfactura.get(JtDetalle.getSelectedRow()).getMoneda();
+        Formateo_Nempresas fn= new Formateo_Nempresas();
         String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
                 + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
                 + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
@@ -650,7 +655,7 @@ public class fac1 extends javax.swing.JPanel {
                 + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
         try {
             daoempresa d = new daoempresa();
-            String n = (empresa.equals("UptownCPT")) ? "2" : "1";
+            String n = fn.getEmpresa(u.getTurno(), empresa);
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
             String lugar = (empresa.equals("UptownCPT")) ? e.getCp() : "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();

@@ -78,6 +78,8 @@ public class Formateo_Nempresas {
                 //Temporalmente 1 en lo que se implementa la otra razon social
                 resp = "1";
                 break;
+            default:
+                resp = "1";
         }
         return resp;
     }
