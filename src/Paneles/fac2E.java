@@ -14,6 +14,7 @@ import Modelo.Conexiones;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Kardexrcpt;
 import Modelo.Nocolision;
@@ -714,6 +715,7 @@ public class fac2E extends javax.swing.JPanel {
             if (!a && !a1 && a2 && a3) {
                 JtDetalle.requestFocus();
             } else {
+                Formateo_Nempresas fn= new Formateo_Nempresas();
                 factura f = new factura();
                 int row = JtFolio1.getSelectedIndex();
                 String condicion;
@@ -779,12 +781,12 @@ public class fac2E extends javax.swing.JPanel {
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
-                f.setLugarexpedicion("36350");
+                f.setLugarexpedicion(fn.getLugar_exp());
                 f.setAgente(arrcliente.get(row).getAgente());
                 f.setPlazo(arrcliente.get(row).getPlazo());
                 f.setMarca("O");
                 f.setTiporelacion(relacion);
-                f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
+                f.setEmpresa(fn.getEmpresa(u.getTurno(), empresa));
                 String folios = "";
                 String facturas = "";
                 ArrayList<String> arruuid = new ArrayList<>();
@@ -917,11 +919,8 @@ public class fac2E extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
                     vaciarcampos();
                     JtCliente.requestFocus();
-                } else {
-
                 }
 //                }
-
             }
         }
     }//GEN-LAST:event_jLabel2MousePressed
@@ -1000,21 +999,18 @@ public class fac2E extends javax.swing.JPanel {
         try {
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
-
+            Formateo_Nempresas fn= new Formateo_Nempresas();
             String conformidad=(!moneda.equals("MXN"))?"De conformidad con el Art. 20 del C.F.F., informamos que "
                     + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
                     + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
                     + "de la Federación el día habil anterior al día de pago. Para su consulta: www.banxico.org.mx "
                     + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)":" ";
-            DecimalFormat form = new DecimalFormat("####.##");//para los decimales
-            String n = (empresa.equals("UptownCPT")) ? "2" : "1";
+            String n = fn.getEmpresa(u.getTurno(), empresa);
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
             String lugar=(empresa.equals("UptownCPT")) ? e.getCp() : "BLVD LAS TORRES 516  DEL VALLE  SAN FRANCISCO DEL RINCON  GUANAJUATO "+e.getCp();
 //             fin identificar empresa
             Map parametros = new HashMap();
-//            Clase que contiene el numero convertido a caracter
-            convertnum conv = new convertnum();
             convertirNumeros cnum = new convertirNumeros();
             DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
             String numeros = formateador.format(total);

@@ -405,9 +405,8 @@ public class fac1 extends javax.swing.JPanel {
         daoxmlE dx = new daoxmlE();
         dx.generarfac(f, cpt, sqlempresa);
         timbrarXML t = new timbrarXML();
-        String e = f.getEmpresa();
         String fac = String.valueOf(arrfacturaxml.get(0).getFolio());
-        Sellofiscal s = t.timbrar("FAC_" + fac, "", sqlempresa, e);
+        Sellofiscal s = t.timbrar("FAC_" + fac, "", sqlempresa, f.getEmpresa());
         dfac.Updatesellofiscal(cpt, s, id);
         JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
         Buscanotas();

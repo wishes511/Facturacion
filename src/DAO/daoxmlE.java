@@ -59,6 +59,7 @@ public class daoxmlE {
             x.setArruuid(f.getArruuid());
             x.setRelacion(f.getTiporelacion());
             x.setIddocumentos(f.getId());
+            x.setTurno(f.getTurno());
             x.setEmpresa(f.getEmpresa());
             x.setFolio(f.getFolio() + "");                              // Folio
             x.setSerie(f.getSerie());                                   // Serie

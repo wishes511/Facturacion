@@ -38,6 +38,7 @@ public class daoxmlTraslado {
             x.setRelacion(f.getTiporelacion());
             x.setFolioorig(f.getFoliofiscalorig());
             x.setIddocumentos(f.getId());
+            x.setTurno(f.getTurno());
             x.setEmpresa(f.getEmpresa());
             x.setFolio(f.getFolio() + "");                              // Folio
             x.setSerie("TR");       // metodo descripcion
