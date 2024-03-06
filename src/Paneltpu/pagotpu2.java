@@ -709,7 +709,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 
     private void jLabel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MousePressed
         Formateodedatos fd = new Formateodedatos();
-        if(!fd.verficafechanula(JtFecha)){
+        if (!fd.verficafechanula(JtFecha)) {
             setfactura();
         }
     }//GEN-LAST:event_jLabel2MousePressed
@@ -816,8 +816,9 @@ public class pagotpu2 extends javax.swing.JPanel {
 
     private void llenalistafac() {
         DefaultListModel<String> model = new DefaultListModel<>();
+        Formateodedatos fd = new Formateodedatos();
         for (cargo arrcargoseleccion1 : arrcargoseleccion) {
-            model.addElement("FAC " + arrcargoseleccion1.getReferencia() + " - " + formatdecimal(arrcargoseleccion1.getDescuento()));
+            model.addElement("FAC " + arrcargoseleccion1.getReferencia() + " - " + fd.formatdecimal(arrcargoseleccion1.getDescuento()));
         }
         Jlcargofac.setModel(model);
     }
@@ -826,17 +827,18 @@ public class pagotpu2 extends javax.swing.JPanel {
         if (arrcargoseleccion.isEmpty()) {
             JtCliente.requestFocus();
         } else {
+            Formateodedatos fd = new Formateodedatos();
             double totalrev = 0;
             //Se obtiene el total de las facturas que anter se capturaron
             for (int i = 0; i < arrcargoseleccion.size(); i++) {
 //                totalrev += Double.parseDouble(formateador.format(arrcargoseleccion.get(i).getDescuento()));
-                totalrev += formatdecimal(arrcargoseleccion.get(i).getDescuento());
+                totalrev += fd.formatdecimal(arrcargoseleccion.get(i).getDescuento());
             }
 //            System.out.println(total + " " + totalrev);
 //            System.out.println(total + " " + formateador.format(totalrev));
 //            if (totalrev != total) {
 //            System.out.println(formatdecimal(total) + " ** " + formatdecimal(totalrev));
-            if (formatdecimal(total) != formatdecimal(totalrev)) {
+            if (fd.formatdecimalv2(total) != fd.formatdecimalv2(totalrev)) {
                 JOptionPane.showMessageDialog(null, "El total de las lineas debe de ser igual al seleccionado en las facturas");
                 JtDetalle.requestFocus();
             } else {
@@ -864,12 +866,15 @@ public class pagotpu2 extends javax.swing.JPanel {
 //                f.setImpiva16(getnewcantidades((total / 1.16) * 0.16, "iva"));// Nodo totales
 //                f.setBaseiva16(getnewcantidades(total / 1.16, "importe"));
 //                f.setTotalpago16(total);
-                f.setImpiva16(formatdecimal(impuestos*f.getTipocambio()));// Nodo totales
-                f.setBaseiva16(formatdecimal(subtotal*f.getTipocambio()));
-                Double au=formatdecimal(total*f.getTipocambio());
+                double imp16 = impuestos * f.getTipocambio();
+                double base16 = subtotal * f.getTipocambio();
+                Double au = fd.formatdecimalv2(total * f.getTipocambio());
+                f.setImpiva16(fd.formatdecimalv2(imp16));// Nodo totales
+                f.setBaseiva16(fd.formatdecimalv2(base16));
                 f.setTotalpago16(au);
+                fd.formatdecimal(0);
                 //Monto del pago
-                f.setMonto(formatdecimal(total));
+                f.setMonto(fd.formatdecimalv2(total));
 //                Fin nodo totales
                 f.setExportacion("01");
                 f.setTiporelacion("");
@@ -1022,52 +1027,55 @@ public class pagotpu2 extends javax.swing.JPanel {
         }
     }
 
-    private double formatdecimal(double cant) {
-        int dato = 0;
-        int punto = 0;
-        boolean band = false;
-        double resp;
-        String c = String.valueOf(BigDecimal.valueOf(cant).setScale(3, RoundingMode.HALF_UP));
-//        String cadena = "";
-        for (int i = 0; i < c.length(); i++) {
-//            Empieza a tomar datos despues del punto
-            if (c.charAt(i) == '.') {
-                band = true;
-            }
-            if (band) {
-//                3 digitos de decimal para saber qe hacer con los decimales
-                if (punto == 3) {
-                    dato = Integer.parseInt(c.charAt(i) + "");
-//                    i = c.length();
-                    break;
-                }
-//                Para un cuarto decimal, si es mayor a
-//                if (punto == 4) {
-//                    int datoaux = Integer.parseInt(c.charAt(i) + "");
-//                    if (datoaux > 5) {
-//                        dato += 1;
-//                    }
-//                    i = c.length();
+//    private double formatdecimal(double cant) {
+//        int dato = 0;
+//        int punto = 0;
+//        boolean band = false;
+//        double resp;
+//        //String c = String.valueOf(BigDecimal.valueOf(cant).setScale(3, RoundingMode.HALF_UP));
+//        String c=cant+"";
+//        String r="";
+////        String cadena = "";
+//        for (int i = 0; i < c.length(); i++) {
+//            r=r+c.charAt(i)+"";
+////            Empieza a tomar datos despues del punto
+//            if (c.charAt(i) == '.') {
+//                band = true;
+//            }
+//            if (band) {
+////                3 digitos de decimal para saber qe hacer con los decimales
+//                if (punto == 3) {
+//                    dato = Integer.parseInt(c.charAt(i) + "");
+////                    i = c.length();
 //                    break;
 //                }
-//                cadena += c.charAt(i);
-                punto++;
-            }
-        }
-        if ((dato < 5)) {
-            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.FLOOR).doubleValue();
-        } else {
-            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        }
-        return resp;
-    }
-
+////                Para un cuarto decimal, si es mayor a
+////                if (punto == 4) {
+////                    int datoaux = Integer.parseInt(c.charAt(i) + "");
+////                    if (datoaux > 5) {
+////                        dato += 1;
+////                    }
+////                    i = c.length();
+////                    break;
+////                }
+////                cadena += c.charAt(i);
+//                punto++;
+//            }
+//        }
+//        if ((dato <= 5)) {
+//            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.FLOOR).doubleValue();
+//        } else {
+//            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+//        }
+//        return resp;
+//    }
     public ArrayList<cargo> getcargosfacs() {
         ArrayList<cargo> arr = new ArrayList<>();
+        Formateodedatos fd = new Formateodedatos();
         for (int y = 0; y < arrcargoseleccion.size(); y++) {
             cargo car = new cargo();
-            double desc = formatdecimal(arrcargoseleccion.get(y).getDescuento());
-            car.setDescuento(formatdecimal(desc));
+            double desc = fd.formatdecimalv2(arrcargoseleccion.get(y).getDescuento());
+            car.setDescuento(fd.formatdecimalv2(desc));
             car.setFoliofiscal(arrcargoseleccion.get(y).getFoliofiscal());
             car.setCuenta(arrcargoseleccion.get(y).getCuenta());
             car.setSubcuenta(arrcargoseleccion.get(y).getSubcuenta());
@@ -1098,7 +1106,7 @@ public class pagotpu2 extends javax.swing.JPanel {
             double tipocambio = f.getTipocambio();
             double comision = arrcomision.get(i).getComision();
             double resultado = (f.getMoneda().equals("USD")) ? tipocambio * comision : comision;
-            comi.setComision(form.formatdecimal(resultado));
+            comi.setComision(form.formatdecimalv2(resultado));
             comi.setId_cargo(arrcomision.get(i).getId_cargo());
             comi.setId_agente(arrcomision.get(i).getId_agente());
             comi.setReferencia(arrcomision.get(i).getReferencia());
@@ -1113,7 +1121,7 @@ public class pagotpu2 extends javax.swing.JPanel {
 //        Se realiza la insercion de cada de los folios validos en la bd
         dc.newcomision(cpt, arrcomision);
     }
-    
+
     /**
      * Formatea y ordena cada folio y /o referencia a filtrar del pago que
      * recientemente se realizo
@@ -1233,6 +1241,7 @@ public class pagotpu2 extends javax.swing.JPanel {
     }
 
     private void actualizaimportes() {
+        Formateodedatos fd = new Formateodedatos();
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Factura");
         model.addColumn("Pago");
@@ -1256,17 +1265,17 @@ public class pagotpu2 extends javax.swing.JPanel {
                 model.setValueAt(importe, i, 2);
                 model.setValueAt(iva, i, 3);
 //                total += totalcar;
-                subtotal += getcant(importe);
-                impuestos += getcant(iva);
+                subtotal += fd.formatdecimalv2(importe);
+                impuestos += fd.formatdecimalv2(iva);
                 System.out.println("a");
             }
             JtDetalle.setModel(model);
             total = subtotal + impuestos;
             //Solo para despliqgue de informacion
-            JlIva.setText(getcant(impuestos) + "");
-            Jlsub.setText(getcant(subtotal) + "");
+            JlIva.setText(fd.formatdecimalv2(impuestos) + "");
+            Jlsub.setText(fd.formatdecimalv2(subtotal) + "");
             JlDesc.setText(descuentos + "");
-            JlTotal.setText(getcant(total) + "");
+            JlTotal.setText(fd.formatdecimalv2(total) + "");
         } else {
             JtCliente.requestFocus();// regresa al campo inicial del cliente
         }
@@ -1290,11 +1299,11 @@ public class pagotpu2 extends javax.swing.JPanel {
         double cant = 0;
         switch (tipo) {
             case "importe":
-                double aux=a/1.16;
+                double aux = a / 1.16;
                 cant = BigDecimal.valueOf(aux).setScale(6, RoundingMode.HALF_UP).doubleValue();
                 break;
             case "iva":
-                aux=(a/1.16)*0.16;
+                aux = (a / 1.16) * 0.16;
                 cant = (BigDecimal.valueOf(aux).setScale(6, RoundingMode.HALF_UP).doubleValue());
                 break;
         }

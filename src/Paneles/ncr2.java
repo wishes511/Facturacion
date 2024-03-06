@@ -13,6 +13,7 @@ import Modelo.ConceptosES;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Kardexrcpt;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
@@ -876,6 +877,7 @@ public class ncr2 extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "El total de las lineas debe de ser igual al seleccionado en las facturas");
                 JtDetalle.requestFocus();
             } else {
+                Formateo_Nempresas fn = new Formateo_Nempresas();
                 factura f = new factura();
 //            int row = JtFolio1.getSelectedIndex();
                 String condicion;
@@ -911,7 +913,7 @@ public class ncr2 extends javax.swing.JPanel {
                 f.setTiporelacion(arrrelacion.get(JtRelacion.getSelectedIndex()).getRelacion());
                 f.setIva(16);
 //                condicion = "Contado";
-                f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
+                f.setEmpresa(fn.getEmpresa(u.getTurno(), empresa));
 //                f.setEmpresa("1");
                 f.setClaveusuario(u.getUsuario());
                 f.setTurno(u.getTurno());
@@ -951,7 +953,7 @@ public class ncr2 extends javax.swing.JPanel {
                 f.setAgente(arrcargoseleccion.get(0).getAgente());
                 f.setPlazo(arrcargoseleccion.get(0).getPlazo());
                 f.setMarca(arrcargoseleccion.get(0).getRef());
-                f.setLugarexpedicion("36400");
+                f.setLugarexpedicion(fn.getLugar_exp());
                 f.setCuentaabono(arrcuentas.get(JcCuenta.getSelectedIndex()).getCuenta());
                 f.setSubabono(arrcuentas.get(JcCuenta.getSelectedIndex()).getSubcuenta());
                 f.setDesccuenta(arrcuentas.get(JcCuenta.getSelectedIndex()).getNombre());
@@ -1164,6 +1166,7 @@ public class ncr2 extends javax.swing.JPanel {
      */
     private void setreport(int folio, String regimen, String moneda) {
         try {
+            Formateo_Nempresas fn = new Formateo_Nempresas();
             String conformidad = (!moneda.equals("MXN")) ? "De conformidad con el Art. 20 del C.F.F., informamos que "
                     + "para convertir moneda extranjera a su equivalente en moneda nacional, el tipo de cambio a "
                     + "utilizar para efectos de pagos será el que publique el Banco de México en el Diario Oficial "
@@ -1171,7 +1174,7 @@ public class ncr2 extends javax.swing.JPanel {
                     + "(sección: Mercado cambiario/Tipos de cambio para solventar obligaciones denominadas en dólares de los Ee.Uu:A., pagaderas en la República Mexicana)" : " ";
             daoempresa d = new daoempresa();
 //            Identificar si es de ath o uptown
-            String n = (empresa.equals("UptownCPT")) ? "2" : "1";
+            String n = fn.getEmpresa(u.getTurno(), empresa);
             String logo = (empresa.equals("UptownCPT")) ? "Uptown.jpg" : "AF.png";
             Empresas e = d.getempresarfc(sqlempresa, n);
             String lugar = (empresa.equals("UptownCPT")) ? e.getCp() : "BLVD LAS TORRES 516 DEL VALLE SAN FRANCISCO DEL RINCON GUANAJUATO " + e.getCp();

@@ -171,7 +171,7 @@ public class Formateodedatos {
         int punto = 0;
         boolean band = false;
         double resp;
-        String c = String.valueOf(BigDecimal.valueOf(cant).setScale(3, RoundingMode.HALF_UP));
+        String c = String.valueOf(cant);
 //        String cadena = "";
         for (int i = 0; i < c.length(); i++) {
 //            Empieza a tomar datos despues del punto
@@ -182,16 +182,17 @@ public class Formateodedatos {
 //                3 digitos de decimal para saber qe hacer con los decimales
                 if (punto == 3) {
                     dato = Integer.parseInt(c.charAt(i) + "");
+                    i = c.length();
                     break;
                 }
 //                cadena += c.charAt(i);
                 punto++;
             }
         }
-        if ((dato <= 5)) {
-            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.FLOOR).doubleValue();
+        if ((dato < 5)) {
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.FLOOR).doubleValue();
         } else {
-            resp = BigDecimal.valueOf(Double.parseDouble(c)).setScale(2, RoundingMode.HALF_UP).doubleValue();
+            resp = BigDecimal.valueOf(cant).setScale(2, RoundingMode.HALF_UP).doubleValue();
         }
         return resp;
     }

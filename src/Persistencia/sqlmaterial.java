@@ -81,7 +81,7 @@ public class sqlmaterial {
                 m.setUnidad(rs.getString("unidad"));
                 m.setCodigosat(rs.getString("codigosat"));
                 m.setMoneda(rs.getString("moneda"));
-                if (turno.equals("7")) {
+                if (turno.equals("7") || turno.equals("6")) {
                     m.setNoserie(rs.getString("noserie"));
                 }
                 arr.add(m);

@@ -199,7 +199,8 @@ public class Pedimento1 extends javax.swing.JPanel {
 
     private void JmAddmaterialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmAddmaterialActionPerformed
         int row = JtDetalle.getSelectedRow();
-        if (arr.get(row).getReferencia().equals("0") || arr.get(row).getReferencia().equals("1") || u.getTurno().equals("7")) {
+        if (arr.get(row).getReferencia().equals("0") || arr.get(row).getReferencia().equals("1") 
+                || u.getTurno().equals("7") || u.getTurno().equals("6")) {
             NuevomatPedimentoadd n = new NuevomatPedimentoadd(null, true);
             daomateriales am = new daomateriales();
             daoalmacenes da = new daoalmacenes();
