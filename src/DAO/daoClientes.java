@@ -40,12 +40,27 @@ public class daoClientes implements clientes {
         return s.importacliente(c, cli);
     }
 
+    /**
+     * Obtiene todos los clientes de tpu, claro, para que se puedan obtener es
+     * necesario que esten activos, si no,no entraran en la lista
+     *
+     * @param c conexion de A o B, depende el tipo de cliente que se requiera
+     * @return
+     */
     @Override
     public ArrayList<Cliente> getClientestpu(Connection c) {
         sqlclientes s = new sqlclientes();
         return s.getClientestpu(c);
     }
 
+    /**
+     * Obtiene el lista de clientes, de los cuales sean parecidos o contengan
+     * algo similar de la variable "cli"
+     *
+     * @param c
+     * @param cli
+     * @return
+     */
     @Override
     public ArrayList<Cliente> getClientestpuall(Connection c, String cli) {
         sqlclientes s = new sqlclientes();
@@ -73,8 +88,9 @@ public class daoClientes implements clientes {
 
     /**
      * Obtiene el id maximo de la tabla de clientes
+     *
      * @param cob
-     * @return 
+     * @return
      */
     @Override
     public int maxcliente(Connection cob) {

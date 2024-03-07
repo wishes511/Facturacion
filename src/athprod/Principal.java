@@ -6,6 +6,7 @@ package athprod;
 
 import Avances.Avancesprod;
 import Avances.Pantallas;
+import DAO.daoClientes;
 import DAO.daoPrincipal;
 import Maq.Materialesmaq;
 import Maq.PagostpuCargos;
@@ -15,6 +16,7 @@ import Modelo.Procserie;
 import Modelo.Usuarios;
 import Paneles.pago1;
 import Panelmaq.Rep_Cargosespeciales;
+import Panelmaq.Rep_ventaxproducto;
 import Panelmaq.ReporteInventario;
 import Paneltpu.Kardexprod;
 import Paneltpu.RepSaldosV;
@@ -266,6 +268,7 @@ public final class Principal extends javax.swing.JFrame {
         JmVentaserie3 = new javax.swing.JMenuItem();
         JmKardexprod2 = new javax.swing.JMenuItem();
         JmVentaserie4 = new javax.swing.JMenuItem();
+        JmVentaxprod = new javax.swing.JMenuItem();
         JmCobranzatpu2 = new javax.swing.JMenu();
         JmNotascrtpu2 = new javax.swing.JMenuItem();
         JmPagostpu4 = new javax.swing.JMenuItem();
@@ -1077,6 +1080,14 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         Jmreportes2.add(JmVentaserie4);
+
+        JmVentaxprod.setText("Reporte de ventas x producto");
+        JmVentaxprod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmVentaxprodActionPerformed(evt);
+            }
+        });
+        Jmreportes2.add(JmVentaxprod);
 
         JmMaq2.add(Jmreportes2);
 
@@ -2488,6 +2499,13 @@ public final class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_JmInventarios1ActionPerformed
 
+    private void JmVentaxprodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmVentaxprodActionPerformed
+        Rep_ventaxproducto n = new Rep_ventaxproducto(null, true);
+        daoClientes dc = new daoClientes();
+        n.setdatos(conexion, u, dc.getClientestpu(conexion.getCobranzatpuB()));
+        n.setVisible(true);
+    }//GEN-LAST:event_JmVentaxprodActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -3187,6 +3205,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmVentaserie4;
     private javax.swing.JMenu JmVentastpu;
     private javax.swing.JMenu JmVentastpu1;
+    private javax.swing.JMenuItem JmVentaxprod;
     private javax.swing.JMenuItem JmVerfacts;
     private javax.swing.JMenuItem Jmabrir;
     private javax.swing.JMenu Jmreportes;
