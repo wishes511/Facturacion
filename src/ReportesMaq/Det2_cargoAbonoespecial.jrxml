@@ -33,7 +33,7 @@ where estatus='1' and id_cliente=$P{cliente} and id_cargo=$P{cargo}]]>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pago}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="84" y="1" width="73" height="12" uuid="25f92dc6-7ef7-41ea-82d6-da12936abfec"/>
@@ -54,14 +54,14 @@ where estatus='1' and id_cliente=$P{cliente} and id_cargo=$P{cargo}]]>
 				<textElement textAlignment="Center">
 					<font fontName="Calibri" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{importe}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{pago}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<summary>
 		<band height="17">
 			<textField pattern="#,##0.00">
-				<reportElement x="157" y="2" width="125" height="13" uuid="4f0b3aab-474d-44b6-ac0c-db3bc555065d"/>
+				<reportElement x="157" y="2" width="100" height="13" uuid="4f0b3aab-474d-44b6-ac0c-db3bc555065d"/>
 				<textElement>
 					<font fontName="Calibri" size="9" isBold="true"/>
 				</textElement>
