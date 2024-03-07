@@ -102,7 +102,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "1";
+    String prod = "0";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
     boolean adminmod = true;
     Usuarios u = new Usuarios();
@@ -152,7 +152,7 @@ public final class Principal extends javax.swing.JFrame {
             JlUsuario.setText("Michel Admin");
             u.setUsuario("Michel");
             u.setGrado("2");
-            u.setTurno("0");
+            u.setTurno("1");
             u.setProduccion("1");
             u.setTipo_usuario("2");
             modoadmin();
