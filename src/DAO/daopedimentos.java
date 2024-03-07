@@ -63,7 +63,7 @@ public class daopedimentos implements pedimentos {
      * desplegar un resumen para un proceso posterior
      *
      * @param cpt
-     * @param cob
+     * @param cob no se utiliza, se penso para otro tipode funcion
      * @param cliente
      * @return
      */

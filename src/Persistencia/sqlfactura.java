@@ -557,7 +557,7 @@ public class sqlfactura {
                 f.setCadenaorig(rs.getString("cadenaoriginal"));
                 f.setDescmetodop(rs.getString("descmetodopago"));
                 f.setIdcliente(rs.getInt("id_cliente"));
-                f.setTipofac("tipodoc");
+                f.setTipofac(rs.getString("tipodoc"));
                 arr.add(f);
             }
             rs.close();

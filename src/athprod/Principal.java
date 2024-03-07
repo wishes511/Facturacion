@@ -8,6 +8,7 @@ import Avances.Avancesprod;
 import Avances.Pantallas;
 import DAO.daoClientes;
 import DAO.daoPrincipal;
+import DAO.daopedimentos;
 import Maq.Materialesmaq;
 import Maq.PagostpuCargos;
 import Modelo.Conexiones;
@@ -18,6 +19,7 @@ import Paneles.pago1;
 import Panelmaq.Rep_Cargosespeciales;
 import Panelmaq.Rep_ventaxproducto;
 import Panelmaq.ReporteInventario;
+import Paneltpu.Impresion_etiquetas;
 import Paneltpu.Kardexprod;
 import Paneltpu.RepSaldosV;
 import Paneltpu.Repauxcliente;
@@ -218,6 +220,7 @@ public final class Principal extends javax.swing.JFrame {
         JmAntiguedad = new javax.swing.JMenuItem();
         JmKardexprod = new javax.swing.JMenuItem();
         JmVentaserie = new javax.swing.JMenuItem();
+        JmEtiquetas = new javax.swing.JMenuItem();
         JmCobranzatpu = new javax.swing.JMenu();
         JmNotascrtpu = new javax.swing.JMenuItem();
         JmPagostpu = new javax.swing.JMenuItem();
@@ -658,6 +661,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         Jmreportes.add(JmVentaserie);
+
+        JmEtiquetas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/labelprint.png"))); // NOI18N
+        JmEtiquetas.setText("Impresion de etiquetas");
+        JmEtiquetas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmEtiquetasActionPerformed(evt);
+            }
+        });
+        Jmreportes.add(JmEtiquetas);
 
         JmTpu.add(Jmreportes);
 
@@ -2506,6 +2518,14 @@ public final class Principal extends javax.swing.JFrame {
         n.setVisible(true);
     }//GEN-LAST:event_JmVentaxprodActionPerformed
 
+    private void JmEtiquetasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmEtiquetasActionPerformed
+        Impresion_etiquetas n = new Impresion_etiquetas(null, true);
+        daopedimentos dp = new daopedimentos();
+        //Busca la lista de pedimentos disponible
+        n.setdatos(conexion, u, dp.getpedimentosimple(conexion.getCpttpu(), "", ""));
+        n.setVisible(true);
+    }//GEN-LAST:event_JmEtiquetasActionPerformed
+
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
             verificausuariolite();
@@ -3142,6 +3162,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmEntradasS;
     private javax.swing.JMenuItem JmEntradasS1;
     private javax.swing.JMenuItem JmEntradasS2;
+    private javax.swing.JMenuItem JmEtiquetas;
     private javax.swing.JMenuItem JmFacturacion;
     private javax.swing.JMenuItem JmFacturacionE;
     private javax.swing.JMenuItem JmFallas;

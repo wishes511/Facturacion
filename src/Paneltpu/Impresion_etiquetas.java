@@ -8,6 +8,7 @@ package Paneltpu;
 import Modelo.Conexiones;
 import Modelo.Materiales;
 import Modelo.Usuarios;
+import Modelo.pedimento;
 import Tpu.Pedimento;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
@@ -42,7 +43,7 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
 
     private Conexiones u;
     private Usuarios user;
-    private ArrayList<Pedimento> arr;
+    private ArrayList<pedimento> arr;
     private ArrayList<Materiales> arrmat;
 
     /**
@@ -269,10 +270,11 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
      * @param users
      * @param arr
      */
-    public void setdatos(Conexiones u, Usuarios users, ArrayList<Pedimento> arr) {
+    public void setdatos(Conexiones u, Usuarios users, ArrayList<pedimento> arr) {
         this.u = u;
         this.user = users;
         this.arr = arr;
+        setpedimentos();
         getprinters();
     }
 
@@ -292,7 +294,18 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
             Logger.getLogger(Impresion_etiquetas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    /**
+     * LLena el combobox con la lista de pedimento
+     */
+    private void setpedimentos(){
+        DefaultComboBoxModel combo = new DefaultComboBoxModel();
+        combo.addElement("");
+        for(pedimento arr1:arr){
+            combo.addElement(arr1.getReferencia());
+        }
+        JcPedimento.setModel(combo);
+    }
     /**
      * @param args the command line arguments
      */
