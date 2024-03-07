@@ -184,7 +184,7 @@ public class sqlinventarios {
         }
     }
 
-    public boolean ejecutarespcierre(Connection c, int mes, int year) {
+    public boolean ejecutarespcierre(Connection c, int mes, int year, String turno) {
         try {
 //            Respaldo de Bd
             String sql;
@@ -194,8 +194,11 @@ public class sqlinventarios {
 //            Se formatean los datos de el mes y el año para el guardado del archivo
             String mres = f.formateamesrespaldo(mes);
             String yres = f.formateayearrespaldo(String.valueOf(year));
-            sql = "BACKUP DATABASE [Tpucpt]\n"
-                    + "TO  DISK = N'C:\\red\\sistemas\\Respaldos\\resTpucpt" + mres + "" + yres + ".bak'\n"
+            //Se trae el nombre integro de la bd con respecto al turno y
+            //El nombre que tendra el archivo
+            String bd=f.getbdto_respinv_orig(turno);
+            sql = "BACKUP DATABASE ["+bd+"]\n"
+                    + "TO  DISK = N'C:\\red\\sistemas\\Respaldos\\res"+bd+"" + mres + "" + yres + ".bak'\n"
                     + "WITH CHECKSUM;";
 //            System.out.println("respaldo " + sql);
             st = c.prepareStatement(sql);

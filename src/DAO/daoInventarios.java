@@ -103,12 +103,13 @@ public class daoInventarios implements Inventarios {
      * @param c
      * @param mes
      * @param year
+     * @param turno
      * @return
      */
     @Override
-    public boolean ejecutarespcierre(Connection c, int mes, int year) {
+    public boolean ejecutarespcierre(Connection c, int mes, int year, String turno) {
         sqlinventarios s = new sqlinventarios();
-        return s.ejecutarespcierre(c, mes, year);
+        return s.ejecutarespcierre(c, mes, year, turno);
     }
 
     /**

@@ -617,4 +617,26 @@ public class Formateodedatos {
         return resp;
     }
 
+    /**
+     * Obtiene el nombre integro de la bd con respecto al turno
+     *
+     * @param turno
+     * @return
+     */
+    public String getbdto_respinv_orig(String turno) {
+        String resp = "";
+        switch (turno) {
+            case "5":
+                resp = "Tpucpt";
+                break;
+            case "6":
+                resp = "Maqcpt";
+                break;
+            case "7":
+                resp = "CPTMaquinaria2";
+                break;
+        }
+        return resp;
+    }
+
 }

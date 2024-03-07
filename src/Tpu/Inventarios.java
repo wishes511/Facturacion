@@ -430,9 +430,10 @@ public class Inventarios extends javax.swing.JInternalFrame {
 //        borra los registros de las tablas de sqlite, ademas de que actualiza 
 //        los registros de control de inventario
         if (di.nuevoinventario(cpt, liteusuario, arrinv, inv.getMes(), inv.getYears())) {
+            Formateodedatos fd = new Formateodedatos();
             JlRespalldo.setText("GENERANDO RESPALDO, PORFAVOR NO CERRAR");
 //        Realiza respaldo de la bd    
-            di.ejecutarespcierre(cpt, inv.getMes(), inv.getYears());
+            di.ejecutarespcierre(cpt, inv.getMes(), inv.getYears(),u.getTurno());
             getfecha();
             JlRespalldo.setText("");
             JOptionPane.showMessageDialog(null, "Completo");
