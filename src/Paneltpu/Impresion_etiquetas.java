@@ -44,7 +44,7 @@ import net.sf.jasperreports.engine.util.JRLoader;
 public class Impresion_etiquetas extends javax.swing.JDialog {
 
     private Conexiones u;
-    private Usuarios user;
+    Usuarios user;
     private ArrayList<pedimento> arr;
     private ArrayList<Dpedimento> arrmat;
 
@@ -56,10 +56,6 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
 
-    }
-
-    public void setconexiones(Usuarios user) {
-        this.user = user;
     }
 
     /**
@@ -291,8 +287,8 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
      * impresion hacia la impresora
      *
      * @param dped linea selecionada
-     * @param prow
-     * @param copias
+     * @param prow linea seleccionada de la impresora
+     * @param copias Numero de copias a imprimir
      */
     private void setreport(int dped, int prow, int copias) {
         try {
