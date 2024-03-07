@@ -156,4 +156,18 @@ public class daopedimentos implements pedimentos {
         return s.getStockwithkardex(cpt, kardex);
     }
 
+    /**
+     * Obtiene el detallado del pedimento para la selección del mismo, solo
+     * traerá aquellos que tengan stock mayor a cero
+     *
+     * @param cpt conexion cpt
+     * @param Id_pedimento Id del pedimento
+     * @return
+     */
+    @Override
+    public ArrayList<Dpedimento> getMatswith_Idped(Connection cpt, int Id_pedimento) {
+        sqlpedimentos s = new sqlpedimentos();
+        return s.getMatswith_idped(cpt, Id_pedimento);
+    }
+
 }

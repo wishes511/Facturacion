@@ -35,4 +35,6 @@ public interface pedimentos {
     public boolean checkmatdureza(Connection cpt, int mat, String dur, int ped);
     
     public double getStockwithkardex(Connection cpt, int kardex);
+    
+    public ArrayList<Dpedimento> getMatswith_Idped(Connection cpt, int Id_pedimento);
 }

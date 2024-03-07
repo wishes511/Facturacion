@@ -5,7 +5,9 @@
  */
 package Paneltpu;
 
+import DAO.daopedimentos;
 import Modelo.Conexiones;
+import Modelo.Dpedimento;
 import Modelo.Materiales;
 import Modelo.Usuarios;
 import Modelo.pedimento;
@@ -44,7 +46,7 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
     private Conexiones u;
     private Usuarios user;
     private ArrayList<pedimento> arr;
-    private ArrayList<Materiales> arrmat;
+    private ArrayList<Dpedimento> arrmat;
 
     /**
      * Creates new form Nuevomaterial
@@ -82,6 +84,7 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
         JtCopia = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -109,6 +112,11 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
         jLabel8.setText("Impresion de etiquetas");
 
         JcPedimento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        JcPedimento.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JcPedimentoItemStateChanged(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         jLabel4.setText("Pedimento");
@@ -117,6 +125,11 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
         jLabel5.setText("Producto");
 
         JcProducto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        JcProducto.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                JcProductoItemStateChanged(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         jLabel6.setText("Impresora");
@@ -127,6 +140,11 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
         JtCopia.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         JtCopia.setText("1");
         JtCopia.setBorder(null);
+        JtCopia.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JtCopiaMousePressed(evt);
+            }
+        });
         JtCopia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JtCopiaActionPerformed(evt);
@@ -138,6 +156,10 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
         jLabel7.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         jLabel7.setText("# Etiquetas");
 
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/questionregular_106274.png"))); // NOI18N
+        jLabel3.setToolTipText("Consulta a sistemas por el tamaño de la etiqueta, originalmente es de 75x50 mm");
+        jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -146,6 +168,8 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
                 .addGap(8, 8, 8)
                 .addComponent(jLabel8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -178,8 +202,10 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jLabel3))
                 .addGap(33, 33, 33)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -224,23 +250,56 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
     }//GEN-LAST:event_jLabel2MousePressed
 
     private void jLabel1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MousePressed
-        int prow = JcImpresora.getSelectedIndex();
-        int dped=JcProducto.getSelectedIndex();
-        int copia = Integer.parseInt(JtCopia.getText());
-        setreport(dped, prow, copia);
+        preparadatos();
     }//GEN-LAST:event_jLabel1MousePressed
 
     private void JtCopiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JtCopiaActionPerformed
-        JtCopia.setText("");
+        preparadatos();
     }//GEN-LAST:event_JtCopiaActionPerformed
 
-    
+    private void JcPedimentoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcPedimentoItemStateChanged
+        int row = JcPedimento.getSelectedIndex();
+        if (row != 0) {
+            //-1 porque se le esta asignando un espacio en blanco al combo desde un inicio
+            seleccionmaterial(row - 1);
+        }
+    }//GEN-LAST:event_JcPedimentoItemStateChanged
+
+    private void JcProductoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_JcProductoItemStateChanged
+        JtCopia.requestFocus();
+    }//GEN-LAST:event_JcProductoItemStateChanged
+
+    private void JtCopiaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JtCopiaMousePressed
+        JtCopia.setText("");
+    }//GEN-LAST:event_JtCopiaMousePressed
+
+    /**
+     * Ordena, prepará y valida la informacion
+     */
+    private void preparadatos() {
+        int prow = JcImpresora.getSelectedIndex();
+        int dped = JcProducto.getSelectedIndex();
+        int copia = Integer.parseInt(JtCopia.getText());
+        if (JtCopia.getText().isEmpty() || JtCopia.getText() == null) {
+            copia = 1;
+        }
+        setreport(dped, prow, copia);
+    }
+
+    /**
+     * Setear los valores del reporte ademas e iniciar con elproceso de
+     * impresion hacia la impresora
+     *
+     * @param dped linea selecionada
+     * @param prow
+     * @param copias
+     */
     private void setreport(int dped, int prow, int copias) {
         try {
             PrinterJob job = PrinterJob.getPrinterJob();
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             Map parametros = new HashMap();//parametros para el reporte
-            parametros.put("id_dped", dped);
+            parametros.put("id", arrmat.get(dped).getId_dpedimento());
             JasperReport reporte = null;
             reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Etiqueta.jasper"));
             JasperPrint print = JasperFillManager.fillReport(reporte, parametros, u.getCpttpu());
@@ -294,18 +353,34 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
             Logger.getLogger(Impresion_etiquetas.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * LLena el combobox con la lista de pedimento
      */
-    private void setpedimentos(){
+    private void setpedimentos() {
         DefaultComboBoxModel combo = new DefaultComboBoxModel();
         combo.addElement("");
-        for(pedimento arr1:arr){
+        for (pedimento arr1 : arr) {
             combo.addElement(arr1.getReferencia());
         }
         JcPedimento.setModel(combo);
     }
+
+    /**
+     * Carga el listado de materiales de acuerdo al pedimento seleccionado
+     *
+     * @param row
+     */
+    private void seleccionmaterial(int row) {
+        daopedimentos dp = new daopedimentos();
+        DefaultComboBoxModel combo = new DefaultComboBoxModel();
+        arrmat = dp.getMatswith_Idped(u.getCpttpu(), arr.get(row).getId_pedimento());
+        for (Dpedimento arr2 : arrmat) {
+            combo.addElement(arr2.getMatped());
+        }
+        JcProducto.setModel(combo);
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -610,6 +685,7 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
     public javax.swing.JTextField JtCopia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

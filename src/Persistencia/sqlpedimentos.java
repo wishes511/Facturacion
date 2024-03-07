@@ -351,4 +351,28 @@ public class sqlpedimentos {
         }
         return resp;
     }
+
+    public ArrayList<Dpedimento> getMatswith_idped(Connection cpt, int idped) {
+        ArrayList<Dpedimento> arr = new ArrayList<>();
+        try {
+            PreparedStatement st;
+            ResultSet rs;
+            String sql = "select id_dpedimento, matpedimento\n"
+                    + "from DPedimentos\n"
+                    + "where id_pedimento=? and cantidadrestante!=0";
+//            System.out.println(sql);
+            st = cpt.prepareStatement(sql);
+            st.setInt(1, idped);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                Dpedimento dp = new Dpedimento();
+                dp.setId_dpedimento(rs.getInt("id_dpedimento"));
+                dp.setMatped(rs.getString("matpedimento"));
+                arr.add(dp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(sqlpedimentos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return arr;
+    }
 }
