@@ -18,7 +18,8 @@ import java.util.ArrayList;
 public class daopedimentos implements pedimentos {
 
     /**
-     * Obtiene todos los pedimentos
+     * Obtiene todos los pedimentos de acuerrdo al nombre del proveedor
+     * ordenados de mayor a menos
      *
      * @param c
      * @param ped
@@ -30,17 +31,42 @@ public class daopedimentos implements pedimentos {
         return s.getallpepds(c, ped);
     }
 
+    /**
+     * Crea un nuevo pedimento de acuerdo al valor dado en el objeto pedimento
+     *
+     * @param cpt Conexion de cpt
+     * @param rcpt Conexion de rcpt por si se divide en B
+     * @param ped Objeto pedimento
+     * @return booleano
+     */
     @Override
     public boolean nuevopedimento(Connection cpt, Connection rcpt, pedimento ped) {
         sqlpedimentos rs = new sqlpedimentos();
         return rs.nuevopedimento(cpt, rcpt, ped);
     }
 
+    /**
+     * Borra un pedimento de acuerdo al pedimento previamente seleccionado
+     *
+     * @param cpt
+     * @param rcpt
+     * @param ped
+     * @return
+     */
     @Override
     public boolean borrarped(Connection cpt, Connection rcpt, pedimento ped) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Obtiene una lista de los pedimentos reducida, ya que su funcion es
+     * desplegar un resumen para un proceso posterior
+     *
+     * @param cpt
+     * @param cob
+     * @param cliente
+     * @return
+     */
     @Override
     public ArrayList<pedimento> getpedimentosimple(Connection cpt, String cob, String cliente) {
         sqlpedimentos s = new sqlpedimentos();
@@ -48,7 +74,8 @@ public class daopedimentos implements pedimentos {
     }
 
     /**
-     * Obtiene el detallado de pedimento usando al referencia del pedimento
+     * Obtiene el detallado de pedimento usando al referencia del pedimento, con
+     * esto se refiere a stock, descripcion, precio con el cual se dio de alta
      *
      * @param cpt
      * @param referencias
@@ -61,6 +88,13 @@ public class daopedimentos implements pedimentos {
         return s.getpedimentoadv(cpt, referencias, turno);
     }
 
+    /**
+     * Agrega un material extra al pedimento ya dado de alta
+     *
+     * @param cpt
+     * @param ped
+     * @return
+     */
     @Override
     public boolean newmatpedimento(Connection cpt, Dpedimento ped) {
         sqlpedimentos s = new sqlpedimentos();
