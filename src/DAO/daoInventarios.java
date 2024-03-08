@@ -98,7 +98,7 @@ public class daoInventarios implements Inventarios {
     }
 
     /**
-     * Ejecuta el respaldo de la bd de tpu y quizas tambien de su cbranza
+     * Ejecuta el respaldo de la bd de tpu, maquinaria y quizas tambien de su cbranza
      *
      * @param c
      * @param mes
@@ -113,7 +113,8 @@ public class daoInventarios implements Inventarios {
     }
 
     /**
-     * Actualiza las cantidades de stock de sistema en la tabla de inventariado de sqlite
+     * Actualiza las cantidades de stock de sistema en la tabla de inventariado
+     * de sqlite
      * @param c
      * @param inv 
      */

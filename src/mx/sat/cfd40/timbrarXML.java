@@ -31,12 +31,13 @@ public class timbrarXML {
     Connection conexion;
 //    convertirNumeros numeros = new convertirNumeros();
 
-    String selloSAT = "", cadenaOriginal = "", PAC = "", uuid = "", selloCFD = "", fechaCer = "", noCertificado = "";
+    String selloSAT = "", cadenaOriginal = "", PAC = "", uuid = "",
+            selloCFD = "", fechaCer = "", noCertificado = "";
     String literal = "";
     String estado = "";
-    String estatustim="";
+    String estatustim = "";
     Sellofiscal s = new Sellofiscal();
-    boolean produccion =false;
+    boolean produccion = true;
     String user = "testing@solucionfactible.com";
     String pass = "timbrado.SF.16672";
 
@@ -89,7 +90,7 @@ public class timbrarXML {
                         System.out.println(String.format("estadus** [%d] %s", rStatus, r.getMensaje()) + "??");
                         //Operación creada exitosamente o previamente ya creado
 
-                        estatustim=rStatus+"";
+                        estatustim = rStatus + "";
                         s.setEstatus(estatustim);
                         if (rStatus == 200) {
                             System.out.println(String.format("CFDI timbrado con folio: %s", r.getUuid()));
