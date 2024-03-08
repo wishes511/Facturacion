@@ -760,6 +760,7 @@ public class Clientetpu1 extends javax.swing.JPanel {
             JtNombre.setText("");
             c.setNombre("");
         } else {
+            c.setCvecliente(Integer.parseInt(JtCliente.getText()));
             c.setNombre(JtNombre.getText().toUpperCase());
             c.setRfc(JtRfc.getText().toUpperCase());
             c.setTelefono(JtTelefono.getText().toUpperCase());

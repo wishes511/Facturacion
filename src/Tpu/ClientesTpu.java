@@ -292,7 +292,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
 //            client.setUsocfdi(c1.JtUso.getText().toUpperCase());
             daoClientes d = new daoClientes();
             if (u.getTurno().equals("6")) {
-                client.setCvecliente(d.maxcliente(con.getCobranzatpuB()));
+                //client.setCvecliente(d.maxcliente(con.getCobranzatpuB()));
                 if (d.nuevocliente(con.getCobranzatpuB(), client)) {
                     JOptionPane.showMessageDialog(null, "Exito al ingresar nuevo cliente");
                     vaciacampos();
@@ -302,12 +302,13 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
             } else {
 //                Se converva por si en algun momento se desea ingresar clientes fiscales sin necesidad de importar
 //                client.setCvecliente(d.maxcliente(con.getCobranzatpu()));
-                client.setCvecliente(Integer.parseInt(c1.JtCliente.getText()));
+//                client.setCvecliente(Integer.parseInt(c1.JtCliente.getText()));
                 if (d.nuevocliente(con.getCobranzatpuB(), client)) {
 //                    Solo crear clientes que sean para remision
 //                    d.nuevocliente(con.getCobranzatpu(), client);
                     JOptionPane.showMessageDialog(null, "Exito al ingresar nuevo cliente");
                     vaciacampos();
+                    buscacliente();
                 }
             }
         } else {
@@ -443,6 +444,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
                 clic = 0;
                 clic2 = 0;
                 clic3 = 0;
+                buscacliente();
             }
         }
     }//GEN-LAST:event_JlSerieMousePressed
@@ -462,7 +464,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         c1.c = arr.get(row);
         c1.setcampos();
         //funcion solo setear la lista de agentes y el agente actual
-        c1.setagente(arr.get(row).getAgente(), da.getagentes_all(con.getCobranzatpu()));
+        c1.setagente(arr.get(row).getAgente(), da.getagentes_all(con.getCobranzatpuB()));
     }
 
     /**
@@ -473,7 +475,7 @@ public class ClientesTpu extends javax.swing.JInternalFrame {
         //libreria para solo valores del agente
         Dao_Agente da = new Dao_Agente();
         //funcion solo setear la lista de agentes y el agente actual
-        c1.setagente(da.getagentes_all(con.getCobranzatpu()));
+        c1.setagente(da.getagentes_all(con.getCobranzatpuB()));
     }
 
     public void buscacliente() {

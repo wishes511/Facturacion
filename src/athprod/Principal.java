@@ -1938,6 +1938,7 @@ public final class Principal extends javax.swing.JFrame {
         try {
             ClientesTpu p = new ClientesTpu(conexion, u);
             this.JdPanel.add(p);
+            p.setcamposinicial();
             p.setMaximum(true);
             p.show();
         } catch (PropertyVetoException ex) {
