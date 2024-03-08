@@ -75,7 +75,11 @@ public class Formateo_Nempresas {
             case "1":
                 resp = (cpt.equals("UptownCPT")) ? "2" : "1";
                 break;
-            case "7":
+            case "5": //TPU
+                //Temporalmente 1 en lo que se implementa la otra razon social
+                resp = "1";
+                break;
+            case "7": // Maquinaria2
                 //Temporalmente 1 en lo que se implementa la otra razon social
                 resp = "1";
                 break;
