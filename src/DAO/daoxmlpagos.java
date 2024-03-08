@@ -43,6 +43,7 @@ public class daoxmlpagos {
             x.setTotalpago17(f.getTotalpago17());
             x.setIddocumentos(f.getId());
             x.setEmpresa(f.getEmpresa());
+            x.setTurno(f.getTurno());
             x.setFolio(f.getFolio() + "");                              // Folio
             x.setSerie(f.getSerie());                                   // Serie
             x.setFormaP(f.getFormapago());                              // forma de pago

@@ -14,6 +14,7 @@ import Modelo.Detpagos;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
 import Modelo.abono;
@@ -301,6 +302,7 @@ public class pago1 extends javax.swing.JPanel {
         if (arrabonos.isEmpty()) {
             JOptionPane.showMessageDialog(null, "No ses puede hacer ningun movimiento sino se tiene alguna Orden Generada");
         } else {
+            Formateo_Nempresas fn= new Formateo_Nempresas();
             java.util.Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
             daofactura dfac = new daofactura();
@@ -315,7 +317,7 @@ public class pago1 extends javax.swing.JPanel {
 //            f.setTotalpago16(total);
             f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
             //Fin pagos encabezado
-            f.setEmpresa(!empresa.equals("UptownCPT") ? "1" : "2");
+            f.setEmpresa(fn.getEmpresa(u.getTurno(), empresa));
             f.setSerie("PAG");
             f.setFolio(folio);//Obtiene y setea el foliomaximo de *documentos
             f.setFecha(sdf.format(date));
@@ -326,6 +328,7 @@ public class pago1 extends javax.swing.JPanel {
             f.setFechaentrega(sdf.format(date));
             f.setSubtotal(0);
             f.setTotal(0);
+            f.setTurno(u.getTurno());
             f.setFoliokardex(folio);
             f.setIdcliente(arrabonos.get(0).getC().getCvecliente());
             f.setNombre(arrabonos.get(0).getC().getNombre());
@@ -348,7 +351,7 @@ public class pago1 extends javax.swing.JPanel {
             f.setMetodopago(arrmetodo.get(JcMetodo.getSelectedIndex()).getMetodopago());
             f.setDescmetodop(arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
             f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
-            f.setLugarexpedicion("36400");
+            f.setLugarexpedicion(fn.getLugar_exp());
             f.setAgente(0);
             f.setPlazo(0);
             f.setTiporelacion("");
