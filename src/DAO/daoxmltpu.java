@@ -91,7 +91,7 @@ public class daoxmltpu {
                 //Obtener datos de arreglo
                 double importe = f.getArr().get(i).getImporta();
                 double base = f.getArr().get(i).getBase();
-                double unitario = Float.parseFloat(formateador.format(f.getArr().get(i).getPrecio()));
+                double unitario = Double.parseDouble(formateador.format(f.getArr().get(i).getPrecio()));
                 //Cantidad flotante
                 double cantidad = f.getArr().get(i).getCantidadfloat();
                 double descuento = f.getArr().get(i).getDescuento();

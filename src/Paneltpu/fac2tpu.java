@@ -22,6 +22,7 @@ import Modelo.ConceptosES;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Nocolisiontpu;
 import Modelo.Poliza;
@@ -866,6 +867,7 @@ public class fac2tpu extends javax.swing.JPanel {
             if (!a && !a1) {
                 JtDescuento.requestFocus();
             } else {
+                Formateo_Nempresas fn= new Formateo_Nempresas();
                 traslado = (JcTraslado.isSelected()) ? "1" : "0";
                 factura f = new factura();
                 int row = 0;
@@ -923,7 +925,7 @@ public class fac2tpu extends javax.swing.JPanel {
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
-                f.setLugarexpedicion("36350");
+                f.setLugarexpedicion(fn.getLugar_exp());
                 f.setAgente(arrcliente.get(rowc).getAg().getIdagente());
 
                 if (JcUsd1.isSelected()) {
@@ -934,7 +936,8 @@ public class fac2tpu extends javax.swing.JPanel {
                     f.setTipocambio(1);
                 }
                 f.setTiporelacion(relacion);
-                f.setEmpresa("1");
+                //No aplica el segundo parametro ya que no pertenece a ath o uptown
+                f.setEmpresa(fn.getEmpresa(u.getTurno(), ""));
                 String folios = "";
                 String facturas = "";
                 ArrayList<String> arruuid = new ArrayList<>();
