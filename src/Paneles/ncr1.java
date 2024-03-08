@@ -14,6 +14,7 @@ import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Estados;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Paises;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
@@ -270,6 +271,7 @@ public class ncr1 extends javax.swing.JPanel {
                 f.setDescmetodop("PAGO INICIAL Y PARCIALIDADES");
                 break;
         }
+        Formateo_Nempresas fn = new Formateo_Nempresas();
         ArrayList<String> arruuid = new ArrayList<>();
         arruuid = formateauuid(arruuid, arrfacturaxml.get(0).getFoliofiscalorig());
         f.setId(id);
@@ -295,9 +297,9 @@ public class ncr1 extends javax.swing.JPanel {
         f.setUsocfdi(arrfacturaxml.get(0).getUsocfdi());
         condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
         f.setCondicion(condicion);
-        f.setLugarexpedicion("36350");
+        f.setLugarexpedicion(fn.getLugar_exp());
         f.setTiporelacion(arrfacturaxml.get(0).getTiporelacion());
-        f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
+        f.setEmpresa(fn.getEmpresa(u.getTurno(), empresa));
         double iva = arrfacturaxml.get(0).getIva();
         for (int i = 0; i < arrfacturaxml.size(); i++) {
             Dfactura df = new Dfactura();
@@ -324,9 +326,8 @@ public class ncr1 extends javax.swing.JPanel {
         dx.generarfac(f, cpt, sqlempresa);
 
         timbrarXML t = new timbrarXML();
-        String e = (!empresa.equals("UptownCPT")) ? "1" : "2";
         String fac = String.valueOf(arrfacturaxml.get(0).getFolio());
-        Sellofiscal s = t.timbrar("NCR_" + fac, "", sqlempresa, e);
+        Sellofiscal s = t.timbrar("NCR_" + fac, "", sqlempresa, f.getEmpresa());
         dfac.Updatesellofiscal(cpt, s, id);
         JOptionPane.showMessageDialog(null, "Proceso terminado: \n " + s.getEstado());
         Buscanotas();

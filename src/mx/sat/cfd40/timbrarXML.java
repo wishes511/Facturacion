@@ -31,11 +31,11 @@ public class timbrarXML {
     Connection conexion;
 //    convertirNumeros numeros = new convertirNumeros();
 
-    String selloSAT = "", cadenaOriginal = "", PAC = "", uuid = "",
+    private String selloSAT = "", cadenaOriginal = "", PAC = "", uuid = "",
             selloCFD = "", fechaCer = "", noCertificado = "";
-    String literal = "";
-    String estado = "";
-    String estatustim = "";
+    private String literal = "";
+    private String estado = "";
+    private String estatustim = "";
     Sellofiscal s = new Sellofiscal();
     boolean produccion = true;
     String user = "testing@solucionfactible.com";
