@@ -23,6 +23,7 @@ import Modelo.Devolucion;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Sellofiscal;
 import Modelo.Usuarios;
@@ -313,6 +314,7 @@ public class fac1tpu extends javax.swing.JPanel {
                 f.setDescmetodop("PAGO INICIAL Y PARCIALIDADES");
                 break;
         }
+        Formateo_Nempresas fn= new Formateo_Nempresas();
         f.setId(id);
         f.setExportacion("01");
         f.setIva(arrfacturaxml.get(0).getIva());
@@ -337,9 +339,9 @@ public class fac1tpu extends javax.swing.JPanel {
         f.setUsocfdi(arrfacturaxml.get(0).getUsocfdi());
         condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
         f.setCondicion(condicion);
-        f.setLugarexpedicion("36650");
+        f.setLugarexpedicion(fn.getLugar_exp());
         f.setTiporelacion("");
-        f.setEmpresa(!(empresa.equals("UptownCPT")) ? "1" : "2");
+        f.setEmpresa(fn.getEmpresa(u.getTurno(), ""));
         double iva = arrfacturaxml.get(0).getIva();
         for (int i = 0; i < arrfacturaxml.size(); i++) {
             Dfactura df = new Dfactura();
