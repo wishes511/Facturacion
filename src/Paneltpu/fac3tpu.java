@@ -19,6 +19,7 @@ import Modelo.Cliente;
 import Modelo.Dfactura;
 import Modelo.Empresas;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.Nocolision;
 import Modelo.Poliza;
@@ -794,6 +795,7 @@ public class fac3tpu extends javax.swing.JPanel {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 daofactura dfac = new daofactura();
                 ArrayList<Dfactura> arrf = new ArrayList<>();
+                Formateo_Nempresas fn= new Formateo_Nempresas();
                 DecimalFormat formateador = new DecimalFormat("####.##");//para los decimales
                 if (JcPublico.isSelected()) {//Setear impuestos
                     f.setIva(0);
@@ -845,7 +847,7 @@ public class fac3tpu extends javax.swing.JPanel {
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
-                f.setLugarexpedicion("36350");
+                f.setLugarexpedicion(fn.getLugar_exp());
 //                f.setAgente(k.get(row).getCli().getAgente());
                 f.setAgente(arrcliente.get(rowc).getAgente());
 
@@ -857,7 +859,7 @@ public class fac3tpu extends javax.swing.JPanel {
                     f.setTipocambio(1);
                 }
                 f.setTiporelacion(relacion);
-                f.setEmpresa("1");
+                f.setEmpresa(fn.getEmpresa(u.getTurno(), ""));
                 String folios = "";
                 String facturas = "";
                 ArrayList<String> arruuid = new ArrayList<>();
