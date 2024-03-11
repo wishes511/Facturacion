@@ -145,7 +145,7 @@ public class Inventarios extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(JtDetalle);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/add_plus_interface_icon_181584.png"))); // NOI18N
-        jLabel1.setToolTipText("Agregar nuevo proveedor");
+        jLabel1.setToolTipText("Agregar nuevo producto");
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mousePressed(java.awt.event.MouseEvent evt) {
