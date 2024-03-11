@@ -5,9 +5,9 @@
  */
 package Paneltpu;
 
+import DAO.dao_comisiones;
 import Paneles.*;
 import DAO.daocfdi;
-import DAO.daocomisiones;
 import DAO.daoempresa;
 import DAO.daofactura;
 import DAO.daoxmlpagostpu;
@@ -1095,7 +1095,7 @@ public class pagotpu2 extends javax.swing.JPanel {
      * @param f
      */
     private void setcomisiones(factura f) {
-        daocomisiones dc = new daocomisiones();
+        dao_comisiones dc = new dao_comisiones();
         Formateodedatos form = new Formateodedatos();
 //        Realiza la busqueda de acuerdo a la fecha formateada y referencias
         ArrayList<Comision> arrcomision = dc.getcomisiones(ACobranza, fechasinT(f.getFecha()), referencias());
