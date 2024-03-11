@@ -136,7 +136,8 @@ public class sqlpedimentos {
             ResultSet rs;
             String sql = "select id_pedimento,referencia,p.id_proveedor,nombre from pedimentos p\n"
                     + "join proveedores prov on p.id_proveedor=prov.id_proveedor\n"
-                    + "where nombre like '%" + cliente + "%' and p.estatus='1'";
+                    + "where nombre like '%" + cliente + "%' and p.estatus='1'"
+                    + "order by fechapedimento";
 //                        String sql = "select id_pedimento,referencia,p.id_proveedor,nombre from pedimentos p\n"
 //                    + "join proveedores prov on p.id_proveedor=prov.id_proveedor\n"
 //                    + "where nombre like '%"+cliente+"%' and id_pedimento in (select id_pedimento from DPedimentos where cantidadrestante>0)";
@@ -168,7 +169,8 @@ public class sqlpedimentos {
                     + "  from pedimentos p\n"
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
-                    + "where (" + referencias + ") and dp.estatus='1'";
+                    + "where (" + referencias + ") and dp.estatus='1'"
+                    + "order by p.id_pedimento";
 //            System.out.println(sql);
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
@@ -209,7 +211,8 @@ public class sqlpedimentos {
                     + "  from pedimentos p\n"
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
-                    + "where (" + referencias + ") and dp.estatus='1'";
+                    + "where (" + referencias + ") and dp.estatus='1'"
+                    + "order by id_pedimento";
 //            System.out.println(sql);
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();
