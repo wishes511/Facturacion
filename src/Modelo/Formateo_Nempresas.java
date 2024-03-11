@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import DAO.dao_comisiones;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,6 +28,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.JAXBContext;
@@ -87,6 +90,24 @@ public class Formateo_Nempresas {
                 resp = "1";
         }
         return resp;
+    }
+
+    /**
+     * Funcion que busca la comision generada en su momento si es que termino de
+     * pagar y la cancela, con esto se refiere a que no se podra ver ni tomar su
+     * valor en cuanta
+     *
+     * @param dev
+     */
+    public void cancelacomision(Connection cpt, Devolucion dev) {
+        dao_comisiones dc = new dao_comisiones();
+        Comision com = new Comision();
+        ArrayList<Comision> arrcomi = new ArrayList<>();
+        com.setId_cargo(dev.getId_cargoenc());
+        com.setSerie(dev.getSerie());
+        arrcomi.add(com);
+        dc.cancelacomision(cpt, arrcomi);
+
     }
 
     //Metodos de sellado

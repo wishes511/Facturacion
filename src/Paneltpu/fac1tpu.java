@@ -267,7 +267,7 @@ public class fac1tpu extends javax.swing.JPanel {
     private void JbXmlActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbXmlActionPerformed
         daofactura dfac = new daofactura();
         int id = arrfactura.get(JtDetalle.getSelectedRow()).getId();
-        Formateodedatos fd = new Formateodedatos(); 
+        Formateodedatos fd = new Formateodedatos();
         arrfacturaxml = dfac.getdocxmltpu(cpt, id + "", "FAC", fd.getbd_tocargo(u.getTurno()));
 
         factura f = new factura();
@@ -314,7 +314,7 @@ public class fac1tpu extends javax.swing.JPanel {
                 f.setDescmetodop("PAGO INICIAL Y PARCIALIDADES");
                 break;
         }
-        Formateo_Nempresas fn= new Formateo_Nempresas();
+        Formateo_Nempresas fn = new Formateo_Nempresas();
         f.setId(id);
         f.setExportacion("01");
         f.setIva(arrfacturaxml.get(0).getIva());
@@ -379,7 +379,7 @@ public class fac1tpu extends javax.swing.JPanel {
         int row = JtDetalle.getSelectedRow();
         int e = arrfactura.get(row).getEstatus();
         String tim = (arrfactura.get(row).getFoliofiscal().equals("")) ? "N" : "T";
-        String tipo=arrfactura.get(row).getTipofac();
+        String tipo = arrfactura.get(row).getTipofac();
         //Verifica si esta timbrada
         if (e == 1 && tim.equals("N")) {
             JbXml.setEnabled(true);
@@ -510,11 +510,11 @@ public class fac1tpu extends javax.swing.JPanel {
             boolean ncr = getdoccancel(arrfactura.get(row).getId(), "NCR");
             boolean pag = getdoccancel(arrfactura.get(row).getId(), "PAG");
             if (!ncr && !pag) {
-                Formateodedatos fort= new Formateodedatos();
+                Formateodedatos fort = new Formateodedatos();
                 int rows = d.verificadevs(cpt, "A", arrfactura.get(JtDetalle.getSelectedRow()).getId());
 //                Obtiene el nombre de la bd de cobranza mediante el turno
-                String bd=fort.getbd_tocargo(u.getTurno());
-                String bdcob = bd+".dbo.Cargo c on doc.folio=c.referencia";
+                String bd = fort.getbd_tocargo(u.getTurno());
+                String bdcob = bd + ".dbo.Cargo c on doc.folio=c.referencia";
 //                arrd = d.getpedscancel(cpt, arrfactura.get(row).getId(), "A", bdcob);
 //                arrdevpedimento = d.getdevolucion(cpt, arrd.get(0).getId_devolucion());
                 if (rows != 0) {
@@ -548,6 +548,8 @@ public class fac1tpu extends javax.swing.JPanel {
 //                    dev.setId_kardexnuevo(dev.getId_kardex() + 1);
                 dev.setArr(arrd);
                 if (d.nuevacancelacion(cpt, ACobranza, dev, arrdevpedimento)) {
+                    Formateo_Nempresas fn= new Formateo_Nempresas();                    
+                    fn.cancelacomision(cpt, dev);
                     JOptionPane.showMessageDialog(null, "Proceso completo");
                     Buscanotas();
                     JtCliente.requestFocus();
@@ -556,6 +558,8 @@ public class fac1tpu extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_JmPedfacActionPerformed
+
+
 
     /**
      * Funcion para corroborar que no haya algun documento relacionado con la
@@ -568,7 +572,7 @@ public class fac1tpu extends javax.swing.JPanel {
     private boolean getdoccancel(int id, String serie) {
         boolean resp = true;
         daofactura df = new daofactura();
-        Formateodedatos fd= new Formateodedatos();
+        Formateodedatos fd = new Formateodedatos();
         //Necesario, ya que por si hay mas de un turno, manejar distintas bd de acuerdo a ese parametro
         ArrayList<factura> arrf = df.searchPagncrtofac(cpt, id, serie, fd.getbd_tocargo(u.getTurno()));
         if (arrf.isEmpty()) {
@@ -743,7 +747,7 @@ public class fac1tpu extends javax.swing.JPanel {
     private void Buscanotas() {
         daofactura df = new daofactura();
         Formateodedatos fd = new Formateodedatos();
-        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "FAC",fd.getbd_tocargo(u.getTurno()));
+        arrfactura = df.getdocstpu(cpt, JtCliente.getText(), "FAC", fd.getbd_tocargo(u.getTurno()));
         generatabla();
     }
 

@@ -17,6 +17,7 @@ import Modelo.ConceptosES;
 import Modelo.Ddevolucion;
 import Modelo.Devolucion;
 import Modelo.Formadepago;
+import Modelo.Formateo_Nempresas;
 import Modelo.Formateodedatos;
 import Modelo.KardexCmp;
 import Modelo.Usuarios;
@@ -407,6 +408,8 @@ public class fac1tpurem extends javax.swing.JPanel {
             dev.setUsuario(u.getUsuario());
             dev.setArr(arrd);
             if (d.nuevacancelacion(cpt, cobB, dev, arrdevpedimento)) {
+                Formateo_Nempresas fn = new Formateo_Nempresas();
+                fn.cancelacomision(cpt, dev);
                 JOptionPane.showMessageDialog(null, "Proceso completo");
                 Buscanotas();
                 JtCliente.requestFocus();
