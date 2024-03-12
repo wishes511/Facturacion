@@ -103,7 +103,7 @@ public final class Principal extends javax.swing.JFrame {
     int cont = 0;
     int logint = 0;
     String admin = "0";
-    String prod = "0";
+    String prod = "1";
 //    Variable para cerrar las conexiones a la bd por si se activa ell modo administracion
     boolean adminmod = true;
     Usuarios u = new Usuarios();
@@ -222,6 +222,7 @@ public final class Principal extends javax.swing.JFrame {
         JmKardexprod = new javax.swing.JMenuItem();
         JmVentaserie = new javax.swing.JMenuItem();
         JmEtiquetas = new javax.swing.JMenuItem();
+        JmComisiones1 = new javax.swing.JMenuItem();
         JmCobranzatpu = new javax.swing.JMenu();
         JmNotascrtpu = new javax.swing.JMenuItem();
         JmPagostpu = new javax.swing.JMenuItem();
@@ -673,6 +674,15 @@ public final class Principal extends javax.swing.JFrame {
         });
         Jmreportes.add(JmEtiquetas);
 
+        JmComisiones1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/propagation_calculator_calc_6110.png"))); // NOI18N
+        JmComisiones1.setText("Reporte de comisiones");
+        JmComisiones1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmComisiones1ActionPerformed(evt);
+            }
+        });
+        Jmreportes.add(JmComisiones1);
+
         JmTpu.add(Jmreportes);
 
         JmCobranzatpu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/exchange-dollar_icon-icons.com_53141.png"))); // NOI18N
@@ -1103,7 +1113,7 @@ public final class Principal extends javax.swing.JFrame {
         });
         Jmreportes2.add(JmVentaxprod);
 
-        JmComisiones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/1486564168-finance-bank-check_81495.png"))); // NOI18N
+        JmComisiones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/propagation_calculator_calc_6110.png"))); // NOI18N
         JmComisiones.setText("Reporte de comisiones");
         JmComisiones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -2539,10 +2549,21 @@ public final class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_JmEtiquetasActionPerformed
 
     private void JmComisionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmComisionesActionPerformed
+        setrepcomision();
+    }//GEN-LAST:event_JmComisionesActionPerformed
+
+    private void JmComisiones1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmComisiones1ActionPerformed
+        setrepcomision();
+    }//GEN-LAST:event_JmComisiones1ActionPerformed
+
+    /**
+     * Muestra la interfaz del reporte de comisiones
+     */
+    private void setrepcomision() {
         Rep_Comisiones n = new Rep_Comisiones(null, true);
         n.setconexiones(u, conexion);
         n.setVisible(true);
-    }//GEN-LAST:event_JmComisionesActionPerformed
+    }
 
     private void interfazlogin() {
         if (JrEmpresa.isSelected() || JrEmpresa1.isSelected() || prod.equals("0")) {
@@ -3169,6 +3190,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu JmCobranzatpu1;
     private javax.swing.JMenu JmCobranzatpu2;
     private javax.swing.JMenuItem JmComisiones;
+    private javax.swing.JMenuItem JmComisiones1;
     private javax.swing.JMenu JmConf;
     private javax.swing.JMenuItem JmDevoluciones;
     private javax.swing.JMenuItem JmDevoluciones1;

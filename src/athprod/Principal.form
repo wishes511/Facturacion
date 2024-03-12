@@ -525,6 +525,17 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmEtiquetasActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="JmComisiones1">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/Recursos/propagation_calculator_calc_6110.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Reporte de comisiones"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JmComisiones1ActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="JmCobranzatpu">
@@ -1061,7 +1072,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="JmComisiones">
               <Properties>
                 <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="3" name="/Recursos/1486564168-finance-bank-check_81495.png"/>
+                  <Image iconType="3" name="/Recursos/propagation_calculator_calc_6110.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Reporte de comisiones"/>
               </Properties>
