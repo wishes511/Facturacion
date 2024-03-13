@@ -81,6 +81,8 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
         jSeparator2 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        JmTipo = new javax.swing.JComboBox<>();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -156,6 +158,12 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
         jLabel3.setToolTipText("Consulta a sistemas por el tamaño de la etiqueta, originalmente es de 75x50 mm");
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
+        JmTipo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        JmTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Color 68x47", "75x50 blanca" }));
+
+        jLabel9.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
+        jLabel9.setText("Tipo etiq");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -184,15 +192,21 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
                         .addComponent(JcImpresora, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(142, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(229, 229, 229))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(JtCopia, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE)
-                    .addComponent(jSeparator2))
-                .addGap(131, 131, 131))
+                    .addComponent(JtCopia)
+                    .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(JmTipo, 0, 139, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,15 +228,21 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(JcImpresora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(JmTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel9))
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(JtCopia, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                        .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -276,10 +296,12 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
         int prow = JcImpresora.getSelectedIndex();
         int dped = JcProducto.getSelectedIndex();
         int copia = Integer.parseInt(JtCopia.getText());
+        int tipo= JmTipo.getSelectedIndex();
+        String tip=(tipo==0)?"Etiqueta68x47":"Etiqueta";
         if (JtCopia.getText().isEmpty() || JtCopia.getText() == null) {
             copia = 1;
         }
-        setreport(dped, prow, copia);
+        setreport(dped, prow, copia, tip);
     }
 
     /**
@@ -290,14 +312,14 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
      * @param prow linea seleccionada de la impresora
      * @param copias Numero de copias a imprimir
      */
-    private void setreport(int dped, int prow, int copias) {
+    private void setreport(int dped, int prow, int copias, String tipo) {
         try {
             PrinterJob job = PrinterJob.getPrinterJob();
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
             Map parametros = new HashMap();//parametros para el reporte
             parametros.put("id", arrmat.get(dped).getId_dpedimento());
             JasperReport reporte = null;
-            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/Etiqueta.jasper"));
+            reporte = (JasperReport) JRLoader.loadObject(getClass().getResource("/Reportestpu/"+tipo+".jasper"));
             JasperPrint print = JasperFillManager.fillReport(reporte, parametros, u.getCpttpu());
             job.setPrintService(services[prow]);
             PrintRequestAttributeSet printRequestAttributeSet = new HashPrintRequestAttributeSet();
@@ -678,6 +700,7 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> JcImpresora;
     private javax.swing.JComboBox<String> JcPedimento;
     private javax.swing.JComboBox<String> JcProducto;
+    private javax.swing.JComboBox<String> JmTipo;
     public javax.swing.JTextField JtCopia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -687,6 +710,7 @@ public class Impresion_etiquetas extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator2;
     // End of variables declaration//GEN-END:variables
