@@ -82,8 +82,8 @@ public class sqlabonos {
             st.executeUpdate();
             sql = "update cargo set saldo=?,saldomx=? where id_cargo=?";
             st = cobranza.prepareStatement(sql);
-            st.setDouble(1, importe);
-            st.setDouble(2, importe);
+            st.setDouble(1, 0);
+            st.setDouble(2, 0);
             st.setInt(3, cargo);
             st.executeUpdate();
             cobranza.commit();
