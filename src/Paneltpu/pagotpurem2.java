@@ -898,6 +898,8 @@ public class pagotpurem2 extends javax.swing.JPanel {
             comi.setUsuario(f.getClaveusuario());
             comi.setImporte(arrcomision.get(i).getImporte());
             comi.setTipocambio(tipocambio);
+            comi.setFoliopago(f.getSerie()+"_"+f.getFolio());
+            comi.setPorcentaje(arrcomision.get(i).getPorcentaje());
             arrcomision.set(i, comi);
         }
 //        Se realiza la insercion de cada de los folios validos en la bd
