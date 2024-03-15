@@ -621,7 +621,7 @@ public class facEtpu extends javax.swing.JPanel {
             uso.addElement(arruso1.getusocfdi() + " - " + arruso1.getDescripcion());
         }
         for (Cliente arruso1 : arrcliente) {
-            cliente.addElement(arruso1.getNombre());
+            cliente.addElement(arruso1.getCvecliente()+" - "+arruso1.getNombre());
         }
         JcForma.setModel(forma);
         JcMetodo.setModel(metodo);
@@ -801,8 +801,8 @@ public class facEtpu extends javax.swing.JPanel {
                 f.setTotalcajas(0);
                 f.setCantidadxcaja(0);
                 f.setFormapago(arrfpago.get(JcForma.getSelectedIndex()).getFormapago());
-                f.setMetodopago("PUE");
-                f.setDescmetodop("PAGO EN UNA SOLA EXHIBICION");
+                f.setMetodopago(arrmetodo.get(JcMetodo.getSelectedIndex()).getMetodopago());
+                f.setDescmetodop(arrmetodo.get(JcMetodo.getSelectedIndex()).getDescripcion());
                 f.setUsocfdi(arruso.get(JcUso.getSelectedIndex()).getusocfdi());
                 condicion = (f.getMetodopago().equals("PUE")) ? "Contado" : "Credito";
                 f.setCondicion(condicion);
