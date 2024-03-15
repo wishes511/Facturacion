@@ -136,7 +136,7 @@ public class sqlpedimentos {
             ResultSet rs;
             String sql = "select id_pedimento,referencia,p.id_proveedor,nombre from pedimentos p\n"
                     + "join proveedores prov on p.id_proveedor=prov.id_proveedor\n"
-                    + "where nombre like '%" + cliente + "%' and p.estatus='1'"
+                    + "where rewferencia like '%" + cliente + "%' and p.estatus='1'"
                     + "order by fechapedimento";
 //                        String sql = "select id_pedimento,referencia,p.id_proveedor,nombre from pedimentos p\n"
 //                    + "join proveedores prov on p.id_proveedor=prov.id_proveedor\n"
