@@ -212,7 +212,7 @@ public class sqlpedimentos {
                     + "join dpedimentos dp on p.id_pedimento=dp.id_pedimento\n"
                     + "join materiales m on dp.id_material=m.id_material\n"
                     + "where (" + referencias + ") and dp.estatus='1'"
-                    + "order by id_pedimento";
+                    + "order by p.id_pedimento";
 //            System.out.println(sql);
             st = cpt.prepareStatement(sql);
             rs = st.executeQuery();

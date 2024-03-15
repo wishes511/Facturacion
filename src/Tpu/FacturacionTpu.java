@@ -157,7 +157,7 @@ public class FacturacionTpu extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setResizable(true);
-        setTitle("Facturacion TPU");
+        setTitle("Facturacion");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/surtir.png"))); // NOI18N
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
