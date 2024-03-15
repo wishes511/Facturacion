@@ -608,11 +608,14 @@ public class facEtpu extends javax.swing.JPanel {
         DefaultComboBoxModel cliente = new DefaultComboBoxModel();
         for (Formadepago arrfpago1 : arrfpago) {
             //Cualquier forma de pago excepto la 99
-            if (!arrfpago1.getFormapago().equals("99")) {
+            //Para atras esta configuracion
+            //if (!arrfpago1.getFormapago().equals("99")) {
                 forma.addElement(arrfpago1.getFormapago() + " - " + arrfpago1.getConcepto());
-            }
+            //}
         }
-        metodo.addElement("PUE - PAGO EN UNA EXHIBICION");
+        for (metodopago arruso1 : arrmetodo) {
+            uso.addElement(arruso1.getMetodopago() + " - " + arruso1.getDescripcion());
+        }
 
         for (usocfdi arruso1 : arruso) {
             uso.addElement(arruso1.getusocfdi() + " - " + arruso1.getDescripcion());
