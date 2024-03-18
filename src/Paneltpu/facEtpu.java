@@ -614,7 +614,7 @@ public class facEtpu extends javax.swing.JPanel {
             //}
         }
         for (metodopago arruso1 : arrmetodo) {
-            uso.addElement(arruso1.getMetodopago() + " - " + arruso1.getDescripcion());
+            metodo.addElement(arruso1.getMetodopago() + " - " + arruso1.getDescripcion());
         }
 
         for (usocfdi arruso1 : arruso) {

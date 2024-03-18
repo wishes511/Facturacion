@@ -281,6 +281,7 @@ public final class Principal extends javax.swing.JFrame {
         JmPagostpu5 = new javax.swing.JMenuItem();
         JmCargos = new javax.swing.JMenuItem();
         JmPagoespecial = new javax.swing.JMenuItem();
+        JmPagosE = new javax.swing.JMenuItem();
         JmVentastpu1 = new javax.swing.JMenu();
         JtFacturaciontpu2 = new javax.swing.JMenuItem();
         JtFacturaciontpu3 = new javax.swing.JMenuItem();
@@ -1171,6 +1172,15 @@ public final class Principal extends javax.swing.JFrame {
             }
         });
         JmCobranzatpu2.add(JmPagoespecial);
+
+        JmPagosE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Recursos/business_table_order_report_history_2332.png"))); // NOI18N
+        JmPagosE.setText("Pagos");
+        JmPagosE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JmPagosEActionPerformed(evt);
+            }
+        });
+        JmCobranzatpu2.add(JmPagosE);
 
         JmMaq2.add(JmCobranzatpu2);
 
@@ -2556,6 +2566,10 @@ public final class Principal extends javax.swing.JFrame {
         setrepcomision();
     }//GEN-LAST:event_JmComisiones1ActionPerformed
 
+    private void JmPagosEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JmPagosEActionPerformed
+        Pagoespecial();
+    }//GEN-LAST:event_JmPagosEActionPerformed
+
     /**
      * Muestra la interfaz del reporte de comisiones
      */
@@ -2563,6 +2577,20 @@ public final class Principal extends javax.swing.JFrame {
         Rep_Comisiones n = new Rep_Comisiones(null, true);
         n.setconexiones(u, conexion);
         n.setVisible(true);
+    }
+    
+    /**
+     * Muestra la interfaz de los pagos especiales
+     */
+    private void Pagoespecial(){
+            try {
+            Pagostpu p = new Pagostpu(conexion, u);
+            this.JdPanel.add(p);
+            p.setMaximum(true);
+            p.show();
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void interfazlogin() {
@@ -3229,6 +3257,7 @@ public final class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem JmOut;
     private javax.swing.JMenuItem JmPagoespecial;
     private javax.swing.JMenuItem JmPagos;
+    private javax.swing.JMenuItem JmPagosE;
     private javax.swing.JMenuItem JmPagostpu;
     private javax.swing.JMenuItem JmPagostpu1;
     private javax.swing.JMenuItem JmPagostpu2;
